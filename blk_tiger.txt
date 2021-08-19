@@ -422,6 +422,12 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
     Bank02::a090 c1 a0           dw         Maybe_DemonAction04
     Bank02::a092 c9 a0           dw         Maybe_DemonAction05
 
+                             ORANGE_MICHELIN_MAN_JMP_TBL                     XREF[1]:     Maybe_OrangeMichelinManUpdate00:
+    Bank03::840b 15 84           dw         Maybe_OrangeMichelinManUpdate01
+    Bank03::840d fd 85           dw         Maybe_OrangeMichelinManUpdate02
+    Bank03::840f 0d 86           dw         Maybe_OrangeMichelinManUpdate03
+    Bank03::8411 7c 86           dw         Maybe_OrangeMichelinManUpdate04
+    Bank03::8413 ae 86           dw         Maybe_OrangeMichelinManUpdate05
 
 
 
@@ -431,23 +437,23 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0x5) = sprite attr of tile
 (IX+0x6) = animation x offset ($80 special case)
 (IX+0x7) = animation y offset ($80 special case)
-(IX+0x8) = something to do with X/Y (X bounds?)
-(IX+0x9) = something to do with X/Y (Y bounds?)
+(IX+0x8) = something to do with X/Y (X bounds?) velocity?
+(IX+0x9) = something to do with X/Y (Y bounds?) velocity?
 
 (IX+0xa) = animation duration!
 (IX+0xb) = entity class
 (IX+0xc) = bitflags (?) x8=AdjustSpriteXAndYForScrolling, x1=
-(IX+0xd) = used for offset into jump table??
-(IX+0xe)
+(IX+0xd) = used for offset into jump table?? (inanimate sprite ID?)
+(IX+0xe) = maybe health? (enemy only)
 
 (IX+0xf) = maybe injury that lags?
 
 (IX+0x10)
 (IX+0x11) = sprite anim table offset
-(IX+0x12)
+(IX+0x12) = Sprite anim y offset hi(?)
 (IX+0x13) = ROM Bank
 (IX+0x14) = sprite facing flag(?) 0 = r, 1 = l
-(IX+0x15) = character health points
+(IX+0x15) = character health points (enemy too?)
 (IX+0x16) =
 (IX+0x18) = EC5C--???
 (IX+0x19) =
