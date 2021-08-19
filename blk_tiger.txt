@@ -387,8 +387,8 @@ GFXDECODE_END
 BP: 1B4 (allows entry to test menu; PC=1ac)
   : 5501 (change a => 1-7 for changing coin award from killing enemy)
 
-                             DEMON_ACTION_SELECTION_TABLE                    XREF[2]:     Maybe_HandleDemon:a07d(*), 
-                                                                                          Maybe_HandleDemon:a081(R)  
+                             DEMON_ACTION_SELECTION_TABLE                    XREF[2]:     Maybe_HandleDemon:a07d(*),
+                                                                                          Maybe_HandleDemon:a081(R)
     Bank02::acae 04              ??         04h
     Bank02::acaf 03              ??         03h
     Bank02::acb0 00              ??         00h
@@ -406,7 +406,7 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
     Bank02::acbc 00              ??         00h
     Bank02::acbd 00              ??         00h
 
-                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)  
+                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)
     Bank02::a088 94 a0           dw         Maybe_DemonSpearThrow2
     Bank02::a08a a9 a0           dw         Maybe_HandleDemon06
     Bank02::a08c b2 a0           dw         Maybe_HandleDemon05
@@ -414,7 +414,7 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
     Bank02::a090 c1 a0           dw         Maybe_HandleDemon04
     Bank02::a092 c9 a0           dw         Maybe_HandleDemon02
 
-                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)  
+                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)
     Bank02::a088 94 a0           dw         Maybe_DemonSpearThrow2
     Bank02::a08a a9 a0           dw         Maybe_DemonAction01
     Bank02::a08c b2 a0           dw         Maybe_DemonAction02
@@ -466,52 +466,68 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0x21) =
 
 
-ORANGE SKELETON							0x1
-ORANGE SKELETON (2)						0x2
-PURPLE SKELETON							0x3
-BROWN ORC L1							0x4
-BROWN ORC L2							0x5
-BROWN ORC L3							0x6
-BROWN ORC R4/L4							0x7
-BROWN ORC L5/R5							0x8
-ORANGE MICHELIN MAN						0x9
-YELLOW MICHELIN MAN						0xa
-PURPLE MICHELIN MAN						0xb
-MAN-EATING YELLOW PLANT					0xc
-MAN-EATING PURPLE PLANT					0xd
-FIRETHROWER L1							0xe
-BLUE GOOP 								0xf
-BLUE GOOP 4								0x10
-RED GOOP								0x11
-BLUE GOOP 7								0x12
-PURPLE WITCH							0x13
-RED WITCH								0x14
-NINJA									0x15
-SPINNING COIN							0x16
-BAT										0x17
-SNAKE									0x18
-PURPLE BLOCK							0x19
-PURPLE BLOCK (2)						0x1a
-DEMON									0x1b
-LEVEL 03 DRAGON							0x1c
-LEVEL 06 DRAGON							0x1d
-LEVEL 08 DRAGON							0x1e
-LEVEL 05 WARTHOG BOSS					0x1f
-LEVEL 07 WARTHOG BOSS					0x20
-OLD MAN THAT GIVES ZENNY				0x21
-OLD MAN THAT HAS SHOP (1)				0x22
-OLD MAN THAT GIVES VITALITY				0x23
-OLD MAN THAT GIVES MORE TIME			0x24
-OLD MAN THAT GIVES ADVICE/SCULL			0x25
-OLD MAN THAT GIVES GRATITUDE			0x26
-OLD MAN THAT GIVES ADVICE/SEEK			0x27
-OLD MAN THAT HAS SHOP (2)				0x28
-FALLING ROCK							0x29
+ORANGE SKELETON                         0x1
+ORANGE SKELETON (2)                     0x2
+PURPLE SKELETON                         0x3
+BROWN ORC L1                            0x4
+BROWN ORC L2                            0x5
+BROWN ORC L3                            0x6
+BROWN ORC R4/L4                         0x7
+BROWN ORC L5/R5                         0x8
+ORANGE MICHELIN MAN                     0x9
+YELLOW MICHELIN MAN                     0xa
+PURPLE MICHELIN MAN                     0xb
+MAN-EATING YELLOW PLANT                 0xc
+MAN-EATING PURPLE PLANT                 0xd
+FIRETHROWER L1                          0xe
+BLUE GOOP                               0xf
+BLUE GOOP 4                             0x10
+RED GOOP                                0x11
+BLUE GOOP 7                             0x12
+PURPLE WITCH                            0x13
+RED WITCH                               0x14
+NINJA                                   0x15
+SPINNING COIN                           0x16
+BAT                                     0x17
+SNAKE                                   0x18
+PURPLE BLOCK                            0x19
+ORANGE BLOCK                            0x1a
+DEMON                                   0x1b
+LEVEL 03 DRAGON                         0x1c
+LEVEL 06 DRAGON                         0x1d
+LEVEL 08 DRAGON                         0x1e
+LEVEL 05 WARTHOG BOSS                   0x1f
+LEVEL 07 WARTHOG BOSS                   0x20
+OLD MAN THAT GIVES ZENNY                0x21
+OLD MAN THAT HAS SHOP (1)               0x22
+OLD MAN THAT GIVES VITALITY             0x23
+OLD MAN THAT GIVES MORE TIME            0x24
+OLD MAN THAT GIVES ADVICE/SCULL         0x25
+OLD MAN THAT GIVES GRATITUDE            0x26
+OLD MAN THAT GIVES ADVICE/SEEK          0x27
+OLD MAN THAT HAS SHOP (2)               0x28
+FALLING ROCK                            0x29
+
+        ram:27ae dd 72 11        LD         (IX+0x11)=>MAYBE_DUNGEON_VECTOR_LO,D             2A or 80/81
+        ram:27b1 dd 73 12        LD         (IX+0x12)=>MAYBE_DUNGEON_VECTOR_HI,E             00, 12 or d0
+
+
+19/8/2021:
+
+bp 2181;bp 219f;bp 2a1f;bp 3bad;bp 4546;bp 47bc;bp 47d9;bp 4faf;bp b9c;bp 1f1e;bp 2040;bp 23e8;bp 2721;bp 534a;bp 5a44
+                             LEVEL_01_DATA_TBL_042a                          XREF[1]:     ram:2b00(*)
+    Bank05::8560 60 86           dw         DAT_Bank05__8660
+    Bank05::8562 62 86           dw         DAT_Bank05__8662
+    Bank05::8564 64 86           dw         DAT_Bank05__8664                                 = DCh
+    Bank05::8566 86 86           dw         DAT_Bank05__8686
+    Bank05::8568 88 86           dw         DAT_Bank05__8688
+    Bank05::856a 8a 86           dw         DAT_Bank05__868a
+    Bank05::856c 8c 86           dw         DAT_Bank05__868c                                 = DCh
+    Bank05::856e ae 86           dw         DAT_Bank05__86ae
 
 
 
-
-                             ZENNY_COIN_TEMPLATE_DATA_TBL                    XREF[1]:     ram:5514(*)  
+                             ZENNY_COIN_TEMPLATE_DATA_TBL                    XREF[1]:     ram:5514(*)
         ram:5558 66 55           dw         ZENNY_01_COIN_TEMPLATE                           = 80h
         ram:555a 86 55           dw         ZENNY_05_COIN_TEMPLATE                           = 80h
         ram:555c a6 55           dw         ZENNY_10_COIN_TEMPLATE                           = 80h
