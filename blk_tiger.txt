@@ -387,7 +387,40 @@ GFXDECODE_END
 BP: 1B4 (allows entry to test menu; PC=1ac)
   : 5501 (change a => 1-7 for changing coin award from killing enemy)
 
+                             DEMON_ACTION_SELECTION_TABLE                    XREF[2]:     Maybe_HandleDemon:a07d(*), 
+                                                                                          Maybe_HandleDemon:a081(R)  
+    Bank02::acae 04              ??         04h
+    Bank02::acaf 03              ??         03h
+    Bank02::acb0 00              ??         00h
+    Bank02::acb1 00              ??         00h
+    Bank02::acb2 01              ??         01h
+    Bank02::acb3 00              ??         00h
+    Bank02::acb4 05              ??         05h
+    Bank02::acb5 03              ??         03h
+    Bank02::acb6 04              ??         04h
+    Bank02::acb7 02              ??         02h
+    Bank02::acb8 03              ??         03h
+    Bank02::acb9 00              ??         00h
+    Bank02::acba 00              ??         00h
+    Bank02::acbb 03              ??         03h
+    Bank02::acbc 00              ??         00h
+    Bank02::acbd 00              ??         00h
 
+                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)  
+    Bank02::a088 94 a0           dw         Maybe_DemonSpearThrow2
+    Bank02::a08a a9 a0           dw         Maybe_HandleDemon06
+    Bank02::a08c b2 a0           dw         Maybe_HandleDemon05
+    Bank02::a08e ba a0           dw         Maybe_HandleDemon03
+    Bank02::a090 c1 a0           dw         Maybe_HandleDemon04
+    Bank02::a092 c9 a0           dw         Maybe_HandleDemon02
+
+                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)  
+    Bank02::a088 94 a0           dw         Maybe_DemonSpearThrow2
+    Bank02::a08a a9 a0           dw         Maybe_DemonAction01
+    Bank02::a08c b2 a0           dw         Maybe_DemonAction02
+    Bank02::a08e ba a0           dw         Maybe_DemonAction03
+    Bank02::a090 c1 a0           dw         Maybe_DemonAction04
+    Bank02::a092 c9 a0           dw         Maybe_DemonAction05
 
 
 
@@ -398,11 +431,11 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0x5) = sprite attr of tile
 (IX+0x6) = animation x offset ($80 special case)
 (IX+0x7) = animation y offset ($80 special case)
-(IX+0x8)
-(IX+0x9)
+(IX+0x8) = something to do with X/Y (X bounds?)
+(IX+0x9) = something to do with X/Y (Y bounds?)
 
 (IX+0xa) = animation duration!
-(IX+0xb) = zenny coin reward vector offset
+(IX+0xb) = entity class
 (IX+0xc) = bitflags (?) x8=AdjustSpriteXAndYForScrolling, x1=
 (IX+0xd) = used for offset into jump table??
 (IX+0xe)
@@ -426,15 +459,6 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0x20) = -> maybe related sprite variable ptr?
 (IX+0x21) =
 
-
-                             ZENNY_COIN_TEMPLATE_DATA_TBL                    XREF[1]:     ram:5514(*)  
-        ram:5558 66 55           dw         ZENNY_01_COIN_TEMPLATE                           = 80h
-        ram:555a 86 55           dw         ZENNY_05_COIN_TEMPLATE                           = 80h
-        ram:555c a6 55           dw         ZENNY_10_COIN_TEMPLATE                           = 80h
-        ram:555e c6 55           dw         ZENNY_50_COIN_TEMPLATE                           = 80h
-        ram:5560 e6 55           dw         ZENNY_100_COIN_TEMPLATE                          = 80h
-        ram:5562 06 56           dw         ZENNY_500_COIN_TEMPLATE                          = 80h
-        ram:5564 26 56           dw         ZENNY_1000_COIN_TEMPLATE                         = 80h
 
 ORANGE SKELETON							0x1
 ORANGE SKELETON (2)						0x2
@@ -480,6 +504,15 @@ FALLING ROCK							0x29
 
 
 
+
+                             ZENNY_COIN_TEMPLATE_DATA_TBL                    XREF[1]:     ram:5514(*)  
+        ram:5558 66 55           dw         ZENNY_01_COIN_TEMPLATE                           = 80h
+        ram:555a 86 55           dw         ZENNY_05_COIN_TEMPLATE                           = 80h
+        ram:555c a6 55           dw         ZENNY_10_COIN_TEMPLATE                           = 80h
+        ram:555e c6 55           dw         ZENNY_50_COIN_TEMPLATE                           = 80h
+        ram:5560 e6 55           dw         ZENNY_100_COIN_TEMPLATE                          = 80h
+        ram:5562 06 56           dw         ZENNY_500_COIN_TEMPLATE                          = 80h
+        ram:5564 26 56           dw         ZENNY_1000_COIN_TEMPLATE                         = 80h
 
 
 b0 06
