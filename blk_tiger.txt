@@ -515,6 +515,68 @@ FALLING ROCK                            0x29
 19/8/2021:
 
 bp 2181;bp 219f;bp 2a1f;bp 3bad;bp 4546;bp 47bc;bp 47d9;bp 4faf;bp b9c;bp 1f1e;bp 2040;bp 23e8;bp 2721;bp 534a;bp 5a44
+
+
+wp e041,2,r;bp 235c
+
+                             STRINGS_TBL_001+1                               XREF[4,2]:   PrintScreenString:1429(*), 
+                             STRINGS_TBL_001                                              PrintScreenString:1434(R), 
+                                                                                          EraseCharsFromString:144d(*), 
+                                                                                          EraseCharsFromString:1458(R), 
+                                                                                          PrintScreenString:1436(R), 
+                                                                                          EraseCharsFromString:145a(R)  
+0x00	CREDIT_0                                         = 
+0x00	1_UP                                             = 
+0x00	2_UP                                             = 
+0x00	HIGH_SCORE                                       = 
+0x00	INSERT_COIN                                      = 
+0x00	PUSH_START_BUTTON                                = 
+0x00	ONE_PLAYER_ONLY                                  = 
+0x00	ONE_OR_TWO_PLAYERS                               = 
+0x00	GAME_OVER                                        = D24Ch
+0x00	CAPCOM_1987                                      = 
+0x00	RANKING_BEST_5                                   = 
+0x00	1ST                                              = 
+0x00	2ND                                              = 
+0x00	3RD                                              = 
+0x00	4TH                                              = 
+0x00	5TH                                              = 
+0x00	READY                                            = 
+0x00	TIME_VITALITY                                    = 
+0x00	SAVE_LIFE                                        = 
+0x00	SAVE_LIVES                                       = 
+0x00	POISON                                           = 
+0x00	TIME_OVER                                        = 
+0x00	ROUND                                            = 
+0x00	READY_PLAYER_1                                   = 
+0x00	READY_PLAYER_2                                   = 
+0x00	CONTINUE?                                        = 
+0x00	BLANK_SPC_3LINES_DOWN                            = 
+0x00	BLANK_SPC_UPPER_MIDDLE                           = 
+0x00	WELCOME_TO_DUNGEON!                              = 
+0x00	BONUS_ZENNY_300                                  = 
+0x00	BONUS_ZENNY_500                                  = 
+0x00	BONUS_ZENNY_800                                  = 
+0x00	BONUS_ZENNY_1200                                 = 
+0x00	BONUS_ZENNY_1600                                 = 
+0x00	BONUS_ZENNY_2400                                 = 
+0x00	BONUS_ZENNY_4800                                 = 
+0x00	LOSE_DIRECTION                                   = 
+                             ACTION_JMP_TBL_001                              XREF[1]:     DrawTestScreenSprites:140d(*)  
+        ram:141b 29 14           dw         PrintScreenString
+        ram:141d 4d 14           dw         EraseCharsFromString
+        ram:141f 6c 14           dw         PartiallyClearScreen
+        ram:1421 a2 14           dw         ClearSpritesFromVisibleScreen
+        ram:1423 b0 14           dw         PrintFiveHighestScores
+        ram:1425 f7 14           dw         Maybe_UpdateScore
+        ram:1427 87 14           dw         ClearCharScreen
+                             BLUE_GOOP_ACTIONS_JMP_TBL                       XREF[1]:     Maybe_SwitchBlueGoopAction:b92b(
+    Bank04::b931 76 b9           dw         Maybe_BlueGoopSwitchDirection
+    Bank04::b933 86 b9           dw         Maybe_BlueGoopSwitchDirection02
+    Bank04::b935 96 b9           dw         Maybe_BlueGoopDecidesToJumpDown
+    Bank04::b937 b2 b9           dw         Maybe_BlueGoopDecidesToJumpDownLeftOrRight
+    Bank04::b939 ca b9           dw         Maybe_BlueGoopDecidesToJumpDownLeftOrRight02
+
                              LEVEL_01_DATA_TBL_042a                          XREF[1]:     ram:2b00(*)
     Bank05::8560 60 86           dw         DAT_Bank05__8660
     Bank05::8562 62 86           dw         DAT_Bank05__8662
@@ -524,8 +586,35 @@ bp 2181;bp 219f;bp 2a1f;bp 3bad;bp 4546;bp 47bc;bp 47d9;bp 4faf;bp b9c;bp 1f1e;b
     Bank05::856a 8a 86           dw         DAT_Bank05__868a
     Bank05::856c 8c 86           dw         DAT_Bank05__868c                                 = DCh
     Bank05::856e ae 86           dw         DAT_Bank05__86ae
+     F400  80 00 70 00 7A 00 02 FE 10 10 30 03 08 01 01 02   ..p.z.....0.....
+     F410  00 06 01 01 05 00 00 00 00 00 00 00 04 00 00 00   ................
+     F420  01 00 00 00 00 00 00 1B 00 00 00 FE 00 00 00 00   ................
+     F430  00 00 00 00 00 00 00 00 00 00 00 00 00 01 07 9C   ................
+     F440  00 00 20 00 96 08 01 0D 00 00 00 03 08 04 00 00   .. .............
+     F450  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F460  00 00 30 00 96 08 01 00 00 00 00 00 00 00 00 00   ..0.............
+     F470  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F480  00 00 40 00 96 08 01 00 00 00 00 00 00 00 00 00   ..@.............
+     F490  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F4A0  00 00 50 00 96 08 6F 00 00 00 00 00 00 00 00 00   ..P...o.........
+     F4B0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F4C0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F4D0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F4E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F4F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
 
 
+     F3A0  01 00 00 00 01 01 01 6F 00 00 02 02 00 06 00 00   .......o........
+     F3B0  00 56 00 00 00 00 01 00 00 00 00 00 00 00 00 00   .V..............
+     F3C0  01 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00   ................
+     F3D0  00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00   ................
+     F3E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F3F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     F400  80 00 70 00 90 00 00 00 10 08 00 03 08 01 01 02   ..p.............
+     F410  00 0C 00 00 00 00 00 00 00 01 00 00 04 00 00 00   ................
+     F420  01 00 00 00 17 00 00 00 00 00 00 FE 00 00 00 00   ................
+     F430  00 00 00 00 00 00 00 00 00 00 00 00 00 01 07 9C   ................
+     F440  00 00 20 00 96 08 01 0D 00 00 00 03 08 04 00 00   .. .............
 
 
      F400  80 00 70 00 90 00 00 00 0C 20 70 03 08 01 01 00   ..p...... p.....
