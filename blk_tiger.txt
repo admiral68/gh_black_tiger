@@ -499,6 +499,59 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 90000_POINTS
 100000_POINTS
 
+                             RANDOM_CLAY_POT_ENEMY_BANK_LOOKUP               XREF[2]:     AddRandomEnemyFromBreakingPot:72
+                                                                                          AddRandomEnemyFromBreakingPot:72
+        ram:72eb 03              ??         03h                                              Bank 04
+        ram:72ec 00              ??         00h                                              Bank 01
+                             RANDOM_CLAY_POT_ENEMY_CREATE_JUMP_VECTOR+1      XREF[1,1]:   AddRandomEnemyFromBreakingPot:72
+                             RANDOM_CLAY_POT_ENEMY_CREATE_JUMP_VECTOR                     AddRandomEnemyFromBreakingPot:72
+        ram:72ed f9 b7           dw         AddBlueGoopToCurrentMap03::continue
+        ram:72ef 00              ??         00h
+        ram:72f0 00              ??         00h
+        ram:72f1 55 b8           dw         AddFirethrowerToCurrentMap::continue
+        ram:72f3 04              ??         04h
+        ram:72f4 00              ??         00h
+        ram:72f5 52 9a           dw         AddPurpleBlockToCurrentMap::continue
+        ram:72f7 02              ??         02h
+        ram:72f8 00              ??         00h
+        ram:72f9 37 9b           dw         AddPurpleMichelinManToCurrentMap::continue
+
+                             POT_BREAK_PRIZE_TABLE_02+1                      XREF[2,1]:   Maybe_ShootPotWithCoinInside5Poi
+                             POT_BREAK_PRIZE_TABLE_02                                     Maybe_ShootPotWithCoinInside5Poi
+                                                                                          Maybe_ShootPotWithCoinInside5Poi
+        ram:772f 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         = 
+        ram:7731 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         = 
+        ram:7733 71 77           dw         POT_BREAK_REVEAL_5_ZENNY                         = 
+        ram:7735 ba 77           dw         POT_BREAK_REVEAL_10_ZENNY                        = 
+        ram:7737 03 78           dw         POT_BREAK_REVEAL_50_ZENNY                        = 
+        ram:7739 4c 78           dw         POT_BREAK_REVEAL_100_ZENNY                       = 
+        ram:773b 95 78           dw         POT_BREAK_REVEAL_500_ZENNY                       = 
+        ram:773d de 78           dw         POT_BREAK_REVEAL_1000_ZENNY                      = 
+        ram:773f 27 79           dw         POT_BREAK_REVEAL_KEY                             = 
+        ram:7741 70 79           dw         POT_BREAK_REVEAL_EXTRA_TIME_HOURGLASS            = 
+        ram:7743 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
+        ram:7745 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
+        ram:7747 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
+        ram:7749 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
+
+
+                             POT_BREAK_PRIZE_TABLE_01+1                      XREF[2,1]:   Maybe_RevealPrizeInClayPot:7246(
+                             POT_BREAK_PRIZE_TABLE_01                                     Maybe_RevealPrizeInClayPot:724a(
+                                                                                          Maybe_RevealPrizeInClayPot:724c(
+        ram:76d1 ed 76           dw         Maybe_RevealNothingInPot::NO_PRIZE_IN_POT_2      = maybe_start_new
+        ram:76d3 ed 76           dw         Maybe_RevealNothingInPot::NO_PRIZE_IN_POT_2      = maybe_start_new
+        ram:76d5 ee 76           dw         ZENNY_COINS_TABLE_01                             5 ZENNY COINS
+        ram:76d7 f6 76           dw         10_ZENNY_COIN_01                                 = 
+        ram:76d9 fe 76           dw         50_ZENNY_COIN_01                                 = 
+        ram:76db 06 77           dw         100_ZENNY_COIN_01                                = 
+        ram:76dd 0e 77           dw         500_ZENNY_COIN_01                                = 
+        ram:76df 16 77           dw         1000_ZENNY_COIN_01                               = 
+        ram:76e1 1e 77           dw         KEY_01                                           = 
+        ram:76e3 26 77           dw         TIME_HOURGLASS_01                                = 
+        ram:76e5 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
+        ram:76e7 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
+        ram:76e9 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
+        ram:76eb 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
 
 
 ORANGE SKELETON                         0x1
