@@ -455,6 +455,7 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0x14) = sprite facing flag(?) 0 = r, 1 = l
 (IX+0x15) = character health points (enemy too?)
 (IX+0x16) =
+(IX+0x17) = Score offset!
 (IX+0x18) = EC5C--???
 (IX+0x19) =
 (IX+0x1a) = sprite struct location
@@ -464,6 +465,40 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 
 (IX+0x20) = -> maybe related sprite variable ptr?
 (IX+0x21) =
+
+
+0_POINTS		0x0
+5_POINTS
+10_POINTS
+15_POINTS
+20_POINTS
+30_POINTS
+50_POINTS
+80_POINTS
+100_POINTS
+150_POINTS
+200_POINTS
+300_POINTS
+500_POINTS
+800_POINTS
+1000_POINTS
+1500_POINTS
+2000_POINTS
+3000_POINTS
+5000_POINTS
+7000_POINTS
+10000_POINTS
+15000_POINTS
+20000_POINTS
+30000_POINTS
+40000_POINTS
+50000_POINTS
+60000_POINTS
+70000_POINTS
+80000_POINTS
+90000_POINTS
+100000_POINTS
+
 
 
 ORANGE SKELETON                         0x1
