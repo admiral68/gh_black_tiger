@@ -443,7 +443,7 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0xa) = animation duration!
 (IX+0xb) = entity class
 (IX+0xc) = bitflags (?) x8=AdjustSpriteXAndYForScrolling, x1=
-(IX+0xd) = used for offset into jump table?? (inanimate sprite ID?)
+(IX+0xd) = sprite touched by player function offset
 (IX+0xe) = maybe health? (enemy only)
 
 (IX+0xf) = maybe injury that lags?
@@ -467,7 +467,64 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0x21) =
 
 
-0_POINTS		0x0
+
+                             MAYBE_PLAYER_ACTION_JUMP_TABLE_002              XREF[1]:     FUN_ram_34d9:474b(*)  
+0x0     NullFunction01
+0x1     NullFunction01
+0x2     NullFunction02
+0x3     PlayerTakesZennyCoin1Point
+0x4     PlayerTakesZennyCoin5Points
+0x5     PlayerTakesZennyCoin10Points
+0x6     PlayerTakesZennyCoin50Points
+0x7     PlayerTakesZennyCoin100Points
+0x8     PlayerTakesZennyCoin500Points
+0x9     PlayerTakesZennyCoin1000Points
+0xa     PlayerTakesKey
+0xb     PlayerTakesHourglass
+0xc     NullFunction01
+0xd     NullFunction01
+0xe     NullFunction01
+0xf     NullFunction01
+0x10    Maybe_UseKey01
+0x11    MaybePlayerOpensTreasureChestGetsZennyCoins
+0x12    PlayerOpensChestTakesTreasure100Points
+0x13    PlayerOpenChestTakesTreasure500Points
+0x14    PlayerTakesTreasure1000Points
+0x15    MaybePlayerOpensTreasureChestGetsVitality
+0x16    Maybe_FinishThisSpriteAnimation
+0x17    PlayerTakes1UpExtraGuyPrize
+0x18    PlayerTakesArmor
+0x19    Maybe_PlayerTakesPOW
+0x1a    PlayerTakesHourglass02
+0x1b    PlayerTakesItemFor1000Points
+0x1c    PlayerTakesHighestArmorLevel
+0x1d    PlayerTakesHighestArmorLevel02
+0x1e    PlayerTakesItemFor1000Points
+0x1f    PlayerTakesItemFor5000Points
+0x20    PlayerTakesItemFor500Zenny
+0x21    PlayerTakesItemFor7000Points
+0x22    Maybe_DoDungeon
+0x23    PlayImpactSound
+0x24    Maybe_StartNewFirethrower02
+0x25    FUN_ram_47bc
+0x26    Maybe_UseAPotion
+0x27    Maybe_DamagePlayer
+0x28    Maybe_StartNewPurpleFire01
+0x29    Maybe_StartNewOrangeFire01
+0x2a    Maybe_UseAPotion02
+0x2b    Maybe_UseAPotion03
+0x2c    PlayInjureBossHitSound
+0x2d    PlayInjureBossHitSound
+0x2e    PlayInjureBossHitSound
+0x2f    PlayInjureBossHitSound
+0x30    PlayInjureBossHitSound
+0x31    PlayInjureBossHitSound
+0x32    PlayInjureBossHitSound
+0x33    PlayInjureBossHitSound
+0x34    Maybe_UpdateBat
+
+
+0_POINTS        0x0
 5_POINTS
 10_POINTS
 15_POINTS
@@ -554,6 +611,196 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
         ram:76eb 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
 
 
+
+
+        ram:00f7 c5              PUSH       BC
+        ram:00f8 d9              EXX
+        ram:00f9 cd 41 01        CALL       FindAddressOffsetAx8FromE880
+        ram:00fc 36 08           LD         (HL),0x8
+        ram:00fe 23              INC        HL
+        ram:00ff 36 00           LD         (HL),0x0
+        ram:0101 23              INC        HL
+        ram:0102 c1              POP        BC
+        ram:0103 71              LD         (HL),C
+        ram:0104 23              INC        HL
+        ram:0105 70              LD         (HL),B
+
+
+NEW bps:
+
+bp a5;
+
+
+https://github.com/mamedev/mame/blob/master/src/devices/sound/ymopn.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_fm.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_opn.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_adpcm.h
+https://github.com/mamedev/mame/blob/master/src/devices/sound/ymfm_mame.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.h
+
+
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.cpp
+
+//*********************************************************
+//  YM2203 DEVICE
+//*********************************************************
+
+DEFINE_DEVICE_TYPE(YM2203, ym2203_device, "ym2203", "YM2203 OPN")
+
+//-------------------------------------------------
+//  ym2203_device - constructor
+//-------------------------------------------------
+
+ym2203_device::ym2203_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+    ymfm_ssg_device_base<ymfm::ym2203>(mconfig, tag, owner, clock, YM2203)
+{
+}
+
+
+//-------------------------------------------------
+//  device_start - start of emulation
+//-------------------------------------------------
+
+void ym2203_device::device_start()
+{
+    // set our target output fidelity
+    m_chip.set_fidelity(SSG_FIDELITY);
+
+    // call our parent
+    parent::device_start();
+}
+
+
+ymopn.h
+    map(0xe000, 0xe001).rw("ym1", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
+    map(0xe002, 0xe003).rw("ym2", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
+
+ ) : standard parentheses
+++ -- : postfix increment/decrement
+++ -- ~ ! - + b@ w@ d@ q@ : prefix inc/dec, binary NOT, logical NOT, unary +/-, memory access
+* / % : multiply, divide, modulus
++ - : add, subtract
+<< >> : shift left/right
+< <= > >= : less than, less than or equal, greater than, greater than or equal
+== != : equal, not equal
+& : binary AND
+^ : binary XOR
+| : binary OR
+&& : logical AND
+|| : logical OR
+= *= /= %= += -= <<= >>= &= |= ^= : assignment
+, : separate terms, function parameters
+
+rpset
+rp[set] {<condition>}[,<action>]]
+
+Sets a new registerpoint which will be triggered when <condition> is met. The condition must be specified between curly braces to prevent the condition from being evaluated as an assignment.
+The optional <action> parameter provides a command that is executed whenever the registerpoint is hit. Note that you may need to embed the action within braces { } in order to prevent commas and semicolons from being interpreted as applying to the rpset command itself.
+Each registerpoint that is set is assigned an index which can be used in other registerpoint commands to reference this registerpoint.
+
+Examples:
+
+rp {PC==0150}
+
+Set a registerpoint that will halt execution whenever the PC register equals 0x150.
+
+temp0=0; rp {PC==0150},{temp0++; g}
+
+Set a registerpoint that will increment the variable temp0 whenever the PC register equals 0x0150.
+
+rp {temp0==5}
+
+Set a registerpoint that will halt execution whenever the temp0 variable equals 5.
+
+bpset
+bp[set] <address>[,<condition>[,<action>]]
+
+Sets a new execution breakpoint at the specified <address>.
+The optional <condition> parameter lets you specify an expression that will be evaluated each time the breakpoint is hit. If the result of the expression is true (non-zero), the breakpoint will actually halt execution; otherwise, execution will continue with no notification.
+The optional <action> parameter provides a command that is executed whenever the breakpoint is hit and the <condition> is true. Note that you may need to embed the action within braces { } in order to prevent commas and semicolons from being interpreted as applying to the bpset command itself. Each breakpoint that is set is assigned an index which can be used in other breakpoint commands to reference this breakpoint.
+
+bplist -- lists all the breakpoints
+
+
+
+source
+source <filename>
+
+The source command reads in a set of debugger commands from a file and executes them one by one, similar to a batch file.
+
+Examples:
+
+source break_and_trace.cmd
+
+Reads in debugger commands from break_and_trace.cmd and executes them.
+
+statesave
+statesave[ss] <filename>
+
+The statesave command creates a save state at this exact moment in time. The given state file gets written to the standard state directory (sta), and gets .sta added to it - no file extension necessary. All output for this command is currently echoed into the running machine window.
+
+Examples:
+
+statesave foo
+
+Writes file 'foo.sta' in the default state save directory.
+
+stateload
+stateload[sl] <filename>
+
+The stateload command retrieves a save state from disk. The given state file gets read from the standard state directory (sta), and gets .sta added to it - no file extension necessary. All output for this command is currently echoed into the running machine window. Previous memory and PC tracking statistics are cleared.
+
+Examples:
+
+stateload foo
+
+Reads file 'foo.sta' from the default state save directory.
+
+
+save[{d|i}] <filename>,<address>,<length>[,<cpu>]
+
+The save/saved/savei commands save raw memory to the binary file specified in the <filename> parameter.
+'save' will save program space memory, while 'saved' will save data space memory and 'savei' will save I/O space memory.
+<address> indicates the address of the start of saving, and <length> indicates how much memory to save. The range <address> through <address>+<length>-1 inclusive will be output to the file.
+You can also save memory from another CPU by specifying the <cpu> parameter.
+
+
+Examples:
+
+save venture.bin,0,10000
+
+Saves addresses 0-ffff in the current CPU to the binary file 'venture.bin'.
+
+saved harddriv.bin,3000,1000,3
+
+Saves data memory addresses 3000-3fff from CPU #3 to the binary file 'harddriv.bin'.
+
+
+load[{d|i}] <filename>,<address>[,<length>,<cpu>]
+
+The load/loadd/loadi commands load raw memory from the binary file specified in the <filename> parameter.
+'load' will load program space memory, while 'loadd' will load data space memory and 'loadi' will load I/O space memory.
+<address> indicates the address of the start of saving, and <length> indicates how much memory to load. The range <address> through <address>+<length>-1 inclusive will be read in from the file.
+If you specify <length> = 0 or a length greater than the total length of the file it will load the entire contents of the file and no more.
+You can also load memory from another CPU by specifying the <cpu> parameter.
+
+NOTE: This will only actually write memory that is possible to overwrite in the Memory Window
+
+
+Examples:
+
+load venture.bin,0,10000
+
+Loads addresses 0-ffff in the current CPU from the binary file 'venture.bin'.
+
+loadd harddriv.bin,3000,1000,3
+
+Loads data memory addresses 3000-3fff from CPU #3 from the binary file 'harddriv.bin'.
+
+
+
+
 ORANGE SKELETON                         0x1
 ORANGE SKELETON (2)                     0x2
 PURPLE SKELETON                         0x3
@@ -613,43 +860,43 @@ wp e041,2,r;bp 235c
                                                                                           EraseCharsFromString:1458(R), 
                                                                                           PrintScreenString:1436(R), 
                                                                                           EraseCharsFromString:145a(R)  
-0x00	CREDIT_0                                         = 
-0x00	1_UP                                             = 
-0x00	2_UP                                             = 
-0x00	HIGH_SCORE                                       = 
-0x00	INSERT_COIN                                      = 
-0x00	PUSH_START_BUTTON                                = 
-0x00	ONE_PLAYER_ONLY                                  = 
-0x00	ONE_OR_TWO_PLAYERS                               = 
-0x00	GAME_OVER                                        = D24Ch
-0x00	CAPCOM_1987                                      = 
-0x00	RANKING_BEST_5                                   = 
-0x00	1ST                                              = 
-0x00	2ND                                              = 
-0x00	3RD                                              = 
-0x00	4TH                                              = 
-0x00	5TH                                              = 
-0x00	READY                                            = 
-0x00	TIME_VITALITY                                    = 
-0x00	SAVE_LIFE                                        = 
-0x00	SAVE_LIVES                                       = 
-0x00	POISON                                           = 
-0x00	TIME_OVER                                        = 
-0x00	ROUND                                            = 
-0x00	READY_PLAYER_1                                   = 
-0x00	READY_PLAYER_2                                   = 
-0x00	CONTINUE?                                        = 
-0x00	BLANK_SPC_3LINES_DOWN                            = 
-0x00	BLANK_SPC_UPPER_MIDDLE                           = 
-0x00	WELCOME_TO_DUNGEON!                              = 
-0x00	BONUS_ZENNY_300                                  = 
-0x00	BONUS_ZENNY_500                                  = 
-0x00	BONUS_ZENNY_800                                  = 
-0x00	BONUS_ZENNY_1200                                 = 
-0x00	BONUS_ZENNY_1600                                 = 
-0x00	BONUS_ZENNY_2400                                 = 
-0x00	BONUS_ZENNY_4800                                 = 
-0x00	LOSE_DIRECTION                                   = 
+0x00    CREDIT_0                                         = 
+0x00    1_UP                                             = 
+0x00    2_UP                                             = 
+0x00    HIGH_SCORE                                       = 
+0x00    INSERT_COIN                                      = 
+0x00    PUSH_START_BUTTON                                = 
+0x00    ONE_PLAYER_ONLY                                  = 
+0x00    ONE_OR_TWO_PLAYERS                               = 
+0x00    GAME_OVER                                        = D24Ch
+0x00    CAPCOM_1987                                      = 
+0x00    RANKING_BEST_5                                   = 
+0x00    1ST                                              = 
+0x00    2ND                                              = 
+0x00    3RD                                              = 
+0x00    4TH                                              = 
+0x00    5TH                                              = 
+0x00    READY                                            = 
+0x00    TIME_VITALITY                                    = 
+0x00    SAVE_LIFE                                        = 
+0x00    SAVE_LIVES                                       = 
+0x00    POISON                                           = 
+0x00    TIME_OVER                                        = 
+0x00    ROUND                                            = 
+0x00    READY_PLAYER_1                                   = 
+0x00    READY_PLAYER_2                                   = 
+0x00    CONTINUE?                                        = 
+0x00    BLANK_SPC_3LINES_DOWN                            = 
+0x00    BLANK_SPC_UPPER_MIDDLE                           = 
+0x00    WELCOME_TO_DUNGEON!                              = 
+0x00    BONUS_ZENNY_300                                  = 
+0x00    BONUS_ZENNY_500                                  = 
+0x00    BONUS_ZENNY_800                                  = 
+0x00    BONUS_ZENNY_1200                                 = 
+0x00    BONUS_ZENNY_1600                                 = 
+0x00    BONUS_ZENNY_2400                                 = 
+0x00    BONUS_ZENNY_4800                                 = 
+0x00    LOSE_DIRECTION                                   = 
                              ACTION_JMP_TBL_001                              XREF[1]:     DrawTestScreenSprites:140d(*)  
         ram:141b 29 14           dw         PrintScreenString
         ram:141d 4d 14           dw         EraseCharsFromString
