@@ -533,6 +533,41 @@ void blktiger_state::blktiger_video_enable_w(uint8_t data)
         ram:039a e1              POP        HL
 
 
+Finding vertical blank code as well as the way that Black Tiger does delays. That stuff was sort of tricky to work out; but it will help figure out a whole lot more of the game.
+
+                             MAYBE_LEVEL_01_DATA_005                         XREF[1]:     Bank07::b718(*)  
+    Bank07::b728 04              ??         04h
+    Bank07::b729 04              ??         04h
+    Bank07::b72a 04              ??         04h
+    Bank07::b72b 04              ??         04h
+    Bank07::b72c 04              ??         04h
+    Bank07::b72d 04              ??         04h
+    Bank07::b72e 04              ??         04h
+    Bank07::b72f 04              ??         04h
+    Bank07::b730 05              ??         05h
+    Bank07::b731 05              ??         05h
+    Bank07::b732 05              ??         05h
+    Bank07::b733 05              ??         05h
+    Bank07::b734 05              ??         05h
+    Bank07::b735 05              ??         05h
+    Bank07::b736 05              ??         05h
+    Bank07::b737 05              ??         05h
+    Bank07::b738 0a              ??         0Ah
+    Bank07::b739 0a              ??         0Ah
+    Bank07::b73a 0a              ??         0Ah
+    Bank07::b73b 0a              ??         0Ah
+    Bank07::b73c 0a              ??         0Ah
+    Bank07::b73d 0a              ??         0Ah
+    Bank07::b73e 0a              ??         0Ah
+    Bank07::b73f 0a              ??         0Ah
+    Bank07::b740 0a              ??         0Ah
+    Bank07::b741 0c              ??         0Ch
+    Bank07::b742 0c              ??         0Ch
+    Bank07::b743 02              ??         02h
+    Bank07::b744 0b              ??         0Bh
+    Bank07::b745 0b              ??         0Bh
+    Bank07::b746 0b              ??         0Bh
+    Bank07::b747 0b              ??         0Bh
 
 
 FIRST BYTE = 0 : FREE 
