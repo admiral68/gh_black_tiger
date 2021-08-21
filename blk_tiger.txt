@@ -558,14 +558,14 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 0x29    Maybe_StartNewOrangeFire01
 0x2a    Maybe_UseAPotion02
 0x2b    Maybe_UseAPotion03
-0x2c    PlayInjureBossHitSound
-0x2d    PlayInjureBossHitSound
-0x2e    PlayInjureBossHitSound
-0x2f    PlayInjureBossHitSound
-0x30    PlayInjureBossHitSound
-0x31    PlayInjureBossHitSound
-0x32    PlayInjureBossHitSound
-0x33    PlayInjureBossHitSound
+0x2c    PlayActivateOldManSound
+0x2d    PlayActivateOldManSound
+0x2e    PlayActivateOldManSound
+0x2f    PlayActivateOldManSound
+0x30    PlayActivateOldManSound
+0x31    PlayActivateOldManSound
+0x32    PlayActivateOldManSound
+0x33    PlayActivateOldManSound
 0x34    Maybe_UpdateBat
 
 
