@@ -429,6 +429,22 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
     Bank03::8411 7c 86           dw         Maybe_OrangeMichelinManUpdate04
     Bank03::8413 ae 86           dw         Maybe_OrangeMichelinManUpdate05
 
+     8000  2A 27 E9 23 34 7E FE 1E C0 36 00 21 80 E1 1E 01   *'.#4~...6.!....
+     8010  16 00 19 7E FE 03 D0 CD 3B 04 C9 00 00 21 91 81   ...~....;....!..
+     8020  01 30 00 ED B0 FD E5 E1 DD 74 1A DD 75 1B 2A 27   .0.......t..u.*'
+     8030  E9 DD 75 18 DD 74 19 3A 09 E0 0F E6 07 5F 16 00   ..u..t.:....._..
+     8040  21 87 80 19 7E DD 77 02 06 05 DD 36 04 70 DD 36   !...~.w....6.p.6
+     8050  08 10 DD 36 09 20 C5 CD C8 06 20 1B 26 00 DD 6E   ...6. .... .&..n
+     8060  04 11 10 00 19 DD 75 04 C1 10 EB AF DD 77 03 DD   ......u......w..
+     8070  77 04 DD 36 00 00 C9 E1 21 80 E1 DD 5E 0B 16 00   w..6....!...^...
+     8080  19 34 21 40 E9 34 C9 60 D0 A0 30 C0 50 40 B0 3E   .4!@.4.`..0.P@.>
+     8090  0A DD 77 0C 18 05 3E 08 DD 77 0C DD 6E 1E DD 66   ..w...>..w..n..f
+     80A0  1F 23 23 23 C3 E6 32 2A 30 E0 7C 65 6F E5 ED 5B   .###..2*0.|eo..[
+     80B0  01 F4 7A 53 5F 19 EB E1 DD 46 01 DD 4E 02 09 ED   ..zS_....F..N...
+     80C0  52 30 0A DD 36 14 00 21 5B 82 C3 E6 32 DD 36 14   R0..6..![...2.6.
+     80D0  01 21 E3 81 C3 E6 32 DD 35 20 28 52 DD 36 08 10   .!....2.5 (R.6..
+     80E0  DD 36 09 20 CD C8 06 CA 39 81 DD 7E 14 A7 20 1F   .6. ....9..~.. .
+     80F0  DD 36 08 20 DD 36 09 10 CD C8 06 20 0C DD 6E 1E   .6. .6..... ..n.
 
 
 (IX+0x0) = alive flag? ($80 or not)
@@ -446,7 +462,7 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0xd) = sprite touched by player function offset
 (IX+0xe) = maybe health? (enemy only)
 
-(IX+0xf) = maybe injury that lags?
+(IX+0xf) = maybe weapon damage inflicted on player
 
 (IX+0x10)
 (IX+0x11) = sprite anim table offset
@@ -466,6 +482,35 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 (IX+0x20) = -> maybe related sprite variable ptr?
 (IX+0x21) =
 
+                             MAYBE_PRIZE_DATA_01                             XREF[1]:     Bank03::bb1b(*)  
+    Bank03::bb2b 00              ??         00h
+    Bank03::bb2c d0              ??         D0h
+    Bank03::bb2d c1              ??         C1h
+    Bank03::bb2e 00              ??         00h
+    Bank03::bb2f 30              ??         30h    0
+    Bank03::bb30 00              ??         00h
+    Bank03::bb31 30              ??         30h    0
+	
+    Bank03::bb32 01              ??         01h
+    Bank03::bb33 2a              ??         2Ah    *
+    Bank03::bb34 c9              ??         C9h
+    Bank03::bb35 00              ??         00h
+    Bank03::bb36 30              ??         30h    0
+    Bank03::bb37 00              ??         00h
+    Bank03::bb38 30              ??         30h    0
+
+                             1UP_PRIZE_IN_WALL                               XREF[1]:     PlayerTakes1UpExtraGuyPrize:4dc5
+    Bank03::baf0 20 6b a6        dnw_char
+                 00 ff
+       Bank03::baf0 20              db        20h                     duration      < fe                XREF[1]:     PlayerTakes1UpExtraGuyPrize:4dc5
+       Bank03::baf1 6b a6 00 ff     sprite_f                          character_fr
+          Bank03::baf1 6b              db        6Bh                     index
+          Bank03::baf2 a6              sprite_a                          attr
+          Bank03::baf3 00              db        0h                      x_offset
+          Bank03::baf4 ff              db        FFh                     y_offset
+    Bank03::baf5 fe              anim_dec   maybe_start_new
+                             END_PRIZES                                      XREF[1]:     Maybe_PlayerBreaksWallAndFindsSo
+    Bank03::baf6 fe              anim_dec   maybe_start_new
 
 
                              MAYBE_PLAYER_ACTION_JUMP_TABLE_002              XREF[1]:     FUN_ram_34d9:474b(*)  
@@ -492,17 +537,17 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
 0x14    PlayerTakesTreasure1000Points
 0x15    MaybePlayerOpensTreasureChestGetsVitality
 0x16    Maybe_FinishThisSpriteAnimation
-0x17    PlayerTakes1UpExtraGuyPrize
-0x18    PlayerTakesArmor
-0x19    Maybe_PlayerTakesPOW
-0x1a    PlayerTakesHourglass02
+0x17    PlayerTakesShurikenExtraGuyPrize
+0x18    PlayerTakesStarArmor
+0x19    PlayerTakesPOWPrize
+0x1a    PlayerTakesShieldFor30SecondsOfTime
 0x1b    PlayerTakesItemFor1000Points
-0x1c    PlayerTakesHighestArmorLevel
-0x1d    PlayerTakesHighestArmorLevel02
+0x1c    PlayerTakesBarrelArmorPrize
+0x1d    PlayerTakesStrawberryArmorPrize
 0x1e    PlayerTakesItemFor1000Points
-0x1f    PlayerTakesItemFor5000Points
-0x20    PlayerTakesItemFor500Zenny
-0x21    PlayerTakesItemFor7000Points
+0x1f    PlayerTakesDragonflyFor5000Points
+0x20    PlayerTakesElephantPrizeFor500Zenny
+0x21    PlayerTakesPumpkinSpiderPrizeFor7000Points
 0x22    Maybe_DoDungeon
 0x23    PlayImpactSound
 0x24    Maybe_StartNewFirethrower02
