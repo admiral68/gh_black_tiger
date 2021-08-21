@@ -513,41 +513,57 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
     Bank03::baf6 fe              anim_dec   maybe_start_new
 
 
-FIRST BYTE = 0 : FREE FIRST BYTE = 1 : ACTIVE FIRST BYTE = 2 : DONE FIRST BYTE = 4 : SWITCH TO THIS STACK FIRST BYTE = 8 : JUMP TO BC 
+void blktiger_state::blktiger_video_enable_w(uint8_t data)
+{
+	/* not sure which is which, but I think that bit 1 and 2 enable background and sprites */
+	/* bit 1 enables bg ? */
+	m_bgon = ~data & 0x02;
 
-                             StartGame                                       XREF[1]:     ram:01aa(j)  
+	/* bit 2 enables sprites ? */
+	m_objon = ~data & 0x04;
+}
+
+                             DrawGraphicsOnScreen                            XREF[13]:    FUN_ram_0a87:0b1e(c), 
+        ram:0391 e5              PUSH       HL
+        ram:0392 21 e5 e0        LD         HL,CURR_VIDENABLE_VAL
+        ram:0395 2f              CPL
+        ram:0396 a6              AND        (HL=>CURR_VIDENABLE_VAL)
+        ram:0397 77              LD         (HL=>CURR_VIDENABLE_VAL),A
+        ram:0398 d3 0c           OUT        (IO_VID_ENABLE_W),A
+        ram:039a e1              POP        HL
+
+
+
+
+FIRST BYTE = 0 : FREE 
+FIRST BYTE = 1 : ACTIVE 
+FIRST BYTE = 2 : DONE 
+FIRST BYTE = 4 : SWITCH TO THIS STACK 
+FIRST BYTE = 8 : JUMP TO BC 
+
+STACKS:
         ram:01b4 3e 00           LD         A,0x0
         ram:01b6 01 45 08        LD         BC,Maybe_InitializeGraphics
-        ram:09fc 3e 00           LD         A,0x0
         ram:09fe 01 58 11        LD         BC,Maybe_SetupGameplay
-        ram:0a01 cd f6 00        CALL       SetJumpPtrBCInE880StructIndexedByA               undefined SetJumpPtrBCInE880Stru
-    Bank07::a9dd 3e 00           LD         A,0x0
     Bank07::a9df 01 e8 a9        LD         BC,DoSwitchesTest
 
         ram:23c8 3e 01           LD         A,0x1
         ram:23ca 01 20 2b        LD         BC,DoTimeRemaining
-        ram:5175 3e 01           LD         A,0x1
         ram:5177 01 de 51        LD         BC,DrawSelectionBox
-        ram:6490 3e 01           LD         A,0x1
         ram:6492 01 94 65        LD         BC,CheckUserSelectDuringShopping
 
         ram:235c 3e 02           LD         A,0x2
         ram:235e 01 93 27        LD         BC,Maybe_UpdateDungeonMap
-        ram:517d 3e 02           LD         A,0x2
         ram:517f 01 76 52        LD         BC,FUN_ram_5276
-        ram:6498 3e 02           LD         A,0x2
         ram:649a 01 3a 66        LD         BC,CheckPlayerMakesPurchaseSelection
 
         ram:2727 3e 03           LD         A,0x3
         ram:2729 01 42 27        LD         BC,FlashPoisonWarningOnScreen
-        ram:2730 3e 03           LD         A,0x3
         ram:2732 01 5d 27        LD         BC,FlashLoseDirectionWarningOnScreen
-        ram:2739 3e 03           LD         A,0x3
         ram:273b 01 78 27        LD         BC,DrawPoisonAndLoseDirectionStringsToScreen
 
         ram:2364 3e 04           LD         A,0x4
         ram:2366 01 12 2a        LD         BC,Maybe_UpdateDungeonMapTiles
-    Bank07::b923 3e 04           LD         A,0x4
     Bank07::b925 01 07 bf        LD         BC,DrawOrangeDragonInIntro
 
         ram:095a 3e 05           LD         A,0x5
@@ -561,6 +577,8 @@ FIRST BYTE = 0 : FREE FIRST BYTE = 1 : ACTIVE FIRST BYTE = 2 : DONE FIRST BYTE =
 
     Bank02::9b0b 3e 08           LD         A,0x8
     Bank02::9b0d 01 b4 2b        LD         BC,DoTimeRemaining::contd
+
+
 
 
                              MAYBE_PLAYER_ACTION_JUMP_TABLE_002              XREF[1]:     FUN_ram_34d9:474b(*)  
