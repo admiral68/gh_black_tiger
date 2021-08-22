@@ -466,8 +466,8 @@ ENEMY
 (IX+0x5) = sprite attr of tile
 (IX+0x6) = animation x offset ($80 special case)
 (IX+0x7) = animation y offset ($80 special case)
-(IX+0x8) = something to do with X/Y (X bounds?) velocity?
-(IX+0x9) = something to do with X/Y (Y bounds?) velocity?
+(IX+0x8) = something to do with X/Y (collision checking)
+(IX+0x9) = something to do with X/Y (collision checking)
 
 (IX+0xa) = animation duration!
 (IX+0xb) = entity class
