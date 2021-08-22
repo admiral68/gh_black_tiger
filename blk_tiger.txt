@@ -446,7 +446,17 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
      80E0  DD 36 09 20 CD C8 06 CA 39 81 DD 7E 14 A7 20 1F   .6. ....9..~.. .
      80F0  DD 36 08 20 DD 36 09 10 CD C8 06 20 0C DD 6E 1E   .6. .6..... ..n.
 
+PLAYER
+(0x3)	= Y POS HI
 
+(0x8) 	= X OFFSET(?) SCROLL VELOCITY?
+(0x9)   = Y OFFSET(?) SCROLL VELOCITY?
+(0xf)	= maybe action counter
+(0x26)
+(0x27)  =  counter: times cycled through (0xf)
+
+
+ENEMY
 (IX+0x0) = alive flag? ($80 or not)
 (IX+0x1) = x pos
 (IX+0x3) = y pos
@@ -568,6 +578,28 @@ Finding vertical blank code as well as the way that Black Tiger does delays. Tha
     Bank07::b745 0b              ??         0Bh
     Bank07::b746 0b              ??         0Bh
     Bank07::b747 0b              ??         0Bh
+
+     EA10  04 0A 04 05 04 04 02 05 05 0A 05 05 0A 0B 04 0B   ................
+     EA20  0B 0A 0A 04 0A 0A 0A 04 05 05 0C 04 0C 0B 0A 05   ................
+
+
+SHOWS VIDEO
+
+        ram:236c 3e 80           LD         A,0x80                                           Finally enable screen?? (Shut of
+        ram:236e cd 86 03        CALL       ClearVideoControlValue                           Yes! Pops all elements onto screen
+
+
+                             MAYBE_LEVEL_01_DATA_006                         XREF[1]:     Bank07::b828(*)  
+    Bank07::b838 10              ??         10h
+    Bank07::b839 10              ??         10h
+    Bank07::b83a 10              ??         10h
+    Bank07::b83b 11              ??         11h
+    Bank07::b83c 11              ??         11h
+    Bank07::b83d 11              ??         11h
+    Bank07::b83e 11              ??         11h
+    Bank07::b83f 15              ??         15h
+
+     EA30  10 11 11 10 11 15 10 11 
 
 
 FIRST BYTE = 0 : FREE 
