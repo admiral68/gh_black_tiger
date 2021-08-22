@@ -452,8 +452,11 @@ PLAYER
 (0x8) 	= X OFFSET(?) SCROLL VELOCITY?
 (0x9)   = Y OFFSET(?) SCROLL VELOCITY?
 (0xf)	= maybe action counter
+(0x23)
 (0x26)
 (0x27)  =  counter: times cycled through (0xf)
+
+
 
 
 ENEMY
@@ -468,13 +471,14 @@ ENEMY
 
 (IX+0xa) = animation duration!
 (IX+0xb) = entity class
-(IX+0xc) = bitflags (?) x8=AdjustSpriteXAndYForScrolling, x1=
+(IX+0xc) = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
 (IX+0xd) = sprite touched by player function offset
 (IX+0xe) = maybe health? (enemy only)
 
 (IX+0xf) = maybe weapon damage inflicted on player
 
-(IX+0x10)
+(IX+0x10) = maybe activate attack x distance(?)
+
 (IX+0x11) = sprite anim table offset
 (IX+0x12) = Sprite anim y offset hi(?)
 (IX+0x13) = ROM Bank
