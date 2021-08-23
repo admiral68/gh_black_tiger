@@ -457,7 +457,9 @@ PLAYER
 (0x27)  =  counter: times cycled through (0xf)
 
 
+NONE: 0, R: 4; L: 8; D: 16; U: 32
 
+1,2,4,8 = 0,2,4,8
 
 ENEMY
 (IX+0x0) = alive flag? ($80 or not)
