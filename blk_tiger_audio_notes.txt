@@ -12,6 +12,14 @@ HOW TO: TEST AUDIO CLIPS
 6) Put values from 0h to 43h into E151 (in memory watch window). 0, 1F, and 38 will not play sounds. They stop the current sound.
 7) Change byte at E162 to 51 (in memory watch window). Voila. Sound plays.
 
+PLAN FOR PORTING AUDIO:
+
+1) Rip YM2203 data from sound rom
+2) Interpret YM2203 data: find instruments, wavelets, etc...
+3) Put each sound/song into an intermediate format
+4) Translate that intermediate format into something protracker can play on the Amiga hardware
+
+
                              SOUNDS_TABLE                                    XREF[1]:     Maybe_PlaySoundEffect:020e(*)
         ram:0dc1 00 ff           dw         FF00h                                            Sound 0: FF stops music playing
         ram:0dc3 49 0e           dw         PLAYER_LOSES_VITALITY_SOUND                      = 8Fh
@@ -103,7 +111,13 @@ C530 - queue for YM2. C545 start ptr (big endian) C547 end ptr (big endian) c54b
     map(0xe000, 0xe001).rw("ym1", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
     map(0xe002, 0xe003).rw("ym2", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
 
+	ym2203_device &ym1(YM2203(config, "ym1", XTAL(3'579'545))); /* verified on pcb */
+	ym1.irq_handler().set_inputline(m_audiocpu, 0);
+	ym1.add_route(ALL_OUTPUTS, "mono", 0.15);
 
+	ym2203_device &ym2(YM2203(config, "ym2", XTAL(3'579'545))); /* verified on pcb */
+	ym2.add_route(ALL_OUTPUTS, "mono", 0.15);
+	
 //*********************************************************
 //  YM2203 DEVICE
 //*********************************************************
