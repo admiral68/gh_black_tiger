@@ -1,0 +1,343 @@
+
+<!-- saved from url=(0034)http://c60.la.coocan.jp/fmpmd.html -->
+<html class="translated-ltr"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<title>FMPMD2000 page</title>
+<link type="text/css" rel="stylesheet" charset="UTF-8" href="./FMPMD2000 page_files/translateelement.css"></head>
+
+<body background="./FMPMD2000 page_files/sand.gif" bgcolor="#FFFFE6">
+
+<p align="center"><font color="#FF0000" size="6"><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD2000 page</font></font></em></font></p>
+
+<p align="right"><font color="#000000" size="3"><em><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">last updated 2021/07/31</font></font></em></font></p>
+<br>
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">What is FMPMD2000 / FMPMDE2000?</font></font></font></p>
+<blockquote>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Software for playing song data for PC-98x1 series sound source drivers "FMP" and "PMD98" on Windows (FMPMD2000 is Japanese version, FMPMDE2000 is English version).</font></font></p>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">To listen to a song, you need WinFMP main unit (WinFMP.dll), PMDWin main unit (PMDWin.dll) and a player (of course, song data as well).</font></font></p>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The current latest version is ver0.19 for WinFMP.dll, ver0.40 for PMDWin.dll, and ver0.31 for FMPMD2000 / FMPMDE2000.</font></font></p>
+    <br>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">In WinFMP.dll / PMDWin.dll, cisc's FM sound source engine is partially improved to emulate OPNA.</font></font></p>
+    <p><b><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FM Sound Generator with OPN / OPM interface </font></font><br><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+    Copyright (C) by cisc 1998, 2003.</font></font></b></p>
+</blockquote>
+<br>
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">What is WatchFileUpdate?</font></font></font></p>
+<blockquote>
+    <p align="left"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">It is a program that passes the update file to a specific executable file and executes it when the time stamp of the file is updated.</font></font></p>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">It may not come as a pin, but if you set it as shown in the figure, for example, the following processing will be performed automatically.</font></font></p>
+    <ol>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">When test.mml is saved in the editor, "c: \ bin \ mc.exe /vc:\data\test.mml" is executed.</font></font></li>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">When the compiler generates test.m, it executes "c: \ bin \ fmpmd.exe c: \ data \ test.m".</font></font></li>
+    </ol>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">I think it will come in handy for creating song data in a Windows environment.</font></font></p>
+    <p align="left"><img src="./FMPMD2000 page_files/WatchFileUpdate.gif" align="left" hspace="0" width="569" height="193"></p>
+</blockquote>
+<br clear="left">
+<br>
+<br>
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">change point</font></font></font></p>
+<blockquote>
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">WinFMP.dll (Ver0.19)</font></font></font></p>
+    <ul>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that the sound may be cut off at the end of the song</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Other minor bug fixes</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Implemented FileIO interface</font></font></li>
+    </ul>
+    
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">WinFMP.dll (Ver0.18)</font></font></font></p>
+    <ul>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Officially compatible with PDZFZ8X for Windows</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug of splitting into 3 lines</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that caused an infinite loop with setpos2</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that the total song count and song loop count were wrong.</font></font></li>
+    </ul>
+    
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">WinFMP.dll (Ver0.17)</font></font></font></p>
+    <ul>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Changed the volume of SSG to the equivalent of 86 boards</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Changed the frequency at the combined frequency 55kHz from 55555Hz to 55466Hz</font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMDWin.dll (Ver0.40)</font></font></font></p>
+    <ul>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Implemented FileIO interface</font></font></li>
+    </ul>
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMDWin.dll (Ver0.39)</font></font></font></p>
+    <ul>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug in clipping processing of MD command</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that wait was not applied when writing ADPCM register.</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that the sound becomes abnormal when writing the playback address of ADPCM</font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMDWin.dll (Ver0.38)</font></font></font></p>
+    <ul>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Reflects PMD 4.8s fix</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that some song data could not be played normally</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that noise may be mixed in the primary interpolation process.</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed an error that some API return values ​​were incorrect when reading song data</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Stabilization of operation</font></font></li>
+      <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Many other fixes</font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD2000 (Ver0.31)</font></font></font></p>
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a bug that folder selection was disabled when SHIFT + clicking the eject button</font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD2000 (Ver0.30)</font></font></font></p>
+    <ul>
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Changed to display whether the sub-window is open in the "Window (W)" menu.</font></font></font></li>
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">When the "Window (W)" menu is selected when the sub-window is open, the sub-window is closed.</font></font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMDE2000 (Ver0.31)</font></font></font></p>
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">When eject button is clicked with pushing the SHIFT button, ignored the selecting folder --fixed.</font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMDE2000 (Ver0.30)</font></font></font></p>
+    <ul>
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">It displayed whether the sub window would be open on the "window (W)" menu.</font></font></font></li>
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The sub window was closed, when the sub window was open and the "window (W)" menu was chosen.</font></font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD_SDK005</font></font></font></p>
+    <ul>
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Implement FileIO interface
+    </font></font></font></li></ul><font color="#000000">
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD_SDK004</font></font></font></p>
+    <ul>
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Supports PDZF / Z8X for Window (Added Query PDZFZ8XInterface ())</font></font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD_SDK003a</font></font></font></p>
+    <ul>
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Fixed a mistake in the definition of the function "fmp_getcomment3" in WinFMP.pas.</font></font></font></li>
+    </ul>
+
+    <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD_SDK003</font></font></font></p>
+    <ul>
+
+        <li><font color="#000000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Incorporated revisions to the documentation up to 08/12/2003</font></font></font></li>
+    </ul>
+</font></blockquote><div id="goog-gt-tt" class="skiptranslate" dir="ltr"><div style="padding: 8px;"><div><div class="logo"><img src="./FMPMD2000 page_files/translate_24dp.png" width="20" height="20" alt="Google Translate"></div></div></div><div class="top" style="padding: 8px; float: left; width: 100%;"><h1 class="title gray">Original text</h1></div><div class="middle" style="padding: 8px;"><div class="original-text"></div></div><div class="bottom" style="padding: 8px;"><div class="activity-links"><span class="activity-link">Contribute a better translation</span><span class="activity-link"></span></div><div class="started-activity-container"><hr style="color: #CCC; background-color: #CCC; height: 1px; border: none;"><div class="activity-root"></div></div></div><div class="status-message" style="display: none;"></div></div><font color="#000000">
+<br>
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Relationship between each program</font></font></font></p>
+<blockquote>
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">WinFMP.dll</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">A DLL that generates PCM data during performance from FMP song data. </font><font style="vertical-align: inherit;">It is close to the DOS version of FMP.com + PPZ8.com. </font><font style="vertical-align: inherit;">It is designed to be intelligent and as least machine-dependent as possible.</font></font></p>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The reason why the DLL does not have the function to output sound is to reduce model dependency and because I am not good at creating window apps with VC ++ (PMDWin.dll, WinFMP.dll are VC ++). The second and third works).</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMDWin.dll</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">A DLL that generates PCM data during performance from PMD98 song data. </font><font style="vertical-align: inherit;">It is close to the DOS version of PMDPPZ.com + PPZ8.com + P86drv.com + PDR.com + PPSDRV.com. </font><font style="vertical-align: inherit;">It is designed to be as controllable as WinFMP.dll as much as possible.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD.exe</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Controls WinFMP.dll and PMDWin.dll to play songs. </font><font style="vertical-align: inherit;">It also provides a UI and visuals (spectrum analyzer, level meter, etc.). </font><font style="vertical-align: inherit;">Corresponds to the DOS version of the player (play.com, pmp.com, etc.).</font></font></p>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">It is also possible to create an original player by writing a program that controls the above DLL.</font></font></p>
+    </ul>
+    <br>
+
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The reason why FMP is WinFMP.dll and PMD98 is PMDWin.dll is that when I first made the Windows version of PMD98, I chose PMDWin to be consistent with PMD98, PMD88, PMDTOWNS, ... etc. However, FMPWin was so bad that I chose WinFMP.</font></font></p>
+</blockquote>
+<br>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sound source type</font></font></font></p>
+<blockquote>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">A brief description of the sound sources supported by FMP and PMD98.</font></font></p>
+    
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FM sound source</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">By connecting four sine wave oscillators, the sound is modulated and the timbre is synthesized. </font><font style="vertical-align: inherit;">You can choose from 8 types of connection methods. </font><font style="vertical-align: inherit;">This is the most important sound source for FMP and PMD98.</font></font></p>
+            <br>
+        
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PSG (SSG) sound source</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">A sound source that can play square waves or noise (random waves). </font><font style="vertical-align: inherit;">Unlike FM sound sources, the waveform cannot be changed, but when used properly, it can express a unique and transparent tone.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Rhythm sound source</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">You can generate 6 types of sounds: bass drum, snare drum, hi-hat, cymbal, tom, and rim shot. </font><font style="vertical-align: inherit;">Cheap tones invite tears (^^;</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">ADPCM sound source</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">It is a type of sampling that digitizes the sound captured from a microphone or external input and plays it, but it has the advantage that the data size is smaller than the PCM sound source described later because it is compressed using the difference from the previous data.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PCM sound source</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Similar to the ADPCM sound source, it is a sound source that reproduces the data captured by sampling, but because it does not compress, the data size is large but the sound quality is excellent.</font></font></p>
+            <br>
+    </ul>
+</blockquote>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About the sound source chip</font></font></font></p>
+<blockquote>
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OPN (YM-2203)</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FM sound source x 3 and SSG x 3 (both monaural) can be played. </font><font style="vertical-align: inherit;">It is installed as standard on PC-9801 series after PC-9801DA, 98 compatible machines of Epson after PC-386GE, GS, etc., but it was omitted in the Windows era.</font></font></p>
+            <br>
+            
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">OPNA (YM-2608)</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FM sound source x 6, SSG x 3, rhythm x 6 (stereo except SSG) can be played. </font><font style="vertical-align: inherit;">ADPCM x 1 (stereo) can also be played if an external RAM is connected. </font><font style="vertical-align: inherit;">It is possible to play ADPCM on the Speak board and Otomi-chan (both are the names of the sound source boards), but the 86 board released by NEC is equipped with PCM x 1 (stereo), so ADPCM has been omitted. </font><font style="vertical-align: inherit;">It is installed as standard on the PC-9821-A Mate and Multi series.</font></font></p>
+            <br>
+    </ul>
+</blockquote>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About FMP</font></font></font></p>
+<blockquote>
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMP.COM</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMP for OPN, Speak board, 86 board. </font><font style="vertical-align: inherit;">Maximum FM x 6, SSG x 3, rhythm x 6, ADPCM x 1 (stereo) can be played. </font><font style="vertical-align: inherit;">You can use PPZ8, which will be described later, to play PCM x 3 instead of SSG.</font></font></p>
+            <br>
+    </ul>
+</blockquote>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About the types of PMD98</font></font></font></p>
+<blockquote>
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMD.COM</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMD for OPN. </font><font style="vertical-align: inherit;">FM x 3 and SSG x 3 (monaural) can be played.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMDB2.COM</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMD for Speakboard and Otomi-chan. </font><font style="vertical-align: inherit;">FM x 6, SSG x 3, rhythm x 6, ADPCM x 1 (stereo) can be played.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMD86.COM</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMD for 86 board. </font><font style="vertical-align: inherit;">By using P86DRV, which will be described later, you can play almost the same as PMDB2.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMDPPZ.COM</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMD for 86 board. </font><font style="vertical-align: inherit;">By using PPZ8, which will be described later, you can combine 8 parts with a PCM part that has only 1 part and play it.</font></font></p>
+            <br>
+    </ul>
+</blockquote>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About auxiliary programs</font></font></font></p>
+<blockquote>
+    <ul>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PDR, PPSDRV</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">This is a program for playing sampling data by force using the SSG part. </font><font style="vertical-align: inherit;">It only works when used in pairs. </font><font style="vertical-align: inherit;">Use .PPS as the sampling data. </font><font style="vertical-align: inherit;">It can be used with all types of PMD98.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">P86DRV</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">This is an auxiliary program for playing PCM on PMD86. </font><font style="vertical-align: inherit;">Use .P86 as the sampling data.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PPZ8</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Combines 8 sounds of PCM in combination with FMP or PMDPPZ (FMP supports only 3 sounds). </font><font style="vertical-align: inherit;">Cannot be used with P86DRV. </font><font style="vertical-align: inherit;">Use .PVI or .PZI as the sampling data.</font></font></p>
+            <br>
+    </ul>
+</blockquote>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About song data and sampling data extensions</font></font></font></p>
+
+<blockquote>
+    <table border="1">
+        <tbody><tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.OPI</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Song data (OPN) for FMP.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.OVI</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Song data (OPNA) for FMP.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.OZI</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Song data for FMP (using PPZ8, OPN or OPNA).</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.M</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">It is an extension for PMD (OPN), but it seems that some song data of PMDB2, PMD86, PMDPPZ also have this extension.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.M2</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Song data for PMDB2 or PMD86.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.MZ</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Song data for PMDPPZ.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.PVI</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Originally it was FMP sampling data (ADPCM), but it can also be used as PPZ8 part (FMP, PMDPPZ) and PMDB2 sampling data.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.PZI</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sampling data (PCM) for PPZ8. </font><font style="vertical-align: inherit;">It can be used with PMDPPZ.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.PPS</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sampling data (PCM) for PDR and PPSDRV.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.PPC</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sampling data (ADPCM) for PMDB2.</font></font></td>
+        </tr>
+        <tr>
+            <td align="center"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">.P86</font></font></td>
+            <td><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Sampling data (PCM) for PMD86.</font></font></td>
+        </tr>
+    </tbody></table>
+    
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMPMD2000 supports all song data (PMDB2, PPSDRV, P86DRV, PPZ8) of FMP and PMD98.</font></font></p><br>
+    <br>
+</blockquote>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About data creation</font></font></font></p>
+
+<blockquote>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">FMP or PMD98 song data is created by compiling a language for writing music called MML (Music Macro Language) with a compiler. </font><font style="vertical-align: inherit;">However, the language specifications differ between FMP and PMD98. </font><font style="vertical-align: inherit;">See the manual that came with the original FMP or PMD98.</font></font></p>
+
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Currently, there is no GUI-based creation software for Windows, so you can create it by the following method.</font></font></p>
+    <br>
+
+    <ol>
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Created with the PC-98x1 series.</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">This is the most reliable method, but of course you need to have a real machine and a sound source.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Create on the emulator.</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Emulators such as Anex86, Virtual98, T98, Neko Project II can be used. </font><font style="vertical-align: inherit;">However, the PPZ8 emulation is easy to skip.</font></font></p>
+            <br>
+
+        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Run mc.exe or fmc.exe (corresponding version) directly at the Windows DOS prompt.</font></font></li>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">When using fmc.exe on an AT compatible machine, only the version (3.16z) excluding the PC-98x1 machine-dependent part can be used. </font><font style="vertical-align: inherit;">If you use version 3.16z or earlier, the worst OS will be down.</font></font></p>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Never use the / P, / S options of mc.exe on AT compatibles. </font><font style="vertical-align: inherit;">Also, never run the evaluation compiler mch.exe on the Window. </font><font style="vertical-align: inherit;">Worst case OS goes down.</font></font></p>
+            <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">If you are using the PC-98x1 series (with sound source), you can develop at the DOS prompt, but if you use PPZ8, set Windows so that you do not use the same PCM device.</font></font></p>
+            <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">The version (3.16z) of the FMP compiler fmc.exe excluding the PC-98x1 machine-dependent part has been released. </font><font style="vertical-align: inherit;">Guu-san, thank you for your hard work (2001/09/16)</font></font></font></p>
+            <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">PMD98 compiler mc.exe is now free software. </font><font style="vertical-align: inherit;">Thank you KAJA (2000/06/17)</font></font></font></p>
+            <p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">By using WatchFileUpdate (my work), it is now possible to automatically compile and play in conjunction with saving MML files (2001/02/17).</font></font></font></p>
+            <br>
+    </ol>
+</blockquote>
+
+
+<p><font color="#FF0000"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">About WinFMP source files</font></font></font></p>
+
+<blockquote>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">There were some requests for publication, but after thinking about it, I decided not to publish it.</font></font></p>
+    <p><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Please refrain from contacting me and Mr. Guu, the author of the original FMP, on this matter.</font></font></p>
+</blockquote>
+<br>
+
+
+<p><a href="http://c60.la.coocan.jp/index.html"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">return</font></font></a></p>
+
+
+</font><div class="goog-te-spinner-pos"><div class="goog-te-spinner-animation"><svg xmlns="http://www.w3.org/2000/svg" class="goog-te-spinner" width="96px" height="96px" viewBox="0 0 66 66"><circle class="goog-te-spinner-path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg></div></div></body></html>

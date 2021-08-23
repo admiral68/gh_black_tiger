@@ -1,0 +1,68 @@
+
+.formRow	{
+	margin: 20px auto;
+	position: relative;
+	clear: both;
+	overflow:visible;
+}
+
+.formLabel	{
+	float: left;
+	width: 120px;
+	text-align: right;
+	margin-right: 10px;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.formInput	{
+	float: left;
+}
+
+.formRow input	{
+	color: #e6c62e;
+	background-color: #872012;
+	border: #060606 dashed 1px;
+	padding: 3px;
+	font-family: Trebuchet MS, helvetica, verdana, sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.formRow textarea	{
+	color: #e6c62e;
+	background-color: #872012;
+	border: #060606 dashed 1px;
+	padding: 3px;
+	font-family: Trebuchet MS, helvetica, verdana, sans-serif;
+	font-size: 14px;
+	width:400px;
+	height:100px;
+}
+
+.formRow .file	{
+	color: black;
+	font-family: Trebuchet MS, helvetica, verdana, sans-serif;
+	font-size: 14px;
+}
+
+.formRow .button	{
+	color: #e6c62e;
+	background-color: #872012;
+	border: #060606 dashed 1px;
+	padding: 5px 10px;
+	font-size: 24px;
+	font-family: arial black, sans-serif;
+	font-weight: bold;
+}
+
+.formRow label.error	{
+  display: block;
+  clear: both;
+  border: 1px dotted #030;
+  background-color: #010;
+  color: #0d0;
+  font-family: arial, sans-serif;
+  font-size: 10px;
+  padding: 4px 8px;
+}

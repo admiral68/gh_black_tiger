@@ -1,0 +1,87 @@
+/*
+ *
+ *	WOW LOLJAX HAHAHAHHAHAHAHA
+ *
+ */
+
+
+var loljax = {
+
+	templates: {},
+
+	init: function() {
+		// load all the templates
+		$.ajax({
+			type: 'GET',
+			url: '/api/v1/template/get_all',
+			dataType: 'json',
+			success: function(data) {
+				console.log('loljax templates loaded');
+				console.log(data);
+				loljax.templates = data;
+			}
+		});
+		// make ajax menus g0g0g0g0
+		$('.loljax_menu a:not(.nololjax)').on('click', function(e) {
+			e.preventDefault();
+			let url_target = $(this).attr('href');
+			console.log(url_target);
+			let url_split = url_target.split('/');
+			console.log(url_split);
+			let url = url_split[4]+'/Ajax'+url_split[6]+'/'+url_split[5];
+			console.log(url);
+			history.replaceState(null, '', url_target);
+			let container = $('.loljax_container');
+			let loadbar = $('.loljaxLoadBar');
+			container.slideUp(200, function() {
+				loadbar.slideDown(200);
+				$.get('/ajax/req/' + url, '', function(data) {
+					console.log('server responded');
+					loadbar.slideUp(200, function() {
+						container.html(data).slideDown(200);
+						console.log('sliding down the payload');
+					});
+				}, 'html');
+			});
+		});
+	},
+
+	render: function(template, item={}) {
+		return Mustache.render(loljax.templates[template], item, loljax.templates);
+	},
+
+	render_list: function(template, data, glue='') {
+		var output = [];
+		data.forEach((item) => {
+			output.push(loljax.render(template, item));
+		});
+		return output.join(glue);
+	},
+
+	update: function(data, element) {
+		if (typeof data.index != 'undefined') {
+			element.attr('data-id', data.index);
+		}
+		$('[data-data], [data-href]', element).each(function() {
+			if ($(this).attr('data-data')) {
+				$(this).html(data[$(this).attr('data-data')]);
+			}
+			if ($(this).attr('data-href')) {
+				$(this).attr('href', data[$(this).attr('data-href')]);
+			}
+			if ($(this).attr('data-trans')) {
+				var trans = $(this).attr('data-trans');
+				if (trans == 'slideDown') {
+					$(this).slideDown();
+				}
+				if (trans == 'slideUp') {
+					$(this).slideUp();
+				}
+			}
+		});
+		return element;
+	},
+
+};
+
+loljax.init();

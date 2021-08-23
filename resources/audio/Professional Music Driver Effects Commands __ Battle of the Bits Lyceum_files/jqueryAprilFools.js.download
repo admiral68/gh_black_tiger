@@ -1,0 +1,117 @@
+var today = new Date();
+if (today.getMonth()+'.'+today.getDate()=='3.1')  {
+
+	$(document).ready(function(){
+		var page_bg = $('#pageBG');
+		if (page_bg.length > 0) {
+			page_bg.html(page_bg.html().replace( new RegExp("battle of the bits", 'g'), "butt und teh tots" ));
+			page_bg.html(page_bg.html().replace(/botb/gi, "butt" ));
+		}
+
+		$('a').live('click', function(event) {
+			event.preventDefault();
+			$('#footer').before('<embed src="/klink.wav" hidden="true" autostart="true"/>');
+			if (!$(this).hasClass('updateAjaxContent')&&!$(this).hasClass('speakerPopout')) {
+				window.setTimeout('window.location="'+$(this).attr('href')+'"',1000);
+			}
+		});
+		
+		function dec2hex(a) {
+			a = parseInt(a).toString(16);
+			return a.length<2?"0"+a:a;
+		}
+
+		var swatch, r, g, b, color, timeout;
+		var page_wrap = $('#pageWrap');
+
+		var colordiv = function() {
+			window.clearTimeout(timeout);
+			seed = Math.floor(Math.random()*4);
+			color = randomHexColor();
+			switch (seed) {
+				case 0:
+					fetchRandomElements('div',5).css('background-color',color);
+					break;
+				case 1:
+					fetchRandomElements('div',3).css('color',color);
+					break;
+				case 2:
+					$('body').css('background-color',color);
+					break;
+				case 3:
+					break;
+			}
+			if (page_wrap.length > 0) {
+				pos = page_wrap.position();
+				new_x = pos.left + Math.floor(Math.random()*3) - 1;
+				page_wrap.css('left',new_x+'px');
+				new_y = pos.top + Math.floor(Math.random()*3) - 1;
+				page_wrap.css('top',new_y+'px');
+			}
+			timeout = window.setTimeout(function() {
+				colordiv();
+			},30);
+		}
+
+		colordiv();
+		function randomHexColor() {
+			r = dec2hex(Math.floor(Math.random()*256));
+			g = dec2hex(Math.floor(Math.random()*256));
+			b = dec2hex(Math.floor(Math.random()*256));
+			return '#'+r+g+b;
+		}
+
+		function fetchRandomElements(selector,count) {
+			return $($(selector, page_wrap).get().sort(function(){
+						return Math.round(Math.random())-0.5; //so we get the right +/- combo
+						}).slice(0,count));
+		}
+		//randomColor();
+
+		function randomColor()  {
+			swatch = Math.floor(Math.random()*5);
+			r = dec2hex(Math.floor(Math.random()*256));
+			g = dec2hex(Math.floor(Math.random()*256));
+			b = dec2hex(Math.floor(Math.random()*256));
+			color = '#'+r+g+b;
+			switch (swatch) {
+				case 0:
+					$('body').css('color',color);
+					$('#searchInput').css('color',color);
+					$('boxLink:hover').css('background-color',color);
+					$('.logo2').animate({color:color},2500,function(){randomColor()});
+					break;
+				case 1:
+					$('.boxLink').css('color',color);
+					$('.footerMenu').children('a').css('border-color',color);
+					$('a').animate({color:color},12500,function(){randomColor()});
+					break;
+				case 2:
+					$('div').children('.boxLink').css('background-color',color);
+					$('#searchInput').css('background-color',color);
+					$('.levelProgress').css('border-color',color);
+					$('#StatusBoxBottomRow').css('border-color',color);
+					$('#footer').css('border-color',color);
+					$('.logo1').animate({color:color},3500,function(){randomColor()});
+					break;
+				case 3:
+					$('div').children('.inner').not('.boxLink').css('background-color',color);
+					$('div').children('.innerNoOPEN').css('background-color',color);
+					$('.levelProgress').css('background-color',color);
+					$('#footer').css('background-color',color);
+					$('.logo0').animate({color:color},1500,function(){randomColor()});
+					break;
+				case 4:
+					$('html').css('background-color',color);
+					$('body').css('background-color',color);
+					if ($('#pageWrap').css('text-shadow').length > 5) {
+						$('#pageWrap').css('text-shadow','0px 1px 1px '+color);
+					}
+					$('#USER_STATUS .innerNoOPEN').css('border-color',color);
+					$('boxLink:hover').animate({color:color},4500,function(){randomColor()});
+					break;
+			}
+		}
+});
+
+}

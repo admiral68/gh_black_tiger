@@ -1,0 +1,222 @@
+function dec2hex(a) {
+  a = parseInt(a).toString(16);
+  return a.length<2?"0"+a:a;
+}
+
+function hex2dec(a) {
+  return parseInt(a,16);
+}
+
+
+// tracking time
+var launch_time = new Date();
+
+function HandleCountdownTimers()  {
+	var current_time = new Date();
+	var time_pass = (current_time - launch_time) / 1000;
+	$('.countdown').each(function()  {
+		var countdown_time = $(this).data('countdown');
+		var time = countdown_time - time_pass;
+		var diss = $(this).data('disableseconds');
+		if (time <= 0) {
+			time = 'REFRESH';
+			$(this).html('Refresh...').removeClass('countdown');
+		}
+		if (time != 'REFRESH') {
+			y = Math.floor(time / (365 * 24 * 60 * 60));
+			rem = y * 365 * 24 * 60 * 60;
+			d = Math.floor((time - rem) / (24 * 60 * 60));
+			rem += (d * 24 * 60 * 60);
+			h = Math.floor((time - rem) / (60 * 60));
+			rem += (h * 60 * 60);
+			m = Math.floor((time - rem) / 60);
+			rem += (m * 60);
+			s = Math.floor(time - rem).toString();
+			if (s.length == 1) s = '0' + s;
+			output = '';
+			if (y > 0) output += y + 'y ';
+			if (d > 0 || output != '') output += d + 'd ';
+			if (h > 0 || output != '') output += h + 'h ';
+			if (m > 0 || output != '') output += m + 'm ';
+			if ((s >= 0 || output != '') && diss != 'TRUE') output += s + 's ';
+			$(this).html(output);
+		}
+	});
+}
+
+
+
+$(document).ready(function(){
+
+	// handle countdown timers
+	setInterval('HandleCountdownTimers()', 333);
+
+	$('a[title="Chat online!"]').live('click', function(e) {
+			e.preventDefault();
+			var url = $(this).attr('href');
+			window.open(url,'_blank');
+	});
+
+	$('.showhidetoggle').live('click', function(e) {
+		e.preventDefault();
+		$(this).siblings('.showhidecontent').toggle();
+	});
+
+	$('.speakerPopout').live('click',
+		function(e) {
+			e.preventDefault();
+			var url = $(this).attr('href');
+			window.open(url, 'BotB_Radio', 'scrollbars=yes, menubar=no, height=220, width=664, resizable=1, toolbar=no, location=no, status=no');
+		}
+	);
+
+	// handle inner targets inside box links
+	$('.inner_target').live({
+		mouseenter : function() {
+			$(this).parents('.boxLink').addClass('no_highlight');
+		},
+		mouseleave : function() {
+			$(this).parents('.boxLink').removeClass('no_highlight');
+		},
+	});
+
+
+	// XXX this is specific to listing entries by format
+	// on battle info pages
+	// XXX will need to handle ordering in the future
+	// XXX and also handle multiple entry/bit  periods
+	$('.use-ajax').live('click',  function(e) {
+		e.preventDefault();
+		var parent = $(this).parents('.formatBattleView');
+		var params = $(this).attr('href').split('/');
+		var format_token = $(this).attr('data-format_token');
+		if ($(this).attr('data-ajax-cmd') == 'formatList') {
+			let url = $(this).attr('href');
+			let h_sep = loljax.render('h_sep');
+			let h_sep_mini = loljax.render('h_sep_mini');
+			if (!$('.entryList', parent).length) {
+				$.get(url, function(data)  {
+					let entry_list = h_sep_mini + loljax.render_list('entry/grid8', data, h_sep);
+					entry_list = $('<div/>').html(entry_list).addClass('format_' + format_token).addClass('entryList');
+					parent.append(entry_list).slideDown(250);
+				});
+			}
+			$(this).attr('data-ajax-cmd', 'closeList').text('hide entries');
+		}
+		else if ($(this).attr('data-ajax-cmd') == 'closeList') {
+			$('div.format_' + format_token).slideUp(250).remove();
+			$(this).attr('data-ajax-cmd', 'formatList').text('show entries');	
+		}
+	});
+
+
+
+  $('#q').focus(function()  {
+    if ($(this).attr('value')=='Search...') {
+      $(this).removeClass('tb0');
+      $(this).addClass('t0');
+      $(this).attr('value','');
+    }
+  }).blur(function()  {
+    if ($(this).attr('value')==='') {
+      $(this).attr('value','Search...');
+      $(this).removeClass('t0');
+      $(this).addClass('tb0');
+    }
+  });
+
+
+  $('a.LoginLink').click(
+    function(event)  {
+      event.preventDefault();
+      $(this).css('cursor','pointer');
+      if ($('#LoginForm').is(':hidden'))  {
+        $('#StatusBoxBottomRow').slideUp('fast');
+        $('#LoginForm').slideDown('fast');
+      }
+    }
+  );
+
+  $('a.LoginClose').css('cursor','pointer');
+  $('a.LoginClose').click(
+    function()  {
+      $(this).css('cursor','pointer');
+      if ($('#LoginForm').is(':visible'))  {
+        $('#StatusBoxBottomRow').slideDown('fast');
+        $('#LoginForm').slideUp('fast');
+      }
+    }
+  );
+
+
+  $('.closeTab').fadeIn(600).click(
+    function(e) {
+      e.preventDefault();
+      $(this).fadeOut(100).parent().slideUp(400);
+		$.ajax('/api/v1/alert/botbr_checked');
+    }
+  );
+
+
+  // resize big images
+  $('img.resize').each(function() {
+    imgResize(this);
+    $(this).load(function() {
+      imgResize(this);
+    }).fadeIn();
+  });
+
+	
+	// badges fisheye hover
+	// XXX doesn't work on ajax loaded conten 
+	$('.badge_group').each(function() {
+		var badges = $('div.icon',this);
+		if (badges.length > 3) {
+			var margin = Math.floor((badges.length-3)/2.5);
+			if (margin > 7) margin = 7;
+			badges.each(function(i) {
+				if (i==0) {
+					$(this).css('margin','0 -'+margin+'px 0 0').hover(
+						function(){ $(this).css('margin','0 '+margin+'px 0 0') },
+						function(){ $(this).css('margin','0 -'+margin+'px 0 0') }
+					);
+				} 
+				else {
+					$(this).css('margin','0 -'+margin+'px').hover(
+						function(){ $(this).css('margin','0 '+margin+'px') },
+						function(){ $(this).css('margin','0 -'+margin+'px') }
+					);
+				}
+			});
+		}
+	});
+
+
+});
+
+function imgResize(img) {
+  console.log(img);
+  var parentWidth = $(img).parent().css('display','block').width(),
+      imgWidth = $(img).width(),
+      imgHeight = $(img).height();
+  if (imgWidth>parentWidth) {
+    var newWidth = parentWidth;
+    var newHeight = Math.round((parentWidth/imgWidth)*imgHeight);
+    $(img).css('width',newWidth).css('height',newHeight);
+  }
+  /*
+  else if ($(img).hasClass('pixels')) {
+    var multi = 1;
+    if (imgWidth*2<parentWidth) {
+      multi = 2;
+    }
+    if (imgWidth*3<parentWidth) {
+      multi = 3;
+    }
+    if (multi>1)  {
+      $(img).css('width', imgWidth*multi).css('height', imgHeight*multi).addClass('center');
+    }
+  }
+  */
+}
+

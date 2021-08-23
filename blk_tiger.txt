@@ -288,17 +288,16 @@ https://battleofthebits.org/lyceum/View/Professional+Music+Driver+%28PMD%29/
 
 General Instruments datasheet for the AY-3-8910A
 
-I didn't get the lpt working, but I did manage to get it working with the avr, thank you for the offer of the fax though, Cliff (the first computer I owned was a cpc464 btw, go Amstrad!)
-
-Turns out I wasn't sending an inactive signal to the Bus Direction/Control lines after sending a bus control signal.
+I didn't get the lpt working, but I did manage to get it working with the avr, thank you for the offer of the fax though, 
+Cliff (the first computer I owned was a cpc464 btw, go Amstrad!) Turns out I wasn't sending an inactive signal to the Bus 
+Direction/Control lines after sending a bus control signal.
 
 In case anyone else tries this:
 
-Remember that registers R0-R17 are in octal form in some data sheets, so R10 = 0x08, R11 = 0x09, R12 = 0x0A etc (the YM2149 datasheet uses hex numbering)
-
-Assuming that PORTD0-7 outputs to the PSG data ports DA0-DA7. PORTC0 = BDIR and PORTC1 = BC1 (BC2 is tied to 5+v)
-
-Remember to toggle the reset line when appropriate, otherwise you will get unpredictable sounds.
+Remember that registers R0-R17 are in octal form in some data sheets, so R10 = 0x08, R11 = 0x09, R12 = 0x0A etc 
+(the YM2149 datasheet uses hex numbering) Assuming that PORTD0-7 outputs to the PSG data ports DA0-DA7. 
+PORTC0 = BDIR and PORTC1 = BC1 (BC2 is tied to 5+v) Remember to toggle the reset line when appropriate, otherwise you
+will get unpredictable sounds.
 
 A send function:
 
@@ -328,6 +327,8 @@ send_ay(0x07,0xF8); //Output on channels ABC
 send_ay(0x08,0x0F);//Channel A Amplitude
 send_ay(0x09,0x0F);//Channel B Amplitude
 send_ay(0x0A,0x0F);//Channel C Amplitude
+
+
     map(0x0000, 0x7fff).rom();
     map(0xc000, 0xc7ff).ram();
     map(0xc800, 0xc800).r("soundlatch", FUNC(generic_latch_8_device::read));
