@@ -1,0 +1,29 @@
+
+#copyright { color: #2d5866; font-weight: normal; font-size: 7pt }
+#gfxcaptions { font-size: 7pt }
+#headerlinks { color: #add8e6; font-size: 8pt }
+#navbar { color: #2d5866; font-weight: bold; font-size: 7pt }
+#navyouarehere { color: #70660c; font-weight: bold; font-size: 7pt }
+#sidemenus { color: #2d5866; font-size: 8pt }
+#sidesubmenus { color: #583f58; font-weight: bold; font-size: 7pt }
+a { color: #e9967a; font-weight: bold; text-decoration: underline }
+p { color: #000073; font-size: 10pt; font-family: Verdana, Tahoma, Helvetica }
+td { color: #000073; font-size: 10pt; font-family: Verdana, Tahoma, Helvetica }
+td.pass { color: white; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: #007300 }
+td.scrape { color: gray; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: #004000 }
+td.ip { color: yellow; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: #737300 }
+td.ipbar { color: yellow; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: #ffff00 }
+td.reg { color: black; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: #737300 }
+td.unreg { color: white; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: #000073 }
+td.query { color: gray; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: #731111 }
+td.none { color: black; font-size: 8pt; font-family: Verdana, Tahoma, Helvetica; background-color: white }
+td.wrcat { width: 20%; vertical-align: top; font-weight: bold; background-color: #ffeeee }
+td.wrdesc { width: 80%; vertical-align: top; background-color: #ffeeff }
+body { color: #000073; font-size: 10pt; font-family: Verdana, Tahoma, Helvetica; background-color: white }
+h6 { color: #add8e6; font-weight: bold; font-size: 7pt; background-color: #4169e1 }
+th { color: #909020; font-weight: bold; font-size: 10pt }
+p.copyright { color: #2d5866; font-weight: bold; font-size: 7pt ; text-align: center; }
+p.bookbuy { color: #2d5866; font-size: 7pt ; text-align: justify; }
+p.bookimage { color: #2d5866; font-size: 7pt ; text-align: center; }
+p.sidemenus { color: #2d5866; font-size: 7pt ; text-align: justify;}
+p.sidesubmenus { color: #2d5866; font-weight: bold; font-size: 7pt ; text-align: justify; }

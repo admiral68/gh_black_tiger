@@ -1,0 +1,1526 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<!-- saved from url=(0098)https://web.archive.org/web/20081118194727/http://www.cepece.info/amstrad/docs/ay38912/psgspec.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><script src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/analytics.js.download" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app201.us.archive.org';v.server_ms=311;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/playback.bundle.js.download" charset="utf-8"></script>
+<script type="text/javascript" src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/wombat.js.download" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://www.cepece.info/amstrad/docs/ay38912/psgspec.htm","20081118194727","https://web.archive.org/","web","/_static/",
+	      "1227037647");
+</script>
+<link rel="stylesheet" type="text/css" href="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/banner-styles.css">
+<link rel="stylesheet" type="text/css" href="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/iconochive.css">
+<!-- End Wayback Rewrite JS Include -->
+
+<meta http-equiv="Keywords" content="GENERAL INSTRUMENTS,PSG,AY-3-8910,AY-3-8912,AY-3-8913,AMSTRAD,SOUND,AUDIO,DATASHEET">
+<meta http-equiv="Reply-To" content="amstrad@andercheran.aiind.upv.es">
+<meta name="Description" content="Manufacturers Data sheet for the AY-3-8910/12/13 Programmable Sound Generator IC. Information (c) General Instruments">
+<meta name="Keywords" content="GENERAL INSTRUMENTS,PSG,AY-3-8910,AY-3-8912,AY-3-8913,AMSTRAD,SOUND,AUDIO,DATASHEET">
+<meta name="uawww-category" content="docs-hardware-datasheet">
+<!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+</head><body text="#000000"><div id="wm-ipp-base" lang="en" style="display: block; direction: ltr;">
+</div><div id="wm-ipp-print">The Wayback Machine - https://web.archive.org/web/20081118194727/http://www.cepece.info/amstrad/docs/ay38912/psgspec.htm</div>
+<div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/donate.html" scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(650,27,25,2,"web","http://www.cepece.info/amstrad/docs/ay38912/psgspec.htm","20081118194727",1996,"/_static/",["/_static/css/banner-styles.css?v=omkqRugM","/_static/css/iconochive.css?v=qtvMKcIJ"], false);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT --><title>General Instruments AY-3-8910/12/13 Programmable Sound Generator</title>
+
+
+<h1>General Instruments - AY-3-8910, AY-3-8912, AY-3-8913<br>Programmable Sound Generator</h1>
+
+<h2>FEATURES</h2>
+<ul>
+<li>Full Software Control of Sound Generation
+</li><li>Interface to Most 8-bit and 16-bit Microprocessors
+</li><li>Three independantly Programmed Analog Outputs
+</li><li>Two 8-bit General Purpose I/O ports (AY-3-8910)
+</li><li>One 8-bit General Purpose I/O port (AY-3-8912)
+</li><li>Single +5 Volt Supply
+</li></ul>
+
+<hr>
+<h2>DESCRIPTION</h2>
+
+The AY-3-8910/8912/8913 Programmable Sound Generator (PSG) is a LSI
+Circuit which can produce a wide variety of complex sounds under software
+control. The AY-3-8910/8912/8913 is manufactured in the General Instrument
+N-Channel Ion Implant Process. Operation requires a single +5V power supply,
+a TTL compatible clock, and a microprocessor controller such as the General
+Instrument 16-bit CP1610 or one of the PIC1650 series of 8-bit microcomputers.
+<br><br>
+The PSG is easily interfaced to any bus orientation system, its flexibility
+makes it useful in applications such as music synthesis, sound effects
+generation, audible alarms, tone signalling and FSK modems. The analog sound
+outputs can each provide 4bits of logarithmic digital to analog conversion
+greatly enhancing the dynamic range of the sounds produced.
+<br><br>
+In order to perform sound effects while allowing the processor to continue its
+other tasks, the PSG can continue to produce sound after the initial
+commands have been given by the control processor. The fact that realistic
+sound production often involves more than one effect is satisfied by the
+three independantly controllable channels available in the PSG.
+<br><br>
+All of the circuit control signals are digital in nature and intended to be provided
+directly by a microprocessor/microcomputer. This means that one PSG can 
+produce the full range of required sounds with no change in external 
+circuitry. Since the frequency response of the PSG ranges from sub-audible
+at its lowest frequency to post-audible at its highest frequency, there are
+few sounds which are beyond reproduction ith only the simplest electical 
+connections.
+<br><br>
+Since most applications of a microprocessor/PSG system would also require
+interfacing between the outside world and the microprocessor, this facility
+has been designed into the PSG. The AY-3-8910 has two general purpose
+8-bit I/O ports and is supplied in a 40 lead package; the AY-3-8912 has
+one port and 28 leads; the AY-3-8913 has no ports and 24-leads.
+
+<hr>
+<h2>PIN CONFIGURATIONS</h2>
+
+<h3>40 LEAD DUAL IN LINE</h3>
+<h4>AY-3-8910</h4>
+<center>
+<p>
+<img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg14.gif" alt="[AY-3-8910 Pin Configuration]">
+</p>
+</center>
+
+<h3>28 LEAD DUAL IN LINE</h3>
+<h4>AY-3-8912</h4>
+<center>
+<p>
+<img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg12.gif" alt="[AY-3-8912 Pin Configuration]">
+</p>
+</center>
+<h3>24 LEAD DUAL IN LINE</h3>
+<h4>AY-3-8913</h4>
+<center>
+<p>
+<img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg13.gif" alt="[AY-3-8913 Pin Configuration]">
+</p>
+</center>
+<hr>
+<h2>PIN FUNCTIONS</h2>
+
+<dl>
+<br><br><dt><b>DA7--DA0 (input/output/high impedance) &nbsp; pins 30--37 (AY-3-8910) &nbsp; pins 21--28 (AY-3-8912) &nbsp; pins 4--11 (AY-3-8913)
+<br><br>
+Data/Address 7--0:
+</b></dt><dd>				       
+These 8 lines comprise the 8-bit bidirectional bus used by the microprocessor
+to send both data and addresses to the PSG and to recieve data from the PSG.
+In the data mode, DA7--DA0 correspond to Register Array bits B7--B0. In the
+address mode, DA3--DA0 select the register number (0--17 <sub>8</sub>) and a DA7-DA4 in
+conjunction with address inputs /A9 and A8 for the high order address (chip
+select).
+<br><br></dd><dt><b>
+A8 (input): &nbsp; pin 25 (AY-3-8910) &nbsp; pin 17 (AY-3-8912) &nbsp; pin 23 (AY-3-8913)
+<br><br>
+/A9 (input): &nbsp; pin 24 (AY-3-8910) &nbsp; pin 28 (AY-3-8912) &nbsp; (not provided on AY-3-8913)
+<br><br>
+/Address 9,Address 8
+</b></dt><dd>
+These "extra" address bits are made available to enable the positioning of
+the PSG (assigning a 16 word memory space) in a total 1,024 word memory
+area rather than in a 256 word memory area as defined by address bits
+DA7--DA0 alone. If the memory size does not require the use of these
+extra address lines they may be left unconnected as each is provided with either
+an on-chip pull down (/A9) or pull-up (A8) resistor. In "noisy" environments,
+however, it is recommended that /A9 and A8 be tied to an external ground
+and +5V, respectively, if they are not to be used.
+
+
+<br><br></dd><dt><b>
+/RESET (input): &nbsp; pin 23 (AY-3-8910) &nbsp; pin 21 (AY-3-8913) &nbsp; pin 16 (AY-3-8912)
+</b></dt><dd>		
+For initialization/power on purposes, applying a logic "0" (ground)
+to the /Reset pin will reset all registers to "0". The /Reset pin is
+provided with an on-chip pull-up resistor.
+<br><br></dd><dt><b>
+CLOCK (signal): &nbsp; pin 22 (AY-3-8910) &nbsp; pin 20 (AY-3-8913) &nbsp; pin 15 (AY-3-8912)
+</b></dt><dd>		
+This TTL-compatible input supplies the timing reference for the Tone,
+Noise and Envelope Generators.
+<br><br></dd><dt><b>
+BDIR,BC2,BC1 (inputs): &nbsp; pins 27,28,29 (AY-3-8910) &nbsp; pins 18,19,20 (AY-3-8912) &nbsp; pins 2,3 (No BC2 on AY-3-8913 see below)
+<br><br>	
+Bus DiRection, Bus Control 2,1
+</b></dt><dd>
+These bus control signals are generated directly by the CP1610 series
+of microprocessors to control all external and internal bus operations in
+the PSG. When using a processor other than the Cp1610, these signals can be
+provided either by comparable bus signals or by simulating the signals on
+I/O lines of the processor. The PSG decodes these signals as illustrated in
+the following:
+<br><br>
+<center>
+<table border="" width="50%">
+<tbody><tr>
+<th bgcolor="#808080"><b>BDIR</b></th>
+<th bgcolor="#808080"><b>BC2</b></th>
+<th bgcolor="#808080"><b>BC1</b></th>
+<th bgcolor="#808080"><b>CP1610 FUNCTION</b></th>
+<th bgcolor="#808080"><b>PSG FUNCTION</b></th>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>NACT</td>
+<td>INACTIVE. See 010 (IAB)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>ADAR</td>
+<td>LATCH ADDRESS. See 111 (INTAK)</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>IAB</td>
+<td>INACTIVE: The PSG/CPU bus is inactive, DA7--DA0 are in high impedence state</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>DTB</td>
+<td>READ FROM PSG. This signal
+causes the contents of the
+register which is currently
+addressed to appear on the 
+PSG/CPU bus. DA7--DA0 are
+in output mode.
+</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>BAR</td>
+<td>LATCH ADDRESS. See 111 (INTAK)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>DW</td>
+<td>INACTIVE. See 010 (IAB)</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>DWS</td>
+<td>WRITE TO PSG. This signal
+indicates that the bus
+contains register data which
+should be latched into the
+currently addressed register
+DA7--DA0 are in input mode.
+</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>INTAK</td>
+<td>LATCH ADDRESS. This signal
+indicates that the bus contains
+a register address which should
+be latched in the PSG. DA7--DA0
+are in the input mode.
+</td>
+</tr>
+</tbody></table></center><br><br>
+While interfacing to a processor other than the CP1610 would simply require
+simulating the above decoding, the redundancies in the PSG function vs
+bus control signals can be used to advantage in that only four of the eight
+possible decoded bus functions are required by the PSG. This could simpify
+the programming of the bus control signals to the following, which only
+require that the processor generate two bus control signals (BDIR and BC1, with
+BC2 tied to +5v). This is the case with the AY-3-8913 with BC2 pulled high
+internally.
+
+<br><br>
+<center>
+<table border="" width="50%">
+<tbody><tr>
+<th bgcolor="#808080"><b>BDIR</b></th>
+<th bgcolor="#808080"><b>BC2</b></th>
+<th bgcolor="#808080"><b>BC1</b></th>
+<th bgcolor="#808080"><b>PSG FUNCTION</b></th>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>INACTIVE</td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>READ FROM PSG</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>WRITE TO PSG</td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>LATCH ADDRESS</td>
+</tr>
+</tbody></table>
+<br><br>
+<img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg10.gif" alt="[Illustration of table]">
+</center><br><br>
+</dd><dt><b>
+ANALOG CHANNEL A,B,C (outputs): &nbsp; pins 4,3,38 (AY-3-8910) &nbsp; pins 5,4,1 (AY-3-8912) &nbsp; pins 17,15,18 (AY-3-8913)
+</b></dt><dd>	
+Each of these signals is the output of its corresponding D/A Converter,
+and provides a up to 1V peak-peak signal representing the complex sound
+waveshape generated by the PSG.
+<br><br></dd><dt><b>
+IOA7--IOA0 (input/output): &nbsp; pins 14--21 (AY-3-8910) &nbsp; pins 7--14 (AY-3-8912)  &nbsp; (not provided on AY-3-8913)
+<br><br>
+IOB7--IOB0 (input/output): &nbsp; pins 6--13 (AY-3-8910) &nbsp; (not provided on AY-3-8912)  &nbsp; (not provided on AY-3-8913)
+<br><br>
+Input/Output A7--A0, B7--B0
+</b></dt><dd>
+Each of these two parallel input/output ports provides 8 bits of
+parallel data to/from the PSG/CPU bus from/to any external devices connected
+to the IOA or IOB pins. Each pin is provided with an on-chip pull-up resistor,
+so that when in the "input" mode, all pins will read normally high. Therefore,
+the recommended method for scanning external switches would be to ground the
+input bit.
+<br><br></dd><dt><b>
+TEST 1: &nbsp; pin 39 (AY-3-8910) &nbsp; pin 14 (AY-3-8913) &nbsp; pin 2 (AY-3-8912)	
+<br><br>
+TEST 2: &nbsp; pin 26 (AY-3-8910) &nbsp; pin 12 (AY-3-8913) &nbsp; (not connected on AY-3-8912)
+</b></dt><dd>	
+These pins are for General Instrument test purposes only and should be left
+open -- do not use as tie-points.
+<br><br></dd><dt><b>
+V<sub>cc</sub>: &nbsp; pin 40 (AY-3-8910) &nbsp; pin 13 (AY-3-8913) &nbsp; pin 3 (AY-3-8912)
+</b></dt><dd>
+Nominal +5Volt power supply to PSG.
+<br><br></dd><dt><b>
+V<sub>ss</sub>: &nbsp; pin 1 (AY-3-8910) &nbsp; pin 19 (AY-3-8913) &nbsp; pin 6 (AY-3-8912)
+</b></dt><dd>
+Ground reference for the PSG.
+<br><br></dd><dt><b>
+/CHIP SELECT (Input): &nbsp; pin 24 (AY-3-8913 only)
+</b></dt><dd>
+This input signal goes low to enable the PSG to read data on the data
+bus or write data from the data bus to one of the internal registers. For
+these above operations to occur, this signal must be true in addition to
+the current bus address being a valid PSG address. This signal must be valid
+for all read and write operations. This pin has an internal pull down to V<sub>ss</sub>.
+</dd></dl>
+<hr>
+<h2>ARCHITECTURE</h2>
+
+The AY-3-8910/8912/8913 is a register oriented Programmable Sound Generator
+(PSG). Communication between the processor and the PSG is based on the 
+concept of memory-mapped I/O. Control commands are issued to the PSG by
+writing to 16 memory-mapped registers. Each of the 16 registers within the
+PSG is also readable so that the microprocessor can determine, as necessary,
+present states or stored data values.
+<br><br>
+All functions of the PSG are controlled through the 16 registers which
+once programmed, generate and sustain the sounds, thus freeing the system
+processor for other tasks.
+
+<hr>
+<h2>REGISTER ARRAY</h2>
+
+The principle element of the PSG is the array of 16 read/write control
+registers. These 16 registers look to the CPU as a block of memory
+and as such occupy a 16 word block out of 1,024 possible addresses. The
+10 address bits (8 bits on the common data/address bus, and 2 seperate
+address bits A8 and /A9) are decoded as follows:
+<br><br>
+<center>
+<table border="" width="100%">
+<tbody><tr>
+<th bgcolor="#808080"><b>/A9<sup>*</sup></b></th>
+<th bgcolor="#808080"><b>A8</b></th>
+<th bgcolor="#808080"><b>DA7</b></th>
+<th bgcolor="#808080"><b>DA6</b></th>
+<th bgcolor="#808080"><b>DA5</b></th>
+<th bgcolor="#808080"><b>DA4</b></th>
+<th bgcolor="#808080"><b>DA3</b></th>
+<th bgcolor="#808080"><b>DA2</b></th>
+<th bgcolor="#808080"><b>DA1</b></th>
+<th bgcolor="#808080"><b>DA0</b></th>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody></table>
+<b>THRU</b>
+<table border="" width="100%">
+<tbody><tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td colspan="6"><center>High Order (Chip Select)</center></td>
+<td colspan="4"><center>Low order (Register No.)</center></td>
+</tr>
+</tbody></table></center>
+* /A9 is not provided on the AY-3-8912
+<br><br>
+
+The four low order address bits select one of the 16 registers (R0--R17).
+The six high order address bits function as "chip selects" to control the
+tri-state bidirectional buffers (when the high order address bits are
+"incorrect", the bi-directional buffers are forced to the high impedance
+state). High order address bits /A9, A8 are fixed in the PSG design to recognise
+a 01 code; high order address bits DA7-DA4 may be mask programmed to any 4-bit
+code by a special order factory mask modification. Unless otherwise specified,
+address bits DA7--DA4 are programmed to recognise only a 0000 code. A valid
+high order address latches the register address (the low order 4 bits) in the
+Register Address Latch/Decoder block. A latched address will remain valid
+until the receipt of a new address, enabling multiple reads and writes of the
+same register contents without the need for redundant re-addressing.
+<br><br>
+Conditioning of the Register Address Latch/Decoder and the Bidirectional
+Buffers to recognise the bus function required (inactive, latch address,
+write data, or read data) is accomplished by the Bus Control Decode block.
+
+<hr>
+<h2>SOUND GENERATING BLOCKS</h2>
+
+The basic blocks in the PSG which produce the programmed sounds include:
+
+<br><br>
+<table width="100%">
+<tbody><tr>
+<td width="50%">Tone Generators</td>
+<td width="50%">produce the basic square wave tone frequencies for each channel (A,B,C)</td>
+</tr>
+
+<tr>
+<td>Noise Generator</td>
+<td>produces a frequency modulated pseudo random pulse width square wave output.</td>
+</tr>
+
+<tr>
+<td>Mixers</td>
+<td>combine the outputs of the Tone Generators and the Noise Generator. One for each channel (A,B,C)</td>
+</tr>
+
+<tr>
+<td>Amplitude Control</td>
+<td>provides the D/A Converters with either a
+fixed or variable amplitude pattern. The fixed
+amplitude is under direct CPU control; the
+variable amplitude is accomplished by using,
+the output of the Envelope Generator.
+</td>
+</tr>
+
+<tr>
+<td>Envelope Generator</td>
+<td>produces an evelope pattern which can be used to amplitude modulate the output of each Mixer.</td>
+</tr>
+
+<tr>
+<td>D/A Converters</td>
+<td>the three D/A Converters each produce up
+to a 16 level output signal as determined
+by the Amplitude Control.</td>
+</tr>
+</tbody></table><br><br>				
+
+<hr>
+<h2>I/O PORTS</h2>
+
+Two additional blocks are shown in the PSG Block Diagram which have nothing
+directly to do with the production of sound -- these are the two I/O ports
+(A and B). Since virtually all uses of microprocessor-based sound would
+require interfacing between the outside world and the processor, this
+facility has been included in the PSG. Data to/from the CPU bus may be read/written
+to either of two 8-bit I/O Ports without affecting any other function of the
+PSG. The I/O Ports are TTL-compatible and are provided with internal pull-ups
+on each pin. Both Ports are available on the AY-3-8910; only I/O Port A is
+available on the AY-3-8912; no ports are available on the AY-3-8913.
+
+<h4>PSG BLOCK DIAGRAM</h4>
+<center>
+<p>
+<img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg16.gif" alt="[PSG Block Diagram]">
+</p>
+</center>
+
+<hr>
+<h2>OPERATION</h2>
+
+Since all functions of the PSG are controlled by the processor via a series
+of register loads, a detailed description of the PSG operation can best be
+acomplished by relating each PSG function to the control of its corresponding
+register. The function of creating or programming a specific sound or sound
+effect logically follows the control sequence listed:
+
+<br><br>
+<center>
+<table border="" width="50%">
+<tbody><tr>
+<th bgcolor="#808080" width="30%"><b>Operation</b></th>
+<th bgcolor="#808080" width="40%"><b>Registers</b></th>
+<th bgcolor="#808080" width="30%"><b>Function</b></th>
+</tr>
+
+<tr>
+<td>Tone Generator Control</td>
+<td>R0--R5</td>
+<td>Program tone periods.</td>
+</tr>
+
+<tr>
+<td>Noise Generator Control</td>
+<td>R6</td>
+<td>Program noise period.</td>
+</tr>
+
+<tr>
+<td>Mixer Control</td>
+<td>R7</td>
+<td>Enable tone and/or noise on selected channels.</td>
+</tr>
+
+<tr>
+<td>Amplitude Control</td>
+<td>R10--R12</td>
+<td>Select "fixed" or "envelope-variable" amplitudes.</td>
+</tr>
+
+<tr>
+<td>Envelope Generator Control</td>
+<td>R13--R15</td>
+<td>Program envelope period and select envelope pattern.</td>
+</tr>
+</tbody></table></center><br><br>
+
+<hr>
+<h2>Tone Generator Control (Registers R0,R1,R2,R3,R4,R5)</h2>
+
+The frequency of each square wave generated by the three Tone Generators
+(one each for Channels A,B and C) is obtained in the PSG by first counting
+down the input clock by 16, then by furthur counting down the result by the
+programmed 12-bit Tone Period value. Each 12-bit value is obtained in the
+PSG by combining the contents of the relative Course and Fine Tune registers,
+as illustrated in the following:
+<br><br>
+<center>
+<table border="" width="50%">
+<tbody><tr>
+<th bgcolor="#808080" width="30%"><b>Course Tone Register</b></th>
+<th bgcolor="#808080" width="40%"><b>Channel</b></th>
+<th bgcolor="#808080" width="30%"><b>Fine Tune Register</b></th>
+</tr>
+<tr><td>R1</td><td>A</td><td>R0</td></tr>
+<tr><td>R3</td><td>B</td><td>R2</td></tr>
+<tr><td>R5</td><td>C</td><td>R4</td></tr>
+</tbody></table>
+<br><br>
+<table border="" width="100%">
+<tbody><tr>
+<th bgcolor="#808080" colspan="8">Course Tone Register</th>
+<th bgcolor="#808080" colspan="8">Fine Tune Register</th>
+</tr>
+<tr>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+</tr>
+<tr>
+<td colspan="4"><center>NOT USED</center></td>
+<td>TP11</td>
+<td>TP10</td>
+<td>TP9</td>
+<td>TP8</td>
+<td>TP7</td>
+<td>TP6</td>
+<td>TP5</td>
+<td>TP4</td>
+<td>TP3</td>
+<td>TP2</td>
+<td>TP1</td>
+<td>TP0</td>
+
+</tr><tr>
+<td colspan="16"><center>12-bit Tone Period (TP) to Tone Generator</center></td>
+</tr>
+</tbody></table></center><br><br>
+
+<hr>	
+<h2>Noise Generator Control (Register R6)</h2>
+
+The frequency of the noise source is obtained in the PSG by first counting
+down the input clock by 16, then by furthur counting down the result by
+the programmed 5-bit Noise Period value. This 5-bit value consists of
+the lower 5-bits (B4--B0) of register R6, as illustrated in the following:
+<br><br>
+<center><b>Noise Period Register R6</b>
+<table border="" width="100%">
+<tbody><tr>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+</tr>
+<tr>
+<td colspan="3"><center>NOT USED</center></td>
+<td colspan="5"><center>5-bit Noise Period (NP) to Noise Generator</center></td>
+</tr>
+</tbody></table></center><br><br>
+
+
+<hr>
+<h2>Mixer Control Enable (Register R7)</h2>
+
+Register R7 is multi-function /Enable register which controls the three
+Noise/Tone Mixers and the two general purpose I/O Ports.
+<br><br>
+The Mixers, as previously described, combine the noise and tone frequencies
+for each of the three channels. The determination of combining neither/either/both
+noise and tone frequencies on each channel is made by the state of bits B5--B0
+of R7.
+<br><br>
+The direction (input or output) of the two general purpose I/O Ports (IOA
+and IOB) is determined by the state of bits B7 and B6 of R7.
+<br><br>
+These functions are illustrated in the following:
+
+<br><br>
+<center><b>Mixer Control-I/O-Enable Register R7</b>
+<table border="" width="100%">
+<tbody><tr>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+</tr>
+<tr>
+<td colspan="2"><center>/Input Enable</center></td>
+<td colspan="3"><center>/Noise Enable</center></td>
+<td colspan="3"><center>/Tone Enable</center></td>
+</tr>
+<tr>
+<td>B</td>
+<td>A</td>
+<td>C</td>
+<td>B</td>
+<td>A</td>
+<td>C</td>
+<td>B</td>
+<td>A</td>
+</tr></tbody></table></center><br><br>
+
+
+
+<hr><h2>Amplitude Control (Registers R10,R11,R12)</h2>
+
+The amplitudes of the signals generated by each of the three D/A Converters
+(one each for Channels A,B and C) is determined by the contents of the lower
+5-bits (B4--B0) of registers R10,R11 and R12 as illustrated in the following:
+
+<br><br>
+<center>
+<table border="" width="50%">
+<tbody><tr>
+<th bgcolor="#808080" width="50%"><b>Amplitude Control Register</b></th>
+<th bgcolor="#808080" width="50%"><b>Channel</b></th>
+</tr>
+
+<tr><td>R10</td><td>A</td></tr>
+<tr><td>R11</td><td>B</td></tr>
+<tr><td>R12</td><td>C</td></tr>
+</tbody></table><br><br>
+<br><br>
+<table border="" width="100%">
+<tbody><tr>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+</tr>
+<tr>
+<td colspan="3"><center>NOT USED</center></td>
+<td>M</td>
+<td>L3</td>
+<td>L2</td>
+<td>L1</td>
+<td>L0</td>
+</tr>
+<tr>
+<td colspan="3"></td>
+<td>amplitude "mode"</td>
+<td colspan="4"><center>4-bit "fixed" amplitude level</center></td>
+</tr>
+</tbody></table></center><br><br>
+
+<hr>
+<h2>Envelope Generator Control (Registers R13,R14 and R15)</h2>
+
+To acomplish the generation of fairly complex envelope patterns, two 
+independant methods of control are provided in the PSG: first, it is 
+possible to vary the frequency of the envelope using registers R13
+and R14; and second, the relative shape and cycle pattern of the envelope
+can be varied using register R15. The following paragraphis explain the
+details of the envelope control functions, describing first the envelope
+period control and then the envelope shape/cycle control.
+
+<hr>
+<h2>ENVELOPE PERIOD CONTROL (Registers R13,R14)</h2>
+
+The frequency of the envelope is obtained in the PSG by first counting 
+down the input clock by 256, then by furthur counting down the result
+of the programmed 16-bit Envelope Period value. This 16-bit value is
+obtained in the PSG by combining the contents of the Envelope Coarse
+and Fine Tune registers, as illustrated in the following:
+
+<br><br><table border="" width="100%">
+<tbody><tr>
+<th colspan="8">Envelope Coarse Tune Register R14</th>
+<th colspan="8">Envelope Fine Tune Register R13</th>
+</tr>
+<tr>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+</tr>
+<tr>
+<td>EP15</td>
+<td>EP14</td>
+<td>EP13</td>
+<td>EP12</td>
+<td>EP11</td>
+<td>EP10</td>
+<td>EP9</td>
+<td>EP8</td>
+<td>EP7</td>
+<td>EP6</td>
+<td>EP5</td>
+<td>EP4</td>
+<td>EP3</td>
+<td>EP2</td>
+<td>EP1</td>
+<td>EP0</td>
+</tr>
+<tr>
+<td colspan="16"><center>16-bit Envelope Period (EP) to Envelope Generator</center></td>
+</tr>
+</tbody></table>
+
+<hr>
+<h2>ENVELOPE SHAPE/CYCLE CONTROL (Register R15)</h2>
+
+The Envelope Generator furthur counts down the envelope frequency by 16,
+producing a 16-state per cycle envelope pattern as defined by its 4-bit
+counter output, E3 E2 E1 E0. The particular shape and cycle pattern of
+any desired envelope is accomplished by controlling the count
+pattern (count up/count down) of the 4-bit counter and by defining a 
+single cycle or repeat-cycle pattern.
+<br><br>
+This envelope shape/cycle control is contained in the 4 bits (B3--B0)
+of register R15. Each of these 4 bits controls a function in the envelope
+generator, as illustrated in the following:
+
+<br><br>
+<center><b>Envelope Shape/Cycle Control Register (R15)</b></center>
+<table border="" width="100%">
+<tbody><tr>
+<td>B7</td>
+<td>B6</td>
+<td>B5</td>
+<td>B4</td>
+<td>B3</td>
+<td>B2</td>
+<td>B1</td>
+<td>B0</td>
+</tr>
+<tr>
+<td colspan="4"><center>NOT USED</center></td>
+<td>Hold</td>
+<td>Alternate</td>
+<td>Attack</td>
+<td>Continue</td>
+</tr>
+<tr>
+<td colspan="4"></td>
+<td colspan="4"><center>Function (To Envelope Generator)</center></td>
+</tr>
+</tbody></table>
+
+
+<h2>I/O Port Data Store (Registers R16, R17)</h2>
+
+Registers R16 and R17 function as intermediate data storage registers
+between the PSG/CPU data bus (DA0--DA7) and the two I/O ports (IOA7--IOA0
+and IOB7--IOB0). Both ports are available in the AY-3-8910; only I/O port
+A is available in the AY-3-8912; none are available on the AY-3-8913. 
+Using registers R16 and R17 for the transfer of I/O data has no effect on sound
+generation.
+
+<hr>
+<h2>D/A Converter Operation</h2>
+
+Since the primary use of the PSG is to produce sound for the highly
+imperfect amplitude detection mechanism of the human ear, the D/A conversion
+is performed in logarithmic steps with a normalized voltage range of from
+0 to 1 Volt. The specific amplitude control of each of the three D/A Converters
+is acomplished by the three sets of 4-bit outputs of the Amplitude Control
+block, while the Mixer outputs provide the base signal frequency (Noise and/or Tone).
+<br><br>
+
+<center><b>Fig 1. ENVELOPE SHAPE/CYCLE OPERATION</b></center>
+<table border="" width="100%">
+<tbody><tr>
+<th colspan="4" bgcolor="#808080" width="50%">R15 Bits</th>
+<th rowspan="3" bgcolor="#808080" width="50%">GRAPHICAL REPRESENTATION OF ENVELOPE GENERATOR OUTPUT (E3 E2 E1 E0)</th>
+</tr>
+<tr>
+<th bgcolor="#808080">B3</th>
+<th bgcolor="#808080">B2</th>
+<th bgcolor="#808080">B1</th>
+<th bgcolor="#808080">B0</th>
+</tr>
+<tr>
+<th bgcolor="#808080">Continue</th>
+<th bgcolor="#808080">Attack</th>
+<th bgcolor="#808080">Alternate</th>
+<th bgcolor="#808080">Hold</th>
+</tr>
+
+<tr>
+<td>0</td>
+<td>0</td>
+<td>x</td>
+<td>x</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg1.gif" alt="[Envelope shape 00xx]"></td>
+</tr>
+
+<tr>
+<td>0</td>
+<td>1</td>
+<td>x</td>
+<td>x</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg3.gif" alt="[Envelope shape 01xx]"></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg5.gif" alt="[Envelope shape 1000]"></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg1.gif" alt="[Envelope shape 1001]"></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg8.gif" alt="[Envelope shape 1010]"></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg4.gif" alt="[Envelope shape 1011]"></td>
+
+</tr><tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg6.gif" alt="[Envelope shape 1100]"></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg2.gif" alt="[Envelope shape 1101]"></td>
+
+</tr><tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg7.gif" alt="[Envelope shape 1110]"></td>
+</tr>
+
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg3.gif" alt="[Envelope shape 1111]"></td>
+</tr>
+<tr>
+<td colspan="4"></td>
+<td><img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg15.gif" alt="[Envelope Period Note]"></td>
+</tr>
+</tbody></table>
+
+<h4>Fig 2. DETAIL OF TWO CYCLES Of Fig 1 (ref. waveform "1010" in Fig.1)</h4>
+<center>
+<img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg9.gif" alt="[Two cycles of waveform 1010]">
+</center>
+<h4>Fig 3. D/A CONVERTER OUTPUT</h4>
+
+<h4>Fig 4. SINGLE TONE WITH ENVELOPE SHAPE/CYCLE PATTERN 1010</h4>
+
+<h4>Fig 5. MIXTURE OF THREE TONES WITH FIXED AMPLITUDE</h4>
+
+
+
+
+
+<h2>ELECTRICAL CHARACTERISTICS (AY-3-8910, AY-3-8912)</h2>
+
+
+<h4>Maximum Ratings*</h4>
+
+<table>
+<tbody><tr>
+<td width="20%">Storage Temperature</td>
+<td>......</td>
+<td>-55°C to +150°C</td>
+</tr>
+<tr>
+<td>Operating Temperature</td>
+<td>......</td>
+<td>0°C to 40°C</td>
+</tr>
+<tr>
+<td>Vcc and all other input/Output Voltages with Respect to Vss</td>
+<td>......</td>
+<td>-0.3V to +8.0V</td>
+</tr>
+</tbody></table><br><br>
+
+* Exceeding these ratings could cause permanent damage to the device.
+This is a stress rating only and functional operation of the devices
+at these conditions is not implied -- operating ranges are specified
+in Standard Conditions. Exposure to absolute maximum rating conditions
+for extended periods may affect device reliability. Data labelled "
+typical" is presented for design guidance only and is not guaranteed.
+
+<h4>Storage Conditions (unless otherwise noted):</h4>
+
+Vcc = ± 5V ±5%<br>
+Vss = GND<br>
+Operating Temperature = 0°C to +40°C
+<br><br>
+<table border="" width="100%">
+<tbody><tr>
+<th bgcolor="#808080">Characteristics</th>
+<th bgcolor="#808080">Sym</th>
+<th bgcolor="#808080">Min</th>
+<th bgcolor="#808080">Typ<sup>**</sup></th>
+<th bgcolor="#808080">Max</th>
+<th bgcolor="#808080">Units</th>
+<th bgcolor="#808080">Conditions</th>
+</tr>
+<tr>
+<td><b>DC CHARACTERISTICS</b></td>
+<td colspan="6"></td>
+</tr>
+<tr>
+<td><b>All inputs</b>
+</td><td colspan="6"></td>
+</tr>
+<tr>
+<td>Low level</td>
+<td>Vil</td>
+<td>0</td>
+<td>-</td>
+<td>0.6</td>
+<td>V</td>
+<td></td>
+</tr>
+<tr>
+<td>High level</td>
+<td>Vih</td>
+<td>2.4</td>
+<td>-</td>
+<td>Vcc</td>
+<td>V</td>
+<td></td>
+</tr>
+<tr>
+<td><b>All Outputs (except Analog Channel Outputs</b></td>
+<td colspan="6"></td>
+</tr>
+<tr>
+<td>Low level</td>
+<td>Vol</td>
+<td>0</td>
+<td>-</td>
+<td>0.5</td>
+<td>V</td>
+<td>Iol = 1.6mA, 20pF</td>
+</tr>
+<tr>
+<td>High level</td>
+<td>Voh</td>
+<td>2.4</td>
+<td>-</td>
+<td>Vcc</td>
+<td>V</td>
+<td>Ioh = 100uA, 20pF</td>
+
+</tr>
+<tr>
+<td><b>Analog Channel Outputs</b></td>
+<td>Vo</td>
+<td>0</td>
+<td>-</td>
+<td>60</td>
+<td>dB</td>
+<td>Test Curcuit: Fig 6</td>
+</tr>
+<tr>
+<td><b>Power Supply Current</b></td>
+<td>Icc</td>
+<td>-</td>
+<td>45</td>
+<td>85</td>
+<td>mA</td>
+<td></td>
+</tr>
+<tr>
+<td><b>AC CHARACTERISTICS</b></td>
+<td colspan="6"></td>
+</tr>
+<tr>
+<td><b>Clock Input</b></td>
+<td colspan="5"></td>
+<td rowspan="7">Fig 7.</td>
+</tr>
+<tr>
+<td>Frequency</td>
+<td>fc</td>
+<td>1</td>
+<td>-</td>
+<td>2</td>
+<td>MHz</td>
+</tr>
+<tr>
+<td>Rise Time</td>
+<td>tr</td>
+<td>-</td>
+<td>-</td>
+<td>50</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Fall Time</td>
+<td>tf</td>
+<td>-</td>
+<td>-</td>
+<td>50</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Duty Cycle</td>
+<td>-</td>
+<td>25</td>
+<td>50</td>
+<td>85</td>
+<td>%</td>
+</tr>
+<tr>
+<td><b>Bus Signals (BDIR,BC2,BC1)</b></td>
+<td colspan="5"></td>
+</tr>
+<tr>
+<td>Associative Delay Time</td>
+<td>tao</td>
+<td>-</td>
+<td>-</td>
+<td>50</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>Reset</b></td>
+<td colspan="5"></td>
+<td rowspan="3">Fig. 8</td>
+</tr>
+<tr>
+<td>Reset Pulse Width</td>
+<td>trw</td>
+<td>500</td>
+<td>-</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Reset to Bus Control Delay Time</td>
+<td>trb</td>
+<td>100</td>
+<td>-</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>A9, A8, DA7--DA0 (Address Mode)</b></td>
+<td colspan="5"></td>
+<td rowspan="3">Fig 9</td>
+</tr>
+<tr>
+<td>Address Setup Time</td>
+<td>tas</td>
+<td>400</td>
+<td>-</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Address Hold Time</td>
+<td>tah</td>
+<td>100</td>
+<td>-</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>DA7--DA0 (Write Mode)</b></td>
+<td colspan="5"></td>
+<td rowspan="4">Fig. 10</td>
+</tr>
+<tr>
+<td>Write Data Pulse Width</td>
+<td>tdw</td>
+<td>500</td>
+<td>-</td>
+<td>10,000</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Write Data Setup Time</td>
+<td>tds</td>
+<td>50</td>
+<td>-</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Write Data Hold Time</td>
+<td>tdh</td>
+<td>100</td>
+<td>-</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>DA7--DA0 (Read Mode)</b></td>
+<td colspan="5"></td>
+<td rowspan="5">Fig. 11</td>
+</tr>
+<tr>
+<td>Read Data Access Time</td>
+<td>tda</td>
+<td>-</td>
+<td>250</td>
+<td>500</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>DA7--DA0 (Inactive Mode)</b></td>
+<td colspan="5"></td>
+</tr>
+<tr>
+<td>Tristate Delay Time</td>
+<td>tts</td>
+<td>-</td>
+<td>100</td>
+<td>200</td>
+<td>ns</td>
+</tr>
+</tbody></table>
+** Typical values are at ±25°C and nominal voltages
+<br clear="all">
+<br><br>
+
+
+<center>
+<b>Analogue Channel Output Test Curcuit</b><br clear="all"><br>
+<img src="./General Instruments AY-3-8910_12_13 Programmable Sound Generator_files/psg11.gif" alt="[Analogue channel Output Test Circuit]">
+</center>
+
+<h2>ELECTRICAL CHARACTERISTICS (AY-3-8913)</h2>
+
+
+<h4>Maximum Ratings*</h4>
+
+<table>
+<tbody><tr>
+<td width="20%">Storage Temperature</td>
+<td>......</td>
+<td>-55°C to +150°C</td>
+</tr>
+<tr>
+<td>Operating Temperature</td>
+<td>......</td>
+<td>0°C to 70°C</td>
+</tr>
+<tr>
+<td>Vcc and all other input/Output Voltages with Respect to Vss</td>
+<td>......</td>
+<td>-0.3V to +8.0V</td>
+</tr>
+</tbody></table><br><br>
+
+* Exceeding these ratings could cause permanent damage to the device.
+This is a stress rating only and functional operation of the devices
+at these conditions is not implied -- operating ranges are specified
+in Standard Conditions. Exposure to absolute maximum rating conditions
+for extended periods may affect device reliability. Data labelled "
+typical" is presented for design guidance only and is not guaranteed.
+
+<h4>Storage Conditions (unless otherwise noted):</h4>
+
+Vcc = ± 5V ±5%<br>
+Vss = GND<br>
+Operating Temperature = 0°C to +70°C
+<br><br>
+<table border="" width="100%">
+<tbody><tr>
+<th bgcolor="#808080">Characteristics</th>
+<th bgcolor="#808080">Min</th>
+<th bgcolor="#808080">Sym</th>
+<th bgcolor="#808080">Max</th>
+<th bgcolor="#808080">Units</th>
+<th bgcolor="#808080">Conditions</th>
+</tr>
+<tr>
+<td><b>DC CHARACTERISTICS</b></td>
+<td colspan="5"></td>
+</tr>
+<tr>
+<td><b>All inputs</b>
+</td><td colspan="5"></td>
+</tr>
+<tr>
+<td>Low level</td>
+<td>Vil</td>
+<td>0</td>
+<td>0.7</td>
+<td>V</td>
+<td></td>
+</tr>
+<tr>
+<td>High level</td>
+<td>Vih</td>
+<td>2.2</td>
+<td>Vcc</td>
+<td>V</td>
+<td></td>
+</tr>
+<tr>
+<td><b>All Outputs (except Analog Channel Outputs</b></td>
+<td colspan="5"></td>
+</tr>
+<tr>
+<td>Low level</td>
+<td>Vol</td>
+<td>0</td>
+<td>0.4</td>
+<td>V</td>
+<td>1 TTL Load</td>
+</tr>
+<tr>
+<td>High level</td>
+<td>Voh</td>
+<td>2.4</td>
+<td>Vcc</td>
+<td>V</td>
+<td>+100pf</td>
+
+</tr>
+<tr>
+<td><b>Analog Channel Outputs</b></td>
+<td>Vo</td>
+<td>0</td>
+<td>2000</td>
+<td>uA</td>
+<td>Test Curcuit: Fig 6</td>
+</tr>
+<tr>
+<td><b>Power Supply Current</b></td>
+<td>Icc</td>
+<td>-</td>
+<td>85</td>
+<td>mA</td>
+<td></td>
+</tr>
+<tr>
+<td><b>AC CHARACTERISTICS</b></td>
+<td colspan="5"></td>
+</tr>
+<tr>
+<td><b>Clock Input</b></td>
+<td colspan="4"></td>
+<td rowspan="7">Fig 7.</td>
+</tr>
+<tr>
+<td>Frequency</td>
+<td>fc</td>
+<td>1</td>
+<td>2.5</td>
+<td>MHz</td>
+</tr>
+<tr>
+<td>Rise Time</td>
+<td>tr</td>
+<td>-</td>
+<td>50</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Fall Time</td>
+<td>tf</td>
+<td>-</td>
+<td>50</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Duty Cycle</td>
+<td>-</td>
+<td>40</td>
+<td>60</td>
+<td>%</td>
+</tr>
+<tr>
+<td><b>Bus Signals (BDIR,BC2,BC1)</b></td>
+<td colspan="4"></td>
+</tr>
+<tr>
+<td>Associative Delay Time</td>
+<td>tao</td>
+<td>-</td>
+<td>50</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>Reset</b></td>
+<td colspan="4"></td>
+<td rowspan="3">Fig. 8</td>
+</tr>
+<tr>
+<td>Reset Pulse Width</td>
+<td>trw</td>
+<td>5</td>
+<td>-</td>
+<td>us</td>
+</tr>
+<tr>
+<td>Reset to Bus Control Delay Time</td>
+<td>trb</td>
+<td>100</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>A9, A8, DA7--DA0 (Address Mode)</b></td>
+<td colspan="4"></td>
+<td rowspan="3">Fig 9</td>
+</tr>
+<tr>
+<td>Address Setup Time</td>
+<td>tas</td>
+<td>300</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Address Hold Time</td>
+<td>tah</td>
+<td>50</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>DA7--DA0 (Write Mode)</b></td>
+<td colspan="4"></td>
+<td rowspan="4">Fig. 10</td>
+</tr>
+<tr>
+<td>Write Data Pulse Width</td>
+<td>tdw</td>
+<td>1800</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Write Data Setup Time</td>
+<td>tds</td>
+<td>50</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td>Write Data Hold Time</td>
+<td>tdh</td>
+<td>100</td>
+<td>-</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>DA7--DA0 (Read Mode)</b></td>
+<td colspan="4"></td>
+<td rowspan="5">Fig. 11</td>
+</tr>
+<tr>
+<td>Read Data Access Time</td>
+<td>tda</td>
+<td>-</td>
+<td>350</td>
+<td>ns</td>
+</tr>
+<tr>
+<td><b>DA7--DA0 (Inactive Mode)</b></td>
+<td colspan="4"></td>
+</tr>
+<tr>
+<td>Tristate Delay Time</td>
+<td>tts</td>
+<td>-</td>
+<td>400</td>
+<td>ns</td>
+</tr>
+</tbody></table>
+
+<h4>Fig 7. CLOCK AND BUS SIGNAL TIMING</h4>
+
+<h4>Fig 8. RESET TIMING</h4>
+
+<h4>Fig 9. LATCH ADDRESS TIMING</h4>
+
+<h4>Fig 10. WRITE DATA TIMING</h4>
+
+<h4>Fig 11. READ DATA TIMING</h4>
+
+
+
+
+
+<!--
+playback timings (ms):
+  captures_list: 183.38
+  exclusion.robots: 0.253
+  exclusion.robots.policy: 0.245
+  RedisCDXSource: 3.849
+  esindex: 0.009
+  LoadShardBlock: 159.954 (3)
+  PetaboxLoader3.datanode: 154.416 (4)
+  CDXLines.iter: 16.777 (3)
+  load_resource: 113.31
+  PetaboxLoader3.resolve: 23.888
+--></body></html>

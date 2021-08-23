@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://delmunsoft.com/PMD%20Programming.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><title>Music Programming with PMD</title><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="Nimble Writer 1.16 (Steam 0x0110000104ae6d95)"><meta name="author" content="Noyemi K."><style>body {font-family: 'BatangChe', serif;font-size: 12pt;background: rgb(0,0,0);color: rgb(255,163,189);}div.container {max-width: 900px;margin: 0 auto;}div.chapter {border-bottom: 1px dashed rgb(255,163,189);}p {text-indent: 4em;}.strong { font-weight: bold; }a {color: #8286FF;font-weight: bold;}/* Images */img {max-width: 100%;margin: 1em;}/* Alignment */.text-center { text-align: center; }.text-right { text-align: right; }.text-justify { text-align: justify; }/* Strong */.style2 { font-weight: bold; }.style3 { font-weight: bold; text-decoration: underline; }/* Em */.style4 { font-style: italic; }.style5 { text-decoration: underline; }/* Strikeout */.style16 { text-decoration: line-through; }/* Headers */h1 { font-size: 3em; }h2 { font-size: 2em; }h3 { font-size: 1.777em; }h4 { font-size: 1.5em; }h5 { font-size: 1.333em; }h6 { font-size: 1em; font-style: italic; }/* Code */code, pre.code {font-family: 'Consolas', monospace;background: rgb(58,58,58);padding: 0.2em;}</style><script></script></head><body><div class="container"><h1>Music Programming with PMD</h1><p class="author">Written by Noyemi K. and published on 07 April 2017</p><p>A handy cookbook and reference for programming sound with the PMD Music Macro Language!</p><div class="chapter"><h2>Introduction to PMD</h2><h2>The OPN Series Sound Chips</h2>
+<p>    Hello, dear reader! If you're looking through this guidebook, you have some interest in programming the YM2203 and YM2608 sound chips using PMD for NEC PCs. Perhaps you're a fan of Ys, Snatcher, Popful Mail, or even Touhou and would like to discover and make the best use of a world of charming FM sound. To create music for this sound chip series for NEC FM boards, first you need to know the basics about these chips.</p>
+<p><span class="style2">The YM2203</span><br>
+    The YM2203 is the first OPN series FM chip from Yamaha. It is monoaural with 3 4-operator FM channels, and includes an onboard YM2149F as its Sound Source Generator, conferring an additional 3 square wave PSG (Programmable Sound Generator). This gives the programmer 6 total sound channels to work with, with the FM channels being markedly more complex to program instruments for.</p>
+<p><span class="style2">The YM2608</span><br>
+    The YM2608 or OPNA, is an expansion of the YM2203 chip—all the FM channels are stereo pannable thanks to an internal stereo DAC. Otherwise, programming FM tones is exactly the same. There exists a few other features that makes the OPNA a bit special though:<br>
+</p>
+<ul>
+<li>The number of FM channels available is increased by 3, for a total of 6 stereo FM channels.</li>
+<li>An ADPCM channel is included, allowing the playback of small ADPCM samples</li>
+<li>An additional sound source is supplied in the form of an ADPCM ROM that has stored drum samples, referred to as the <span class="style4">Rhythm Sound Source</span> for more rhythm options the programmer can use to free up FM channels</li>
+<li>The 86 SoundBoard for PC-9801 includes a different PCM sound source, allowing for a somewhat more limited PCM channel in place of the ADPCM sound source on SpeakBoard/YM2608</li>
+</ul>
+<p>    Now that you've gotten to know the chips a little bit, dear reader, you have some context for actually making music with them. This guidebook will be broken up into multiple chapters for covering the various components of programming SSG envelopes, FM tone data, and special features (including PMD preprocessor macros, LFOs, and more).</p>
+<h2>The Basic PMD Program</h2>
+<p>    A PMD MML program consists of several key parts, which are in no particular order besides the preprocessor and metadata coming first. They consist of:<br>
+</p>
+<ol>
+<li>The preprocessor macros and metadata</li>
+<li>FM tone data</li>
+<li>Macro definitions</li>
+<li>Song sequence data (where macros are expanded by the compiler and SSG envelopes can be specified in-line)</li>
+</ol>
+<p>    A PMD program doesn't necessarily need all components of each piece specified, and macro definitions can be omitted entirely, though they confer various quality-of-life advantages that the savvy music programmer can't afford to ignore for long. More on that later.</p>
+<p>    <span class="style4">The metadata</span> of the song program includes the composer, arranger, the output filetype (.M and .M2 are the focus of this guidebook, though PMD can certainly output programs for a variety of sound boards), optional memos and notes, detune and LFO parameters, tempo, and song title. LFOs can be specified on their own in-line, as can tempo. PMD players will generally take and display metadata and some can display the notes as well.</p>
+<p>    <span class="style4">FM tone data</span> are special instrument definition sections, where all of the FM sound generation parameters are specified and organized into instruments, accessed by FM channels using the @ command. We'll discover those in more detail later.</p>
+<p>    <span class="style4">Macros</span> are handy specially defined segments, which wrap up a piece of song sequence data to potentially be transplanted someplace else without having to copypaste the code, thus saving space and saving the programmer a massive headache if the song needs to be "debugged" in various parts where the same song sequence plays. It's also useful for defining percussion parts, since emulating percussion through the soundchip's various possible commands generally takes more than a single note.</p>
+<p>    <span class="style4">Song sequence data</span> are the actual song sequence, delineated by channel declarations (ABCDEF 123) and containing notes, rests, macro commands, envelope switches, octave jumps, loops, and more. Most of the time spent writing a PMD program is generally spend creating beautiful song data. Below is an example of some song data you might have in your program:</p>
+<pre class="code">    A [cde&gt;f4.]2
+    B @1v12 abfdg&lt;f8
+    
+    ;The SSG part is below!
+    GH v13E1,-3,6,1 [def]3
+    I [!k!c!s8]3 !kr!s!s</pre>
+<p>    Don't worry about what each of those commands above means—yet. And certainly, if you tried to paste this into a PMD MML file, what would compile would sound fairly awful because it just represents a gibberish assemblage of actual PMD commands as you'd see them in a program. The most common ones, of course.</p>
+<p>    In the following section, we'll discuss the basic commands you'll be using most often with PMD, first with defining metadata and then with basic song sequence commands.</p>
+</div><div class="chapter"><h2>Basic PMD Programming</h2><h2>Defining Metadata and Preprocessor Instructions</h2>
+<p><br>
+    In the introductory chapter, we discussed the different parts that make up a basic PMD program. The first of which, is the defining of metadata and preprocessor instructions for the PMD compiler. There are a lot of these different instructions and metadata components, but being that this is a cookbook for getting music playing on an OPN series chip through PMD, we'll only cover the basics for now. Let's see an example!</p>
+<pre class="code">    ;========================
+    ; My PMD Metadata template
+    ;========================
+    
+    #Title		The Programmer - Investigation
+    #Composer	Noyemi Karlaite
+    #Arranger	Noyemi Karlaite
+    #Memo		OPN Version
+    #Detune		Extend
+    #Filename	.M2</pre>
+<p>    In the above sequence, the metadata for the song HDB.M2 is defined. A semicolon denotes a comment line, which can be useful for separating song parts or PMD code components. I'll explain each of the other components in a list:<br>
+</p>
+<ul>
+<li><span class="style2">#Title</span> is for defining the title of a song as it would appear in any PMD playback engine, such as FMPMD for windows</li>
+<li><span class="style2">#Composer</span> and <span class="style2">#Arranger</span> detail who composed the song and who is responsible for that arrangement, respectively</li>
+<li><span class="style2">#Memo</span> is a note field that can be accessed by more advanced PMD players, most likely used for liner notes on music disks</li>
+<li><span class="style2">#Detune</span> specifies that there is an extended range of detune from the default, which is by semitone and not cents</li>
+<li><span class="style2">#Filename</span> specifies the output format that the compiler will render from your code. .M, .M2, .OVI, and others are available, though I recommend .M2</li>
+</ul>
+<p>    I'd recommend following a standard metadata definition section template across all your songs, so it's easy to correct mistakes without having to also correct layout. There exists a few additional instructions that you may find useful that I will cover in later chapters on advanced programming.</p>
+<h2>Song Sequence Data, Macros, and Channel Control</h2>
+<p>    The meat of any PMD sound instruction program is the song sequence data—even beyond defining FM instruments, the bulk of your time will be spent wrangling OPN or OPNA's channels and making them sing. Let's begin with a small example:</p>
+<pre class="code">    ;===============
+    ; Song Sequence
+    ;===============
+    
+    ABCGHI t52
+    
+    A	@0 v14 o4  l16
+    A	 L
+    A   o3 [d8ar &gt;dr8. cr8&lt;g r8c8 d8ar &gt;d8c8gd8f8&lt;c8r]2
+    
+    BC	@1v10 l16
+    C  r16 D-3
+    BC	L
+    BC	o6 [r1]8
+    
+    GHI l16
+    H   r
+    GHI L
+    
+    GH	o5 [r1]8
+    GH	f1.r2 d+1d2.&lt;g4 o4 
+    GH  [d8ar &gt;dr8. cr8&lt;g r8c8 d8ar &gt;d8c8gd8f8&lt;c8r]2
+    
+    ;===============
+    ; SSG Rhythm Sequence
+    ;===============
+    
+    I	[!kr!o8 !sr!c!c !c!s!o8 !sr!kr]2 [!k!c!o!c !s!c!c!c !c!s!o8 !s!c!kr]2</pre>
+<p>    In the above example, you have bits and pieces of a full song. This is not as pleasing to the ear as it could be, but it serves as a useful example for explaining the different commands in play.</p>
+<p>    <span class="style2">Defining Channels</span>: ABCDEF are FM channels, and GHI are the SSG channels. In the previous example, it is meant to be OPN only, so FM4-FM6 are unused. All commands that follow one or more channel declarations will be performed in sequence and by all channels declared, so for instance, the line here will actually be played by SSG1 and SSG2:<br>
+</p>
+<pre class="code">    
+GH  [d8ar &gt;dr8. cr8&lt;g r8c8 d8ar &gt;d8c8gd8f8&lt;c8r]2
+    </pre>
+<p><br>
+    If the code above was copied into a file, you'll note that SSG2 plays a short moment after SSG1, making an echo of sorts. It's a very common technique to have multiple channels playing the same part, but with some detune or delay for a little depth.</p>
+<p>    Essentially, beginning a line with A, B, etc. or any combination will tell the compiler "Hey! Channel(s) X should all play this part after they've done whatever they were just doing."</p>
+<p>    <span class="style2">Notes and Rests</span>: Note commands are quite simple, and any modifiers that notes can use will also apply to rests. Notes are lowercase "abcdefg" and rests are "r". Putting a number (such as 16, 8, 4, 2, 1) after a note or rest specifies its length, corresponding to a ratio of a whole note (1). So, r4 is a quarter rest, a8 an eighth note playing a, and so on. A dotted note (that is, a note extended by half its defined length for some nice intermediate lengths) is represented by a period (.) following length (ex: r1. will be a whole rest and a half)</p>
+<p>    <span class="style2">Octaves, Sharp, and Flat</span>: Octaves are declared as a lowercase "o" followed by a number. o3 a8 is an eighth note playing on the third octave. Sharp and flat are represented by a + or - following the tone specified, and before its length. So, a+16 is a 16th note playing A sharp. <br>
+    You can move between octaves without specifying an octave in the song sequence data using greater than/less than signs (&lt;,&gt;). &gt; moves up an octave from the previous note, and &lt; moves down an octave.  You can picture a sequence such as "abc&gt;a bc<ab c8."="" as="" the="" terms="" between="">&lt; resting on top of a hill in the song, if that helps!</ab></p>
+<p>    <span class="style2">Miscellany</span>: In the example of song sequence data earlier in this chapter, you might have noticed some weird commands that appear to have nothing to do with the score, followed by numbers. There isn't a whole lot to these, so I'll just list them:<br>
+</p>
+<ul>
+<li><span class="style2">t</span> is the Tempo definition command. It uses an integer and appears to be half the compiled song's actual BPM.</li>
+<li><span class="style2">v</span> is the Volume definition command, which ranges from 0-15 for 16 discrete levels, unless volume is extended in the preprocessor or a different volume command is used.</li>
+<li><span class="style2">l</span> is the default Length of a note, when a note declaration isn't followed by a length. So "l16 r" would be a 16th rest.</li>
+<li><span class="style2">@</span> is the timbre selection for FM channels. When FM timbres are defined in the song, they are assigned an ID by the programmer and @ simply points to the ID of the timbre you'd like to use. So, say you have a bass instrument as @1... well, declaring @1 in an FM channel part will switch to that timbre!</li>
+<li><span class="style2">L</span> is the Loop macro. Everything after L in a channel sequence will loop infinitely. If you'd like to set up echo channels, it's best to have the rest declared in the song sequence in a little "setup" declaration before the loop, as I have above. Otherwise, the rest will keep applying and the echo will eventually be thrown completely off timing!</li>
+<li><span class="style2">[ and ]</span>, followed by an integer, encloses a looped section. So, <span class="style2">[ abcdef ]</span>4 will loop the sequence "abcdef" 4 times.</li>
+<li><span class="style2">:</span> escapes from the looped section as noted above. If you have a sequence that loops 4 times, you will escape wherever this macro is placed on the 4th iteration.</li>
+</ul>
+<p>Now you're probably wondering. "Well I've got all that, but do I have to type it in every time I want a section to repeat?" Well, you <span class="style4">can</span> do that. But you can also enclose sequences of commonly used commands, or song sections, into <span class="style2">macros</span>. There's no hard-and-fast rule about keeping them tidy, but generally I follow the convention of using lowercase letters for single-note or command switch macros for automation, and uppercase letters for song sections.</p>
+<p><span class="style2">To define a macro</span>, just use an exclamation point on its own line ( ! ) followed immediately by an upper or lowercase letter. Then, hit space or tab and write in the song sequence you'd like to enclose in the macro, like so:</p>
+<pre class="code">    !B abcd bcd&gt;e&lt;      ;Lead part B
+    !k @10o3v15{c&lt;c}    ;Kick drum </pre>
+<p><span class="style2">Tips and Tricks:</span></p>
+<ul>
+<li>You will often be using rhythm lines, because drums are important. Instead of defining an instrument switch in the song sequence, simply use a macro to enclose these instrument switches and notes, but leave the length for later.</li>
+<li>In PMD, you can put a length after a macro if it ends on a note; this will affect the length of the note if it's a one-note macro being expanded. This is, again, useful for drums.</li>
+<li>You can enclose macros within macros, because the compiler expands them in the driver instruction file when it does its work. This is useful for having a rhythm line <span class="style4">base</span> which is ended on bar 4 or bar 8 with a nice fill that you define.</li>
+</ul>
+</div><div class="chapter"><h2>Using the SSG Channels</h2><h2>Envelopes and Quantization step</h2>
+<p>Controlling the SSG is pretty simple. If no envelope is defined, the note commands will simply trigger the SSG and generate a square wave for the duration of the note time.</p>
+<pre class="code">   
+    G o5 a8 ;This causes SSG1 to generate an 8th note at A5... a "blocky" timbre!
+   </pre>
+<p>If we want to go into more detailed control of the SSG channels (G, H, and I) we will do so with the help of <span class="style4">SSG Envelopes</span>. This is not to be confused with the SSG-EG feature which works with FM channels, mind. Envelopes take the form of a small array of parameters, either 4 or 5, which controls the volume of the channel during a note event.</p>
+<p>You can store an envelope for the channel(s) to play by defining it in the song sequence. I like to do it on its own line, before parts are switched or, in most cases, before the channel begins to play.</p>
+<pre class="code">    ;========================
+    ;Example of some Envelopes
+
+    GH v15 E1,-1,2,1  ;short, fast attack envelope for G and H
+    I  v13 E3,2,7,3   ;for I here, we have an envelope with a longer curve and slower attack
+   </pre>
+<p>It's fairly simple! After calling the envelope "constructor" with E, you supply a sequence of values (Attack, Decay, Sustain, Release). This will control the volume of the channel, and lower numbers means a faster time. But how do we control the envelopes over a larger frame of reference without constructing new ones? Easy, by changing the <span class="style4">envelope quantization step</span>.</p>
+<p>Change envelope quantization in-line during the song sequence with the "q" command, followed by a note length to quantize to. q16 for 16th note quantization of the SSG envelope, q8 for eighth note, and so on!</p>
+<h2>Extra Controls</h2>
+<p>For you control freaks out there, you can control your SSG channels in even more ways with two additional commands. <span class="style4">D</span> and <span class="style4">P</span> are commands you might have seen in some of my MML source files, though you may not have seen <span class="style4">P</span> actually used for the SSG (as for FM, the lowercase <span class="style4">p</span> is the <span class="style4">pan</span> command!)</p>
+<p><span class="style4">P</span> selects a tone generation mode for your SSG. Normally, mode 1 is used ( <span class="style4">P1</span> ). This is the regular square wave generator mode. Mode 2 will generate <span class="style4">pseudorandom</span> noise, and mode 3 will generate <span class="style4">periodic</span> noise, which is noise with a subtle tonality due to its periodicity. These are useful to know, as they can allow you to create SSG drumkits for use when you don't have any free FM channels to work with, or you simply like the style of SSG rhythm.</p>
+<pre class="code">   
+;===============
+; SSG Rhythm Macros
+;===============
+
+!k P3 q8 v15E31,-1,0,1 o3{c&lt;c}
+!s P3 q16 v15E31,2,2,1 o4{c&lt;c}
+!c P2 v14E31,4,4,0 q16 o4c
+!o P3 v13E0,8,4,8 q4 o8g+
+   </pre>
+<p><br>
+    <br>
+<span class="style4">D</span> is a simple but important command, as it does <span class="style4">detune</span>. This is actually the reason some SSG parts in my works have the kind of "bright" quality they do—two SSG channels playing the same note detuned, or echoed with slight detune, really adds some extra dimension to the sound. If you have a channel free to do it, try it out!</p>
+<pre class="code">   
+GH v13E12,2,4,1
+GHI l16
+H	r D2
+GHI L
+
+GH	o5
+GH	f1.r2 d+1d2.&lt;g4 o4 [d8ar &gt;dr8. cr8&lt;g r8c8 d8ar &gt;d8c8gd8f8&lt;c8r]2
+GH	o5 [d8&lt;d8 g8a&gt;c r4 r&lt;g&gt;c&lt;a &gt;dr&lt;d8 g8ar &gt;g8rf rdc8]2
+   </pre>
+<p>In the next part I'll talk about creating FM tones to use your FM channels on!</p>
+</div><div class="chapter"><h2>Using the FM Channels</h2><h2>Programming FM patches</h2>
+<p><span class="style2">NOTE</span> - For brevity's sake, I won't be covering how FM synthesis works in this guide. It's merely to understand the programming of patches for PMD (and, if modified slightly, KOLIN2 and some other APIs). You would be well served, dear reader, by using patches from Takeshi Abo's VAL-SOUND site since they basically work when copypasted into a PMD source file without any alteration. Or, less alteration than would be needed for KOLIN2, bizarrely enough.</p>
+<p>Controlling the FM channels in the sequence (ABCDEF) largely follows the same rules as the SSG, but programming patches for them is much different! Take a look at this example patch:</p>
+<pre class="code">   ; nm alg fb
+@01 04 05				=	Vibraphone
+; ar dr sr rr sl tl ks ml dt ams
+24,14, 0, 7,15,44, 1,12, 3, 0
+24,10, 0, 7,15, 0, 1, 4, 7, 0
+26,14, 0, 6,15,57, 1, 4, 7, 0
+29, 8, 0, 6,15, 0, 2, 2, 3, 0
+   </pre>
+<p>Each patch has up to four distinct sets of parameters, one per operator, plus three channel parameters. Note that values can be delineated with commas or spaces, but the end of an operator parameter definition cannot be marked by commas or the compiler will expect an additional value and throw an error.</p>
+<p><span class="style2">NOTE</span> - Instrument parameters are always in decimal! The numbers here, for compatibility and ease of understanding will be in decimal as well, as a result.</p>
+<p>Let's begin with the channel definition part, because it's much easier to understand.<br>
+</p>
+<pre class="code">   ; nm alg fb
+nm = Instrument offset
+alg = FM modulation algorithm (0~7)
+fb = slot 1 self-modulation count/feedback (0~7)
+   </pre>
+<p><span class="style2">Instrument Offset</span> is the offset called to load a specific patch into the channel. The offset can be thought of as the pointer to the patch, making it easy to load patches on the fly during a channel program playback sequence.</p>
+<p><span class="style2">Algorithm</span> refers to one of 8 FM operator setups specifying the relationship between the carriers (slots) and modulators, or even the number of carriers. Multiple-carrier algorithms can also be called multiple-slot algorithms, which is a useful way to think of them—slots are individual output operators which generate the actual waveforms heard by the listener. Algorithms 0~3 have one slot with various modulator setups, while algorithms 4~7 are multi-output algorithms with 1 2-output scheme, 2 3-output schemes, and 1 4-output scheme (with Operator 1 still being self-modulated!)</p>
+<p><span class="style2">Feedback</span> is a parameter specifying the amount of self-modulation carried on by Operator 1, which is almost always a modulator of some kind for one or more of the carrier outputs (or other modulators) and only outputs its own waveform in Algorithm 7.</p>
+<p>Now that the channel-wide parameters are out of the way, let's continue to individual operator parameter specifications:</p>
+<pre class="code">   ; ar  dr  sr  rr  sl  tl  ks  ml  dt ams
+ar = Attack Rate (0~31)
+dr = Decay Rate (0~31)
+sr = Sustain Rate (0~31)
+rr = Release Rate (0~15)
+
+sl = Sustain Level (0~15)
+tl = Total/Peak Level (0~127)
+ks = Keyscale Rate (0~3)
+ml = frequency multiplier (0~15)
+dt = Detune (-3~3) or (0~7)
+ams = AMS mask flag (0-1)
+   </pre>
+<p><span class="style2">Attack Rate</span> is the speed of the attack phase of the ADSR envelope (0 is slowest, 31 is instant)</p>
+<p><span class="style2">Decay Rate</span> is the speed of the decay phase of the ADSR envelope (0 is slowest decay, 31 is fastest)</p>
+<p><span class="style2">Sustain Rate</span> is the speed of the envelope's decay from the Sustain Level to negative infinity.</p>
+<p><span class="style2">Release Rate</span> is the speed of the envelope's decay from the current keyoff point to negative infinity.</p>
+<p><span class="style2">Sustain Level</span> is the level of the output volume at the Decay/Sustain changepoint—this is the level that decay drops to over the course of the peak level (TL at the end of the Attack) to the beginning of the Sustain phase. Lower values are a louder sustain level.</p>
+<p><span class="style2">Total/Peak Level</span> is the amplitude of the output at the end of the Attack phase of the envelope. 0 is loudest.</p>
+<p><span class="style2">Keyscale Rate</span> is the speed of the amplitude envelope of the operator, with respect to the frequency of the current note. Higher numbers mean a larger difference in envelope speed between a given note and higher notes.</p>
+<p><span class="style2">Frequency Multiple</span> is the number the generated frequency is multiplied by. Powers of two indicate octave increases, while in-betweens will generate inharmonic frequencies which might be desired for bell-like sounds or clangs or effects. <span class="style4">Note: A frequency multiple of 0 divides the output frequency by 2 rather than making it silent.</span></p>
+<p><span class="style2">Detune</span> is simple, semitone frequency offset of the operator. High levels of detune might be desired for bell-like sounds or clangs, or some kinds of grittier bass instruments.</p>
+<p><span class="style2">AMS Mask Flag</span> is a special flag which, when set, allows an operator to have its envelope looped over the course of its keyon by the SSG-EG feature of the OPN series with SSGs.</p>
+<h2>Special Features</h2>
+<p>For now, try to imagine what kinds of fun things can be done with this... I'll update it later with more information.</p>
+</div></div></body></html>

@@ -1,0 +1,412 @@
+
+<!-- saved from url=(0048)https://www.atarimagazines.com/v4n7/stsound.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>ST Sound</title>
+<meta name="Author" content="Patrick Bass">
+<meta name="description" content="ST Sound. Hearing The AY-3-8910 Chip. From Antic Vol. 4, No. 7 / November 1985">
+</head>
+
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#800080" alink="#FF0000"><pre><a href="https://www.atarimagazines.com/antic/"><img src="./ST Sound_files/antic.gif" height="46" width="152" alt="Classic Computer Magazine Archive" align="center" border="0"></a> ANTIC VOL. 4, NO. 7 / NOVEMBER 1985</pre><hr>
+
+
+<div name="topadholder" id="topadholder" style="display: block; min-width:800px; text-align:left;padding:25px 10px 10px 20px;line-height:9.5pt;clear:both;"></div>
+ <table style="zoom:1; min-width:800px;  border-width: 1px; border-spacing: 2px; border-style: dotted; border-color: gray; border-collapse: separate;">
+<tbody><tr><td style="vertical-align:top; zoom:1; min-width:400px;">
+<div id="main_article" name="main_article" style="zoom: 1; min-width:400px;">
+<div id="spacer" style="width:400px;"></div>
+ 
+
+<center><h1>ST SOUND</h1><p>
+</p><h2>Hearing the AY-3-8910 chip</h2><p>
+by PATRICK BASS, <b>Antic</b> Program Editor</p></center><p>
+
+Atari 8-bit computers make music using a chip called POKEY, and control is limited to choosing pitch and volume.  Fancy music can be played, but only at great cost in processing time.  The Atari 520ST uses a newer sound chip, the AY-3-8910, made by General Instrument Corp.  This chip has been used in many Apple II add-on music boards, and it has also been selected for all Japanese computers using the MSX standard.</p><p>
+    The AY-3-8910 can play music through as many as three voices at the same time. Each voice has 4,096 different pitches and full control over the ADSR (Attack, Decay, Sustain, Release) envelope.</p><p> 
+    The chip produces sound by dividing an incoming Master clock frequency by 16, and then by the number stored in the voice's frequency register.  Every time the number counts down to zero, that voice's sound output line is toggled, in effect creating an output square wave.  A square wave creates a tone similar to a woodwind or reed instrument.</p><p><br>
+ 
+<b>THE REGISTERS</b></p><p>
+The AY-3-8910 has 16 separate registers, numbered $00-$0F.  Each register is eight bits wide, but some registers do not use all their assigned bits.  These registers are shown in the diagram in Figure 1.</p><p>
+     In the left column you can see the register number, the middle column shows the register function names, and the right-hand column maps the bit-assignment for each register, numbered from 7 to 0.  The last two registers, $0E and $0F, are input/output ports and have no bearing on the operation of the AY-3-8910 in making sound.</p><p>
+     Registers $00 through $05 control the frequency (pitch) of each voice.  The six registers are paired off for each of the three voices.  Bits 0-7 of the note are in the first register of each pair, and bits 8-11 can be found in bits 0-3 of the second register.  The remaining four bits are not used.  Thus, each of the three paired note registers form a 12-bit number whose value ranges from zero to 4095.</p><p>
+     Given a master clock frequency of 2 megahertz divided by 16, or 125 Khz, and setting no bits for highest frequency, we get a hightest note of 125Khz divided by zero or 125,000 cycles per second.  If we set all the bits in the frequency register, the lowest note is 125Khz divided by 4095, or roughly 30 cycles per second.</p><p>
+     We can output either pure tones or "noise."  The random noise is also produced through a square wave.  The period (width) of this square-shaped pulse of sound affects its tone, and is controlled by register $06.  Five bits of resolution offer a range of 0-31.  In effect, this control acts just like the treble/bass tone control on your stereo.  Low numbers stored in this register will "brighten" the noise and high numbers will "mute" the noise.</p><p>
+     Register $07 has multiple functions.  Looking at the register from the right, bits 0-2 control if voices A, B and C play pure tones.  These are needed for music.  The bar above TONE means, "This function is active when the bit is a zero, or LO."  No bar shows that a one, or HI, is needed.  Bits 3-5 control if noise is played through A, B or C.  This would be used for explosions, jet planes, etc.</p><p>
+     Bits 6 and 7 have nothing to do with sound.  They control if the two I/O ports located in registers $0E and $0F are input or output ports.  Since register $07 controls your floppy I/O, be sure and save its state before you alter it, or you will surely lose contact with your disk drives.</p><p>
+     Registers $08, $09, and $0A have split functions.  First, bits 0-3 control the volume of the voice chosen.  Four bits of resolution give us a range of 0-15.  Zero is off, and 15 is loudest.  However, if bit 4, the "M" bit in the diagram, is set to a 1 then the lower four bits are ignored, and volume information is taken from Registers $0B, $0C and $0D, which enables effects such as wah-wah and vibrate.</p><p><br>
+ 
+<b>ADSR ENVELOPE</b></p><p> 
+Registers $0B and $0C control how long each stage of the ADSR envelope lasts.  These two full registers give 16 bits of resolution, or a range of 0-65535.  The incoming master clock frequency here is first divided by 256, then this result is divided by the 16-bit number in registers $0B and $0C.</p><p>
+     The result is how long each stage of your desired ADSR envelope lasts.  "Attack" is how quickly the sound rises from silence to its greatest volume.  "Decay" is the time required for the sound level to fall to a constant level, called the "Sustain," where it continues to play until falling off to silence, or "Release."</p><p>
+     Register $0D allows the programmer to select which section of the ADSR envelope is operating.  The upper four bits are unused, but the lower four bits are: set to select    one of 10 available waveforms. (See Figure 2.)  For example, at the bottom of the chart, when al! four bits are set, the resulting waveform will start at silence, rise to its greatest volume, then end suddenly and stay silent.  The waveform above that (bit pattern 1110) causes the volume of the sound to rise and fall in a repeating pattern.</p><p>
+     As previously mentioned, registers $0E and $0F are I/O Ports A and B and have nothing to do with sound output.  They connect to RS232, floppy, DMA, and parallel ports.</p><p> <br>  
+
+<b>SOUND DEMO</b></p><p>    
+This month's Sound Demonstration program demonstrates how to read and write values to the AY-3-8910.  The program is written in the C language.  Last month's issue of Antic introduced the fundamentals of C programming for the Atari ST computers.</p><p>
+     The ST Sound program tracks the mouse as it is moved around the dektop, and the mouse's X and Y position values are used as notes for Voices A and B respectively. Current results are then printed to the screen with special GEM VDI graphics text calls. The [LEFT-SHIFT] key raises the volume, and the [ALTERNATE] key lowers it.  Pressing the left mouse button will exit the program.</p><p>     
+ 
+ <table>
+ <tbody><tr align="CENTER">
+ <td><em><font size="2">Figure 1</font></em></td>
+ </tr>
+ <tr align="CENTER">
+ <td><b>AY-3-8910 REGISTERS</b></td>
+ </tr>
+ <tr>
+ <td>                               
+<table border="0">
+<tbody><tr><td width="500"> </td><td align="CENTER" width="500">BIT</td></tr>
+</tbody></table> 
+
+<table border="2">
+<tbody><tr align="CENTER">
+<td width="80">REGISTER</td> <td width="150"> </td> <td width="40"> B7</td> <td width="40">B6</td><td width="40">B5</td> <td width="40">B4</td><td width="40">B3</td><td width="40">B2</td><td width="40">B1</td><td width="40">B0</td>
+</tr>
+<tr align="CENTER">
+<td>$00</td><td rowspan="2">CHANNEL A<br>FREQUENCY</td> <td colspan="8">8 BIT FINE TUNE A</td>
+</tr>
+<tr align="CENTER">
+<td>$01</td><td colspan="4" bgcolor="GRAY">&nbsp;</td> <td colspan="4">COURSE TUNE A</td>
+</tr>
+
+<tr align="CENTER">
+<td>$02</td><td rowspan="2">CHANNEL B<br>FREQUENCY</td> <td colspan="8">8 BIT FINE TUNE B</td>
+</tr>
+<tr align="CENTER">
+<td>$03</td><td colspan="4" bgcolor="GRAY">&nbsp;</td> <td colspan="4">COURSE TUNE B</td>
+</tr>
+
+<tr align="CENTER">
+<td>$04</td><td rowspan="2">CHANNEL C<br>FREQUENCY</td> <td colspan="8">8 BIT FIN TUNE C</td>
+</tr>
+<tr align="CENTER">
+<td>$05</td><td colspan="4" bgcolor="GRAY">&nbsp;</td> <td colspan="4">COURSE TUNE C</td>
+</tr>
+</tbody></table><br>
+
+<table border="2">
+<tbody><tr align="CENTER">
+<td width="80">$06</td><td width="143">NOISE PERIOD</td> <td width="125" bgcolor="GRAY">&nbsp;</td><td width="187">5 BIT PERIOD CONTROL</td>
+</tr>
+</tbody></table> 
+
+
+<table border="2">
+<tbody><tr align="CENTER">
+<td width="105" rowspan="2">$07</td><td width="170" rowspan="2">VOICE<br>ENABLE</td><td colspan="2">IN/OUT</td><td colspan="3">NOISE</td><td colspan="3">TONE</td>
+</tr>
+
+<tr align="CENTER"><td width="40">IOB</td><td width="40">IOA</td><td width="40">C</td> <td width="40">B</td><td width="40">A</td><td width="40">C</td><td width="40">B</td><td width="40">A</td>
+</tr>
+</tbody></table>
+
+   <table border="2">
+<tbody><tr align="CENTER">
+<td width="80">$08</td><td width="143">CHANNEL A VOLUME</td> <td width="125" bgcolor="GRAY">&nbsp;</td><td width="30">M</td> <td width="33">L3</td><td width="32">L2</td> <td width="32">L1</td><td width="34">L0</td>
+</tr>
+
+<tr align="CENTER">
+<td width="80">$09</td><td width="143">CHANNEL B VOLUME</td> <td bgcolor="GRAY">&nbsp;</td><td>M</td> <td>L3</td><td>L2</td> <td>L1</td><td>L0</td>
+</tr>
+
+<tr align="CENTER">
+<td width="80">$0A</td><td width="143">CHANNEL C VOLUME</td> <td bgcolor="GRAY">&nbsp;</td><td>M</td> <td>L3</td><td>L2</td> <td>L1</td><td>L0</td>
+</tr>
+</tbody></table>
+
+
+<table border="2">
+<tbody><tr align="CENTER">
+<td width="80">$0B</td><td width="143" rowspan="2">ENVELOPE<br>PERIOD</td><td>8 BIT FINE TUNE E</td>
+</tr>
+
+<tr align="CENTER"><td width="80">$0C</td> <td width="320">8 BIT COARSE TUNE E</td>
+</tr>
+</tbody></table><br>
+
+<table border="2">
+<tbody><tr align="CENTER">
+<td width="80">$0D</td><td width="143"><font size="2">ENVELOPE SHAPE/CYCLE</font></td> <td width="165" bgcolor="GRAY">&nbsp;</td><td width="30"><font size="1">CONTIN-<br>UE</font></td><td width="30"><font size="1">AT-<br>TACK</font></td>
+<td width="30"><font size="1">ALTER-<br>NATE</font></td>
+<td width="35"><font size="1">HOLD</font></td>
+</tr>
+</tbody></table>  
+
+
+<table border="2">
+<tbody><tr align="CENTER">
+<td width="80">$0E</td><td width="143">I/O PORT A</td><td>8 BIT PARALLEL PORT A</td>
+</tr>
+
+<tr align="CENTER"><td width="80">$0F</td><td width="143">I/O PORT B</td> <td width="320">8 BIT PARALLEL PORT B</td>
+</tr>
+</tbody></table>
+</td></tr>
+</tbody></table>
+<br><br>
+
+</p><p><b>PROGRAM TAKE APART</b></p><p> 
+Since this program is quite similar to the GEM Color Cascade program presented last month, we can skim over the declaration and opening of a workstation.  At the top we see a block of #include files, which have pre-written definitions in them.  Next, a long line of int's, which here act just like initializing a variable in BASIC.  Since int's are 16bit values and the AY-3-8910 registers are eight bits wide we define our notes, note_lo and note_hi, as char's, or 8-bit values.</p><p>
+     We have one function defined in this program, main( ).  The instructions that follow down through yres = 1_out[l]; say, "Initialize the application (program), get the 'handle,' or ID number, of this window, initialize an input array called l_intin, open a workstation, and get the width and height of this window (xres, yres)."  The graf_mouse() (graphics mouse) call changes the mouse form into a pointing finger, which is one of seven pre-defined mouse forms stored inside the computer.</p><p>
+      Next come new text functions.  The function vst_effects( )(VDI-Set Text Effects) determines how the letters will be displayed.  Choices such as normal, thickened, skewed (italics) and outlined are available.  Notice we llll have defined four types in our variable declarations.  The first vst_effects() call says, "In window 'handle,' use skewed characters."</p><p>
+		 Right after that call, on the same line, is a vst_color() call (VDI-Set Text Color) which selects the color the text will be printed in.  The call vst_color(handle, BLUE) says, "In window 'handle', draw the needed text in color 'BLUE'."  BLUE represents a value previously defined in the #included file "obdefs.h".</p><p>
+		 On the next line is the GEM call to print a text string to the screen: v_gtext() (VDI Graphic Text).  The call requires that we tell it which window number to write to, the X,Y co-ordinates where the text will start, and the string itself or its address.  So, combining the two lines of instructions above, we wind up printing skewed blue text to cursor position 10, 20.</p><p>
+      The next four pairs of lines print the rest of our text in various shapes and colors. We now come to the first call we make to the AY-3-8910 itself.</p><p> <br>
+
+<b>SOUND CHIP CALL</b></p><p> 
+The GEM call Giaccess() (General Instruments Access) takes the form: result=Giaccess (value, register).  To write to register, add 128 to the register number, otherwise the register will be read and a number returned.</p><p> 
+     When writing, the amount to write is supplied by our program in value and when reading, the registers' value is returned in result.  These first two calls access registers $08 and $09, setting voices A and B at an initial volume of eight, or about halfway.  Press the [LEFT-SHIFT] key to raise the volume, and press the [ALTERNATE] key to lower the volume.  Press the left mouse button to exit.</p><p>
+     On the next line we save the number in the port control register in port_state, so later when we exit we don't lose touch with the disks.  The next line is a Giaccess( ) call that accesses register $07 and turns on voices A and B so they use pure tones.  We use the decimal number 60 here because 60 is the decimal value of the binary bit patterm (00 111 100) used to activate voices A and B. </p><p>
+     For bits 0, 1 and 2, bit 2 is voice C.  We do not use it, so we set that bit to a one. Bits 1 and 0 are voices B and A, respectively.  They are active so we place a zero in their bits.  We do not want random noise (bits 3, 4 and 5) in any voice so we set each voice bit to a one.  Remember, a bar above means the function is active when LO.  The upper two bits, 6 and 7, which control the direction of each I/O port, are not used in our program and are thus relegated to zero.</p><p>
+    Next we enter a DO. . WHILE loop.  In effect, we DO make noise WHILE not told to stop by pressing the left mouse button.  The first GEM call and a block of four IF statements questions the keyboard and determines if the [LEFT-SHIFT] or [ALTERNATE] keys are pressed.  If so, it adjusts the volume.</p><p>
+		 The next two Giaccess() calls update the current volume.  Now we call vq_mouse() (VDI Question Mouse) which answers whether the mouse button was pressed and locates where the mouse is.</p><p><br>
+<img src="./ST Sound_files/stsound2.jpg" align="right">
+
+
+<b>X,Y VOICES</b></p><p> 
+The next line sets x_note to a value proportional to both the mouse X-coordinate on the screen, and to the range of values the frequency counter can take.  We take this value in x_note and bitwise break it into an 8-bit LO byte and a 4-bit HI nibble which are put in note_lo and note_hi.  Then we call Giaccess() to turn on voice A with the results.</p><p>
+		  The next block of code does the same for voice B and the Y-coordinate.</p><p>
+		  The following three blocks of lines print to the screen the values we are using for the frequencies and volume.  The variable number1 is a floating-point variable.  It is needed for the line below, which converts a floating-point number to an ASCII string.  The call ftoa() (float-to-ASCII) reads: "ftoa( number to print, buffer to build number in, number of digits to right of decimal point)."  The GEM calls vst_effects(), vst_color() and v_gtext() then set the text style and color, and print out the number.</p><p>
+     The line that ends the loop tests the value we picked up in the vq_mouse() call.  If  m_state is any value greater than zero, the button has been pressed.</p><p>
+		 To clean up, we make two Giaccess() calls.  One shuts off voices by turning the volume all the way down.  The second restores the I/O Ports to the way we found them when we walked in.  We then perform a standard GEM exit.</p><p>
+Listing: Sound.c
+
+
+
+
+</p></div>
+</td><td style="width:330px; min-width:330px; vertical-align:top; zoom:1; ">
+<div id="sideadplaceholder" style=" width:340px; min-width:340px;">
+
+</div>
+          
+</td></tr></tbody></table>
+
+
+
+
+
+
+<div style="display: none">
+
+<!--[if !IE]-->
+<script type="text/javascript">
+var adcountoffset=0;
+var aheightoffset=0;
+var aheightfactor=0;
+</script>
+
+<!--[endif]-->
+<!--[if IE]>
+<script type="text/javascript">
+var adcountoffset=0;
+var aheightoffset=19;
+var aheightfactor=0.023;
+</script>
+<![endif]-->
+
+<script type="text/javascript">
+			        
+			            
+                  var maxAds = 20; 
+                  google_max_num_ads = 6;
+                  var elementId = "main_article";
+                     var col = document.getElementById(elementId);  // determining the height of column to adjust number of ads
+              var article_height=parseInt(col.offsetHeight-aheightoffset-((col.offsetHeight-aheightoffset)*aheightfactor)); //compensate for IE
+
+                if (col) // if defined, trying to calculate how many ads to show
+                {
+                    var article_height=col.offsetHeight-aheightoffset;
+               
+                    var adHeight = 80;
+                    numberOfAds = Math.floor(article_height / adHeight);
+                    numberOfAds = parseInt(numberOfAds);
+                  
+                    numberOfAds = ((numberOfAds+5+adcountoffset) >= maxAds) ? maxAds : (numberOfAds+5+adcountoffset); //limiting numberOfAds
+                   
+                    google_max_num_ads=(numberOfAds > google_max_num_ads) ? numberOfAds :  google_max_num_ads;
+                    
+
+                }
+			            function google_ad_request_done(google_ads){
+			                var s = '<div style="width:330px; text-align:left;padding:25px 10px 0px 10px; line-height:15pt;" >';
+			                s += '<a href=\"' + google_info.feedback_url + '\" style="clear:both; margin-left:0px;margin-top:-15px;display:block;color:#666666;font-family:verdana,arial,sans-serif; text-decoration: none; font-weight:500; font-size:9pt;">Ads by Google</a><div>';
+			                var i;
+			                
+			                if (google_ads.length == 0) {
+			                    return;
+			                }
+			                if (google_ads[0].type == "flash") {
+			                    s += '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"' +
+			                    ' codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" WIDTH="' +
+			                    google_ad.image_width +
+			                    '" HEIGHT="' +
+			                    google_ad.image_height +
+			                    '"> <PARAM NAME="movie" VALUE="' +
+			                    google_ad.image_url +
+			                    '">' +
+			                    '<PARAM NAME="quality" VALUE="high">' +
+			                    '<PARAM NAME="AllowScriptAccess" VALUE="never">' +
+			                    '<EMBED src="' +
+			                    google_ad.image_url +
+			                    '" WIDTH="' +
+			                    google_ad.image_width +
+			                    '" HEIGHT="' +
+			                    google_ad.image_height +
+			                    '" TYPE="application/x-shockwave-flash"' +
+			                    ' AllowScriptAccess="never" ' +
+			                    ' PLUGINSPAGE="http://www.macromedia.com/go/getflashplayer"></EMBED></OBJECT>';
+			                                    if(document.getElementById('topadholder')) {
+                                           document.getElementById('topadholder').innerHTML = s;
+                                          }
+			                    
+			                }
+			                else 
+			                    if (google_ads[0].type == "image") {
+			                    
+			                        s += '<a href="' +
+			                        google_ads[0].url +
+			                        '" target="_top" title="go to ' +
+			                        google_ads[0].visible_url +
+			                        '" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to ' +
+			                        google_ads[0].visible_url +
+			                        '\';return true"><img border="0" src="' +
+			                        google_ads[0].image_url +
+			                        '"width="' +
+			                        google_ads[0].image_width +
+			                        '"height="' +
+			                        google_ads[0].image_height +
+			                        '"></a>';
+			        			              if(document.getElementById('topadholder')) {
+                                           document.getElementById('topadholder').innerHTML = s;
+                                  }
+			                        
+			                    }
+			                    else 
+			                        if (google_ads[0].type == "html") {
+			                            s += google_ads[0].snippet;
+
+			                            			  if(document.getElementById('topadholder')) {
+                                           document.getElementById('topadholder').innerHTML = s;
+                                          }
+			                        }
+			                        else {
+                                if (google_ads.length == 1) {
+			                                s += '<a style="line-height:18pt; letter-spacing: 2px; color:blue;font-family:verdana,arial,sans-serif;" href="' +
+			                                google_ads[0].url +
+			                                '" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to ' +
+			                                google_ads[0].visible_url +
+			                                '\';return true"> <span style="font-size:18pt;font-weight:bold;"> ' +
+			                                google_ads[0].line1 +
+			                                '</span></a> <span style="line-height:18pt; letter-spacing: 2px; text-decoration:none;color:#0e0e0e;font-family:verdana,arial,sans-serif;font-size:14pt;font-weight:400;">&nbsp;-&nbsp;' +
+			                                google_ads[0].line2 +
+			                                '&nbsp;' +
+			                                google_ads[0].line3 +
+			                                '</span><br /><span><a style="color:blue;letter-spacing: 1.5px;font-size:13pt;font-weight:400;text-decoration:none;font-family:verdana,arial,sans-serif;" href="' +
+			                                google_ads[0].url +
+			                                '" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to ' +
+			                                google_ads[0].visible_url +
+			                                '\';return true">' +
+			                                google_ads[0].visible_url +
+			                                '</span></a><br>';
+			                                    if(document.getElementById('topadholder')) {
+                                           document.getElementById('topadholder').innerHTML = s;
+                                          }
+			                                
+			                            }
+			                            else
+			                            {
+			                            if (google_ads.length > 1) {
+			                              var s1 = '<div style="display: block; min-width:800px; text-align:left;padding:25px 10px 10px 20px;line-height:9.5pt;clear:both;" >';
+                                  s1 += '<a href=\"' + google_info.feedback_url + '\" style="clear:both;margin-left:0px;margin-top:-15px;position:absolute;display:block;color:#666666;font-family:verdana,arial,sans-serif; text-decoration: none; font-weight:500; font-size:9pt;">Ads by Google</a><div>';
+			           
+			                                for (i = 0; i < 5; ++i) {
+                                          s1 += '<div style="display: block; margin-right:2px;">';
+			                                    s1 += '<a style="letter-spacing: 1.5px;color:blue;font-family:verdana,arial,sans-serif;font-size:10pt;font-weight:bold;" href="' +
+			                                    google_ads[i].url +
+			                                    '" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to ' +
+			                                    google_ads[i].visible_url +
+			                                    '\';return true">' +
+			                                    google_ads[i].line1 +
+			                                    '</a> <span style="text-decoration:none;letter-spacing: 1.5px;color:#0e0e0e;font-family:verdana,arial,sans-serif;font-size:10pt;font-weight:400;">' +
+			                                    google_ads[i].line2 +
+                                          '&nbsp;' +
+			                                    google_ads[i].line3 +
+			                                    '</span> <span><a style="line-height:normal;color:blue;letter-spacing: 1.2px;font-size:9pt;font-weight:400;text-decoration:none;font-family:verdana,arial,sans-serif;" href="' +
+			                                    google_ads[i].url +
+			                                    '" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to ' +
+			                                    google_ads[i].visible_url +
+			                                    '\';return true">' +
+			                                    google_ads[i].visible_url +
+			                                    '</span></a>';
+			                                    s1 += "</div><br />"
+			                                     
+			                                }
+                                     
+                                       if(document.getElementById('topadholder')) {
+                                           document.getElementById('topadholder').innerHTML = s1;
+                                          }
+                                          if (google_ads.length>5)
+                                          {
+                                          s2=s;
+                                  
+                                         for (i = 5; i < google_ads.length; ++i) {
+                                         
+			                                    s2 += '<div style="margin-right:2px;">';
+			                                    s2 += '<a style="color:blue;font-family:courier new,verdana;font-size:12pt;font-weight:bold;" href="' +
+			                                    google_ads[i].url +
+			                                    '" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to ' +
+			                                    google_ads[i].visible_url +
+			                                    '\';return true">' +
+			                                    google_ads[i].line1 +
+			                                    '</a><br /><span style="text-decoration:none;letter-spacing: 1.5px;color:#0e0e0e;font-family:verdana,arial,sans-serif;font-size:10pt;font-weight:400;">' +
+			                                    google_ads[i].line2 +
+                                          '&nbsp;' +
+			                                    google_ads[i].line3 +
+			                                    '</span> <span><a style="line-height:normal;color:blue;letter-spacing: 1.2px;font-size:9pt;font-weight:400;text-decoration:none;font-family:verdana,arial,sans-serif;" href="' +
+			                                    google_ads[i].url +
+			                                    '" onmouseout="window.status=\'\'" onmouseover="window.status=\'go to ' +
+			                                    google_ads[i].visible_url +
+			                                    '\';return true">' +
+			                                    google_ads[i].visible_url +
+			                                    '</span></a><br /><br />';
+			                                    s2 += "</div>";
+			                
+			                                     
+			                                }
+                                  
+		                                       if(document.getElementById('sideadplaceholder')) {
+                                           document.getElementById('sideadplaceholder').innerHTML = s2;
+                                          }
+                                        }
+			                               }
+			                            }
+			                        }
+			            
+			                
+			                return;
+			            }
+			            google_ad_output = 'js';
+                  google_feedback = 'on';
+                  google_ad_client = "pub-0754410284344153";
+                  google_alternate_color = "FFFFFF";
+                  google_ad_channel ="1234567886";
+                  google_ad_type = "text";
+                  google_color_border = "FFFFFF";
+                  google_color_bg = "FFFFFF";
+                  google_color_link = "0000EE";
+                  google_color_url = "0000EE";
+                  google_color_text = "000000";
+			                
+
+			            
+			        </script>
+  </div>
+
+<hr>
+<ul>
+<li><a href="javascript:history.back()">Back to previous page</a>
+</li><li><a href="https://www.atarimagazines.com/index/?issue=v4n7">View this issue's table of contents</a>
+</li></ul>
+
+
+</body></html>

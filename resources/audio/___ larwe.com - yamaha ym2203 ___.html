@@ -1,0 +1,2304 @@
+
+<!-- saved from url=(0047)http://www.larwe.com/technical/chip_ym2203.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+		
+		<title>::: larwe.com - yamaha ym2203 :::</title>
+		<meta name="KEYWORDS" content="yamaha ym2203 2203 opn fm operator chip eprom read rom burn prom kit schematic diagram technical tech game arcade coinop coin help data info fix repair emulator rom image picture sound music screen screenshot data pinout switch setting setup connection wiring wire switches dip jumper socket connector jamma harness convert board boardset"><meta name="DESCRIPTION" content="Yamaha YM2203 FM operator technical reference">
+		<meta name="DESCRIPTION" content="Short-form datasheet for the Yamaha YM2203 audio IC used in arcade games and (a close relative) in the Atari ST.">
+		<link href="./___ larwe.com - yamaha ym2203 ____files/main.css" rel="styleSheet" type="text/css">
+	</head>
+
+	<body>
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tbody><tr height="48">
+				<td align="left" valign="middle" width="260"><img src="./___ larwe.com - yamaha ym2203 ____files/lo_259x43.png" alt="larwe.com logo" width="259" height="43"></td>
+				<td align="right">
+				<a href="http://www.larwe.com/index.html"><img src="./___ larwe.com - yamaha ym2203 ____files/48_home.png" alt="Home" border="0"></a>
+				<a href="mailto:larwe@larwe.com"><img src="./___ larwe.com - yamaha ym2203 ____files/48_contact.png" alt="Contact" border="0"></a>
+				<a href="http://www.larwe.com/resume.html"><img src="./___ larwe.com - yamaha ym2203 ____files/48_resume.png" alt="Resume" border="0"></a>
+				<a href="http://www.larwe.com/writing/index.html"><img src="./___ larwe.com - yamaha ym2203 ____files/48_diary.jpg" alt="Writing" border="0"></a>
+				<a href="http://www.larwe.com/technical/index.html"><img src="./___ larwe.com - yamaha ym2203 ____files/48_technical.jpg" alt="Technical projects" border="0"></a>
+				<a href="http://www.larwe.com/scout/index.html"><img src="./___ larwe.com - yamaha ym2203 ____files/48_scout.jpg" alt="Scout restoration" border="0"></a>
+				<a href="http://www.larwe.com/museum/index.html"><img src="./___ larwe.com - yamaha ym2203 ____files/48_vic20.jpg" alt="Vintage computing" border="0"></a>
+				</td>
+			</tr>
+			<tr height="4">
+			</tr>
+		</tbody></table>
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tbody><tr>
+				<td width="140" valign="top">
+					<p></p>
+					<p class="bookimage"><a href="http://www.amazon.com/exec/obidos/ASIN/0750679530/zws-20" target="_blank"><img src="./___ larwe.com - yamaha ym2203 ____files/book3-80.jpg" alt="Book 3" border="0"></a></p>
+					<p class="bookbuy">My <a href="http://www.amazon.com/exec/obidos/ASIN/0750679530/zws-20" target="_blank">third book</a> is released! Learn what you'll need to know in order to become an embedded engineer.</p>
+					<hr>
+					<p class="bookimage"><a href="http://www.amazon.com/exec/obidos/ASIN/0750677783/zws-20" target="_blank"><img src="./___ larwe.com - yamaha ym2203 ____files/book2-80.jpg" alt="Book 2" border="0"></a></p>
+					<p class="bookbuy">Check out my <a href="http://www.amazon.com/exec/obidos/ASIN/0750677783/zws-20" target="_blank">second book</a>; learn practical stuff about building robots and control systems around Linux PCs and the Atmel AVR.</p>
+					<hr>
+					<p class="bookimage"><a href="http://www.amazon.com/exec/obidos/ASIN/0750676094/zws-20" target="_blank"><img src="./___ larwe.com - yamaha ym2203 ____files/book1-80.jpg" alt="Book 1" border="0"></a></p>
+					<p class="bookbuy">My <a href="http://www.amazon.com/exec/obidos/ASIN/0750676094/zws-20" target="_blank">first book</a> gives you all the intro you need on developing 32-bit embedded systems on a hobbyist budget.</p>
+				</td>
+				<td valign="top">
+					<center>
+						<h1>Yamaha YM2203 FM&nbsp;Operator Type-N&nbsp;(OPN)</h1>
+					</center>
+         <p>The YM2203 is a chip of considerable interest to the
+         arcade game emulator writer, because it's just about THE
+         most common audio synth chip used on arcade boards.</p>
+         
+         <p>This document was obtained from Yamaha Systems
+         Technology's faxback service. To save everybody else in the
+         world from calling the USA and requesting a 14-page fax, I
+         have transcribed the text portions here. I have not
+         reproduced the diagrams. Also note that the original
+         document's tables were apparently drawn by hand; while I was
+         typing it in, I had to estimate the bitfield widths in the
+         register maps. I have also preserved the original English.
+         </p>
+         
+         <p>This information is just a datasheet, not a complete
+         programmer's reference manual. Recommended reading to
+         understand this document is the General Instruments
+         datasheet for the AY-3-8910A. Tandy Electronics packaged the
+         GI chip and retailed it with a very detailed application
+         manual which is also good reading.</p>
+         
+         <p>NO. 84-13 1<br>
+         
+         CATALOG NO: 151-2122032 1989.11</p>
+         
+         <ul>
+            <li><b><font size="+1">OUTLINE</font></b><br>
+            
+            OPN (FM OPERATOR TYPE-N) is a new type synthesizer which
+            can produce all sounds required owing to the FM sound
+            source system. It is provided with a built-in register
+            which can store sound information and be connected easily
+            with a microprocessor or microcomputer. It also comprises
+            a square wave sound source different from the sound
+            source according to the FM system and a noise generator.
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">FEATURES</font></b>
+            
+            <ul>
+               <li>The FM system sound source produce three different
+               sounds simultaneously.
+               
+               </li><li>One of the above three sounds can be set to the
+               mode by which specific sound effects and composite
+               sine wave sound are synthesized.
+               
+               </li><li>Two programmable timers are incorporated.
+               
+               </li><li>8 bits general purpose input/output ports of two
+               system are incorporated.
+               
+               </li><li>Three square wave sounds and white noise can be
+               produced in addition to the FM system sounds.
+               
+               </li><li>Clock divider is built in so that wide operating
+               frequency range is obtained.
+               
+               </li><li>Input and output are compatible with TTL.
+               
+               </li><li>Nch-Si gate MOS LSI is used.
+               
+               </li><li>Single phase power source of 5V is used.
+               
+               </li><li>This is compatible with software of YM2149 and
+               AY-3-8910 and 8912 produced by GI.
+            </li></ul>
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">TERMINAL DIAGRAM</font></b><br>
+            
+            <table border="2" cellpadding="4" width="100%">
+               <tbody><tr>
+                  <td width="40%">
+                     <p align="RIGHT">GND
+                  </p></td><td width="10%">
+                     <p>1
+                  </p></td><td width="10%">
+                     <p align="RIGHT">40
+                  </p></td><td width="40%">
+                     <p>D0
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">D1
+                  </p></td><td width="10%">
+                     <p>2
+                  </p></td><td width="10%">
+                     <p align="RIGHT">39
+                  </p></td><td width="40%">
+                     <p>øS
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">D2
+                  </p></td><td width="10%">
+                     <p>3
+                  </p></td><td width="10%">
+                     <p align="RIGHT">38
+                  </p></td><td width="40%">
+                     <p>øM
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">D3
+                  </p></td><td width="10%">
+                     <p>4
+                  </p></td><td width="10%">
+                     <p align="RIGHT">37
+                  </p></td><td width="40%">
+                     <p>A0
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">D4
+                  </p></td><td width="10%">
+                     <p>5
+                  </p></td><td width="10%">
+                     <p align="RIGHT">36
+                  </p></td><td width="40%">
+                     <p>_RD
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">D5
+                  </p></td><td width="10%">
+                     <p>6
+                  </p></td><td width="10%">
+                     <p align="RIGHT">35
+                  </p></td><td width="40%">
+                     <p>_WR
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">D6
+                  </p></td><td width="10%">
+                     <p>7
+                  </p></td><td width="10%">
+                     <p align="RIGHT">34
+                  </p></td><td width="40%">
+                     <p>_CS
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">D7
+                  </p></td><td width="10%">
+                     <p>8
+                  </p></td><td width="10%">
+                     <p align="RIGHT">33
+                  </p></td><td width="40%">
+                     <p>IOB7
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA7
+                  </p></td><td width="10%">
+                     <p>9
+                  </p></td><td width="10%">
+                     <p align="RIGHT">32
+                  </p></td><td width="40%">
+                     <p>IOB6
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA6
+                  </p></td><td width="10%">
+                     <p>10
+                  </p></td><td width="10%">
+                     <p align="RIGHT">31
+                  </p></td><td width="40%">
+                     <p>IOB5
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA5
+                  </p></td><td width="10%">
+                     <p>11
+                  </p></td><td width="10%">
+                     <p align="RIGHT">30
+                  </p></td><td width="40%">
+                     <p>IOB4
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA4
+                  </p></td><td width="10%">
+                     <p>12
+                  </p></td><td width="10%">
+                     <p align="RIGHT">29
+                  </p></td><td width="40%">
+                     <p>IOB3
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA3
+                  </p></td><td width="10%">
+                     <p>13
+                  </p></td><td width="10%">
+                     <p align="RIGHT">28
+                  </p></td><td width="40%">
+                     <p>IOB2
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA2
+                  </p></td><td width="10%">
+                     <p>14
+                  </p></td><td width="10%">
+                     <p align="RIGHT">27
+                  </p></td><td width="40%">
+                     <p>IOB1
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA1
+                  </p></td><td width="10%">
+                     <p>15
+                  </p></td><td width="10%">
+                     <p align="RIGHT">26
+                  </p></td><td width="40%">
+                     <p>IOB0
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">IOA0
+                  </p></td><td width="10%">
+                     <p>16
+                  </p></td><td width="10%">
+                     <p align="RIGHT">25
+                  </p></td><td width="40%">
+                     <p>_IRQ
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">AGND
+                  </p></td><td width="10%">
+                     <p>17
+                  </p></td><td width="10%">
+                     <p align="RIGHT">24
+                  </p></td><td width="40%">
+                     <p>_IC
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">ANALOG CHANNEL C
+                  </p></td><td width="10%">
+                     <p>18
+                  </p></td><td width="10%">
+                     <p align="RIGHT">23
+                  </p></td><td width="40%">
+                     <p>OP-O
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">ANALOG CHANNEL B
+                  </p></td><td width="10%">
+                     <p>19
+                  </p></td><td width="10%">
+                     <p align="RIGHT">22
+                  </p></td><td width="40%">
+                     <p>SH
+                  </p></td></tr>
+               <tr>
+                  <td width="40%">
+                     <p align="RIGHT">ANALOG CHANNEL A
+                  </p></td><td width="10%">
+                     <p>20
+                  </p></td><td width="10%">
+                     <p align="RIGHT">21
+                  </p></td><td width="40%">
+                     <p>V<font size="-2">DD</font>
+                  </p></td></tr>
+            </tbody></table>
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">BLOCK DIAGRAM</font></b><br>
+            
+            Not available in online version.
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">DESCRIPTION OF TERMINAL
+            FUNCTION</font></b><br>
+            
+            
+            
+            <ol>
+               <li><b>øM</b><br>
+               
+               This is the master clock of the OPN. The FM sound
+               source and square wave sound source operate, based on
+               this clock. The maximum input frequency up to 4.2MHz
+               can be input by using a built-in 1/6 divider.
+               
+               </li><li><b>øS, SH</b><br>
+               
+               These are the clock (øS) and the synchronous
+               signal (SH). They drive a D/A converter which converts
+               digital output of the FM sound source into analog
+               output.
+               
+               </li><li><b>D0 through D7</b><br>
+               
+               These 8-bit bi-directional bus exchange the data and
+               address between the OPN and the micro-processor.
+               
+               </li><li><b>_CS, _RD, _WR, A0</b><br>
+               
+               These signals control bi-directional bus of D0 through
+               D7.<br>
+               
+               <table border="2">
+                  <tbody><tr>
+                     <th>
+                        <p align="LEFT">_CS
+                     </p></th><th>
+                        <p align="LEFT">_RD
+                     </p></th><th>
+                        <p align="LEFT">_WR
+                     </p></th><th>
+                        <p align="LEFT">A0
+                     </p></th><th>
+                        <p align="LEFT">
+                     </p></th></tr>
+                  <tr>
+                     <td>
+                        <p>0
+                     </p></td><td>
+                        <p>1
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>Writes address into the register of the
+                        OPN.
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>0
+                     </p></td><td>
+                        <p>1
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>1
+                     </p></td><td>
+                        <p>Writes the register content into the OPN.
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>0
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>1
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>Reads the OPN status.
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>0
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>1
+                     </p></td><td>
+                        <p>1
+                     </p></td><td>
+                        <p>Reads the content of the OPN register.
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>1
+                     </p></td><td>
+                        <p>x
+                     </p></td><td>
+                        <p>x
+                     </p></td><td>
+                        <p>x
+                     </p></td><td>
+                        <p>D0 through D7 bus line become high
+                        impedance.
+                     </p></td></tr>
+               </tbody></table>* Read enable register addresses 00 through 0F
+               (16 bits).
+               
+               </li><li><b>_IRQ</b><br>
+               
+               This is an interrupt signal sent from two timers. It
+               can be masked by the program.
+               
+               </li><li><b>_IC</b><br>
+               
+               This signal resets the system at low level. All the
+               content of register array become "0".
+               
+               </li><li><b>OP-O</b><br>
+               
+               This outputs the FM modulated audio signal as 13-bit
+               serial data. Accordingly, an external D/A converter is
+               necessary.
+               
+               </li><li><b>Analog channel A, B and C</b><br>
+               
+               They are analog square wave audio signals. They can be
+               mixed by setting resistance because of source
+               follower.
+               
+               </li><li><b>IOA0 through IOA7, IOB0 through IOB7<br>
+               
+               </b>They are two sets of 8-bit input/output ports.
+               Each terminal incorporates pull up resistance.
+               
+               </li><li><b>AGND</b><br>
+               
+               This is analog ground terminal for the D/A converter
+               which is built in the square wave sound source
+               section.
+               
+               </li><li><b>V<font size="-2">DD</font></b><br>
+               
+               This is a power terminal of +5V.
+               
+               </li><li><b>GND</b><br>
+               
+               This is a ground terminal.
+            </li></ol>
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">DESCRIPTION OF
+            FUNCTIONS</font></b><br>
+            
+            The OPN is controlled based on the data written into the
+            register. Accordingly, a microprocessor is free from the
+            sound control operation except sending the data to the
+            register.<br>
+            
+            The FM sound source determines a sound by the combination
+            (modulation) of full sine waves. All the modulation
+            systems such as feedback FM, simple FM and multiple FM
+            are possible. In respect to the square wave sound source,
+            this is compatible with YM2149 (SSC) and AY-3-8910 and
+            8912 (PSG GI) in the use of the software. Therefore,
+            function of the OPN can be improved by the exchange with
+            the above LSI.<br>
+            
+            Each block of the OPN functions as follows.<br>
+            
+            
+            
+            <ul>
+               <li><b>Envelope generator (EG)</b><br>
+               
+               Determines the modulation index of the envelope and
+               modulation wave of the FM sound source.
+               
+               </li><li><b>Phase generator (PG)</b><br>
+               
+               Determines the sine wave phase at each time step of
+               the FM sound source.
+               
+               </li><li><b>Operator (OP)</b><br>
+               
+               Calculates the E sin theta value on the basis of the
+               amplitude from the envelope generator and the phase
+               from the phase generator.
+               
+               </li><li><b>Accumulator (ACC)</b><br>
+               
+               Accumulates and adds operator output of each channel
+               to mix each sound of the FM sound source and matches
+               with the D/A converter.
+               
+               </li><li><b>Square wave sound source/noise
+               generator</b><br>
+               
+               Generates three different frequency square waves and
+               pseudo-white noise. It can also mix noise and square
+               wave. As for sound volume, it is possible to select
+               either fixed sound volume (programmed value) or 10
+               pattern envelope producing mode. In this block, one
+               D/A converter is provided for each sound.
+               
+               </li><li><b>Input/output port control</b><br>
+               
+               These are the general-purpose input/output ports to
+               gets interface with external equipment.
+               
+               </li><li><b>Timer</b><br>
+               
+               Two types of timers are provided.
+            </li></ul>
+            
+            <p><b>Register content and address map</b><br>
+            
+            The OPN register is provided with the internal address as
+            shown in the address map. The content of each register
+            (address) is as follows.<br>
+            
+            <table border="1">
+               <tbody><tr>
+                  <td>
+                     <p>(1)
+                  </p></td><td>
+                     <p>$00 ~ $05
+                  </p></td><td>
+                     <p>Generates frequency of the square wave sound
+                     source.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(2)
+                  </p></td><td>
+                     <p>$06
+                  </p></td><td>
+                     <p>Generates frequency of noise source.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(3)
+                  </p></td><td>
+                     <p>$07
+                  </p></td><td>
+                     <p>Controls the input and output of the input
+                     and output ports and the output of musical sound
+                     and noise.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(4)
+                  </p></td><td>
+                     <p>$08 ~ $0A
+                  </p></td><td>
+                     <p>Controls sound volume. It is possible to
+                     select the fixed sound volume system
+                     (programmable) or the variable sound volume
+                     system.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(5)
+                  </p></td><td>
+                     <p>$0B ~ $0C
+                  </p></td><td>
+                     <p>Controls the envelope cycle in the variable
+                     sound volume system.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(6)
+                  </p></td><td>
+                     <p>$0D
+                  </p></td><td>
+                     <p>Specifies the envelope shape in the variable
+                     sound volume system.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(7)
+                  </p></td><td>
+                     <p>$0E ~ $0F
+                  </p></td><td>
+                     <p>8 bit general-purpose input and output ports.
+                  
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(8)
+                  </p></td><td>
+                     <p>$21
+                  </p></td><td>
+                     <p>Test information, always set to "0".
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(9)
+                  </p></td><td>
+                     <p>$24 ~ $26
+                  </p></td><td>
+                     <p>Gives the set time of Timers A and B.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(10)
+                  </p></td><td>
+                     <p>$27
+                  </p></td><td>
+                     <p>Controls the operation of Timers A and B, and
+                     sets the third channel mode of the FM sound
+                     source.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(11)
+                  </p></td><td>
+                     <p>$2D ~ $2F
+                  </p></td><td>
+                     <p>Specifies the dividing number of the input
+                     clock. The dividing numbers 2 through 6 are for
+                     the FM sound source, and the numbers 1 through 4
+                     are for square wave sound source.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(12)
+                  </p></td><td>
+                     <p>$30 ~ $3E
+                  </p></td><td>
+                     <p>Controls Detune and Multiple. This is used to
+                     set tones. This controls the relationship
+                     between the fundamental wave and harmonic.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(13)
+                  </p></td><td>
+                     <p>$40 ~ $4E
+                  </p></td><td>
+                     <p>Gives the total level. This information
+                     becomes the modulation index of the sound volume
+                     and modulation wave of the modulated wave.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(14)
+                  </p></td><td>
+                     <p>$50 ~ $5E
+                  </p></td><td>
+                     <p>Key - Scale controls the rate of change of A
+                     - D - S and R according to the keyboard
+                     information. Attack rate gives the rate of
+                     change of the envelope at the time of attack.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(15)
+                  </p></td><td>
+                     <p>$60 ~ $6E
+                  </p></td><td>
+                     <p>Decay Rate shows the rate of change of the
+                     envelope at the time of decay.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(16)
+                  </p></td><td>
+                     <p>$70 ~ $7E
+                  </p></td><td>
+                     <p>Sustain Rate shows the rate of change of the
+                     envelope at the time of sustain.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(17)
+                  </p></td><td>
+                     <p>$80 ~ $8E
+                  </p></td><td>
+                     <p>Sustain level shows the level of the shift
+                     from decay to sustain. Release rate shows the
+                     rate of change of the envelope at the time of
+                     release.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(18)
+                  </p></td><td>
+                     <p>$90 ~ $9E
+                  </p></td><td>
+                     <p>Generates the envelope including the repeat
+                     pattern similar to that of square wave sound
+                     source.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(19)
+                  </p></td><td>
+                     <p>$A0 ~ $A6
+                  </p></td><td>
+                     <p>Gives key-code (F-number) of each channel.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(20)
+                  </p></td><td>
+                     <p>$A8 ~ $AE
+                  </p></td><td>
+                     <p>Gives the key-code (F-number) of three
+                     channels when set to the special mode.
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>(21)
+                  </p></td><td>
+                     <p>$B0 ~ $B2
+                  </p></td><td>
+                     <p>Gives the modulation system (connection) of
+                     the FM modulation and the modulation factor of
+                     the feedback FM (self-feedback).
+                  </p></td></tr>
+            </tbody></table><br>
+            
+            <b>FM system</b><br>
+            
+            In the FM system, musical sounds are synthesized by
+            controlling various high harmonic waves by use of the
+            frequency modulation. The basic equation of the FM system
+            is as follows.<br>
+            
+            <br>
+            
+            (Equation 1) F = A sin (omega Ct + I sine omega Mt)<br>
+            
+            <br>
+            
+            Where A is output amplitude, I is modulation index, and
+            omega C and omega M are angular frequencies of carrier
+            and modulator, respectively. This equation can also be
+            expressed as follows.<br>
+            
+            <br>
+            
+            (Equation 2) F = A [J0 (I) sin omega Ct + J1 (I) (sin
+            (omega C + omega M)t - sin (omega C - omega M)t)<br>
+            
+            + J2 (I) (sin (omega C + 2 omega M)t - sin(omega C - 2
+            omega M)t)<br>
+            
+            + ...... ]<br>
+            
+            <br>
+            
+            Where, Jn (I) is the first class Bessel function of nth
+            As shown in the above equation, the FM system contains
+            various harmonics and can control them. The OPN provides
+            the multiple FM modulation and feedback FM modulation
+            shown in (3) and (4) in addition to the above FM
+            modulation to produce every possible sound.<br>
+            
+            <br>
+            
+            (Equation 3) F = A sin [omega Ct + I1 sin (omega M1t + I2
+            sin omega M2t)]<br>
+            
+            (Equation 4) F = A sin (omega Ct + ßF)<br>
+            
+            <br>
+            
+            <b>WRITE DATA<br>
+            
+            </b><table border="1">
+               <tbody><tr>
+                  <th>
+                     <p align="LEFT">Address
+                  </p></th><th colspan="8">
+                     <p align="LEFT">Data Bits
+                  </p></th><th>
+                     <p align="LEFT">Comment
+                  </p></th></tr>
+               <tr>
+                  <td>
+                     <p>21
+                  </p></td><td colspan="8">
+                     <p></p><center>TEST</center>
+                  </td><td>
+                     <p>LSI TEST DATA
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>24
+                  </p></td><td colspan="8">
+                     <p></p><center>TIMER-A</center>
+                  </td><td>
+                     <p>8 most significant bits of TIMER-A
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>25
+                  </p></td><td colspan="6">
+                     <p></p><center>not used</center>
+                  </td><td colspan="2">
+                     <p></p><center>TIMER-A</center>
+                  </td><td>
+                     <p>2 least significant bits of TIMER-A
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>26
+                  </p></td><td colspan="8">
+                     <p></p><center>TIMER-B</center>
+                  </td><td>
+                     <p>TIMER-B data
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>27
+                  </p></td><td colspan="2">
+                     <p></p><center>MODE</center>
+                  </td><td>
+                     <p></p><center>RESET B</center>
+                  </td><td>
+                     <p></p><center>RESET A</center>
+                  </td><td>
+                     <p></p><center>ENABLE B</center>
+                  </td><td>
+                     <p></p><center>ENABLE A</center>
+                  </td><td>
+                     <p></p><center>LOAD B</center>
+                  </td><td>
+                     <p></p><center>LOAD A</center>
+                  </td><td>
+                     <p>TIMER-A/B control and 3 channel mode
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>28
+                  </p></td><td colspan="4">
+                     <p></p><center>SLOT</center>
+                  </td><td colspan="4">
+                     <p></p><center>CH</center>
+                  </td><td>
+                     <p>Key-ON/OFF
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>2D
+                  </p></td><td colspan="8">
+                     <p></p><center>don't care</center>
+                  </td><td>
+                     <p>Set pre-scaler
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>2E
+                  </p></td><td colspan="8">
+                     <p></p><center>don't care</center>
+                  </td><td>
+                     <p>Selection of the dividing numbers of 1/3 and
+                     1/6
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>2F
+                  </p></td><td colspan="8">
+                     <p></p><center>don't care</center>
+                  </td><td>
+                     <p>Set a divider to the dividing number of 1/2
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>30-3E
+                  </p></td><td>
+                     <p></p><center>not used</center>
+                  </td><td colspan="3">
+                     <p></p><center>DT</center>
+                  </td><td colspan="4">
+                     <p></p><center>MULTI</center>
+                  </td><td>
+                     <p>Detune/Multiple (Addresses 33, 37, 3B are
+                     empty)
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>40-4E
+                  </p></td><td>
+                     <p></p><center>not used</center>
+                  </td><td colspan="7">
+                     <p></p><center>TL</center>
+                  </td><td>
+                     <p>Total Level (Addresses 43, 47, 4B are empty)
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>50-5E
+                  </p></td><td>
+                     <p></p><center>KS</center>
+                  </td><td>
+                     <p></p><center>not used</center>
+                  </td><td colspan="6">
+                     <p></p><center>AR</center>
+                  </td><td>
+                     <p>Key Scale/Attack Rate (Addresses 53, 57, 5B
+                     are empty)
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>60-6E
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td colspan="6">
+                     <p></p><center>DR</center>
+                  </td><td>
+                     <p>Decay Rate (Addresses 63, 67, 6B are empty)
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>70-7E
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td colspan="6">
+                     <p></p><center>SR</center>
+                  </td><td>
+                     <p>Sustain Rate (Addresses 73, 77, 7B are empty)
+                  
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>80-8E
+                  </p></td><td colspan="4">
+                     <p></p><center>SL</center>
+                  </td><td colspan="4">
+                     <p></p><center>RR</center>
+                  </td><td>
+                     <p>Sustain Level/Release Rate (Addresses 83, 87,
+                     8B are empty)
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>90-9E
+                  </p></td><td colspan="4">
+                     <p></p><center>not used</center>
+                  </td><td colspan="4">
+                     <p></p><center>SSG-EG</center>
+                  </td><td>
+                     <p>SSG-Type Envelope Control (Addresses 93, 97,
+                     9B are empty)
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>A0-A2
+                  </p></td><td colspan="8">
+                     <p></p><center>F-Num. 1</center>
+                  </td><td rowspan="2">
+                     <p>F-Numbers/BLOCK
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>A4-A6
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td colspan="3">
+                     <p></p><center>BLOCK</center>
+                  </td><td colspan="3">
+                     <p></p><center>F-Num. 2</center>
+                  </td></tr>
+               <tr>
+                  <td>
+                     <p>A8-AA
+                  </p></td><td colspan="8">
+                     <p></p><center>3CH * F-Num. 1</center>
+                  </td><td rowspan="2">
+                     <p>3CH-3slot F-Numbers/BLOCK
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>AC-AE
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td colspan="3">
+                     <p></p><center>3CH * BLOCK</center>
+                  </td><td colspan="3">
+                     <p></p><center>3CH * F-Num. 2</center>
+                  </td></tr>
+               <tr>
+                  <td>
+                     <p>B0-B2
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td colspan="3">
+                     <p></p><center>FB</center>
+                  </td><td colspan="3">
+                     <p></p><center>CONNECT</center>
+                  </td><td>
+                     <p>Self-Feedback/Connection
+                  </p></td></tr>
+            </tbody></table><br>
+            
+            <b>READ/WRITE DATA</b><br>
+            
+            <table border="1">
+               <tbody><tr>
+                  <th>
+                     <p align="LEFT">Address
+                  </p></th><th colspan="8">
+                     <p align="LEFT">Data Bits
+                  </p></th><th>
+                     <p align="LEFT">Comment
+                  </p></th></tr>
+               <tr>
+                  <td>
+                     <p>00
+                  </p></td><td colspan="8">
+                     <p></p><center>Fine Tune</center>
+                  </td><td rowspan="2">
+                     <p>Channel-A Tone Period
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>01
+                  </p></td><td colspan="4">
+                     <p></p><center>not used</center>
+                  </td><td colspan="4">
+                     <p></p><center>Coarse Tune</center>
+                  </td></tr>
+               <tr>
+                  <td>
+                     <p>02
+                  </p></td><td colspan="8">
+                     <p></p><center>Fine Tune</center>
+                  </td><td rowspan="2">
+                     <p>Channel-B Tone Period
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>03
+                  </p></td><td colspan="4">
+                     <p></p><center>not used</center>
+                  </td><td colspan="4">
+                     <p></p><center>Coarse Tune</center>
+                  </td></tr>
+               <tr>
+                  <td>
+                     <p>04
+                  </p></td><td colspan="8">
+                     <p></p><center>Fine Tune</center>
+                  </td><td rowspan="2">
+                     <p>Channel-C Tone Period
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>05
+                  </p></td><td colspan="4">
+                     <p></p><center>not used</center>
+                  </td><td colspan="4">
+                     <p>Coarse Tune
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>06
+                  </p></td><td colspan="3">
+                     <p></p><center>not used</center>
+                  </td><td colspan="5">
+                     <p></p><center>Period Control</center>
+                  </td><td>
+                     <p>Noise Period
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>07
+                  </p></td><td>
+                     <p></p><center>IN/OUT IOB</center>
+                  </td><td>
+                     <p></p><center>IN/OUT IOA</center>
+                  </td><td colspan="3">
+                     <p></p><center>_NOISE</center>
+                  </td><td colspan="3">
+                     <p></p><center>_TONE</center>
+                  </td><td>
+                     <p>_ENABLE
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>08
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td>
+                     <p></p><center>M</center>
+                  </td><td colspan="5">
+                     <p></p><center>Level</center>
+                  </td><td>
+                     <p>Channel-A Amplitude
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>09
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td>
+                     <p></p><center>M</center>
+                  </td><td colspan="5">
+                     <p></p><center>Level</center>
+                  </td><td>
+                     <p>Channel-B Amplitude
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>0A
+                  </p></td><td colspan="2">
+                     <p></p><center>not used</center>
+                  </td><td>
+                     <p></p><center>M</center>
+                  </td><td colspan="5">
+                     <p></p><center>Level</center>
+                  </td><td>
+                     <p>Channel-C Amplitude
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>0B
+                  </p></td><td colspan="8">
+                     <p></p><center>Fine Tune</center>
+                  </td><td rowspan="2">
+                     <p>Envelope Period
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>0C
+                  </p></td><td colspan="8">
+                     <p></p><center>Coarse Tune</center>
+                  </td></tr>
+               <tr>
+                  <td>
+                     <p>0D
+                  </p></td><td colspan="4">
+                     <p></p><center>not used</center>
+                  </td><td>
+                     <p></p><center>C</center>
+                  </td><td>
+                     <p></p><center>ATT</center>
+                  </td><td>
+                     <p></p><center>ALT</center>
+                  </td><td>
+                     <p></p><center>HLD</center>
+                  </td><td>
+                     <p>Envelope Shape/Cycle
+                  </p></td></tr>
+               <tr>
+                  <td height="21">
+                     <p>0E
+                  </p></td><td colspan="8" height="21">
+                     <p></p><center>I/O Port-A</center>
+                  </td><td rowspan="2">
+                     <p>I/O Port Data
+                  </p></td></tr>
+               <tr>
+                  <td>
+                     <p>0F
+                  </p></td><td colspan="8">
+                     <p></p><center>I/O Port-B</center>
+                  </td></tr>
+            </tbody></table><br>
+            
+            <b>READ DATA</b><br>
+            
+            <table border="1">
+               <tbody><tr>
+                  <th>
+                     <p align="LEFT">Address
+                  </p></th><th colspan="8">
+                     <p align="LEFT">Data Bits
+                  </p></th><th>
+                     <p align="LEFT">Comment
+                  </p></th></tr>
+               <tr>
+                  <td>
+                     <p>xx
+                  </p></td><td>
+                     <p></p><center>BUSY</center>
+                  </td><td colspan="5">
+                     <p></p><center>not used</center>
+                  </td><td>
+                     <p></p><center>FLAG B</center>
+                  </td><td>
+                     <p></p><center>FLAG A</center>
+                  </td><td>
+                     <p>Status
+                  </p></td></tr>
+            </tbody></table></p>
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">ELECTRICAL
+            CHARACTERISTICS</font></b><br>
+            
+            
+            
+            <ol>
+               <li>Absolute Maximum Rating<br>
+               
+               <table border="1">
+                  <tbody><tr>
+                     <th>
+                        <p align="LEFT">ITEM
+                     </p></th><th>
+                        <p align="LEFT">RATING
+                     </p></th><th>
+                        <p align="LEFT">UNIT
+                     </p></th></tr>
+                  <tr>
+                     <td>
+                        <p>Terminal voltage
+                     </p></td><td>
+                        <p>-0.3 ~ 7.0
+                     </p></td><td>
+                        <p>V
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Ambient operating temperature
+                     </p></td><td>
+                        <p>0 ~ 70
+                     </p></td><td>
+                        <p>°C
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Storage temperature
+                     </p></td><td>
+                        <p>-50 ~ 125
+                     </p></td><td>
+                        <p>°C
+                     </p></td></tr>
+               </tbody></table>
+               
+               </li><li>Recommended Operation Conditions<br>
+               
+               <table border="1">
+                  <tbody><tr>
+                     <th>
+                        <p align="LEFT">ITEM
+                     </p></th><th>
+                        <p align="LEFT">SYMBOL
+                     </p></th><th>
+                        <p align="LEFT">MIN.
+                     </p></th><th>
+                        <p align="LEFT">STD.
+                     </p></th><th>
+                        <p align="LEFT">MAX.
+                     </p></th><th>
+                        <p align="LEFT">UNIT
+                     </p></th></tr>
+                  <tr>
+                     <td rowspan="2">
+                        <p>Supply voltage
+                     </p></td><td>
+                        <p>Vdd
+                     </p></td><td>
+                        <p>4.75
+                     </p></td><td>
+                        <p>5.0
+                     </p></td><td>
+                        <p>5.25
+                     </p></td><td>
+                        <p>V
+                     </p></td></tr>
+                  <tr><td>
+                        <p>Vss
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>V
+                     </p></td></tr>
+               </tbody></table>
+               
+               </li><li>DC Characteristics<br>
+               
+               <table border="1">
+                  <tbody><tr>
+                     <th colspan="2">
+                        <p align="LEFT">ITEM
+                     </p></th><th>
+                        <p align="LEFT">SYMBOL
+                     </p></th><th>
+                        <p align="LEFT">CONDITIONS
+                     </p></th><th>
+                        <p align="LEFT">MIN.
+                     </p></th><th>
+                        <p align="LEFT">STD.
+                     </p></th><th>
+                        <p align="LEFT">MAX.
+                     </p></th><th>
+                        <p align="LEFT">UNIT
+                     </p></th></tr>
+                  <tr>
+                     <td>
+                        <p>Input high level voltage
+                     </p></td><td>
+                        <p>Total input
+                     </p></td><td>
+                        <p>V<font size="-2">IH</font>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>2.0
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>V<font size="-2">DD</font>
+                     </p></td><td>
+                        <p>V
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Input low level voltage
+                     </p></td><td>
+                        <p>Total input
+                     </p></td><td>
+                        <p>V<font size="-2">IL</font>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>-0.3
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>0.8
+                     </p></td><td>
+                        <p>V
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Input leakage current
+                     </p></td><td>
+                        <p>øM, _WR, _RD, A0
+                     </p></td><td>
+                        <p>I<font size="-2">L</font>
+                     </p></td><td>
+                        <p>V<font size="-2">in</font> = 0 ~ 5V
+                     </p></td><td>
+                        <p>-10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>µA
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Three-state (off) input current
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>I<font size="-2">TSL</font>
+                     </p></td><td>
+                        <p>V<font size="-2">in</font> = 0 ~ 5V
+                     </p></td><td>
+                        <p>-10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>µA
+                     </p></td></tr>
+                  <tr>
+                     <td rowspan="2">
+                        <p>Output high level voltage
+                     </p></td><td rowspan="2">
+                        <p>Output except _IRQ
+                     </p></td><td>
+                        <p>V<font size="-2">OH1</font>
+                     </p></td><td>
+                        <p>I<font size="-2">OH1</font> = 0.4mA
+                     </p></td><td>
+                        <p>2.4
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>V
+                     </p></td></tr>
+                  <tr><td>
+                        <p>V<font size="-2">OH2</font>
+                     </p></td><td>
+                        <p>I<font size="-2">OH2</font> = 40µA
+                     </p></td><td>
+                        <p>3.3
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>V
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Output leakage current (off)
+                     </p></td><td>
+                        <p>_IRQ
+                     </p></td><td>
+                        <p>I<font size="-2">OL</font>
+                     </p></td><td>
+                        <p>V<font size="-2">OH</font> = 0 ~ 5V
+                     </p></td><td>
+                        <p>-10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>µA
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Analog output voltage
+                     </p></td><td>
+                        <p>ANALOG-CHA, B, C
+                     </p></td><td>
+                        <p>V<font size="-2">OA</font>
+                     </p></td><td>
+                        <p>Max. Sound volume, no mixing
+                     </p></td><td>
+                        <p>0.95
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>1.35
+                     </p></td><td>
+                        <p>V<font size="-2">pp</font>
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Power current
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>I<font size="-2">DD</font>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>120
+                     </p></td><td>
+                        <p>mA
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Pull-up resistance
+                     </p></td><td>
+                        <p>IOA0 ~ IOA7, IOB0 ~ IOB7, _IC, _CS
+                     </p></td><td>
+                        <p>R<font size="-2">PU</font>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>60
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>600
+                     </p></td><td>
+                        <p>k
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Input capacitance
+                     </p></td><td>
+                        <p>Total input
+                     </p></td><td>
+                        <p>C<font size="-2">I</font>
+                     </p></td><td rowspan="2">
+                        <p>f = 1MHz
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>pF
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Output capacitance
+                     </p></td><td>
+                        <p>Total output
+                     </p></td><td>
+                        <p>C<font size="-2">O</font>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>pF
+                     </p></td></tr>
+               </tbody></table>
+               
+               </li><li>AC Characteristics<br>
+               
+               <table border="1">
+                  <tbody><tr>
+                     <th colspan="2">
+                        <p align="LEFT">ITEM
+                     </p></th><th>
+                        <p align="LEFT">SYMBOL
+                     </p></th><th>
+                        <p align="LEFT">CONDITIONS
+                     </p></th><th>
+                        <p align="LEFT">MIN.
+                     </p></th><th>
+                        <p align="LEFT">STD.
+                     </p></th><th>
+                        <p align="LEFT">MAX.
+                     </p></th><th>
+                        <p align="LEFT">UNIT
+                     </p></th></tr>
+                  <tr>
+                     <td>
+                        <p>Input clock frequency
+                     </p></td><td>
+                        <p>øM
+                     </p></td><td>
+                        <p>f<font size="-2">C</font>
+                     </p></td><td>
+                        <p>Pre-scaler function (Fig. A-1)
+                     </p></td><td>
+                        <p>0.7
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>4.2
+                     </p></td><td>
+                        <p>MHz
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Input clock duty
+                     </p></td><td>
+                        <p>øM
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>40
+                     </p></td><td>
+                        <p>50
+                     </p></td><td>
+                        <p>60
+                     </p></td><td>
+                        <p>%
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Input clock rise time
+                     </p></td><td>
+                        <p>øM
+                     </p></td><td>
+                        <p>T<font size="-2">R</font>
+                     </p></td><td>
+                        <p>(Fig. A-1)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>50
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Input clock breaking time
+                     </p></td><td>
+                        <p>øM
+                     </p></td><td>
+                        <p>T<font size="-2">F</font>
+                     </p></td><td>
+                        <p>(Fig. A-1)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>50
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+               </tbody></table>
+               
+               </li><li>Access to FM sound source<br>
+               
+               <table border="1">
+                  <tbody><tr>
+                     <th colspan="2">
+                        <p align="LEFT">ITEM
+                     </p></th><th>
+                        <p align="LEFT">SYMBOL
+                     </p></th><th>
+                        <p align="LEFT">CONDITIONS
+                     </p></th><th>
+                        <p align="LEFT">MIN.
+                     </p></th><th>
+                        <p align="LEFT">STD.
+                     </p></th><th>
+                        <p align="LEFT">MAX.
+                     </p></th><th>
+                        <p align="LEFT">UNIT
+                     </p></th></tr>
+                  <tr>
+                     <td>
+                        <p>Address set-up time
+                     </p></td><td>
+                        <p>A0
+                     </p></td><td>
+                        <p>T<font size="-2">AS</font>
+                     </p></td><td>
+                        <p>(Figs. A-2 and A-3)
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Address hold time
+                     </p></td><td>
+                        <p>A0
+                     </p></td><td>
+                        <p>T<font size="-2">AH</font>
+                     </p></td><td>
+                        <p>(Figs. A-2 and A-3)
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Chip select write width
+                     </p></td><td>
+                        <p>_CS
+                     </p></td><td>
+                        <p>T<font size="-2">CSW</font>
+                     </p></td><td>
+                        <p>(Fig. A-2)
+                     </p></td><td>
+                        <p>200
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Chip select read width
+                     </p></td><td>
+                        <p>_CS
+                     </p></td><td>
+                        <p>T<font size="-2">CSR</font>
+                     </p></td><td>
+                        <p>(Fig. A-3)
+                     </p></td><td>
+                        <p>250
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Write pulse write width
+                     </p></td><td>
+                        <p>_WR
+                     </p></td><td>
+                        <p>T<font size="-2">WW</font>
+                     </p></td><td>
+                        <p>(Fig. A-2)
+                     </p></td><td>
+                        <p>200
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Write data set-up time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">WDS</font>
+                     </p></td><td>
+                        <p>(Fig. A-2)
+                     </p></td><td>
+                        <p>100
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Write data hold time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">WDH</font>
+                     </p></td><td>
+                        <p>(Fig. A-3)
+                     </p></td><td>
+                        <p>20
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Read pulse width
+                     </p></td><td>
+                        <p>_RD
+                     </p></td><td>
+                        <p>T<font size="-2">RW</font>
+                     </p></td><td>
+                        <p>(Fig. A-3)
+                     </p></td><td>
+                        <p>250
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Read data access time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">ACC</font>
+                     </p></td><td>
+                        <p>C<font size="-2">L</font> = 100pF (Fig.
+                        A-3)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>250
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Read data hold time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">RDH</font>
+                     </p></td><td>
+                        <p>(Fig. A-3)
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td rowspan="2">
+                        <p>Output rise time
+                     </p></td><td>
+                        <p>øS
+                     </p></td><td>
+                        <p>T<font size="-2">OR1</font>
+                     </p></td><td>
+                        <p>C<font size="-2">L</font> = 100pF (Fig.
+                        A-4)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>200
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr><td>
+                        <p>OP-O, SH
+                     </p></td><td>
+                        <p>T<font size="-2">OR2</font>
+                     </p></td><td>
+                        <p>C<font size="-2">L</font> = 100pF (Fig.
+                        A-5)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>300
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td rowspan="2">
+                        <p>Output rise time
+                     </p></td><td>
+                        <p>øS
+                     </p></td><td>
+                        <p>T<font size="-2">OF1</font>
+                     </p></td><td>
+                        <p>C<font size="-2">L</font> = 100pF (Fig.
+                        A-4)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>200
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr><td>
+                        <p>OP-O, SH
+                     </p></td><td>
+                        <p>T<font size="-2">OF2</font>
+                     </p></td><td>
+                        <p>C<font size="-2">L</font> = 100pF (Fig.
+                        A-5)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>300
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+               </tbody></table>
+               
+               </li><li>Access to SSG sound source<br>
+               
+               <table border="1">
+                  <tbody><tr>
+                     <th colspan="2">
+                        <p align="LEFT">ITEM
+                     </p></th><th>
+                        <p align="LEFT">SYMBOL
+                     </p></th><th>
+                        <p align="LEFT">CONDITIONS
+                     </p></th><th>
+                        <p align="LEFT">MIN.
+                     </p></th><th>
+                        <p align="LEFT">STD.
+                     </p></th><th>
+                        <p align="LEFT">MAX.
+                     </p></th><th>
+                        <p align="LEFT">UNIT
+                     </p></th></tr>
+                  <tr>
+                     <td>
+                        <p>Address set-up time
+                     </p></td><td>
+                        <p>A0
+                     </p></td><td>
+                        <p>T<font size="-2">SAS</font>
+                     </p></td><td>
+                        <p>(Figs. A-7 and A-8)
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Address hold time
+                     </p></td><td>
+                        <p>A0
+                     </p></td><td>
+                        <p>T<font size="-2">SAH</font>
+                     </p></td><td>
+                        <p>(Figs. A-7 and A-8)
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Chip select write width
+                     </p></td><td>
+                        <p>_CS
+                     </p></td><td>
+                        <p>T<font size="-2">SCSW</font>
+                     </p></td><td>
+                        <p>(Fig. A-7)
+                     </p></td><td>
+                        <p>250
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Chip select read width
+                     </p></td><td>
+                        <p>_CS
+                     </p></td><td>
+                        <p>T<font size="-2">SCSR</font>
+                     </p></td><td>
+                        <p>(Fig. A-8)
+                     </p></td><td>
+                        <p>400
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Write pulse write width
+                     </p></td><td>
+                        <p>_WR
+                     </p></td><td>
+                        <p>T<font size="-2">SWW</font>
+                     </p></td><td>
+                        <p>(Fig. A-7)
+                     </p></td><td>
+                        <p>250
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Write data set-up time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">SWDS</font>
+                     </p></td><td>
+                        <p>(Fig. A-7)
+                     </p></td><td>
+                        <p>0
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Write data hold time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">SWDH</font>
+                     </p></td><td>
+                        <p>(Fig. A-7)
+                     </p></td><td>
+                        <p>20
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Read pulse width
+                     </p></td><td>
+                        <p>_RD
+                     </p></td><td>
+                        <p>T<font size="-2">SRW</font>
+                     </p></td><td>
+                        <p>(Fig. A-8)
+                     </p></td><td>
+                        <p>400
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Read data access time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">SACC</font>
+                     </p></td><td>
+                        <p>C<font size="-2">L</font> = 100pF (Fig.
+                        A-8)
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>400
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+                  <tr>
+                     <td>
+                        <p>Read data hold time
+                     </p></td><td>
+                        <p>D0 ~ D7
+                     </p></td><td>
+                        <p>T<font size="-2">SRDH</font>
+                     </p></td><td>
+                        <p>(Fig. A-8)
+                     </p></td><td>
+                        <p>10
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>ns
+                     </p></td></tr>
+               </tbody></table><br>
+               
+               <table border="1">
+                  <tbody><tr>
+                     <th colspan="2">
+                        <p align="LEFT">ITEM
+                     </p></th><th>
+                        <p align="LEFT">SYMBOL
+                     </p></th><th>
+                        <p align="LEFT">CONDITIONS
+                     </p></th><th>
+                        <p align="LEFT">MIN.
+                     </p></th><th>
+                        <p align="LEFT">STD.
+                     </p></th><th>
+                        <p align="LEFT">MAX.
+                     </p></th><th>
+                        <p align="LEFT">UNIT
+                     </p></th></tr>
+                  <tr>
+                     <td>
+                        <p>Reset pulse width
+                     </p></td><td>
+                        <p>_IC
+                     </p></td><td>
+                        <p>T<font size="-2">ICW</font>
+                     </p></td><td>
+                        <p>(Fig. A-9)
+                     </p></td><td>
+                        <p>73*
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>
+                     </p></td><td>
+                        <p>cycle
+                     </p></td></tr>
+               </tbody></table>* Depends on the dividing number of prescaler.
+               Pulse width = (dividing number) x 12
+            </li></ol>
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">TIMING DIAGRAM</font></b><br>
+            
+            (Timing is set on the basis of the values: V<font size="-2">IH</font> = 2.0V and V<font size="-2">IL</font>
+            = 0.8V).<br>
+            
+            
+            
+            <ul>
+               <li><b>Fig. A-1 Clock Timing</b><br>
+               
+               (figure not available online)
+               
+               </li><li><b>Fig. A-2 FM section write timing</b><br>
+               
+               (figure not available online)<br>
+               
+               <b>Note.</b> T<font size="-2">CSW</font>, T<font size="-2">WW</font> and T<font size="-2">WDH</font>
+               are determined based on the time when either _CS or
+               _WR goes to the high level.
+               
+               </li><li><b>Fig. A-3 FM section read timing</b><br>
+               
+               (figure not available online)<br>
+               
+               <b>Note.</b> T<font size="-2">AAC</font> is determined
+               based on the time when either _CS or _RD goes to the
+               low level. T<font size="-2">CSR</font>, T<font size="-2">RW</font> and T<font size="-2">RDH</font>
+               are determined based on the time when either _CS or
+               _RD goes to the high level.
+               
+               </li><li><b>Fig. A-4 -a øM and øS (dividing
+               numbers: 2 and 3)</b><br>
+               
+               (figure not available online)
+               
+               </li><li><b>Fig. A-4-b øM and øS (dividing
+               number: 6)</b><br>
+               
+               (figure not available online)
+               
+               </li><li><b>Fig. A-5 øM and SH . OP-O</b><br>
+               
+               (figure not available online)
+               
+               </li><li><b>Fig. A-6 Timing of øS and OP-O/CH at
+               each dividing number</b><br>
+               
+               (figure not available online)
+               
+               </li><li><b>Fig. A-7 SSG section write timing</b><br>
+               
+               (figure not available online)<br>
+               
+               <b>Note.</b> T<font size="-2">SWDS</font> is
+               determined based on the time when either _CS or _WR
+               goes to the low level. T<font size="-2">SCW</font>,
+               T<font size="-2">SWW</font> and T<font size="-2">SWDH</font> are determined based on the time
+               when either _CS or _WR goes to the high level.
+               
+               </li><li><b>Fig. A-8 SSG section read timing</b><br>
+               
+               (figure not available online)<br>
+               
+               <b>Note.</b> T<font size="-2">SACC</font> is
+               determined based on the time when either _CS or _RD
+               goes to the low level. T<font size="-2">SCSR</font>,
+               T<font size="-2">SRW</font> and T<font size="-2">SRDH</font> are determined based on the time
+               when either _CS or _RD goes to the high level.
+               
+               </li><li><b>Fig. A-9 Reset pulse</b><br>
+               
+               (figure not available online)
+            </li></ul>
+            
+            <p><b><font size="+1">&nbsp;</font></b></p>
+            
+            </li><li><b><font size="+1">OUTER DIMENSION
+            DRAWING</font></b><br>
+            
+            (figure not available online)
+         </li></ul>
+         
+         <p>The specifications of this product are subject to
+         improvement changes without prior notice.</p>
+         
+         <p><table border="1">
+            <tbody><tr>
+               <td colspan="2">
+                  <p><b><font size="+3">YAMAHA CORPORATION</font></b>
+               
+               </p></td></tr>
+            <tr>
+               <td>
+                  <p>Address inquiries to:<br>
+                  
+                  Semi-conductor Sales Department
+               </p></td><td>
+                  <p>
+               </p></td></tr>
+            <tr>
+               <td>
+                  <p>Head Office
+               </p></td><td>
+                  <p>203, Matsunokijima, Toyooka-mura,<br>
+                  
+                  Iwata-gun, Shizuoka-ken, 438-01<br>
+                  
+                  Electronic Equipment business section<br>
+                  
+                  Tel. 0539-62-4918 Fax. 0539-62-5054
+               </p></td></tr>
+            <tr>
+               <td>
+                  <p>Tokyo Office
+               </p></td><td>
+                  <p>2-17-11, Takanawa, Minato-ku,<br>
+                  
+                  Tokyo, 108<br>
+                  
+                  Tel. 03-5488-5431 Fax. 03-5488-5088
+               </p></td></tr>
+            <tr>
+               <td>
+                  <p>Osaka Office
+               </p></td><td>
+                  <p>3-12-9, Minami Senba, Chuo-ku,<br>
+                  
+                  Osaka City, Osaka, 542<br>
+                  
+                  Shinsaibashi Plaza Bldg. 4F<br>
+                  
+                  Tel. 06-252-7980 Fax. 06-252-5615
+               </p></td></tr>
+            <tr>
+               <td>
+                  <p>U.S.A. Office
+               </p></td><td>
+                  <p>YAMAHA Systems Technology,<br>
+                  
+                  100 Century Center Court, San José, CA
+                  95112<br>
+                  
+                  Tel. 408-467-2300 Fax. 408-437-8791
+               </p></td></tr>
+         </tbody></table>©1987 YAMAHA CORPORATION 0.3K-1102 Printed in
+         Japan 85.11</p></td></tr>
+					
+				
+			
+		</tbody></table>
+		<center>
+			<p>
+			</p><hr>
+			<span id="copyright">larwe.com and all original content herein is © Copyright 2001 by Lewin A.R.W. Edwards. "larwe.com" is a trademark protected under U.S. and international law. Infringement or attempted dilution of the intellectual property rights held by Lewin A.R.W. Edwards will be prosecuted to the fullest possible extent. </span></center>
+	
+
+
+</body></html>

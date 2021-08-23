@@ -1,0 +1,80 @@
+/*
+ * Style sheet for the nullsleep.com
+ */
+
+	body { 
+		font : 7pt Verdana;
+		color : #FFFFFF;
+		margin-top: 10px;
+		margin-left: 0px;
+		margin-right: 0px;
+		background-color : #000000;
+	}
+
+	html {
+		scrollbar-3d-light-color : #FFFFFF;
+		scrollbar-arrow-color : #FFFFFF;
+		scrollbar-base-color : #000000;
+		scrollbar-dark-shadow-color : #000000;
+		scrollbar-face-color : #000000;
+		scrollbar-highlight-color : #CCCCCC;
+		scrollbar-shadow-color : #000000;
+		scrollbar-track-color : #000000;
+	}
+
+	img {
+	    border: none;
+	}
+
+	td {
+		font: 7pt Verdana;
+	}
+
+	pre {
+		font: 10pt Courier New;
+	}
+
+	a:link {
+		color : #AAAAAA;
+		text-decoration : none;
+	}
+
+	a:visited {
+		color : #888888;
+		text-decoration : none;
+	}
+
+	a:active {
+		color : #FFFFFF;
+		text-decoration : none;
+	}
+
+	a:hover {
+		color : #DF0029;
+		text-decoration : underline;
+	}
+
+.subMenuBlock { display: none; margin-left: 0px; }
+.menuHeading { color: #AAAAAA; cursor: pointer; }
+.menuHeading:hover { color: #DF0029; text-decoration: underline; }
+/*
+     FILE ARCHIVED ON 17:25:30 Jul 09, 2007 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 19:59:09 Aug 23, 2021.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+/*
+playback timings (ms):
+  exclusion.robots.policy: 0.285
+  cdx.remote: 0.139
+  PetaboxLoader3.resolve: 28.266
+  esindex: 0.02
+  PetaboxLoader3.datanode: 499.257 (4)
+  captures_list: 524.477
+  CDXLines.iter: 33.76 (3)
+  LoadShardBlock: 437.49 (3)
+  exclusion.robots: 0.301
+  load_resource: 111.444
+*/
