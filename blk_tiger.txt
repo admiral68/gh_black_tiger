@@ -324,7 +324,7 @@ GFXDECODE_END
         ram:0dcf f5 10           dw         FIRE_PILLAR_WARNING_SOUND                        = 88h
         ram:0dd1 5e 11           dw         POT_BREAKS_REVEALS_COIN_SOUND                    = C8h
         ram:0dd3 c7 11           dw         FIRE_PILLAR_SOUND                                = C8h
-        ram:0dd5 08 12           dw         SMALL_EXPLOSION_SOUND                            = C8h
+        ram:0dd5 08 12           dw         GAS_JET_SOUND                                    = C8h
         ram:0dd7 32 12           dw         WEAPON_CLASH_METALLIC_BATTLE_SOUND               = 88h
         ram:0dd9 84 12           dw         KILL_BAT_SOUND                                   = C8h
         ram:0ddb ae 12           dw         PLAYER_EARNS_EXTRA_LIFE_SOUND                    = 8Fh
@@ -461,11 +461,11 @@ TO: GET TO A LEVEL IN MAME/BLK TIGER
 
 
 PLAYER
-(0x3)	= Y POS HI
+(0x3)   = Y POS HI
 
-(0x8) 	= X OFFSET(?) SCROLL VELOCITY?
+(0x8)   = X OFFSET(?) SCROLL VELOCITY?
 (0x9)   = Y OFFSET(?) SCROLL VELOCITY?
-(0xf)	= maybe action counter
+(0xf)   = maybe action counter
 (0x23)
 (0x26)
 (0x27)  =  counter: times cycled through (0xf)
@@ -512,7 +512,7 @@ ENEMY
 (IX+0x20) = -> maybe related sprite variable ptr?
 (IX+0x21) =
 
-                             MAYBE_PRIZE_DATA_01                             XREF[1]:     Bank03::bb1b(*)  
+                             MAYBE_PRIZE_DATA_01                             XREF[1]:     Bank03::bb1b(*)
     Bank03::bb2b 00              ??         00h
     Bank03::bb2c d0              ??         D0h
     Bank03::bb2d c1              ??         C1h
@@ -520,7 +520,7 @@ ENEMY
     Bank03::bb2f 30              ??         30h    0
     Bank03::bb30 00              ??         00h
     Bank03::bb31 30              ??         30h    0
-	
+
     Bank03::bb32 01              ??         01h
     Bank03::bb33 2a              ??         2Ah    *
     Bank03::bb34 c9              ??         C9h
@@ -545,15 +545,15 @@ ENEMY
 
 void blktiger_state::blktiger_video_enable_w(uint8_t data)
 {
-	/* not sure which is which, but I think that bit 1 and 2 enable background and sprites */
-	/* bit 1 enables bg ? */
-	m_bgon = ~data & 0x02;
+    /* not sure which is which, but I think that bit 1 and 2 enable background and sprites */
+    /* bit 1 enables bg ? */
+    m_bgon = ~data & 0x02;
 
-	/* bit 2 enables sprites ? */
-	m_objon = ~data & 0x04;
+    /* bit 2 enables sprites ? */
+    m_objon = ~data & 0x04;
 }
 
-                             DrawGraphicsOnScreen                            XREF[13]:    FUN_ram_0a87:0b1e(c), 
+                             DrawGraphicsOnScreen                            XREF[13]:    FUN_ram_0a87:0b1e(c),
         ram:0391 e5              PUSH       HL
         ram:0392 21 e5 e0        LD         HL,CURR_VIDENABLE_VAL
         ram:0395 2f              CPL
@@ -565,7 +565,7 @@ void blktiger_state::blktiger_video_enable_w(uint8_t data)
 
 Finding vertical blank code as well as the way that Black Tiger does delays. That stuff was sort of tricky to work out; but it will help figure out a whole lot more of the game.
 
-                             MAYBE_LEVEL_01_DATA_005                         XREF[1]:     Bank07::b718(*)  
+                             MAYBE_LEVEL_01_DATA_005                         XREF[1]:     Bank07::b718(*)
     Bank07::b728 04              ??         04h
     Bank07::b729 04              ??         04h
     Bank07::b72a 04              ??         04h
@@ -609,7 +609,7 @@ SHOWS VIDEO
         ram:236e cd 86 03        CALL       ClearVideoControlValue                           Yes! Pops all elements onto screen
 
 
-                             MAYBE_LEVEL_01_DATA_006                         XREF[1]:     Bank07::b828(*)  
+                             MAYBE_LEVEL_01_DATA_006                         XREF[1]:     Bank07::b828(*)
     Bank07::b838 10              ??         10h
     Bank07::b839 10              ??         10h
     Bank07::b83a 10              ??         10h
@@ -619,14 +619,14 @@ SHOWS VIDEO
     Bank07::b83e 11              ??         11h
     Bank07::b83f 15              ??         15h
 
-     EA30  10 11 11 10 11 15 10 11 
+     EA30  10 11 11 10 11 15 10 11
 
 
-FIRST BYTE = 0 : FREE 
-FIRST BYTE = 1 : ACTIVE 
-FIRST BYTE = 2 : DONE 
-FIRST BYTE = 4 : SWITCH TO THIS STACK 
-FIRST BYTE = 8 : JUMP TO BC 
+FIRST BYTE = 0 : FREE
+FIRST BYTE = 1 : ACTIVE
+FIRST BYTE = 2 : DONE
+FIRST BYTE = 4 : SWITCH TO THIS STACK
+FIRST BYTE = 8 : JUMP TO BC
 
 STACKS:
         ram:01b4 3e 00           LD         A,0x0
@@ -668,7 +668,7 @@ STACKS:
 
 
 
-                             MAYBE_PLAYER_ACTION_JUMP_TABLE_002              XREF[1]:     FUN_ram_34d9:474b(*)  
+                             MAYBE_PLAYER_ACTION_JUMP_TABLE_002              XREF[1]:     FUN_ram_34d9:474b(*)
 0x0     NullFunction01
 0x1     NullFunction01
 0x2     NullFunction02
@@ -776,16 +776,16 @@ STACKS:
                              POT_BREAK_PRIZE_TABLE_02+1                      XREF[2,1]:   Maybe_ShootPotWithCoinInside5Poi
                              POT_BREAK_PRIZE_TABLE_02                                     Maybe_ShootPotWithCoinInside5Poi
                                                                                           Maybe_ShootPotWithCoinInside5Poi
-        ram:772f 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         = 
-        ram:7731 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         = 
-        ram:7733 71 77           dw         POT_BREAK_REVEAL_5_ZENNY                         = 
-        ram:7735 ba 77           dw         POT_BREAK_REVEAL_10_ZENNY                        = 
-        ram:7737 03 78           dw         POT_BREAK_REVEAL_50_ZENNY                        = 
-        ram:7739 4c 78           dw         POT_BREAK_REVEAL_100_ZENNY                       = 
-        ram:773b 95 78           dw         POT_BREAK_REVEAL_500_ZENNY                       = 
-        ram:773d de 78           dw         POT_BREAK_REVEAL_1000_ZENNY                      = 
-        ram:773f 27 79           dw         POT_BREAK_REVEAL_KEY                             = 
-        ram:7741 70 79           dw         POT_BREAK_REVEAL_EXTRA_TIME_HOURGLASS            = 
+        ram:772f 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         =
+        ram:7731 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         =
+        ram:7733 71 77           dw         POT_BREAK_REVEAL_5_ZENNY                         =
+        ram:7735 ba 77           dw         POT_BREAK_REVEAL_10_ZENNY                        =
+        ram:7737 03 78           dw         POT_BREAK_REVEAL_50_ZENNY                        =
+        ram:7739 4c 78           dw         POT_BREAK_REVEAL_100_ZENNY                       =
+        ram:773b 95 78           dw         POT_BREAK_REVEAL_500_ZENNY                       =
+        ram:773d de 78           dw         POT_BREAK_REVEAL_1000_ZENNY                      =
+        ram:773f 27 79           dw         POT_BREAK_REVEAL_KEY                             =
+        ram:7741 70 79           dw         POT_BREAK_REVEAL_EXTRA_TIME_HOURGLASS            =
         ram:7743 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
         ram:7745 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
         ram:7747 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
@@ -798,13 +798,13 @@ STACKS:
         ram:76d1 ed 76           dw         Maybe_RevealNothingInPot::NO_PRIZE_IN_POT_2      = maybe_start_new
         ram:76d3 ed 76           dw         Maybe_RevealNothingInPot::NO_PRIZE_IN_POT_2      = maybe_start_new
         ram:76d5 ee 76           dw         ZENNY_COINS_TABLE_01                             5 ZENNY COINS
-        ram:76d7 f6 76           dw         10_ZENNY_COIN_01                                 = 
-        ram:76d9 fe 76           dw         50_ZENNY_COIN_01                                 = 
-        ram:76db 06 77           dw         100_ZENNY_COIN_01                                = 
-        ram:76dd 0e 77           dw         500_ZENNY_COIN_01                                = 
-        ram:76df 16 77           dw         1000_ZENNY_COIN_01                               = 
-        ram:76e1 1e 77           dw         KEY_01                                           = 
-        ram:76e3 26 77           dw         TIME_HOURGLASS_01                                = 
+        ram:76d7 f6 76           dw         10_ZENNY_COIN_01                                 =
+        ram:76d9 fe 76           dw         50_ZENNY_COIN_01                                 =
+        ram:76db 06 77           dw         100_ZENNY_COIN_01                                =
+        ram:76dd 0e 77           dw         500_ZENNY_COIN_01                                =
+        ram:76df 16 77           dw         1000_ZENNY_COIN_01                               =
+        ram:76e1 1e 77           dw         KEY_01                                           =
+        ram:76e3 26 77           dw         TIME_HOURGLASS_01                                =
         ram:76e5 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
         ram:76e7 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
         ram:76e9 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
@@ -1054,50 +1054,50 @@ bp 2181;bp 219f;bp 2a1f;bp 3bad;bp 4546;bp 47bc;bp 47d9;bp 4faf;bp b9c;bp 1f1e;b
 
 wp e041,2,r;bp 235c
 
-                             STRINGS_TBL_001+1                               XREF[4,2]:   PrintScreenString:1429(*), 
-                             STRINGS_TBL_001                                              PrintScreenString:1434(R), 
-                                                                                          EraseCharsFromString:144d(*), 
-                                                                                          EraseCharsFromString:1458(R), 
-                                                                                          PrintScreenString:1436(R), 
-                                                                                          EraseCharsFromString:145a(R)  
-0x00    CREDIT_0                                         = 
-0x00    1_UP                                             = 
-0x00    2_UP                                             = 
-0x00    HIGH_SCORE                                       = 
-0x00    INSERT_COIN                                      = 
-0x00    PUSH_START_BUTTON                                = 
-0x00    ONE_PLAYER_ONLY                                  = 
-0x00    ONE_OR_TWO_PLAYERS                               = 
+                             STRINGS_TBL_001+1                               XREF[4,2]:   PrintScreenString:1429(*),
+                             STRINGS_TBL_001                                              PrintScreenString:1434(R),
+                                                                                          EraseCharsFromString:144d(*),
+                                                                                          EraseCharsFromString:1458(R),
+                                                                                          PrintScreenString:1436(R),
+                                                                                          EraseCharsFromString:145a(R)
+0x00    CREDIT_0                                         =
+0x00    1_UP                                             =
+0x00    2_UP                                             =
+0x00    HIGH_SCORE                                       =
+0x00    INSERT_COIN                                      =
+0x00    PUSH_START_BUTTON                                =
+0x00    ONE_PLAYER_ONLY                                  =
+0x00    ONE_OR_TWO_PLAYERS                               =
 0x00    GAME_OVER                                        = D24Ch
-0x00    CAPCOM_1987                                      = 
-0x00    RANKING_BEST_5                                   = 
-0x00    1ST                                              = 
-0x00    2ND                                              = 
-0x00    3RD                                              = 
-0x00    4TH                                              = 
-0x00    5TH                                              = 
-0x00    READY                                            = 
-0x00    TIME_VITALITY                                    = 
-0x00    SAVE_LIFE                                        = 
-0x00    SAVE_LIVES                                       = 
-0x00    POISON                                           = 
-0x00    TIME_OVER                                        = 
-0x00    ROUND                                            = 
-0x00    READY_PLAYER_1                                   = 
-0x00    READY_PLAYER_2                                   = 
-0x00    CONTINUE?                                        = 
-0x00    BLANK_SPC_3LINES_DOWN                            = 
-0x00    BLANK_SPC_UPPER_MIDDLE                           = 
-0x00    WELCOME_TO_DUNGEON!                              = 
-0x00    BONUS_ZENNY_300                                  = 
-0x00    BONUS_ZENNY_500                                  = 
-0x00    BONUS_ZENNY_800                                  = 
-0x00    BONUS_ZENNY_1200                                 = 
-0x00    BONUS_ZENNY_1600                                 = 
-0x00    BONUS_ZENNY_2400                                 = 
-0x00    BONUS_ZENNY_4800                                 = 
-0x00    LOSE_DIRECTION                                   = 
-                             ACTION_JMP_TBL_001                              XREF[1]:     DrawTestScreenSprites:140d(*)  
+0x00    CAPCOM_1987                                      =
+0x00    RANKING_BEST_5                                   =
+0x00    1ST                                              =
+0x00    2ND                                              =
+0x00    3RD                                              =
+0x00    4TH                                              =
+0x00    5TH                                              =
+0x00    READY                                            =
+0x00    TIME_VITALITY                                    =
+0x00    SAVE_LIFE                                        =
+0x00    SAVE_LIVES                                       =
+0x00    POISON                                           =
+0x00    TIME_OVER                                        =
+0x00    ROUND                                            =
+0x00    READY_PLAYER_1                                   =
+0x00    READY_PLAYER_2                                   =
+0x00    CONTINUE?                                        =
+0x00    BLANK_SPC_3LINES_DOWN                            =
+0x00    BLANK_SPC_UPPER_MIDDLE                           =
+0x00    WELCOME_TO_DUNGEON!                              =
+0x00    BONUS_ZENNY_300                                  =
+0x00    BONUS_ZENNY_500                                  =
+0x00    BONUS_ZENNY_800                                  =
+0x00    BONUS_ZENNY_1200                                 =
+0x00    BONUS_ZENNY_1600                                 =
+0x00    BONUS_ZENNY_2400                                 =
+0x00    BONUS_ZENNY_4800                                 =
+0x00    LOSE_DIRECTION                                   =
+                             ACTION_JMP_TBL_001                              XREF[1]:     DrawTestScreenSprites:140d(*)
         ram:141b 29 14           dw         PrintScreenString
         ram:141d 4d 14           dw         EraseCharsFromString
         ram:141f 6c 14           dw         PartiallyClearScreen
