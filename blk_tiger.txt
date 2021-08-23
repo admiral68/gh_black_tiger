@@ -1,359 +1,198 @@
+*****************************************************************************************
+* GENERAL NOTES:                                                                        *
+*****************************************************************************************
+
+SCREEN SIZE: 256x224
+
+JOYSTICK & BUTTON INPUT VALUES: e=1,w=2,d=4,u=8,f=10,j=20
+
 Bank Switch: Write to IO $01
 
-Breakpoints:
-ROM:$09db => IPT_SERVICE1 on IN0
-ROM:$0aa7 => After write screen warning
-ROM:$0b44
-ROM:$00EA => Dynamic breakpoints
-
-$411
-
-$13F1
-
-$33d -- end of "wait"
-
-
-$346 --- first screen ends
-
-
-
-$b7f (after clearing scores)
-$b97
-
-
-EA
-346
-411
-bpset 1442,a==$40
-33D
-22B8
-
-
-
-
-bp 65,a != 0
-bp 6a,a != 0
-bp 1442,a==$40
-
-
-
-bp b3
-bp ea
-bp 3c9
-bp 3cf
-bp 346
-bp 408
-bp 411
-bp 1d6d
-bp 1dfb
-bp 235c
-bp 2364
-bp 239e
-bp 27c3
-bp 301e
-bp 32C7
-bp 32FE
-bp 3683
-bp 3dc3
-bp 47e9
-bp 481e
-bp 8446
-bp 8800
-bp 8D0E
-
-bp 1352
-bp 20ec
-
-bp 683
-bp 2343
-
-
-13E6:Maybe draw sprites
-
-c000 -- BG VIDEO RAM... 16x8 tiles (16 w 8 h)
-LW+(BITS0-3 of HW) = TILE SELECTION
-(BITS4-6 of HW) = PALETTE
-BIT 7 of HW: FLIP HORIZONTALLY
-
-FE28:
-WORD -- PALETTE
-WORD -- LOCATION (X = MSB) (Y = LSB) -- 10 00 = top left of screen;    10 F0 = top right of screen
-                                        E0 00 = bottom left of screen; E0 F0 = bottom right of screen
-DEBUG FE28:
-1) BP ac3c
-2) BP ac45
-3) CTRL+M. Set to FE20. Values will be from Fe28 to Fe28+1c0
-4) hit first bp
-5) change values
-6) F5. Changes should show.
-
-
-
-128 pieces of sprites can be used simultaneously
-
-
-SPRITE STRUCTURE (in Z80 src code):
-
-Byte 0  |  Byte 1  |  Byte 2  |  Byte 3
------------------------------------------
-(tile/sp)   attrib       y pos      x pos
-index
-
-attrib
-   bits 0-2: palette (0-7)
-   bit 3: flip tile/sprite piece horizontally
-   bit 4: if set, subtract 256 from x pos
-   bits 5-7: index |= ((attrib & E0) << 3) --- Indexes up to 7FF
-
-
-
-PLAYER ANIMATION STRUCT:
-
-BYTE 1: FIRST INDEX (add 1 for tile 2, 8 for tile 3, 9 for tile 4 index)
-BYTE 2: ATTR (INCLUDING ALL BITS)
-BYTE 3: WEAPON INDEX
-BYTE 4: WEAPON ATTR (ALL BITS)
-BYTE 5: WEAPON X OFFSET (FROM FIRST SPRITE TILE)
-BYTE 6: WEAPON Y OFFSET (FROM FIRST SPRITE TILE)
-
-For flipped tiles, put first index on right, second on left.
-
-e=1,w=2,d=4,u=8,f=10,j=20
-
-    Type *copy(uint32_t srcoffset = 0, uint32_t srclength = 0x7fffffff)
-    {
-        assert(m_spriteram != nullptr);
-        if (m_spriteram != nullptr)
-            memcpy(&m_buffered[0], m_spriteram + srcoffset, (std::min<size_t>)(srclength, m_spriteram.bytes() / sizeof(Type) - srcoffset) * sizeof(Type));
-        return &m_buffered[0];
-    }
-STRUCT:
-0:
-1:attr (color=AND7;FLIPX=AND8)
-2:y-6
-3:x-128
-
-        int attr = buffered_spriteram[offs+1];
-        int sx = buffered_spriteram[offs + 3] - ((attr & 0x10) << 4);
-        int sy = buffered_spriteram[offs + 2];
-        int code = buffered_spriteram[offs] | ((attr & 0xe0) << 3);
-        int color = attr & 0x07;
-        int flipx = attr & 0x08;
-
-        m_gfxdecode->gfx(2)->transpen(bitmap,cliprect,
-                code,
-                color,
-                flipx,flip_screen(),
-                sx+128,sy+6,15);
-
-    Bank06::827e 10              ??         10h                                              X LOC
-    Bank06::827f 00              ??         00h
-    Bank06::8280 88              ??         88h                                              Y LOC
-    Bank06::8281 03              ??         03h
-    Bank06::8282 da b7           dw         Maybe_PutNoPrizeInWall
-    Bank06::8284 02              ??         02h
-    Bank06::8285 2d              ??         2Dh    -
-    Bank06::8286 ff              ??         FFh
-    Bank06::8287 ff              ??         FFh
-
-LEVEL_01_BOSSES_CREATION
-AddLevel01BossBlocks
-
-void gfx_element::transpen(bitmap_ind16 &dest, const rectangle &cliprect,
-        u32 code, u32 color, int flipx, int flipy, s32 destx, s32 desty,
-        u32 trans_pen)
-ID\  En  CPU                   Address       Condition         Action
- 1   O   :maincpu              043B
- 2   O   :maincpu              0466
- 4   O   :maincpu              1CD9
- 5   O   :maincpu              1B49
- 6   X   :maincpu              1E25
- 7   X   :maincpu              1E2C
-12   X   :maincpu              01B4
-16   O   :maincpu              03D0
-18   O   :maincpu              14AF
-1A   X   :maincpu              550B
-1D   O   :maincpu              30C8
-1F   O   :maincpu              1BD0
-20   X   :maincpu              8625
-21   X   :maincpu              86A1
-22   X   :maincpu              86B4
-23   X   :maincpu              86B9
-24   X   :maincpu              86BF
-25   X   :maincpu              86C8
-26   X   :maincpu              86D3
-27   X   :maincpu              06DA
-28   O   :maincpu              07E8
-29   O   :maincpu              07F0
-2A   X   :maincpu              07F9
-2B   O   :maincpu              0803
-2C   X   :maincpu              86BC
-2D   O   :maincpu              A1B5
-2E   O   :maincpu              1932
-2F   X   :maincpu              1BFB
-30   X   :maincpu              8118          a > 0
-31   X   :maincpu              868F          a>0
-32   X   :maincpu              195C
-33   O   :maincpu              1CC7
-34   X   :maincpu              7138
-35   X   :maincpu              714A
-36   X   :maincpu              7147
-37   X   :maincpu              719A
-38   X   :maincpu              714B
-39   X   :maincpu              719B
-3A   X   :maincpu              ACEF
-3B   X   :maincpu              AD40
-3C   X   :maincpu              AD91
-3D   O   :maincpu              B924
-
-   ID\  En  CPU                   Space      Addresses         Type   Condition
- 1   X   :maincpu              program    2A02-2A02         read
- 2   O   :maincpu              program    F955-F955         write
- 3   O   :maincpu              program    ECAC-ECAC         write
- 4   O   :maincpu              program    F940-F940         write
- 5   O   :maincpu              program    56DA-5711         read
- 6   O   :maincpu              program    E100-E100         write
- 7   O   :maincpu              program    FE00-FFFF         write
- 8   O   :maincpu              program    E100-E101         read
- 9   X   :maincpu              program    E0E7-E0E7         write
- A   X   :maincpu              program    8286-8286         read
- B   X   :maincpu              program    827E-827E         read
-
-
-
-
-
-
-bp ea
-bp 3c4
-bp 3c9
-bp 3cf
-bp 411,hl!=$1429 && hl!=$144D
-bp 1d6d
-bp 1dfb
-bp 27c3
-bp 301e
-bp 32fe,hl!=$9456 && hl!=$96c2
-bp 3683
-bp 3dc3
-bp 72ea
-bp a1e9
-
-
-
-bp 195c--player sprite draw?
-
-
-
-audiocpu: C001 sound one? c800 sound 2?
-
-c500 - queue for YM1. C515 start ptr (big endian) C517 end ptr (big endian) c51b - Original control value (from A)
-C530 - queue for YM2. C545 start ptr (big endian) C547 end ptr (big endian) c54b - Original control value (from A)
-
-
-HOW TO: TEST AUDIO CLIPS
-0) Start MAME debugger for blktiger (mame -debug blktiger)
-1) set bp 1b4 in maincpu
-2) CTRL+M. Set watch to E150
-3) F5 (continue)
-4) set pc=1ac when bp 1b4 is hit
-5) F5 (continue). This puts Black Tiger into test mode.
-6) Put values from 0h to 43h into E151 (in memory watch window). 0, 1F, and 38 will not play sounds. They stop the current sound.
-7) Change byte at E162 to 51 (in memory watch window). Voila. Sound plays.
-
-
-
-ID\  En  CPU                   Address       Condition         Action
- 1   X   :maincpu              00EA
- 2   X   :maincpu              0346
- 3   X   :maincpu              0411
- 4   X   :maincpu              1442          a==$40
- 5   O   :maincpu              2F2D
- 7   O   :maincpu              32C7
- 8   X   :maincpu              8446
- 9   X   :maincpu              8800
- A   X   :maincpu              8D0E
- D   X   :maincpu              1939
- E   X   :maincpu              1E25
- F   X   :maincpu              8446
-11   X   :maincpu              862B
-14   X   :maincpu              86BF
-15   X   :maincpu              86C5
-17   X   :maincpu              24A0
-
-https://delmunsoft.com/PMD%20Programming.html
-https://github.com/gzaffin/pmdmini
-https://battleofthebits.org/lyceum/View/Professional+Music+Driver+%28PMD%29/
-
-
-General Instruments datasheet for the AY-3-8910A
-
-I didn't get the lpt working, but I did manage to get it working with the avr, thank you for the offer of the fax though, 
-Cliff (the first computer I owned was a cpc464 btw, go Amstrad!) Turns out I wasn't sending an inactive signal to the Bus 
-Direction/Control lines after sending a bus control signal.
-
-In case anyone else tries this:
-
-Remember that registers R0-R17 are in octal form in some data sheets, so R10 = 0x08, R11 = 0x09, R12 = 0x0A etc 
-(the YM2149 datasheet uses hex numbering) Assuming that PORTD0-7 outputs to the PSG data ports DA0-DA7. 
-PORTC0 = BDIR and PORTC1 = BC1 (BC2 is tied to 5+v) Remember to toggle the reset line when appropriate, otherwise you
-will get unpredictable sounds.
-
-A send function:
-
-void send_ay(int reg, int data){
-PORTC = 0x00; //send 'inactive', logical 0 to BDIR/BC1
-PORTD = reg; //put register number on data port
-PORTC = 0x03; //send 1 to BDIR/BC1 to latch register address
-PORTC = 0x00; //inactive
-PORTD = data; //data to send to previously selected register
-PORTC = 0x01; //send 1 to BDIR, 0 to BC1 to latch data to register
-}
-
-Test sound:
-
-Output tone on all channels -
-
-send_ay(0x00,0xFE);//Set Channel A Tone Period
-send_ay(0x01,0x00);
-
-send_ay(0x02,0xFE);//Set Channel B Tone Period
-send_ay(0x03,0x00);
-
-send_ay(0x04,0xFE);//Set Channel C Tone Period
-send_ay(0x05,0x00);
-
-send_ay(0x07,0xF8); //Output on channels ABC
-send_ay(0x08,0x0F);//Channel A Amplitude
-send_ay(0x09,0x0F);//Channel B Amplitude
-send_ay(0x0A,0x0F);//Channel C Amplitude
-
-
-    map(0x0000, 0x7fff).rom();
-    map(0xc000, 0xc7ff).ram();
-    map(0xc800, 0xc800).r("soundlatch", FUNC(generic_latch_8_device::read));
-    map(0xe000, 0xe001).rw("ym1", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
-    map(0xe002, 0xe003).rw("ym2", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
-
-
-charlayout
-spritelayout
-
-
-static GFXDECODE_START( gfx_blktiger )
-    GFXDECODE_ENTRY( "gfx1", 0, charlayout,   0x300, 32 )   /* colors 0x300-0x37f */
-    GFXDECODE_ENTRY( "gfx2", 0, spritelayout, 0x000, 16 )   /* colors 0x000-0x0ff */
-    GFXDECODE_ENTRY( "gfx3", 0, spritelayout, 0x200,  8 )   /* colors 0x200-0x27f */
-GFXDECODE_END
-
-
-    m_scroll_x[0] = 0;
-    m_scroll_x[1] = 0;
-    m_scroll_y[0] = 0;
-    m_scroll_y[1] = 0;
-    m_scroll_bank = 0;
-    m_screen_layout = 0;
-
+*****************************************************************************************
+* GAME NOTES:                                                                           *
+*****************************************************************************************
+
+PLAYER SPRITE VARIABLE:
+
+(0x3)   = Y POS HI
+
+(0x8)   = X OFFSET(?) SCROLL VELOCITY?
+(0x9)   = Y OFFSET(?) SCROLL VELOCITY?
+(0xf)   = maybe action counter
+(0x1c)  = deltax(?)
+(0x1d)  = deltay(?)
+(0x23)
+(0x26)
+(0x27)  =  counter: times cycled through (0xf)
+
+
+ENEMY VARIABLE:
+
+(IX+0x0) = alive flag? ($80 or not)
+(IX+0x1) = x pos
+(IX+0x3) = y pos
+(IX+0x5) = sprite attr of tile
+(IX+0x6) = animation x offset ($80 special case)
+(IX+0x7) = animation y offset ($80 special case)
+(IX+0x8) = something to do with X/Y (collision checking)
+(IX+0x9) = something to do with X/Y (collision checking)
+
+(IX+0xa) = animation duration!
+(IX+0xb) = entity class
+(IX+0xc) = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
+(IX+0xd) = sprite touched by player function offset
+(IX+0xe) = maybe health? (enemy only)
+
+(IX+0xf) = maybe weapon damage inflicted on player
+
+(IX+0x10) = maybe activate attack x distance(?)
+
+(IX+0x11) = sprite anim table offset
+(IX+0x12) = Sprite anim y offset hi(?)
+(IX+0x13) = ROM Bank
+(IX+0x14) = sprite facing flag(?) 0 = r, 1 = l
+(IX+0x15) = character health points (enemy too?)
+(IX+0x16) =
+(IX+0x17) = Score offset!
+(IX+0x18) = EC5C--???
+(IX+0x19) =
+(IX+0x1a) = sprite struct location
+(IX+0x1c) = *ending animation bookmark
+(IX+0x1d) =
+(IX+0x1e) = current animation bookmark
+
+(IX+0x20) = -> maybe related sprite variable ptr?
+(IX+0x21) =
+
+
+ORANGE SKELETON                         0x1
+ORANGE SKELETON (2)                     0x2
+PURPLE SKELETON                         0x3
+BROWN ORC L1                            0x4
+BROWN ORC L2                            0x5
+BROWN ORC L3                            0x6
+BROWN ORC R4/L4                         0x7
+BROWN ORC L5/R5                         0x8
+ORANGE MICHELIN MAN                     0x9
+YELLOW MICHELIN MAN                     0xa
+PURPLE MICHELIN MAN                     0xb
+MAN-EATING YELLOW PLANT                 0xc
+MAN-EATING PURPLE PLANT                 0xd
+FIRETHROWER L1                          0xe
+BLUE GOOP                               0xf
+BLUE GOOP 4                             0x10
+RED GOOP                                0x11
+BLUE GOOP 7                             0x12
+PURPLE WITCH                            0x13
+RED WITCH                               0x14
+NINJA                                   0x15
+SPINNING COIN                           0x16
+BAT                                     0x17
+SNAKE                                   0x18
+PURPLE BLOCK                            0x19
+ORANGE BLOCK                            0x1a
+DEMON                                   0x1b
+LEVEL 03 DRAGON                         0x1c
+LEVEL 06 DRAGON                         0x1d
+LEVEL 08 DRAGON                         0x1e
+LEVEL 05 WARTHOG BOSS                   0x1f
+LEVEL 07 WARTHOG BOSS                   0x20
+OLD MAN THAT GIVES ZENNY                0x21
+OLD MAN THAT HAS SHOP (1)               0x22
+OLD MAN THAT GIVES VITALITY             0x23
+OLD MAN THAT GIVES MORE TIME            0x24
+OLD MAN THAT GIVES ADVICE/SCULL         0x25
+OLD MAN THAT GIVES GRATITUDE            0x26
+OLD MAN THAT GIVES ADVICE/SEEK          0x27
+OLD MAN THAT HAS SHOP (2)               0x28
+FALLING ROCK                            0x29
+
+0_POINTS        0x0
+5_POINTS
+10_POINTS
+15_POINTS
+20_POINTS
+30_POINTS
+50_POINTS
+80_POINTS
+100_POINTS
+150_POINTS
+200_POINTS
+300_POINTS
+500_POINTS
+800_POINTS
+1000_POINTS
+1500_POINTS
+2000_POINTS
+3000_POINTS
+5000_POINTS
+7000_POINTS
+10000_POINTS
+15000_POINTS
+20000_POINTS
+30000_POINTS
+40000_POINTS
+50000_POINTS
+60000_POINTS
+70000_POINTS
+80000_POINTS
+90000_POINTS
+100000_POINTS
+
+                             PLAYER_TOUCH_OTHER_SPRITE_ACTION_JUMP_TABLE     XREF[1]:     Maybe_CheckEnemyTouchesPlayer:474b(*)
+0x0     NullFunction01
+0x1     NullFunction01
+0x2     NullFunction02
+0x3     PlayerTakesZennyCoin1Point
+0x4     PlayerTakesZennyCoin5Points
+0x5     PlayerTakesZennyCoin10Points
+0x6     PlayerTakesZennyCoin50Points
+0x7     PlayerTakesZennyCoin100Points
+0x8     PlayerTakesZennyCoin500Points
+0x9     PlayerTakesZennyCoin1000Points
+0xa     PlayerTakesKey
+0xb     PlayerTakesHourglass
+0xc     NullFunction01
+0xd     NullFunction01
+0xe     NullFunction01
+0xf     NullFunction01
+0x10    Maybe_UseKey01
+0x11    MaybePlayerOpensTreasureChestGetsZennyCoins
+0x12    PlayerOpensChestTakesTreasure100Points
+0x13    PlayerOpenChestTakesTreasure500Points
+0x14    PlayerTakesTreasure1000Points
+0x15    MaybePlayerOpensTreasureChestGetsVitality
+0x16    Maybe_FinishThisSpriteAnimation
+0x17    PlayerTakesShurikenExtraGuyPrize
+0x18    PlayerTakesStarArmor
+0x19    PlayerTakesPOWPrize
+0x1a    PlayerTakesShieldFor30SecondsOfTime
+0x1b    PlayerTakesItemFor1000Points
+0x1c    PlayerTakesBarrelArmorPrize
+0x1d    PlayerTakesStrawberryArmorPrize
+0x1e    PlayerTakesItemFor1000Points
+0x1f    PlayerTakesDragonflyFor5000Points
+0x20    PlayerTakesElephantPrizeFor500Zenny
+0x21    PlayerTakesPumpkinSpiderPrizeFor7000Points
+0x22    Maybe_DoDungeon
+0x23    PlayImpactSound
+0x24    AddFirethrower02
+0x25    Maybe_NinjaSomething
+0x26    Maybe_UseAPotion
+0x27    Maybe_DamagePlayer
+0x28    AddPurpleFireSprite
+0x29    Maybe_StartNewOrangeFire01
+0x2a    Maybe_UseAPotion02
+0x2b    Maybe_UseAPotion03
+0x2c    PlayActivateOldManSound
+0x2d    PlayActivateOldManSound
+0x2e    PlayActivateOldManSound
+0x2f    PlayActivateOldManSound
+0x30    PlayActivateOldManSound
+0x31    PlayActivateOldManSound
+0x32    PlayActivateOldManSound
+0x33    PlayActivateOldManSound
+0x34    Maybe_UpdateBat
 
 
                              SOUNDS_TABLE                                    XREF[1]:     Maybe_PlaySoundEffect:020e(*)
@@ -427,224 +266,25 @@ GFXDECODE_END
         ram:0e47 e6 1a           dw         DRAGON_SPEW_FIRE_SOUND                           43 might be the last sound
 
 
-BP: 1B4 (allows entry to test menu; PC=1ac)
-  : 5501 (change a => 1-7 for changing coin award from killing enemy)
 
-                             DEMON_ACTION_SELECTION_TABLE                    XREF[2]:     Maybe_HandleDemon:a07d(*),
-                                                                                          Maybe_HandleDemon:a081(R)
-    Bank02::acae 04              ??         04h
-    Bank02::acaf 03              ??         03h
-    Bank02::acb0 00              ??         00h
-    Bank02::acb1 00              ??         00h
-    Bank02::acb2 01              ??         01h
-    Bank02::acb3 00              ??         00h
-    Bank02::acb4 05              ??         05h
-    Bank02::acb5 03              ??         03h
-    Bank02::acb6 04              ??         04h
-    Bank02::acb7 02              ??         02h
-    Bank02::acb8 03              ??         03h
-    Bank02::acb9 00              ??         00h
-    Bank02::acba 00              ??         00h
-    Bank02::acbb 03              ??         03h
-    Bank02::acbc 00              ??         00h
-    Bank02::acbd 00              ??         00h
+*****************************************************************************************
+* VIDEO RAM/MAP NOTES:                                                                  *
+*****************************************************************************************
 
-                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)
-    Bank02::a088 94 a0           dw         Maybe_DemonSpearThrow2
-    Bank02::a08a a9 a0           dw         Maybe_HandleDemon06
-    Bank02::a08c b2 a0           dw         Maybe_HandleDemon05
-    Bank02::a08e ba a0           dw         Maybe_HandleDemon03
-    Bank02::a090 c1 a0           dw         Maybe_HandleDemon04
-    Bank02::a092 c9 a0           dw         Maybe_HandleDemon02
+VIDEO RAM:
 
-                             JMP_TBL_DEMON_ACTIONS_01                        XREF[1]:     Maybe_HandleDemon:a082(*)
-    Bank02::a088 94 a0           dw         Maybe_DemonSpearThrow2
-    Bank02::a08a a9 a0           dw         Maybe_DemonAction01
-    Bank02::a08c b2 a0           dw         Maybe_DemonAction02
-    Bank02::a08e ba a0           dw         Maybe_DemonAction03
-    Bank02::a090 c1 a0           dw         Maybe_DemonAction04
-    Bank02::a092 c9 a0           dw         Maybe_DemonAction05
+WORD -- LOCATION (X = MSB) (Y = LSB) -- 10 00 = top left of screen;    10 F0 = top right of screen
+                                        E0 00 = bottom left of screen; E0 F0 = bottom right of screen
 
-                             ORANGE_MICHELIN_MAN_JMP_TBL                     XREF[1]:     Maybe_OrangeMichelinManUpdate00:
-    Bank03::840b 15 84           dw         Maybe_OrangeMichelinManUpdate01
-    Bank03::840d fd 85           dw         Maybe_OrangeMichelinManUpdate02
-    Bank03::840f 0d 86           dw         Maybe_OrangeMichelinManUpdate03
-    Bank03::8411 7c 86           dw         Maybe_OrangeMichelinManUpdate04
-    Bank03::8413 ae 86           dw         Maybe_OrangeMichelinManUpdate05
-
-     8000  2A 27 E9 23 34 7E FE 1E C0 36 00 21 80 E1 1E 01   *'.#4~...6.!....
-     8010  16 00 19 7E FE 03 D0 CD 3B 04 C9 00 00 21 91 81   ...~....;....!..
-     8020  01 30 00 ED B0 FD E5 E1 DD 74 1A DD 75 1B 2A 27   .0.......t..u.*'
-     8030  E9 DD 75 18 DD 74 19 3A 09 E0 0F E6 07 5F 16 00   ..u..t.:....._..
-     8040  21 87 80 19 7E DD 77 02 06 05 DD 36 04 70 DD 36   !...~.w....6.p.6
-     8050  08 10 DD 36 09 20 C5 CD C8 06 20 1B 26 00 DD 6E   ...6. .... .&..n
-     8060  04 11 10 00 19 DD 75 04 C1 10 EB AF DD 77 03 DD   ......u......w..
-     8070  77 04 DD 36 00 00 C9 E1 21 80 E1 DD 5E 0B 16 00   w..6....!...^...
-     8080  19 34 21 40 E9 34 C9 60 D0 A0 30 C0 50 40 B0 3E   .4!@.4.`..0.P@.>
-     8090  0A DD 77 0C 18 05 3E 08 DD 77 0C DD 6E 1E DD 66   ..w...>..w..n..f
-     80A0  1F 23 23 23 C3 E6 32 2A 30 E0 7C 65 6F E5 ED 5B   .###..2*0.|eo..[
-     80B0  01 F4 7A 53 5F 19 EB E1 DD 46 01 DD 4E 02 09 ED   ..zS_....F..N...
-     80C0  52 30 0A DD 36 14 00 21 5B 82 C3 E6 32 DD 36 14   R0..6..![...2.6.
-     80D0  01 21 E3 81 C3 E6 32 DD 35 20 28 52 DD 36 08 10   .!....2.5 (R.6..
-     80E0  DD 36 09 20 CD C8 06 CA 39 81 DD 7E 14 A7 20 1F   .6. ....9..~.. .
-     80F0  DD 36 08 20 DD 36 09 10 CD C8 06 20 0C DD 6E 1E   .6. .6..... ..n.
-
-TO: GET TO A LEVEL IN MAME/BLK TIGER
-1: bp 1e7a;bp 231d;bp 22f5;bp 22fb;bp 22ec;bp 2269;bp 227a
-2: Key 9; Key 1
-3: 1e7a: a=(0,1,2,3,4,5,6,7);F5
-4: 2269: F3b6=(0,1,2,3,4,5,6,7,8);F3A1=(0,1,2,3,4,5,6,7);F5
-5: 227a: de=800;f5
-6: hit fire button to bypass intro
-7: 22ec: a=73;f5
-8: 22f5: de=3200;f5
-9: 22fb: a=8;F3AC=(0,1,2,3,4);f5
-10: 231d save state here
+c000 -- BG VIDEO RAM... 16x8 tiles (16 w 8 h)
+LW+(BITS0-3 of HW) = TILE SELECTION
+(BITS4-6 of HW) = PALETTE
+BIT 7 of HW: FLIP HORIZONTALLY
 
 
-
-PLAYER
-(0x3)   = Y POS HI
-
-(0x8)   = X OFFSET(?) SCROLL VELOCITY?
-(0x9)   = Y OFFSET(?) SCROLL VELOCITY?
-(0xf)   = maybe action counter
-(0x23)
-(0x26)
-(0x27)  =  counter: times cycled through (0xf)
-
-
-NONE: 0, R: 4; L: 8; D: 16; U: 32
-
-1,2,4,8 = 0,2,4,8
-
-ENEMY
-(IX+0x0) = alive flag? ($80 or not)
-(IX+0x1) = x pos
-(IX+0x3) = y pos
-(IX+0x5) = sprite attr of tile
-(IX+0x6) = animation x offset ($80 special case)
-(IX+0x7) = animation y offset ($80 special case)
-(IX+0x8) = something to do with X/Y (collision checking)
-(IX+0x9) = something to do with X/Y (collision checking)
-
-(IX+0xa) = animation duration!
-(IX+0xb) = entity class
-(IX+0xc) = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
-(IX+0xd) = sprite touched by player function offset
-(IX+0xe) = maybe health? (enemy only)
-
-(IX+0xf) = maybe weapon damage inflicted on player
-
-(IX+0x10) = maybe activate attack x distance(?)
-
-(IX+0x11) = sprite anim table offset
-(IX+0x12) = Sprite anim y offset hi(?)
-(IX+0x13) = ROM Bank
-(IX+0x14) = sprite facing flag(?) 0 = r, 1 = l
-(IX+0x15) = character health points (enemy too?)
-(IX+0x16) =
-(IX+0x17) = Score offset!
-(IX+0x18) = EC5C--???
-(IX+0x19) =
-(IX+0x1a) = sprite struct location
-(IX+0x1c) = *ending animation bookmark
-(IX+0x1d) =
-(IX+0x1e) = current animation bookmark
-
-(IX+0x20) = -> maybe related sprite variable ptr?
-(IX+0x21) =
-
-                             MAYBE_PRIZE_DATA_01                             XREF[1]:     Bank03::bb1b(*)
-    Bank03::bb2b 00              ??         00h
-    Bank03::bb2c d0              ??         D0h
-    Bank03::bb2d c1              ??         C1h
-    Bank03::bb2e 00              ??         00h
-    Bank03::bb2f 30              ??         30h    0
-    Bank03::bb30 00              ??         00h
-    Bank03::bb31 30              ??         30h    0
-
-    Bank03::bb32 01              ??         01h
-    Bank03::bb33 2a              ??         2Ah    *
-    Bank03::bb34 c9              ??         C9h
-    Bank03::bb35 00              ??         00h
-    Bank03::bb36 30              ??         30h    0
-    Bank03::bb37 00              ??         00h
-    Bank03::bb38 30              ??         30h    0
-
-                             1UP_PRIZE_IN_WALL                               XREF[1]:     PlayerTakes1UpExtraGuyPrize:4dc5
-    Bank03::baf0 20 6b a6        dnw_char
-                 00 ff
-       Bank03::baf0 20              db        20h                     duration      < fe                XREF[1]:     PlayerTakes1UpExtraGuyPrize:4dc5
-       Bank03::baf1 6b a6 00 ff     sprite_f                          character_fr
-          Bank03::baf1 6b              db        6Bh                     index
-          Bank03::baf2 a6              sprite_a                          attr
-          Bank03::baf3 00              db        0h                      x_offset
-          Bank03::baf4 ff              db        FFh                     y_offset
-    Bank03::baf5 fe              anim_dec   maybe_start_new
-                             END_PRIZES                                      XREF[1]:     Maybe_PlayerBreaksWallAndFindsSo
-    Bank03::baf6 fe              anim_dec   maybe_start_new
-
-
-void blktiger_state::blktiger_video_enable_w(uint8_t data)
-{
-    /* not sure which is which, but I think that bit 1 and 2 enable background and sprites */
-    /* bit 1 enables bg ? */
-    m_bgon = ~data & 0x02;
-
-    /* bit 2 enables sprites ? */
-    m_objon = ~data & 0x04;
-}
-
-                             DrawGraphicsOnScreen                            XREF[13]:    FUN_ram_0a87:0b1e(c),
-        ram:0391 e5              PUSH       HL
-        ram:0392 21 e5 e0        LD         HL,CURR_VIDENABLE_VAL
-        ram:0395 2f              CPL
-        ram:0396 a6              AND        (HL=>CURR_VIDENABLE_VAL)
-        ram:0397 77              LD         (HL=>CURR_VIDENABLE_VAL),A
-        ram:0398 d3 0c           OUT        (IO_VID_ENABLE_W),A
-        ram:039a e1              POP        HL
-
-
-Finding vertical blank code as well as the way that Black Tiger does delays. That stuff was sort of tricky to work out; but it will help figure out a whole lot more of the game.
-
-                             MAYBE_LEVEL_01_DATA_005                         XREF[1]:     Bank07::b718(*)
-    Bank07::b728 04              ??         04h
-    Bank07::b729 04              ??         04h
-    Bank07::b72a 04              ??         04h
-    Bank07::b72b 04              ??         04h
-    Bank07::b72c 04              ??         04h
-    Bank07::b72d 04              ??         04h
-    Bank07::b72e 04              ??         04h
-    Bank07::b72f 04              ??         04h
-    Bank07::b730 05              ??         05h
-    Bank07::b731 05              ??         05h
-    Bank07::b732 05              ??         05h
-    Bank07::b733 05              ??         05h
-    Bank07::b734 05              ??         05h
-    Bank07::b735 05              ??         05h
-    Bank07::b736 05              ??         05h
-    Bank07::b737 05              ??         05h
-    Bank07::b738 0a              ??         0Ah
-    Bank07::b739 0a              ??         0Ah
-    Bank07::b73a 0a              ??         0Ah
-    Bank07::b73b 0a              ??         0Ah
-    Bank07::b73c 0a              ??         0Ah
-    Bank07::b73d 0a              ??         0Ah
-    Bank07::b73e 0a              ??         0Ah
-    Bank07::b73f 0a              ??         0Ah
-    Bank07::b740 0a              ??         0Ah
-    Bank07::b741 0c              ??         0Ch
-    Bank07::b742 0c              ??         0Ch
-    Bank07::b743 02              ??         02h
-    Bank07::b744 0b              ??         0Bh
-    Bank07::b745 0b              ??         0Bh
-    Bank07::b746 0b              ??         0Bh
-    Bank07::b747 0b              ??         0Bh
-
-     EA10  04 0A 04 05 04 04 02 05 05 0A 05 05 0A 0B 04 0B   ................
-     EA20  0B 0A 0A 04 0A 0A 0A 04 05 05 0C 04 0C 0B 0A 05   ................
-
+ void gfx_element::transpen(bitmap_ind16 &dest, const rectangle &cliprect,
+        u32 code, u32 color, int flipx, int flipy, s32 destx, s32 desty,
+        u32 trans_pen)                                       
 
 SHOWS VIDEO
 
@@ -652,18 +292,9 @@ SHOWS VIDEO
         ram:236e cd 86 03        CALL       ClearVideoControlValue                           Yes! Pops all elements onto screen
 
 
-                             MAYBE_LEVEL_01_DATA_006                         XREF[1]:     Bank07::b828(*)
-    Bank07::b838 10              ??         10h
-    Bank07::b839 10              ??         10h
-    Bank07::b83a 10              ??         10h
-    Bank07::b83b 11              ??         11h
-    Bank07::b83c 11              ??         11h
-    Bank07::b83d 11              ??         11h
-    Bank07::b83e 11              ??         11h
-    Bank07::b83f 15              ??         15h
-
-     EA30  10 11 11 10 11 15 10 11
-
+*****************************************************************************************
+* STACK NOTES:                                                                          *
+*****************************************************************************************
 
 FIRST BYTE = 0 : FREE
 FIRST BYTE = 1 : ACTIVE
@@ -708,216 +339,42 @@ STACKS:
     Bank02::9b0b 3e 08           LD         A,0x8
     Bank02::9b0d 01 b4 2b        LD         BC,DoTimeRemaining::contd
 
+*****************************************************************************************
+* MAME DEBUGGING NOTES:                                                                 *
+*****************************************************************************************
+
+     --------------------
+     * HOW TOS:         *
+     --------------------
+
+TO: GET TO A LEVEL IN MAME/BLK TIGER
+1: bp 1e7a;bp 231d;bp 22f5;bp 22fb;bp 22ec;bp 2269;bp 227a
+2: Key 9; Key 1
+3: 1e7a: a=(0,1,2,3,4,5,6,7);F5
+4: 2269: F3b6=(0,1,2,3,4,5,6,7,8);F3A1=(0,1,2,3,4,5,6,7);F5
+5: 227a: de=800;f5
+6: hit fire button to bypass intro
+7: 22ec: a=73;f5
+8: 22f5: de=3200;f5
+9: 22fb: a=8;F3AC=(0,1,2,3,4);f5
+10: 231d save state here
+
+     --------------------
+     * OTHER:           *
+     --------------------
+
+    m_scroll_x[0] = 0;
+    m_scroll_x[1] = 0;
+    m_scroll_y[0] = 0;
+    m_scroll_y[1] = 0;
+    m_scroll_bank = 0;
+    m_screen_layout = 0;
+
+BP: 1B4 (allows entry to test menu; PC=1ac)
+  : 5501 (change a => 1-7 for changing coin award from killing enemy)
 
 
 
-                             MAYBE_PLAYER_ACTION_JUMP_TABLE_002              XREF[1]:     FUN_ram_34d9:474b(*)
-0x0     NullFunction01
-0x1     NullFunction01
-0x2     NullFunction02
-0x3     PlayerTakesZennyCoin1Point
-0x4     PlayerTakesZennyCoin5Points
-0x5     PlayerTakesZennyCoin10Points
-0x6     PlayerTakesZennyCoin50Points
-0x7     PlayerTakesZennyCoin100Points
-0x8     PlayerTakesZennyCoin500Points
-0x9     PlayerTakesZennyCoin1000Points
-0xa     PlayerTakesKey
-0xb     PlayerTakesHourglass
-0xc     NullFunction01
-0xd     NullFunction01
-0xe     NullFunction01
-0xf     NullFunction01
-0x10    Maybe_UseKey01
-0x11    MaybePlayerOpensTreasureChestGetsZennyCoins
-0x12    PlayerOpensChestTakesTreasure100Points
-0x13    PlayerOpenChestTakesTreasure500Points
-0x14    PlayerTakesTreasure1000Points
-0x15    MaybePlayerOpensTreasureChestGetsVitality
-0x16    Maybe_FinishThisSpriteAnimation
-0x17    PlayerTakesShurikenExtraGuyPrize
-0x18    PlayerTakesStarArmor
-0x19    PlayerTakesPOWPrize
-0x1a    PlayerTakesShieldFor30SecondsOfTime
-0x1b    PlayerTakesItemFor1000Points
-0x1c    PlayerTakesBarrelArmorPrize
-0x1d    PlayerTakesStrawberryArmorPrize
-0x1e    PlayerTakesItemFor1000Points
-0x1f    PlayerTakesDragonflyFor5000Points
-0x20    PlayerTakesElephantPrizeFor500Zenny
-0x21    PlayerTakesPumpkinSpiderPrizeFor7000Points
-0x22    Maybe_DoDungeon
-0x23    PlayImpactSound
-0x24    Maybe_StartNewFirethrower02
-0x25    FUN_ram_47bc
-0x26    Maybe_UseAPotion
-0x27    Maybe_DamagePlayer
-0x28    Maybe_StartNewPurpleFire01
-0x29    Maybe_StartNewOrangeFire01
-0x2a    Maybe_UseAPotion02
-0x2b    Maybe_UseAPotion03
-0x2c    PlayActivateOldManSound
-0x2d    PlayActivateOldManSound
-0x2e    PlayActivateOldManSound
-0x2f    PlayActivateOldManSound
-0x30    PlayActivateOldManSound
-0x31    PlayActivateOldManSound
-0x32    PlayActivateOldManSound
-0x33    PlayActivateOldManSound
-0x34    Maybe_UpdateBat
-
-
-0_POINTS        0x0
-5_POINTS
-10_POINTS
-15_POINTS
-20_POINTS
-30_POINTS
-50_POINTS
-80_POINTS
-100_POINTS
-150_POINTS
-200_POINTS
-300_POINTS
-500_POINTS
-800_POINTS
-1000_POINTS
-1500_POINTS
-2000_POINTS
-3000_POINTS
-5000_POINTS
-7000_POINTS
-10000_POINTS
-15000_POINTS
-20000_POINTS
-30000_POINTS
-40000_POINTS
-50000_POINTS
-60000_POINTS
-70000_POINTS
-80000_POINTS
-90000_POINTS
-100000_POINTS
-
-                             RANDOM_CLAY_POT_ENEMY_BANK_LOOKUP               XREF[2]:     AddRandomEnemyFromBreakingPot:72
-                                                                                          AddRandomEnemyFromBreakingPot:72
-        ram:72eb 03              ??         03h                                              Bank 04
-        ram:72ec 00              ??         00h                                              Bank 01
-                             RANDOM_CLAY_POT_ENEMY_CREATE_JUMP_VECTOR+1      XREF[1,1]:   AddRandomEnemyFromBreakingPot:72
-                             RANDOM_CLAY_POT_ENEMY_CREATE_JUMP_VECTOR                     AddRandomEnemyFromBreakingPot:72
-        ram:72ed f9 b7           dw         AddBlueGoopToCurrentMap03::continue
-        ram:72ef 00              ??         00h
-        ram:72f0 00              ??         00h
-        ram:72f1 55 b8           dw         AddFirethrowerToCurrentMap::continue
-        ram:72f3 04              ??         04h
-        ram:72f4 00              ??         00h
-        ram:72f5 52 9a           dw         AddPurpleBlockToCurrentMap::continue
-        ram:72f7 02              ??         02h
-        ram:72f8 00              ??         00h
-        ram:72f9 37 9b           dw         AddPurpleMichelinManToCurrentMap::continue
-
-                             POT_BREAK_PRIZE_TABLE_02+1                      XREF[2,1]:   Maybe_ShootPotWithCoinInside5Poi
-                             POT_BREAK_PRIZE_TABLE_02                                     Maybe_ShootPotWithCoinInside5Poi
-                                                                                          Maybe_ShootPotWithCoinInside5Poi
-        ram:772f 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         =
-        ram:7731 4b 77           dw         POT_BREAK_NOTHING_INSIDE                         =
-        ram:7733 71 77           dw         POT_BREAK_REVEAL_5_ZENNY                         =
-        ram:7735 ba 77           dw         POT_BREAK_REVEAL_10_ZENNY                        =
-        ram:7737 03 78           dw         POT_BREAK_REVEAL_50_ZENNY                        =
-        ram:7739 4c 78           dw         POT_BREAK_REVEAL_100_ZENNY                       =
-        ram:773b 95 78           dw         POT_BREAK_REVEAL_500_ZENNY                       =
-        ram:773d de 78           dw         POT_BREAK_REVEAL_1000_ZENNY                      =
-        ram:773f 27 79           dw         POT_BREAK_REVEAL_KEY                             =
-        ram:7741 70 79           dw         POT_BREAK_REVEAL_EXTRA_TIME_HOURGLASS            =
-        ram:7743 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
-        ram:7745 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
-        ram:7747 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
-        ram:7749 b9 79           dw         MAYBE_POT_BREAK_GOO_INSIDE
-
-
-                             POT_BREAK_PRIZE_TABLE_01+1                      XREF[2,1]:   Maybe_RevealPrizeInClayPot:7246(
-                             POT_BREAK_PRIZE_TABLE_01                                     Maybe_RevealPrizeInClayPot:724a(
-                                                                                          Maybe_RevealPrizeInClayPot:724c(
-        ram:76d1 ed 76           dw         Maybe_RevealNothingInPot::NO_PRIZE_IN_POT_2      = maybe_start_new
-        ram:76d3 ed 76           dw         Maybe_RevealNothingInPot::NO_PRIZE_IN_POT_2      = maybe_start_new
-        ram:76d5 ee 76           dw         ZENNY_COINS_TABLE_01                             5 ZENNY COINS
-        ram:76d7 f6 76           dw         10_ZENNY_COIN_01                                 =
-        ram:76d9 fe 76           dw         50_ZENNY_COIN_01                                 =
-        ram:76db 06 77           dw         100_ZENNY_COIN_01                                =
-        ram:76dd 0e 77           dw         500_ZENNY_COIN_01                                =
-        ram:76df 16 77           dw         1000_ZENNY_COIN_01                               =
-        ram:76e1 1e 77           dw         KEY_01                                           =
-        ram:76e3 26 77           dw         TIME_HOURGLASS_01                                =
-        ram:76e5 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
-        ram:76e7 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
-        ram:76e9 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
-        ram:76eb 2e 77           dw         NO_PRIZE_IN_POT                                  = maybe_start_new
-
-
-
-
-        ram:00f7 c5              PUSH       BC
-        ram:00f8 d9              EXX
-        ram:00f9 cd 41 01        CALL       FindAddressOffsetAx8FromE880
-        ram:00fc 36 08           LD         (HL),0x8
-        ram:00fe 23              INC        HL
-        ram:00ff 36 00           LD         (HL),0x0
-        ram:0101 23              INC        HL
-        ram:0102 c1              POP        BC
-        ram:0103 71              LD         (HL),C
-        ram:0104 23              INC        HL
-        ram:0105 70              LD         (HL),B
-
-
-NEW bps:
-
-bp a5;
-
-
-https://github.com/mamedev/mame/blob/master/src/devices/sound/ymopn.h
-https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm.h
-https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_fm.h
-https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_opn.h
-https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_adpcm.h
-https://github.com/mamedev/mame/blob/master/src/devices/sound/ymfm_mame.h
-https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.h
-
-
-https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.cpp
-
-//*********************************************************
-//  YM2203 DEVICE
-//*********************************************************
-
-DEFINE_DEVICE_TYPE(YM2203, ym2203_device, "ym2203", "YM2203 OPN")
-
-//-------------------------------------------------
-//  ym2203_device - constructor
-//-------------------------------------------------
-
-ym2203_device::ym2203_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
-    ymfm_ssg_device_base<ymfm::ym2203>(mconfig, tag, owner, clock, YM2203)
-{
-}
-
-
-//-------------------------------------------------
-//  device_start - start of emulation
-//-------------------------------------------------
-
-void ym2203_device::device_start()
-{
-    // set our target output fidelity
-    m_chip.set_fidelity(SSG_FIDELITY);
-
-    // call our parent
-    parent::device_start();
-}
-
-
-ymopn.h
-    map(0xe000, 0xe001).rw("ym1", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
-    map(0xe002, 0xe003).rw("ym2", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
 
  ) : standard parentheses
 ++ -- : postfix increment/decrement
@@ -934,6 +391,8 @@ ymopn.h
 || : logical OR
 = *= /= %= += -= <<= >>= &= |= ^= : assignment
 , : separate terms, function parameters
+
+DEBUGGER COMMANDS:
 
 rpset
 rp[set] {<condition>}[,<action>]]
@@ -978,6 +437,8 @@ source break_and_trace.cmd
 
 Reads in debugger commands from break_and_trace.cmd and executes them.
 
+
+
 statesave
 statesave[ss] <filename>
 
@@ -988,6 +449,8 @@ Examples:
 statesave foo
 
 Writes file 'foo.sta' in the default state save directory.
+
+
 
 stateload
 stateload[sl] <filename>
@@ -1001,13 +464,13 @@ stateload foo
 Reads file 'foo.sta' from the default state save directory.
 
 
+
 save[{d|i}] <filename>,<address>,<length>[,<cpu>]
 
 The save/saved/savei commands save raw memory to the binary file specified in the <filename> parameter.
 'save' will save program space memory, while 'saved' will save data space memory and 'savei' will save I/O space memory.
 <address> indicates the address of the start of saving, and <length> indicates how much memory to save. The range <address> through <address>+<length>-1 inclusive will be output to the file.
 You can also save memory from another CPU by specifying the <cpu> parameter.
-
 
 Examples:
 
@@ -1020,16 +483,18 @@ saved harddriv.bin,3000,1000,3
 Saves data memory addresses 3000-3fff from CPU #3 to the binary file 'harddriv.bin'.
 
 
+
 load[{d|i}] <filename>,<address>[,<length>,<cpu>]
 
 The load/loadd/loadi commands load raw memory from the binary file specified in the <filename> parameter.
 'load' will load program space memory, while 'loadd' will load data space memory and 'loadi' will load I/O space memory.
-<address> indicates the address of the start of saving, and <length> indicates how much memory to load. The range <address> through <address>+<length>-1 inclusive will be read in from the file.
+<address> indicates the address of the start of saving, and <length> indicates how much memory to load. The range <address> 
+through <address>+<length>-1 inclusive will be read in from the file.
+
 If you specify <length> = 0 or a length greater than the total length of the file it will load the entire contents of the file and no more.
 You can also load memory from another CPU by specifying the <cpu> parameter.
 
 NOTE: This will only actually write memory that is possible to overwrite in the Memory Window
-
 
 Examples:
 
@@ -1042,297 +507,203 @@ loadd harddriv.bin,3000,1000,3
 Loads data memory addresses 3000-3fff from CPU #3 from the binary file 'harddriv.bin'.
 
 
+*****************************************************************************************
+* MAME NOTES:                                                                           *
+*****************************************************************************************
+
+ROM_REGION( 0x40000, "gfx3", 0 )
+    ROM_LOAD( "bd-08.5a",   0x00000, 0x10000, CRC(e2f17438) SHA1(3e5fdae07d40febedc59c7c7c4d9c6f0d72b58b5) )    /* sprites */
+    ROM_LOAD( "bd-07.4a",   0x10000, 0x10000, CRC(5fccbd27) SHA1(33c55aa9c12b3121ca5c3b4c39a9b152b6946461) )
+    ROM_LOAD( "bd-10.9a",   0x20000, 0x10000, CRC(fc33ccc6) SHA1(d492626a88565c2626f98ecb1d74535f1ad68e4c) )
+    ROM_LOAD( "bd-09.8a",   0x30000, 0x10000, CRC(f449de01) SHA1(f6b40e9eb2471b89c42ab84f4214295d284db0c3) )
+
+static GFXDECODE_START( gfx_blktiger )
+    GFXDECODE_ENTRY( "gfx1", 0, charlayout,   0x300, 32 )   /* colors 0x300-0x37f */
+    GFXDECODE_ENTRY( "gfx2", 0, spritelayout, 0x000, 16 )   /* colors 0x000-0x0ff */
+    GFXDECODE_ENTRY( "gfx3", 0, spritelayout, 0x200,  8 )   /* colors 0x200-0x27f */
+GFXDECODE_END
 
 
-ORANGE SKELETON                         0x1
-ORANGE SKELETON (2)                     0x2
-PURPLE SKELETON                         0x3
-BROWN ORC L1                            0x4
-BROWN ORC L2                            0x5
-BROWN ORC L3                            0x6
-BROWN ORC R4/L4                         0x7
-BROWN ORC L5/R5                         0x8
-ORANGE MICHELIN MAN                     0x9
-YELLOW MICHELIN MAN                     0xa
-PURPLE MICHELIN MAN                     0xb
-MAN-EATING YELLOW PLANT                 0xc
-MAN-EATING PURPLE PLANT                 0xd
-FIRETHROWER L1                          0xe
-BLUE GOOP                               0xf
-BLUE GOOP 4                             0x10
-RED GOOP                                0x11
-BLUE GOOP 7                             0x12
-PURPLE WITCH                            0x13
-RED WITCH                               0x14
-NINJA                                   0x15
-SPINNING COIN                           0x16
-BAT                                     0x17
-SNAKE                                   0x18
-PURPLE BLOCK                            0x19
-ORANGE BLOCK                            0x1a
-DEMON                                   0x1b
-LEVEL 03 DRAGON                         0x1c
-LEVEL 06 DRAGON                         0x1d
-LEVEL 08 DRAGON                         0x1e
-LEVEL 05 WARTHOG BOSS                   0x1f
-LEVEL 07 WARTHOG BOSS                   0x20
-OLD MAN THAT GIVES ZENNY                0x21
-OLD MAN THAT HAS SHOP (1)               0x22
-OLD MAN THAT GIVES VITALITY             0x23
-OLD MAN THAT GIVES MORE TIME            0x24
-OLD MAN THAT GIVES ADVICE/SCULL         0x25
-OLD MAN THAT GIVES GRATITUDE            0x26
-OLD MAN THAT GIVES ADVICE/SEEK          0x27
-OLD MAN THAT HAS SHOP (2)               0x28
-FALLING ROCK                            0x29
 
-        ram:27ae dd 72 11        LD         (IX+0x11)=>MAYBE_DUNGEON_VECTOR_LO,D             2A or 80/81
-        ram:27b1 dd 73 12        LD         (IX+0x12)=>MAYBE_DUNGEON_VECTOR_HI,E             00, 12 or d0
+
+
+
+
+Breakpoints:
+ROM:$09db => IPT_SERVICE1 on IN0
+ROM:$0aa7 => After write screen warning
+ROM:$0b44
+ROM:$00EA => Dynamic breakpoints
+
+$411
+$13F1
+
+$33d -- end of "wait"
+$346 --- first screen ends
+
+$b7f (after clearing scores)
+$b97
+
+EA
+346
+411
+bpset 1442,a==$40
+33D
+22B8
+
+
+
+bp 65,a != 0
+bp 6a,a != 0
+bp 1442,a==$40
+
+
+
+bp b3
+bp ea
+bp 3c9
+bp 3cf
+bp 346
+bp 408
+bp 411
+bp 1d6d
+bp 1dfb
+bp 235c
+bp 2364
+bp 239e
+bp 27c3
+bp 301e
+bp 32C7
+bp 32FE
+bp 3683
+bp 3dc3
+bp 47e9
+bp 481e
+bp 8446
+bp 8800
+bp 8D0E
+
+bp 1352
+bp 20ec
+
+bp 683
+bp 2343
+
+
+
+STRUCT:
+0:
+1:attr (color=AND7;FLIPX=AND8)
+2:y-6
+3:x-128
+
+
+
+ID\  En  CPU                   Address       Condition         Action
+ 1   O   :maincpu              043B
+ 2   O   :maincpu              0466
+ 4   O   :maincpu              1CD9
+ 5   O   :maincpu              1B49
+ 6   X   :maincpu              1E25
+ 7   X   :maincpu              1E2C
+12   X   :maincpu              01B4
+16   O   :maincpu              03D0
+18   O   :maincpu              14AF
+1A   X   :maincpu              550B
+1D   O   :maincpu              30C8
+1F   O   :maincpu              1BD0
+20   X   :maincpu              8625
+21   X   :maincpu              86A1
+22   X   :maincpu              86B4
+23   X   :maincpu              86B9
+24   X   :maincpu              86BF
+25   X   :maincpu              86C8
+26   X   :maincpu              86D3
+27   X   :maincpu              06DA
+28   O   :maincpu              07E8
+29   O   :maincpu              07F0
+2A   X   :maincpu              07F9
+2B   O   :maincpu              0803
+2C   X   :maincpu              86BC
+2D   O   :maincpu              A1B5
+2E   O   :maincpu              1932
+2F   X   :maincpu              1BFB
+30   X   :maincpu              8118          a > 0
+31   X   :maincpu              868F          a>0
+32   X   :maincpu              195C
+33   O   :maincpu              1CC7
+34   X   :maincpu              7138
+35   X   :maincpu              714A
+36   X   :maincpu              7147
+37   X   :maincpu              719A
+38   X   :maincpu              714B
+39   X   :maincpu              719B
+3A   X   :maincpu              ACEF
+3B   X   :maincpu              AD40
+3C   X   :maincpu              AD91
+3D   O   :maincpu              B924
+
+   ID\  En  CPU                   Space      Addresses         Type   Condition
+ 1   X   :maincpu              program    2A02-2A02         read
+ 2   O   :maincpu              program    F955-F955         write
+ 3   O   :maincpu              program    ECAC-ECAC         write
+ 4   O   :maincpu              program    F940-F940         write
+ 5   O   :maincpu              program    56DA-5711         read
+ 6   O   :maincpu              program    E100-E100         write
+ 7   O   :maincpu              program    FE00-FFFF         write
+ 8   O   :maincpu              program    E100-E101         read
+ 9   X   :maincpu              program    E0E7-E0E7         write
+ A   X   :maincpu              program    8286-8286         read
+ B   X   :maincpu              program    827E-827E         read
+
+
+
+bp ea
+bp 3c4
+bp 3c9
+bp 3cf
+bp 411,hl!=$1429 && hl!=$144D
+bp 1d6d
+bp 1dfb
+bp 27c3
+bp 301e
+bp 32fe,hl!=$9456 && hl!=$96c2
+bp 3683
+bp 3dc3
+bp 72ea
+bp a1e9
+
+
+
+
+
+ID\  En  CPU                   Address       Condition         Action
+ 1   X   :maincpu              00EA
+ 2   X   :maincpu              0346
+ 3   X   :maincpu              0411
+ 4   X   :maincpu              1442          a==$40
+ 5   O   :maincpu              2F2D
+ 7   O   :maincpu              32C7
+ 8   X   :maincpu              8446
+ 9   X   :maincpu              8800
+ A   X   :maincpu              8D0E
+ D   X   :maincpu              1939
+ E   X   :maincpu              1E25
+ F   X   :maincpu              8446
+11   X   :maincpu              862B
+14   X   :maincpu              86BF
+15   X   :maincpu              86C5
+17   X   :maincpu              24A0
+
+
+bp a5;
 
 
 19/8/2021:
 
 bp 2181;bp 219f;bp 2a1f;bp 3bad;bp 4546;bp 47bc;bp 47d9;bp 4faf;bp b9c;bp 1f1e;bp 2040;bp 23e8;bp 2721;bp 534a;bp 5a44
-
-
 wp e041,2,r;bp 235c
 
-                             STRINGS_TBL_001+1                               XREF[4,2]:   PrintScreenString:1429(*),
-                             STRINGS_TBL_001                                              PrintScreenString:1434(R),
-                                                                                          EraseCharsFromString:144d(*),
-                                                                                          EraseCharsFromString:1458(R),
-                                                                                          PrintScreenString:1436(R),
-                                                                                          EraseCharsFromString:145a(R)
-0x00    CREDIT_0                                         =
-0x00    1_UP                                             =
-0x00    2_UP                                             =
-0x00    HIGH_SCORE                                       =
-0x00    INSERT_COIN                                      =
-0x00    PUSH_START_BUTTON                                =
-0x00    ONE_PLAYER_ONLY                                  =
-0x00    ONE_OR_TWO_PLAYERS                               =
-0x00    GAME_OVER                                        = D24Ch
-0x00    CAPCOM_1987                                      =
-0x00    RANKING_BEST_5                                   =
-0x00    1ST                                              =
-0x00    2ND                                              =
-0x00    3RD                                              =
-0x00    4TH                                              =
-0x00    5TH                                              =
-0x00    READY                                            =
-0x00    TIME_VITALITY                                    =
-0x00    SAVE_LIFE                                        =
-0x00    SAVE_LIVES                                       =
-0x00    POISON                                           =
-0x00    TIME_OVER                                        =
-0x00    ROUND                                            =
-0x00    READY_PLAYER_1                                   =
-0x00    READY_PLAYER_2                                   =
-0x00    CONTINUE?                                        =
-0x00    BLANK_SPC_3LINES_DOWN                            =
-0x00    BLANK_SPC_UPPER_MIDDLE                           =
-0x00    WELCOME_TO_DUNGEON!                              =
-0x00    BONUS_ZENNY_300                                  =
-0x00    BONUS_ZENNY_500                                  =
-0x00    BONUS_ZENNY_800                                  =
-0x00    BONUS_ZENNY_1200                                 =
-0x00    BONUS_ZENNY_1600                                 =
-0x00    BONUS_ZENNY_2400                                 =
-0x00    BONUS_ZENNY_4800                                 =
-0x00    LOSE_DIRECTION                                   =
-                             ACTION_JMP_TBL_001                              XREF[1]:     DrawTestScreenSprites:140d(*)
-        ram:141b 29 14           dw         PrintScreenString
-        ram:141d 4d 14           dw         EraseCharsFromString
-        ram:141f 6c 14           dw         PartiallyClearScreen
-        ram:1421 a2 14           dw         ClearSpritesFromVisibleScreen
-        ram:1423 b0 14           dw         PrintFiveHighestScores
-        ram:1425 f7 14           dw         Maybe_UpdateScore
-        ram:1427 87 14           dw         ClearCharScreen
-                             BLUE_GOOP_ACTIONS_JMP_TBL                       XREF[1]:     Maybe_SwitchBlueGoopAction:b92b(
-    Bank04::b931 76 b9           dw         Maybe_BlueGoopSwitchDirection
-    Bank04::b933 86 b9           dw         Maybe_BlueGoopSwitchDirection02
-    Bank04::b935 96 b9           dw         Maybe_BlueGoopDecidesToJumpDown
-    Bank04::b937 b2 b9           dw         Maybe_BlueGoopDecidesToJumpDownLeftOrRight
-    Bank04::b939 ca b9           dw         Maybe_BlueGoopDecidesToJumpDownLeftOrRight02
-
-                             LEVEL_01_DATA_TBL_042a                          XREF[1]:     ram:2b00(*)
-    Bank05::8560 60 86           dw         DAT_Bank05__8660
-    Bank05::8562 62 86           dw         DAT_Bank05__8662
-    Bank05::8564 64 86           dw         DAT_Bank05__8664                                 = DCh
-    Bank05::8566 86 86           dw         DAT_Bank05__8686
-    Bank05::8568 88 86           dw         DAT_Bank05__8688
-    Bank05::856a 8a 86           dw         DAT_Bank05__868a
-    Bank05::856c 8c 86           dw         DAT_Bank05__868c                                 = DCh
-    Bank05::856e ae 86           dw         DAT_Bank05__86ae
-     F400  80 00 70 00 7A 00 02 FE 10 10 30 03 08 01 01 02   ..p.z.....0.....
-     F410  00 06 01 01 05 00 00 00 00 00 00 00 04 00 00 00   ................
-     F420  01 00 00 00 00 00 00 1B 00 00 00 FE 00 00 00 00   ................
-     F430  00 00 00 00 00 00 00 00 00 00 00 00 00 01 07 9C   ................
-     F440  00 00 20 00 96 08 01 0D 00 00 00 03 08 04 00 00   .. .............
-     F450  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F460  00 00 30 00 96 08 01 00 00 00 00 00 00 00 00 00   ..0.............
-     F470  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F480  00 00 40 00 96 08 01 00 00 00 00 00 00 00 00 00   ..@.............
-     F490  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4A0  00 00 50 00 96 08 6F 00 00 00 00 00 00 00 00 00   ..P...o.........
-     F4B0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4C0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4D0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-
-
-     F3A0  01 00 00 00 01 01 01 6F 00 00 02 02 00 06 00 00   .......o........
-     F3B0  00 56 00 00 00 00 01 00 00 00 00 00 00 00 00 00   .V..............
-     F3C0  01 00 00 00 00 00 00 00 00 00 00 00 00 02 00 00   ................
-     F3D0  00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00   ................
-     F3E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F3F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F400  80 00 70 00 90 00 00 00 10 08 00 03 08 01 01 02   ..p.............
-     F410  00 0C 00 00 00 00 00 00 00 01 00 00 04 00 00 00   ................
-     F420  01 00 00 00 17 00 00 00 00 00 00 FE 00 00 00 00   ................
-     F430  00 00 00 00 00 00 00 00 00 00 00 00 00 01 07 9C   ................
-     F440  00 00 20 00 96 08 01 0D 00 00 00 03 08 04 00 00   .. .............
-
-
-     F400  80 00 70 00 90 00 00 00 0C 20 70 03 08 01 01 00   ..p...... p.....
-     F410  00 00 00 00 00 00 00 00 00 00 00 00 04 00 00 00   ................
-     F420  01 00 00 00 00 00 00 00 00 00 00 FE 00 00 00 00   ................
-     F430  00 00 00 00 00 00 00 00 00 00 00 00 00 01 07 9C   ................
-     F440  00 00 20 00 96 08 01 0D 00 00 00 02 08 04 00 00   .. .............
-     F450  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F460  00 00 30 00 96 08 01 00 00 00 00 00 00 00 00 00   ..0.............
-     F470  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F480  00 00 40 00 96 08 6F 00 00 00 00 00 00 00 00 00   ..@...o.........
-     F490  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4A0  00 00 50 00 96 08 6F 00 00 00 00 00 00 00 00 00   ..P...o.........
-     F4B0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4C0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4D0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F4F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-
-
-                             ZENNY_COIN_TEMPLATE_DATA_TBL                    XREF[1]:     ram:5514(*)
-        ram:5558 66 55           dw         ZENNY_01_COIN_TEMPLATE                           = 80h
-        ram:555a 86 55           dw         ZENNY_05_COIN_TEMPLATE                           = 80h
-        ram:555c a6 55           dw         ZENNY_10_COIN_TEMPLATE                           = 80h
-        ram:555e c6 55           dw         ZENNY_50_COIN_TEMPLATE                           = 80h
-        ram:5560 e6 55           dw         ZENNY_100_COIN_TEMPLATE                          = 80h
-        ram:5562 06 56           dw         ZENNY_500_COIN_TEMPLATE                          = 80h
-        ram:5564 26 56           dw         ZENNY_1000_COIN_TEMPLATE                         = 80h
-
-
-b0 06
-b0 16
-
-
-
-40 e9
-
-00 37 56 79 AC FF 95 B7 DA FC
-00 75 96 B9 EC FF 95 B7 DA FC
-     DA00  00 37 56 79 AC FF 95 B7 DA FC 55 77 AA CC 00 11   .7Vy......Uw....
-     DA10  00 00 00 00 06 08 0D 80 55 77 99 BB 60 B0 FF 11   ........Uw..`...
-     DA20  00 60 80 A4 C6 D9 55 77 99 BB EE 96 B8 DA FC 11   .`....Uw........
-     DA30  00 70 A0 C6 D9 DD 66 88 9A BD EF 96 B8 DA FC 11   .p....f.........
-     DA40  00 70 94 B5 E7 FA 66 88 9A BD EF 96 B8 DA FC 11   .p....f.........
-     DA50  00 63 95 C8 DA FC 33 66 99 CC FF 80 B4 E7 FA 11   .c....3f........
-     DA60  00 70 A0 C4 D6 E9 FE 55 77 99 BB 06 08 0B EE 11   .p.....Uw.......
-     DA70  00 61 82 B4 E8 FC 55 77 99 BB FF 76 97 C9 FC 11   .a....Uw...v....
-     DA80  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     DA90  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-
-00 03 05 07 0A 0F 00 04 06 08
-00 00 00 00 00 0F 00 04 06 08
-     DE00  00 03 05 07 0A 0F 00 04 06 08 05 07 0A 0C 00 01   ................
-     DE10  00 05 07 0A 0C 0D 0D 00 05 07 09 0B 00 00 0F 01   ................
-     DE20  00 00 00 00 00 00 05 07 09 0B 0E 00 04 06 08 01   ................
-     DE30  00 00 00 00 00 00 06 08 0A 0D 0F 00 04 06 08 01   ................
-     DE40  00 00 06 09 0D 0F 06 08 0A 0D 0F 00 04 06 08 01   ................
-     DE50  00 00 00 05 07 09 03 06 09 0C 0F 00 00 00 00 01   ................
-     DE60  00 00 00 00 00 00 00 05 07 09 0B 00 00 00 0E 01   ................
-     DE70  00 00 00 00 00 00 05 07 09 0B 0F 00 04 06 08 00   ................
-     DE80  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     DE90  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-
-
-Player?
-(IX+0x1c) = deltax
-(IX+0x1d) = deltay
-     F940  40 00 9E 00 90 45 01 FF 10 20 08 04 0B 00 01 01   @....E... ......
-     F950  0C 0C 00 00 01 01 00 00 5C EC FE AC 07 9B 0F 9B   ........\.......
-     F960  F5 20 00 00 01 00 00 00 00 00 00 00 00 00 00 00   . ..............
-     F970  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F980  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F990  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F9A0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F9B0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F9C0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F9D0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F9E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     F9F0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA00  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA10  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA20  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA30  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA40  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA50  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA60  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA70  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA80  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FA90  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FAA0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-     FAB0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
-
-
-    Bank08::9410 22 08 60        player_a
-                 08 fb 08
-       Bank08::9410 22              db        22h                     index_tile_1
-       Bank08::9411 08              int:3     0h                      palette
-       Bank08::9411 08              int:1     1h                      horiz_flip
-       Bank08::9411 08              int:1     0h                      x_minus_256
-       Bank08::9411 08              int:3     0h                      high_bits_ti
-       Bank08::9412 60              db        60h                     weapon_index
-       Bank08::9413 08              int:3     0h                      palette_weapon
-       Bank08::9413 08              int:1     1h                      horiz_flip_w
-       Bank08::9413 08              int:1     0h                      x_minus_256_
-       Bank08::9413 08              int:3     0h                      high_bits_ti
-       Bank08::9414 fb              db        FBh                     x_offs_weapo
-       Bank08::9415 08              db        8h                      y_offs_weapo
-
-
-
-                             JMP_TBL_022+1                                   XREF[2,1]:   FUN_ram_2793:27a7(*),
-                             JMP_TBL_022                                                  FUN_ram_2793:27ab(R),
-                                                                                          FUN_ram_2793:27ad(R)
-        ram:2a02 12 2a           dw         FUN_ram_2a12                                     Bank 05 (level 1)
-        ram:2a04 12 2a           dw         FUN_ram_2a12                                     level 2
-        ram:2a06 12 2a           dw         FUN_ram_2a12                                     level 3
-        ram:2a08 00 80           dw         WORD_Bank05__8000                                level 4
-        ram:2a0a 12 2a           dw         FUN_ram_2a12                                     level 5
-        ram:2a0c 12 2a           dw         FUN_ram_2a12                                     level 6
-        ram:2a0e 12 2a           dw         FUN_ram_2a12                                     level 7
-        ram:2a10 d0 81           dw         WORD_Bank05__81d0                                level 8
-
-
-        ram:27ae dd 72 11        LD         (IX+0x11)=>DAT_ram_e041,D                        2A or 80/81
-        ram:27b1 dd 73 12        LD         (IX+0x12)=>DAT_ram_e042,E                        00, 12 or d0
-
-                             DATA_TABLE_AAA+1                                XREF[2,1]:   FUN_ram_2793:27a7(*),
-                             DATA_TABLE_AAA                                               FUN_ram_2793:27ab(R),
-                                                                                          FUN_ram_2793:27ad(R)
-        ram:2a02 12 2a           dw         2A12h                                            Bank 05 (level 1)
-        ram:2a04 12 2a           dw         2A12h                                            level 2
-        ram:2a06 12 2a           dw         2A12h                                            level 3
-        ram:2a08 00 80           dw         8000h                                            level 4
-        ram:2a0a 12 2a           dw         2A12h                                            level 5
-        ram:2a0c 12 2a           dw         2A12h                                            level 6
-        ram:2a0e 12 2a           dw         2A12h                                            level 7
-        ram:2a10 d0 81           dw         81D0h                                            level 8
-
-
-c3 01
 
 
 ID   En  CPU                   Address\      Condition         Action
@@ -1409,182 +780,10 @@ ID   En  CPU                   Address\      Condition         Action
 
 
 
-
-                             PLAYER_ANIMATION_OFFSET_TABLE_02+1              XREF[2,1]:   FUN_Bank08__8126:81fa(*),
-                             PLAYER_ANIMATION_OFFSET_TABLE_02                             FUN_Bank08__8126:820c(R),
-                                                                                          FUN_Bank08__8126:820e(R)
-    Bank08::9698 ac 96           dw         PLAYER_LEVEL_1_NO_ARMOR_WALKING_AND_KNEELING_T   = 9730h
-    Bank08::969a b8 96           dw         PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_TABLE_01        = 97F0h
-    Bank08::969c c4 96           dw         WORD_Bank08__96c4                                = 98B0h
-    Bank08::969e d0 96           dw         WORD_Bank08__96d0                                = 9970h
-    Bank08::96a0 e8 96           dw         WORD_Bank08__96e8                                = 99D0h
-    Bank08::96a2 dc 96           dw         WORD_Bank08__96dc                                = 9A30h
-    Bank08::96a4 f4 96           dw         WORD_Bank08__96f4                                = 9A90h
-    Bank08::96a6 00 97           dw         WORD_Bank08__9700                                = 9B20h
-    Bank08::96a8 0c 97           dw         WORD_Bank08__970c                                = 9B80h
-    Bank08::96aa 18 97           dw         WORD_Bank08__9718                                = 9BE0h
-                             PLAYER_LEVEL_1_NO_ARMOR_WALKING_AND_KNEELING_T  XREF[1]:     Bank08::9698(*)
-    Bank08::96ac 30 97           dw         PLAYER_LEVEL_1_NO_ARMOR_WALKING_RIGHT            = C6h
-    Bank08::96ae 60 97           dw         PLAYER_LEVEL_1_NO_ARMOR_CROUCHING_RIGHT          = B2h
-    Bank08::96b0 90 97           dw         PLAYER_LEVEL_1_NO_ARMOR_CROUCHING_LEFT           = B2h
-    Bank08::96b2 90 97           dw         PLAYER_LEVEL_1_NO_ARMOR_CROUCHING_LEFT           = B2h
-    Bank08::96b4 c0 97           dw         PLAYER_LEVEL_1_NO_ARMOR_WALKING_LEFT             = C6h
-    Bank08::96b6 90 97           dw         PLAYER_LEVEL_1_NO_ARMOR_CROUCHING_LEFT           = B2h
-                             PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_TABLE_01       XREF[1]:     Bank08::969a(*)
-    Bank08::96b8 f0 97           dw         PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_RIGHT_POS_1     = D2h
-    Bank08::96ba 20 98           dw         PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_CROUCH_RIGHT_01 = B4h
-    Bank08::96bc 50 98           dw         PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_CROUCH_LEFT_01  = B4h
-    Bank08::96be 50 98           dw         PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_CROUCH_LEFT_01  = B4h
-    Bank08::96c0 80 98           dw         PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_LEFT_POS_1      = D2h
-    Bank08::96c2 50 98           dw         PLAYER_LEVEL_1_NO_ARMOR_FIGHTING_CROUCH_LEFT_01  = B4h
-
-
-
-
-
-                             FLYING_DEMON_RIGHT_ANIMATION_03                 XREF[1]:     Maybe_HandleDemon:a069(*)
-    Bank02::a48a 04 a6 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a48f 04 b0 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a494 04 b2 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a499 04 b0 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a49e 04 a6 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a4a3 04 b0 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a4a8 04 b2 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a4ad 04 b0 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a4b2 04 a6 aa        dnw_char                                                    if 0, ks death animation. If FF,
-                 00 fd
-    Bank02::a4b7 00              ??         00h
-    Bank02::a4b8 4b a0           dw         Maybe_HandleDemon
-                             FLYING_DEMON_ANIMATION_TABLE_01+1               XREF[2,1]:   FUN_Bank02__a0a9:a0d5(*),
-                             FLYING_DEMON_ANIMATION_TABLE_01                              FUN_Bank02__a0a9:a0d9(R),
-                                                                                          FUN_Bank02__a0a9:a0db(R)
-    Bank02::a4ba da a4           dw         dnw_character_anim_frame_Bank02__a4da            =
-
-
-
-
-                             ORANGE_DRAGON_LEFT_OFFSET_TABLE_01+1            XREF[2,1]:   Maybe_OrangeDragonFight02:8171(R
-                             ORANGE_DRAGON_LEFT_OFFSET_TABLE_01                           Bank04::82e1(*),
-                                                                                          Maybe_OrangeDragonFight02:8173(R
-    Bank04::82e9 79 85           dw         MAYBE_ORANGE_DRAGON_LEFT_02                      =
-    Bank04::82eb d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::82ed d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::82ef 79 85           dw         MAYBE_ORANGE_DRAGON_LEFT_02                      =
-    Bank04::82f1 d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::82f3 79 85           dw         MAYBE_ORANGE_DRAGON_LEFT_02                      =
-    Bank04::82f5 d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::82f7 d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::82f9 79 85           dw         MAYBE_ORANGE_DRAGON_LEFT_02                      =
-    Bank04::82fb d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::82fd d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::82ff d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::8301 d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-    Bank04::8303 79 85           dw         MAYBE_ORANGE_DRAGON_LEFT_02                      =
-    Bank04::8305 79 85           dw         MAYBE_ORANGE_DRAGON_LEFT_02                      =
-    Bank04::8307 d2 84           dw         MAYBE_ORANGE_DRAGON_LEFT_01                      =
-
-                             ORANGE_DRAGON_LEFT_OFFSET_TABLE_02+1            XREF[2,1]:   Maybe_OrangeDragonFight02:8171(R
-                             ORANGE_DRAGON_LEFT_OFFSET_TABLE_02                           Bank04::82e3(*),
-                                                                                          Maybe_OrangeDragonFight02:8173(R
-    Bank04::8309 e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-    Bank04::830b e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-    Bank04::830d e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-    Bank04::830f 42 88           dw         MAYBE_ORANGE_DRAGON_LEFT_05                      =
-    Bank04::8311 07 87           dw         MAYBE_ORANGE_DRAGON_LEFT_03                      =
-    Bank04::8313 42 88           dw         MAYBE_ORANGE_DRAGON_LEFT_05                      =
-    Bank04::8315 07 87           dw         MAYBE_ORANGE_DRAGON_LEFT_03                      =
-    Bank04::8317 e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-    Bank04::8319 e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-    Bank04::831b e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-    Bank04::831d e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-    Bank04::831f 42 88           dw         MAYBE_ORANGE_DRAGON_LEFT_05                      =
-    Bank04::8321 42 88           dw         MAYBE_ORANGE_DRAGON_LEFT_05                      =
-    Bank04::8323 07 87           dw         MAYBE_ORANGE_DRAGON_LEFT_03                      =
-    Bank04::8325 42 88           dw         MAYBE_ORANGE_DRAGON_LEFT_05                      =
-    Bank04::8327 e9 88           dw         MAYBE_ORANGE_DRAGON_LEFT_06                      =
-
-
-
-
-                             BROWN_ORC_PACING_LEFT_THEN_RIGHT_03             XREF[2]:     Maybe_BrownOrc09:a3bf(*),
-                                                                                          Bank01::a7f9(*)
-    Bank01::a748 08 80 45        decision                                                    duration (?) in vblanks
-                 ff 00 00
-                 c5 a3
-    Bank01::a750 08 82 45        decision                                                    duration (?) in vblanks
-                 ff 00 00
-                 c5 a3
-    Bank01::a758 08 84 45        decision                                                    duration (?) in vblanks
-                 ff 00 00
-                 c5 a3
-    Bank01::a760 08 82 45        decision                                                    duration (?) in vblanks
-                 ff 00 00
-                 c5 a3
-    Bank01::a768 28 82 45        decision                                                    duration (?) in vblanks
-                 00 00 00
-                 c5 a3
-    Bank01::a770 08 80 4d        decision                                                    duration (?) in vblanks
-                 01 00 00
-                 c5 a3
-    Bank01::a778 08 82 4d        decision                                                    duration (?) in vblanks
-                 01 00 00
-                 c5 a3
-
-
-        ram:330b dd 77 0a        LD         (IX+0xa),A                                        saves either FF or FE to IX+A
-
-
-
-                             handle_fe_flag                                  XREF[1]:     ram:32f4(j)
-        ram:330a 7e              LD         A,(HL=>BROWN_ORC_PACING_RIGHT_THEN_LEFT)         =
-        ram:330b dd 77 0a        LD         (IX+0xa),A
-        ram:330e 23              INC        HL
-        ram:330f 23              INC        HL
-        ram:3310 7e              LD         A,(HL=>BROWN_ORC_PACING_RIGHT_THEN_LEFT.charac   = null
-        ram:3311 dd 77 05        LD         (IX+0x5),A
-        ram:3314 e6 08           AND        0x8
-        ram:3316 20 14           JR         NZ,facing_right
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 bp a547; bp a57c
 
 
 bp a547; bp a57c; bp a6e9; bp abd8; bp ac17; bp ad34; bp ad69; bp ae9a; bp b266; bp b2a5; bp b3c2; bp b3f7; bp b528; bp b944; bp b955; bp b96b; bp b989; bp b999; bp b9a9; bp ba57; bp 82ed; bp 82fd; bp 830e; bp 8ac0; bp 8ad0; bp 8c58; bp 8c68;
-
-
-
-
-
-
-
-
-
 
 
 
@@ -1894,26 +1093,3 @@ a510
 
 
 
-It looks to me as though this is going to be an issue with the sprite multiplexing. This is when the sprites are "stamped" on top of the background image to produce the final image which is then rasterised. At some points it looks as though the mask data (data used to indicate which parts of the sprites are visible and which are transparent and should let the background show through) is actually being rasterised.
-
-I'd be suspecting things like '245s (buffers which gate the ROMs on and off the cpu bus), '166 (shift registers, sometimes used to mux the sprites into the data stream that makes up the display) and '139s (multiplexers which control whether the data should be read from the background image RAM or sprite RAM) around the sprite data. You should be able to tell from MAWS what ROMS hold the sprites. In fact, I've just gone and looked and found this:
-
-ROM_REGION( 0x40000, "gfx3", 0 )
-    ROM_LOAD( "bd-08.5a",   0x00000, 0x10000, CRC(e2f17438) SHA1(3e5fdae07d40febedc59c7c7c4d9c6f0d72b58b5) )    /* sprites */
-    ROM_LOAD( "bd-07.4a",   0x10000, 0x10000, CRC(5fccbd27) SHA1(33c55aa9c12b3121ca5c3b4c39a9b152b6946461) )
-    ROM_LOAD( "bd-10.9a",   0x20000, 0x10000, CRC(fc33ccc6) SHA1(d492626a88565c2626f98ecb1d74535f1ad68e4c) )
-    ROM_LOAD( "bd-09.8a",   0x30000, 0x10000, CRC(f449de01) SHA1(f6b40e9eb2471b89c42ab84f4214295d284db0c3) )
-The key data is that in red - those should match up with ROM labels.
-(I got this data by googling MAWS, then entering the game name, following the link at the top for the game, clicking the link for the game driver which will be a filename ending in .c and then clicking the source: link on the final page. Scroll down and you can see the memory map and which ROMs are loaded into what memory addresses. Happily, most of the MAME drivers indicate what type of data is concerned.) All of that led me to
-http://maws.mameworld.info/maws/mamesrc/src/mame/drivers/blktiger.c
-So, I'd be looking at any chips of those type which are nearby the above ROMs. You might have to use a continuity tester (or visual trace) to trace the data lines from the sprite roms to the logic as they could be on separate boards.
-Best bet is to google the datasheets for those 3 logic chips and have a read, then with the datasheets in hand use your logic probe to test each pin. It'll start becoming obvious where you should expect data (pulses on the probe) and give you clues when you don't see it, either a static high or low. In the datasheets the symbol / means active low. For example, /RESET is active low, so in normal use the game will dip it low at startup, then hold the line high unless it needs to reset the game.
-Just one caveat to mention - I'm on a conf call whilst writing this and I occasionally have to speak so I may have got the specific 74 series IC numbers wrong as I wrote them off the top of my head, plus various manufacturers accomplished this in different ways using different logic. Regardless, you know which ROMs hold the sprite data so locate them, locate the logic which is attached to them, get the datasheets and get probing to see what activity you can find. Sadly, this is probably not going to be a good starter board as having schematics (and a single PCB) would make things a lot simpler for people to help. But let's give it a bash first :)
-tim
-PS Obviously, follow the other suggestions about checking that everything is seated cleanly and that you've not got oxide coatings on the ribbon cables or IC legs first before you start in-depth work like this. I've fixed a surprising number of faulty boards just by reinserting interboard connectors a few times to scrub the oxide coating.
-PPS I'm currently writing some docs on how to start fixing things and have written some of the section that deals with sprites e.g. what they are, why they're used and so on. If I get time to polish it up I'll post that as knowing what a sprite is and why they're used is useful background. In very short summary, a sprite is data that is added to the bit stream that makes up the video just before it's converted into RGB signals. This means that if you disabled the sprites, you'd just see the background elements of the gfx.
-The reason sprites are useful is because the sprite data is merged with the background and then sent to the raster (the display producing hardware) so having a sprite on the screen means it's not overwriting any of the RAM which holds the background image. This is beneficial because when you move a sprite, you don't have to replace the bits of background that were obscured by the sprite in its previous position as the sprite data was never "stamped" into the RAM holding the background image.
-Imagine a game without sprites - when you moved your character you'd leave a trail of images behind. That would be unacceptable, so the game hardware would need to look where the character had been, rebuild the background image and then stamp the character into RAM at the new location. As soon as you move, it has to recheck the background image and rebuild it. This takes lots of CPU cycles which is bad.
-Whereas using sprites all you need to do is enable the rasteriser (the bit which reads the video RAM and generates the image for the screen) to know when a sprite should be drawn. When it knows a sprite is to be drawn, the rasteriser flicks from reading the background image RAM to reading the sprite RAM, so the sprite appears in the video stream.
-On the next frame, if you've moved the sprite you don't have to touch-up the background image RAM, you just tell the rasteriser that the sprite is now to be drawn at new coordinates. Blammo! Loads of CPU cycles saved and a lot less juggling of image data.
-Finally, this is a terribly condensed explanation of what sprites are and how they work, but hopefully it's good enough to explain the concept.

@@ -1,0 +1,208 @@
+*****************************************************************************************
+* GENERAL NOTES:                                                                        *
+*****************************************************************************************
+
+HOW TO: TEST AUDIO CLIPS
+0) Start MAME debugger for blktiger (mame -debug blktiger)
+1) set bp 1b4 in maincpu
+2) CTRL+M. Set watch to E150
+3) F5 (continue)
+4) set pc=1ac when bp 1b4 is hit
+5) F5 (continue). This puts Black Tiger into test mode.
+6) Put values from 0h to 43h into E151 (in memory watch window). 0, 1F, and 38 will not play sounds. They stop the current sound.
+7) Change byte at E162 to 51 (in memory watch window). Voila. Sound plays.
+
+                             SOUNDS_TABLE                                    XREF[1]:     Maybe_PlaySoundEffect:020e(*)
+        ram:0dc1 00 ff           dw         FF00h                                            Sound 0: FF stops music playing
+        ram:0dc3 49 0e           dw         PLAYER_LOSES_VITALITY_SOUND                      = 8Fh
+        ram:0dc5 9e 0e           dw         PLAYER_DEATH_SOUND                               = 8Fh
+        ram:0dc7 7f 0f           dw         ENEMY_INJURED_BLOOP_SOUND                        = CFh
+        ram:0dc9 d4 0f           dw         ENEMY_DEFEATED_SOUND                             = CFh
+        ram:0dcb fe 0f           dw         ITEM_TAKEN_SOUND                                 = 88h
+        ram:0dcd 7b 10           dw         PLAYER_TAKES_ZENNY_COIN_SOUND                    = 88h
+        ram:0dcf f5 10           dw         FIRE_PILLAR_WARNING_SOUND                        = 88h
+        ram:0dd1 5e 11           dw         POT_BREAKS_REVEALS_COIN_SOUND                    = C8h
+        ram:0dd3 c7 11           dw         FIRE_PILLAR_SOUND                                = C8h
+        ram:0dd5 08 12           dw         GAS_JET_SOUND                                    = C8h
+        ram:0dd7 32 12           dw         WEAPON_CLASH_METALLIC_BATTLE_SOUND               = 88h
+        ram:0dd9 84 12           dw         KILL_BAT_SOUND                                   = C8h
+        ram:0ddb ae 12           dw         PLAYER_EARNS_EXTRA_LIFE_SOUND                    = 8Fh
+        ram:0ddd 64 13           dw         POT_BREAKS_SOUND                                 = 88h
+        ram:0ddf bc 13           dw         PLAYER_DISCOVERS_TREASURE_SOUND                  = C8h
+        ram:0de1 86 14           dw         BIG_BOSS_HIT_SOUND                               10
+        ram:0de3 b0 14           dw         TIME_EXPIRING_SOUND                              = 81h
+        ram:0de5 ee 14           dw         PLAYER_GETS_ITEM_FROM_OLD_MAN_SOUND              = 88h
+        ram:0de7 cc 15           dw         BOOM_EXPLOSION_SOUND                             = C8h
+        ram:0de9 0d 16           dw         UNKNOWN_ALARM_SOUND                              = 81h
+        ram:0deb 4e 16           dw         IMPACT_SOUND                                     = C8h
+        ram:0ded 78 16           dw         CLASH_SPINNING_COIN_SOUND                        = C8h
+        ram:0def a2 16           dw         PLAYER_LOSES_ARMOR_SOUND                         = 8Fh
+        ram:0df1 08 17           dw         MICHELIN_MAN_FIREBREATHING_SOUND                 = C8h
+        ram:0df3 35 17           dw         FIRETHROWER_TAUNT_SOUND                          = C8h
+        ram:0df5 b2 17           dw         PLAYER_CLIMB_SOUND                               = 88h
+        ram:0df7 c8 17           dw         FLAIL_EMPTY_HIT_SOUND                            = 88h
+        ram:0df9 de 17           dw         PLAYER_LANDS_ON_PLATFORM_SOUND                   = 88h
+        ram:0dfb 1c 18           dw         PLAYER_ASCENDS_DURING_CUTSCENE_SOUND             = 88h
+        ram:0dfd 32 18           dw         PLAYER_GRABS_LADDER_SOUND                        = 88h
+        ram:0dff 01 ff           dw         FF01h                                            1f: stops playing music
+        ram:0e01 10 1b           dw         COIN_OR_CREDIT_ADDED_SOUND                       = 4Fh    O
+        ram:0e03 8c 1b           dw         LEVEL_1_MUSIC                                    Level 1 music
+        ram:0e05 de 1f           dw         LEVEL_2_MUSIC                                    = 06h
+        ram:0e07 ef 23           dw         LEVEL_3_MUSIC                                    = 06h
+        ram:0e09 b7 27           dw         LEVEL_4_MUSIC                                    = 06h
+        ram:0e0b 27 2d           dw         LEVEL_5_MUSIC                                    = 06h
+        ram:0e0d 07 32           dw         LEVEL_6_MUSIC                                    = 06h
+        ram:0e0f c4 35           dw         LEVEL_7_MUSIC                                    = 06h
+        ram:0e11 7c 3a           dw         LEVEL_8_MUSIC                                    Level 8 music
+        ram:0e13 cb 3f           dw         BOSS_MUSIC_01                                    = 06h
+        ram:0e15 f5 41           dw         FIGHT_DRAGON_MUSIC_01                            = 06h
+        ram:0e17 8b 44           dw         FIGHT_DRAGON_MUSIC_02                            = 06h
+        ram:0e19 70 47           dw         OLD_MAN_SHOP_MUSIC                               = 06h
+        ram:0e1b 7e 49           dw         DUNGEON_MUSIC_01                                 = 06h
+        ram:0e1d 96 4b           dw         ENTER_INITIALS_MUSIC                             = 06h
+        ram:0e1f 9d 51           dw         AFTER_ENTER_INITIALS_MUSIC                       = 06h
+        ram:0e21 82 52           dw         INTRO_MUSIC                                      30
+        ram:0e23 48 54           dw         GAME_OVER_MUSIC                                  = 06h
+        ram:0e25 13 55           dw         SUCCESSFULLY_FINISH_LEVEL_MUSIC                  = 06h
+        ram:0e27 fa 55           dw         FINISH_LEVEL_8_MUSIC                             = 06h
+        ram:0e29 a4 5e           dw         CONTINUE_MUSIC                                   = 06h
+        ram:0e2b 51 60           dw         MAYBE_PERFECT_BONUS_MUSIC                        = 06h
+        ram:0e2d d2 60           dw         UNKNOWN_FANFARE_MUSIC                            = 06h
+        ram:0e2f 6d 61           dw         UNKNOWN_FANFARE_MUSIC_02                         = 06h
+        ram:0e31 04 ff           dw         FF04h                                            38 stops music playing
+        ram:0e33 36 62           dw         UNKNOWN_FANFARE_MUSIC_03                         = 06h
+        ram:0e35 5c 18           dw         FLAIL_HIT_SOUND                                  = 88h
+        ram:0e37 86 18           dw         FALLING_SOUND                                    = C1h
+        ram:0e39 9c 18           dw         BOUNCING_SOUND_(LOOPS)                           = C1h
+        ram:0e3b c9 18           dw         OLD_MAN_TALKING_SOUND                            = C8h
+        ram:0e3d 57 19           dw         OLD_MAN_TALKING_SOUND_02                         = C8h
+        ram:0e3f a9 19           dw         DRAGON_DIE_SOUND                                 = 90h
+        ram:0e41 90 1a           dw         MAYBE_BLOCK_BOUNCE_UP_SOUND                      40
+        ram:0e43 ba 1a           dw         FALLING_SOUND_02                                 = C8h
+        ram:0e45 d0 1a           dw         BOSS_HIT_SOUND                                   = C8h
+        ram:0e47 e6 1a           dw         DRAGON_SPEW_FIRE_SOUND                           43 might be the last sound
+
+
+*****************************************************************************************
+* SOUND ROM NOTES:                                                                      *
+*****************************************************************************************
+
+audiocpu: C001 sound one? c800 sound 2?
+
+c500 - queue for YM1. C515 start ptr (big endian) C517 end ptr (big endian) c51b - Original control value (from A)
+C530 - queue for YM2. C545 start ptr (big endian) C547 end ptr (big endian) c54b - Original control value (from A)
+
+
+*****************************************************************************************
+* MAME NOTES:                                                                           *
+*****************************************************************************************
+
+    map(0x0000, 0x7fff).rom();
+    map(0xc000, 0xc7ff).ram();
+    map(0xc800, 0xc800).r("soundlatch", FUNC(generic_latch_8_device::read));
+    map(0xe000, 0xe001).rw("ym1", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
+    map(0xe002, 0xe003).rw("ym2", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
+
+
+//*********************************************************
+//  YM2203 DEVICE
+//*********************************************************
+
+DEFINE_DEVICE_TYPE(YM2203, ym2203_device, "ym2203", "YM2203 OPN")
+
+//-------------------------------------------------
+//  ym2203_device - constructor
+//-------------------------------------------------
+
+ym2203_device::ym2203_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock) :
+    ymfm_ssg_device_base<ymfm::ym2203>(mconfig, tag, owner, clock, YM2203)
+{
+}
+
+
+//-------------------------------------------------
+//  device_start - start of emulation
+//-------------------------------------------------
+
+void ym2203_device::device_start()
+{
+    // set our target output fidelity
+    m_chip.set_fidelity(SSG_FIDELITY);
+
+    // call our parent
+    parent::device_start();
+}
+
+
+ymopn.h
+    map(0xe000, 0xe001).rw("ym1", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
+    map(0xe002, 0xe003).rw("ym2", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
+
+
+*****************************************************************************************
+* PMD/MMF NOTES:                                                                        *
+*****************************************************************************************
+
+General Instruments datasheet for the AY-3-8910A
+
+I didn't get the lpt working, but I did manage to get it working with the avr, thank you for the offer of the fax though, 
+Cliff (the first computer I owned was a cpc464 btw, go Amstrad!) Turns out I wasn't sending an inactive signal to the Bus 
+Direction/Control lines after sending a bus control signal.
+
+In case anyone else tries this:
+
+Remember that registers R0-R17 are in octal form in some data sheets, so R10 = 0x08, R11 = 0x09, R12 = 0x0A etc 
+(the YM2149 datasheet uses hex numbering) Assuming that PORTD0-7 outputs to the PSG data ports DA0-DA7. 
+PORTC0 = BDIR and PORTC1 = BC1 (BC2 is tied to 5+v) Remember to toggle the reset line when appropriate, otherwise you
+will get unpredictable sounds.
+
+A send function:
+
+void send_ay(int reg, int data){
+PORTC = 0x00; //send 'inactive', logical 0 to BDIR/BC1
+PORTD = reg; //put register number on data port
+PORTC = 0x03; //send 1 to BDIR/BC1 to latch register address
+PORTC = 0x00; //inactive
+PORTD = data; //data to send to previously selected register
+PORTC = 0x01; //send 1 to BDIR, 0 to BC1 to latch data to register
+}
+
+Test sound:
+
+Output tone on all channels -
+
+send_ay(0x00,0xFE);//Set Channel A Tone Period
+send_ay(0x01,0x00);
+
+send_ay(0x02,0xFE);//Set Channel B Tone Period
+send_ay(0x03,0x00);
+
+send_ay(0x04,0xFE);//Set Channel C Tone Period
+send_ay(0x05,0x00);
+
+send_ay(0x07,0xF8); //Output on channels ABC
+send_ay(0x08,0x0F);//Channel A Amplitude
+send_ay(0x09,0x0F);//Channel B Amplitude
+send_ay(0x0A,0x0F);//Channel C Amplitude
+
+
+*****************************************************************************************
+* LINKS:                                                                                *
+*****************************************************************************************
+
+
+https://delmunsoft.com/PMD%20Programming.html
+https://github.com/gzaffin/pmdmini
+https://battleofthebits.org/lyceum/View/Professional+Music+Driver+%28PMD%29/
+
+https://github.com/mamedev/mame/blob/master/src/devices/sound/ymopn.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_fm.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_opn.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_adpcm.h
+https://github.com/mamedev/mame/blob/master/src/devices/sound/ymfm_mame.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.h
+https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.cpp
+
+
+
