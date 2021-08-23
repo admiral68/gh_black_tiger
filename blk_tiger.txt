@@ -446,6 +446,20 @@ BP: 1B4 (allows entry to test menu; PC=1ac)
      80E0  DD 36 09 20 CD C8 06 CA 39 81 DD 7E 14 A7 20 1F   .6. ....9..~.. .
      80F0  DD 36 08 20 DD 36 09 10 CD C8 06 20 0C DD 6E 1E   .6. .6..... ..n.
 
+TO: GET TO A LEVEL IN MAME/BLK TIGER
+1: bp 1e7a;bp 231d;bp 22f5;bp 22fb;bp 22ec;bp 2269;bp 227a
+2: Key 9; Key 1
+3: 1e7a: a=(2,3,4,5,6,7);F5
+4: 2269: F3A1=(2,3,4,5,6,7);F5
+5: 227a: de=800;f5
+6: hit fire button to bypass intro
+7: 22ec: a=73;f5
+8: 22f5: de=3200;f5
+9: 22fb: a=5;f5
+10: 231d save state here
+
+
+
 PLAYER
 (0x3)	= Y POS HI
 
