@@ -187,13 +187,13 @@ Maybe_DoOneFrame4x4BossCharacter
 
 (IX+0xf) = maybe weapon damage inflicted on player
 
-(IX+0x10) = maybe activate attack x distance(?)
+(IX+0x10) = owner entity class (for weapons/etc)--seems like only for bosses
 
 (IX+0x11) = sprite anim table offset
 (IX+0x12) = Sprite anim y offset hi(?)
 (IX+0x13) = ROM Bank
 (IX+0x14) = sprite facing flag(?) 0 = r, 1 = l
-(IX+0x15) = VITALITY HI
+(IX+0x15) = VITALITY HI/VITALITY BARS
 (IX+0x16) =
 (IX+0x17) = Score offset!
 (IX+0x18) = EC5C--???
@@ -204,7 +204,9 @@ Maybe_DoOneFrame4x4BossCharacter
 (IX+0x1e) = current animation bookmark
 
 (IX+0x20) = weapon animation bookmark
-(IX+0x21) =
+(IX+0x20) = witch has cast spell (WITCH ONLY)
+(IX+0x21) = (FIRE PILLAR COUNT (FIRE PILLARS ONLY))
+
 
 
 ORANGE SKELETON                         0x1
