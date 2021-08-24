@@ -31,7 +31,142 @@ UNKNOWN:
 
 (IY+10)  = entity class (boss only)
 
-ENEMY VARIABLE:
+
+
+ENEMY VARIABLE: (trying to solve 0xc)
+
+
+(0xc):
+0x1  = poisonous(?)
+0x2  = can be touched/collided(?)
+0x8  =
+0x10 = boss
+
+(0xe): (looks like the vitality for the enemy)(live enemies only?)
+
+
+
+                             Maybe_UpdateDemonVulnerability                  XREF[2]:     Bank02::a3f0(*), Bank02::aa7f(*)  
+    Bank02::a00d dd 7e 0c        LD         A,(IX+0xc)
+    Bank02::a010 f6 0b           OR         0xb
+    Bank02::a012 ee 03           XOR        0x3
+    Bank02::a014 dd 77 0c        LD         (IX+0xc),A
+                              Maybe_UpdateDemonVulnerability02                XREF[1]:     Bank02::aa77(*)  
+    Bank02::a019 dd 7e 0c        LD         A,(IX+0xc)
+    Bank02::a01c f6 0b           OR         0xb
+    Bank02::a01e dd 77 0c        LD         (IX+0xc),A
+                             InjureOrKillBossDemon500Points                  XREF[1]:     Bank02::aa3f(*)
+    Bank02::a125 dd 7e 0c        LD         A,(IX+0xc)
+    Bank02::a128 e6 18           AND        0x18;  (injured only; still boss)
+    Bank02::a12a dd 77 0c        LD         (IX+0xc),A
+                             DemonThrowSpear                                 XREF[6]:     Bank02::a931(*), Bank02::a95f(*), 
+                                                                                          Bank02::a98d(*), Bank02::a9b6(*), 
+                                                                                          Bank02::a9da(*), Bank02::a9fe(*)  
+    Bank02::a189 dd 7e 0c        LD         A,(IX+0xc)
+                             dragon_injured                                  XREF[2]:     Bank04::9728(j), Bank04::972e(j)  
+    Bank04::9739 dd 7e 0c        LD         A,(IX+0xc)
+    Bank04::973c f6 00           OR         0x0
+    Bank04::973e dd 77 0c        LD         (IX+0xc),A
+                             CheckBlockAdjustYPos::adjust_y_pos                                    XREF[1]:     Bank05::9a97(j)  
+    Bank05::9aa5 dd 7e 0c        LD         A,(IX+0xc)
+    Bank05::9aa8 e6 18           AND        0x18
+    Bank05::9aaa dd 77 0c        LD         (IX+0xc),A
+                             InjureOrKillPurpleBlock15Points                 XREF[1]:     Bank05::9e67(*)  
+    Bank05::9ba2 dd 7e 0c        LD         A,(IX+0xc)
+    Bank05::9ba5 e6 18           AND        0x18 ;injure
+    Bank05::9ba7 dd 77 0c        LD         (IX+0xc),A
+                             InjureOrKillPurpleBlock15Points::defeated                             XREF[1]:     Bank05::9b9a(j)  
+    Bank05::9bbe dd 7e 0c        LD         A,(IX+0xc)
+    Bank05::9bc1 e6 10           AND        0x10                                             not a boss; only give a coin
+                                                                                             if this block was not a boss
+    Bank05::9bc3 cc e9 54        CALL       Z,AddZennyCoinForKillingEnemy                    undefined AddZennyCoinForKilling
+Maybe_HandleInanimateSprites
+                             continue_animation                              XREF[3]:     ram:2ff9(j), ram:303c(j), 
+                                                                                          ram:3045(j)  
+        ram:304a dd 7e 0c        LD         A,(IX+0xc)
+        ram:304d e6 08           AND        0x8                                              bit 4 set?
+        ram:304f c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+---
+        ram:30b4 dd 7e 0c        LD         A,(IX+0xc)
+        ram:30b7 e6 01           AND        0x1                                              bit 1?
+        ram:30b9 20 3d           JR         NZ,skip_damage
+---
+		ram:30fd dd 7e 0c        LD         A,(IX+0xc)
+        ram:3100 e6 02           AND        0x2                                              check bit 2
+        ram:3102 cc 74 31        CALL       Z,FUN_ram_3174                                   undefined FUN_ram_3174()
+                             Maybe_KillCurrentLoadedEnemy                    XREF[3]:     DrawQuickExplosionOrHitPoint:322
+                                                                                          DrawQuickExplosionOrHitPoint:322
+                                                                                          Maybe_PlayerTouchesPOW:b5d2(c)  
+        ram:3232 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3235 f6 03           OR         0x3
+        ram:3237 dd 77 0c        LD         (IX+0xc),A                                       set lower 3 bits
+                             defeated                                        XREF[2]:     ram:3270(j), ram:3272(j)  
+        ram:3280 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3283 f6 03           OR         0x3
+        ram:3285 dd 77 0c        LD         (IX+0xc),A
+                             UpdateCharacterAnimation::skip_special_80_flag               XREF[3]:     UpdateCharacterAnimation:32d9(j), 
+                                                                                          ram:3343(j), ram:334c(j)  
+        ram:3351 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3354 e6 08           AND        0x8
+        ram:3356 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+---
+        ram:340c dd 7e 0c        LD         A,(IX+0xc)                                       still enemy sprite
+        ram:340f e6 01           AND        0x1
+        ram:3411 20 3d           JR         NZ,LAB_ram_3450
+---
+        ram:3455 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3458 e6 02           AND        0x2
+        ram:345a cc d9 34        CALL       Z,Maybe_CheckEnemyTouchesPlayer                  undefined Maybe_CheckEnemyTouche
+                             Maybe_KillCurrentEnemy02                        XREF[3]:     Maybe_DrawPlayersLegs02:358c(j), 
+                                                                                          Maybe_DrawPlayersLegs02:358e(j), 
+                                                                                          Maybe_PlayerTouchesPOW:b61a(c)  
+        ram:359c dd 7e 0c        LD         A,(IX+0xc)
+        ram:359f f6 03           OR         0x3
+        ram:35a1 dd 77 0c        LD         (IX+0xc),A
+                             Maybe_KillCurrentEnemy02::defeated              XREF[2]:     ram:35e8(j), ram:35ea(j)  
+        ram:35f8 dd 7e 0c        LD         A,(IX+0xc)
+        ram:35fb f6 03           OR         0x3
+        ram:35fd dd 77 0c        LD         (IX+0xc),A
+Maybe_DoOneFrame4x4BossCharacter                         
+							 LAB_ram_373c                                    XREF[3]:     ram:365e(j), ram:372e(j), 
+                                                                                          ram:3737(j)  
+        ram:373c dd 7e 0c        LD         A,(IX+0xc)
+        ram:373f e6 08           AND        0x8
+        ram:3741 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+---
+        ram:396d dd 7e 0c        LD         A,(IX+0xc)
+        ram:3970 e6 01           AND        0x1
+        ram:3972 20 38           JR         NZ,LAB_ram_39ac
+---
+        ram:39b1 dd 7e 0c        LD         A,(IX+0xc)
+        ram:39b4 e6 02           AND        0x2 -- can be touched??
+        ram:39b6 c0              RET        NZ
+                             InjureOrDefeatWarhogBoss::defeated                                        XREF[2]:     ram:3ccf(j), ram:3cd1(j)  
+        ram:3cdf dd 7e 0c        LD         A,(IX+0xc)
+        ram:3ce2 f6 03           OR         0x3
+        ram:3ce4 dd 77 0c        LD         (IX+0xc),A
+                             InjureOrDefeatWarhogBoss::defeated_2                                      XREF[2]:     ram:3d1d(j), ram:3d1f(j)  
+        ram:3d2d dd 7e 0c        LD         A,(IX+0xc)
+        ram:3d30 f6 03           OR         0x3
+        ram:3d32 dd 77 0c        LD         (IX+0xc),A
+                             DrawOneDragonFrame::LAB_ram_3f24                                    XREF[2]:     ram:3efa(j), ram:3f13(j)  
+        ram:3f24 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3f27 e6 08           AND        0x8
+        ram:3f29 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+--
+        ram:4309 dd 7e 0c        LD         A,(IX+0xc)
+        ram:430c e6 01           AND        0x1
+        ram:430e 20 38           JR         NZ,LAB_ram_4348
+--
+        ram:434d dd 7e 0c        LD         A,(IX+0xc)
+        ram:4350 e6 02           AND        0x2
+        ram:4352 c0              RET        NZ
+                             Maybe_DefeatSomethingForPoints                  XREF[1]:     Maybe_AnotherPlayerFlailAttack:4
+                             defeated                                        XREF[2]:     ram:4687(j), ram:4689(j)  
+        ram:4697 dd 7e 0c        LD         A,(IX+0xc)
+        ram:469a f6 03           OR         0x3
+        ram:469c dd 77 0c        LD         (IX+0xc),A
+
 
 (IX+0x0) = alive flag? ($80 or not)
 (IX+0x1) = x pos
@@ -48,7 +183,7 @@ ENEMY VARIABLE:
 (IX+0xb) = entity class
 (IX+0xc) = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
 (IX+0xd) = sprite touched by player function offset
-(IX+0xe) = maybe health/vitality level? (enemy only)
+(IX+0xe) = VITALITY LO (enemy only)
 
 (IX+0xf) = maybe weapon damage inflicted on player
 
@@ -58,7 +193,7 @@ ENEMY VARIABLE:
 (IX+0x12) = Sprite anim y offset hi(?)
 (IX+0x13) = ROM Bank
 (IX+0x14) = sprite facing flag(?) 0 = r, 1 = l
-(IX+0x15) = character health points (enemy too?)
+(IX+0x15) = VITALITY HI
 (IX+0x16) =
 (IX+0x17) = Score offset!
 (IX+0x18) = EC5C--???
@@ -68,7 +203,7 @@ ENEMY VARIABLE:
 (IX+0x1d) =
 (IX+0x1e) = current animation bookmark
 
-(IX+0x20) = -> maybe related sprite variable ptr?
+(IX+0x20) = weapon animation bookmark
 (IX+0x21) =
 
 
