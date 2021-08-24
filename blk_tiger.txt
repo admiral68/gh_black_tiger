@@ -26,6 +26,11 @@ PLAYER SPRITE VARIABLE:
 (0x27)  =  counter: times cycled through (0xf)
 
 
+
+UNKNOWN:
+
+(IY+10)  = entity class (boss only)
+
 ENEMY VARIABLE:
 
 (IX+0x0) = alive flag? ($80 or not)
@@ -37,11 +42,13 @@ ENEMY VARIABLE:
 (IX+0x8) = something to do with X/Y (collision checking)
 (IX+0x9) = something to do with X/Y (collision checking)
 
+
+
 (IX+0xa) = animation duration!
 (IX+0xb) = entity class
 (IX+0xc) = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
 (IX+0xd) = sprite touched by player function offset
-(IX+0xe) = maybe health? (enemy only)
+(IX+0xe) = maybe health/vitality level? (enemy only)
 
 (IX+0xf) = maybe weapon damage inflicted on player
 
