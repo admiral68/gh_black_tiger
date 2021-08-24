@@ -282,10 +282,6 @@ LW+(BITS0-3 of HW) = TILE SELECTION
 BIT 7 of HW: FLIP HORIZONTALLY
 
 
- void gfx_element::transpen(bitmap_ind16 &dest, const rectangle &cliprect,
-        u32 code, u32 color, int flipx, int flipy, s32 destx, s32 desty,
-        u32 trans_pen)                                       
-
 SHOWS VIDEO
 
         ram:236c 3e 80           LD         A,0x80                                           Finally enable screen?? (Shut of
@@ -1059,6 +1055,11 @@ As such, dw@300 refers to data memory word at address 300 and id@400 refers to a
 *****************************************************************************************
 
 	screen.set_raw(24_MHz_XTAL / 4, 384, 128, 0, 262, 22, 246); // hsync is 50..77, vsync is 257..259
+
+ void gfx_element::transpen(bitmap_ind16 &dest, const rectangle &cliprect,
+        u32 code, u32 color, int flipx, int flipy, s32 destx, s32 desty,
+        u32 trans_pen)                                       
+
 
 
 void blktiger_state::blktiger_map(address_map &map)
