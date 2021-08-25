@@ -43,6 +43,37 @@ BYTE 5: WEAPON X OFFSET (FROM FIRST SPRITE TILE)
 BYTE 6: WEAPON Y OFFSET (FROM FIRST SPRITE TILE)
 
 
+NEW_SPRITE_HAS_BEEN_DONE_PTR_LOC
+
+sprite_creation_struct
+0	1	db	byte	x_offset_lo	
+1	1	db	byte	x_offset_hi	
+2	1	db	byte	y_offset_lo	
+3	1	db	byte	y_offset_hi	
+4	2	addr	pointer16	add_sprite_function	
+6	1	db	byte	rom_bank_of_function	
+7	1	db	byte	IX_plus_0x8	
+
+
+if the first byte of the EAA0 struct is 0x2, the sprite is skipped
+
+
+                             sprite_creation_struct_Bank06__80ea             XREF[1]:     Bank06::8018(*)  
+    Bank06::80ea 70 03 e0        sprite_c
+                 01 b3 aa 
+                 03 00
+       Bank06::80ea 70              db        70h                     x_offset_lo                       XREF[1]:     Bank06::8018(*)  
+       Bank06::80eb 03              db        3h                      x_offset_hi
+       Bank06::80ec e0              db        E0h                     y_offset_lo
+       Bank06::80ed 01              db        1h                      y_offset_hi
+       Bank06::80ee b3 aa           addr      AddBlueGoopToCurrentMap add_sprite_f
+       Bank06::80f0 03              db        3h                      rom_bank_of_
+       Bank06::80f1 00              db        0h                      IX_plus_0x8
+    Bank06::80f2 52              ??         52h    R
+    Bank06::80f3 00              ??         00h
+    Bank06::80f4 ff ff           create_n
+
+
 *****************************************************************************************
 * MAME NOTES:                                                                           *
 *****************************************************************************************

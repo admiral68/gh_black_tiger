@@ -43,9 +43,9 @@ ENEMY VARIABLE: (trying to solve 0xc)
 
 
 (0xc):
-0x1  = poisonous(?)
+0x1  = can be damaged(?)
 0x2  = can be touched/collided(?)
-0x8  =
+0x8  = update X/Y
 0x10 = boss
 
 
@@ -184,6 +184,9 @@ Maybe_DoOneFrame4x4BossCharacter
 (IX+0x9) = something to do with X/Y (collision checking)
 
 
+MAYBE_NEW_SPRITE_HAS_BEEN_DONE_PTR_LOC: for random enemies (4) popping out of pots, this seems to be address EAA0
+
+
 TODO: MAYBE_NEW_SPRITE_HAS_BEEN_DONE_PTR_LOC
 TODO: MAYBE_LEVEL_DATA_TBL_003
 TODO: MAYBE_DEMO_LEVEL_TBL
@@ -207,8 +210,8 @@ TODO: MAYBE_LEVEL_TBL_006
 (IX+0x15) = VITALITY HI/VITALITY BARS
 (IX+0x16) =
 (IX+0x17) = Score offset!
-(IX+0x18) = EC5C--???
-(IX+0x19) =
+(IX+0x18) = Sprite Entity Count LOC LO
+(IX+0x19) = Sprite Entity Count LOC HI
 (IX+0x1a) = sprite struct location
 (IX+0x1c) = *ending animation bookmark
 (IX+0x1d) =
