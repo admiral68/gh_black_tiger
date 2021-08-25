@@ -15,14 +15,20 @@ Bank Switch: Write to IO $01
 PLAYER SPRITE VARIABLE:
 
 (0x3)   = Y POS HI
-
+(0x4)   = Y POS LO
+(0x7)   = SPRITE_ANIM_Y_OFFSET_LO
 (0x8)   = X OFFSET(?) SCROLL VELOCITY?
 (0x9)   = Y OFFSET(?) SCROLL VELOCITY?
 (0xf)   = maybe action counter
-(0x1c)  = deltax(?)
+(0x10)  = SPRITE_ANIM_Y_OFFSET_HI
+(0x11)  = climbing(?) (c)
+(0x16)
+(0x17)
+(0x19)  = ATTACHED TO LADDER (?)
+(0x1c)  = deltax(?) flail chain active?
 (0x1d)  = deltay(?)
 (0x23)
-(0x26)
+(0x26)  = something about climbing or not
 (0x27)  =  counter: times cycled through (0xf)
 
 
@@ -42,7 +48,7 @@ ENEMY VARIABLE: (trying to solve 0xc)
 0x8  =
 0x10 = boss
 
-(0xe): (looks like the vitality for the enemy)(live enemies only?)
+
 
 
 
@@ -178,12 +184,17 @@ Maybe_DoOneFrame4x4BossCharacter
 (IX+0x9) = something to do with X/Y (collision checking)
 
 
+TODO: MAYBE_NEW_SPRITE_HAS_BEEN_DONE_PTR_LOC
+TODO: MAYBE_LEVEL_DATA_TBL_003
+TODO: MAYBE_DEMO_LEVEL_TBL
+TODO: MAYBE_LEVEL_TBL_006
+
 
 (IX+0xa) = animation duration!
 (IX+0xb) = entity class
 (IX+0xc) = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
 (IX+0xd) = sprite touched by player function offset
-(IX+0xe) = VITALITY LO (enemy only)
+(IX+0xe) = HEALTH POINTS (VITALITY LO) (enemy only)
 
 (IX+0xf) = maybe weapon damage inflicted on player
 
@@ -205,10 +216,12 @@ Maybe_DoOneFrame4x4BossCharacter
 
 (IX+0x20) = weapon animation bookmark
 (IX+0x20) = witch has cast spell (WITCH ONLY)
+(IX+0x20) = num times rock has bounced
 (IX+0x21) = (FIRE PILLAR COUNT (FIRE PILLARS ONLY))
 (IX+0x21) = PURPLE BLOCK CRACKED
 
 (IX+0x25) = extra Y offset (for big sprites only?)
+(IX+0x25) = enemy poison ability (?)
 
 
 ORANGE SKELETON                         0x1
