@@ -225,6 +225,7 @@ TODO: MAYBE_LEVEL_TBL_006
 (IX+0x20) = weapon animation bookmark
 (IX+0x20) = witch has cast spell (WITCH ONLY)
 (IX+0x20) = num times rock has bounced
+(IX+0x20) = SKELETON TTL(?)
 (IX+0x21) = (FIRE PILLAR COUNT (FIRE PILLARS ONLY))
 (IX+0x21) = PURPLE BLOCK CRACKED
 (IX+0x21) = SKELETON IS HEADLESS
