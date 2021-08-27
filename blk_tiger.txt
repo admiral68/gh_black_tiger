@@ -8,6 +8,18 @@ JOYSTICK & BUTTON INPUT VALUES: e=1,w=2,d=4,u=8,f=10,j=20
 
 Bank Switch: Write to IO $01
 
+
+        ram:01a6 db 03           IN         A,(IO_DSW0_COIN_LOCKOUT_W)
+        ram:01a8 e6 80           AND        0x80
+        ram:01aa 20 08           JR         NZ,StartGame
+
+This is a good way to see if the game is running
+
+
+BM: Bank08::9c11
+
+
+
 *****************************************************************************************
 * GAME NOTES:                                                                           *
 *****************************************************************************************
