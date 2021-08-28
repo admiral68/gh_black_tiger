@@ -20,6 +20,13 @@ PLAN FOR PORTING AUDIO:
 4) Translate that intermediate format into something protracker can play on the Amiga hardware
 
 
+
+ you can now use BambooTracker to make YM2203 music
+ 
+ 
+I:\mame_vgm
+
+
                              SOUNDS_TABLE                                    XREF[1]:     Maybe_PlaySoundEffect:020e(*)
         ram:0dc1 00 ff           dw         FF00h                                            Sound 0: FF stops music playing
         ram:0dc3 49 0e           dw         PLAYER_LOSES_VITALITY_SOUND                      = 8Fh
@@ -91,6 +98,1630 @@ PLAN FOR PORTING AUDIO:
         ram:0e47 e6 1a           dw         DRAGON_SPEW_FIRE_SOUND                           43 might be the last sound
 
 
+
+
+
+PMD .M files
+============
+
+Professional Music Driver file, a format developed by Masahiro Kajihara, for various Yamaha chips.
+
+- BattleOfTheBits.org has good info on PMD.
+- lithcore.cn/2318 has additional analysis.
+- There's a useful primer for PMD MML written in 2017 at delmunsoft.com.
+- An English translation of the PMD MML manual: github.com/Pigu-A/pmddocs.
+- A translation of the YM2608 manual exists online, which is OPN-compatible.
+- Additionally, github.com/takamichih has some related source code.
+
+There is a PMD98 player for Windows called FMPMD2000, though it can't handle the OPL-oriented
+mode-2 .M files.
+
+The English Nocturnal Illusion has, for some reason, one .M file, N12.M, although its other .M
+files are really just disguised midi files. The song is not reproduced on any new version of the
+game; it is only in the PC-98 version, and I am not sure it is ever played in the game. The song
+is not very memorable in any case.
+
+The Hoot collection has some .M2 files as well; these look very similar to .M.
+
+Understanding the PMD MML is very useful for this, but .M files specifically are a translation of
+that MML into a binary format, which doesn't have a direct equivalent for all convenience commands
+available in the MML. I have added [MML x.y] tags here as references to MML specification parts.
+
+
+File layout
+===========
+
+byte            File mode. If present, everything else is shifted forward +1 byte, including all
+                possible word offsets found further on in the file.
+array of words  Track addresses, possibly needing to be shifted ahead by +1 byte.
+tracks          Musical tracks, plus metadata tracks.
+
+
+File modes
+==========
+
+PMD's official "MC" tool can compile MML files in a few different modes, to target different sound
+chips.
+
+(Dragon Knight 1-3 .M files start with the byte 06, and are quite different... that's some other
+format, recognisably used by a small handful of games. The first byte may also be absent, such as
+in Princess Maker 1.)
+
+Possible modes:
+  00: OPN/OPNA: PC88 and PC98 (YM2203, YM2608), FM-Towns (YM2612)
+  01: OPM: X68000 (YM2151)
+  02: OPL2: Western Adlib/Soundblaster (YM3812)
+
+As a historical detail, the YM2203 has 3 FM and 3 SSG channels, and was available as a PC-9801-26
+expansion card, as well as being commonly integrated on motherboards. A lot of PC98 music thus
+targets this as the most common device. The YM2608 has 3 additional full FM channels as well as
+sample playback, and was available as a PC-9801-86 expansion card. Expected PMD playback behavior
+differs a little between the chips, but I don't think there's any obvious way to figure out which
+chip a PMD song is intended for from the file contents only. Files with the .M2 suffix are clearly
+for the more advanced chip, but the plain .M suffix could be either. I think originally a separate
+driver/player program was used on each platform, with the assumption that PMD files intended for
+other platforms would just fail to work well. A modern player may need a switch to select a mode.
+
+
+Tracks
+======
+
+Delineated by an array of words, LSB-first, PC98-native. These point to the start of data tracks.
+The array length is usually 13 words, but can theoretically be shorter. Assume the array ends
+where the first track begins.
+
+Each melodic track is stored as a series of byte-size commands with possible data bytes following.
+Melodic tracks normally end with the $80 end-of-track command, but in general each track runs up
+to the start of the next one, or until end of file.
+
+Some music tracks are duplicates, sometimes with a slight delay introduced, or a bit of detuning.
+This allows for a fatter sound on FM chips, but it may be best to weed out these duplicate tracks
+when doing a MIDI translation, unless the song sounds good with multiple instruments playing the
+same thing.
+
+The 11th track may be the "K" rhythm track. This has normal track commands, but instead of notes,
+all bytes below $80 are rhythm pattern indexes, referencing the 12th track, "R". Each byte
+indicates which pattern to paste in, once, building the 11th track into the actual rhythm track.
+The 11th track still ends with $80 and has $F9 loops etc.
+
+The rhythm tracks are only valid in mode 00, but exist in the other modes as well, though usually
+empty. The music drivers for the other modes just won't play them. In those FM-focused modes,
+rhythm is played using normal FM instruments.
+
+The 12th and 13th tracks are special, in that aside from rhythm patterns, they also describe the
+song's instruments, and may have some text fields for the song name and composer, etc. More on
+those below.
+
+If the first track's data begins with the command $C6 xxyy aabb ccdd, that activates a special
+mode with three extra FM tracks, at the given addresses. If any address is 0000, then that track
+is not used. You can process these tracks like the other melodic FM tracks.
+
+Possible track types depending on mode [MML 1.1.3]:
+  Mode 00:
+    Tracks 1-6 = FM
+    Tracks 7-9 = SSG
+    Track 10 = PCM
+    Track 11 "K" = Rhythm track (or PCM in FM-Towns mode)
+    Track 12 "R" = Rhythm pattern definitions and metadata
+    Track 13 = Metadata and instruments
+    Tracks 14-16 = FM
+    Tracks 17-24 = PPZ8 PCM
+  Mode 01:
+    Tracks 1-8 = FM
+    Track 9 = PCM
+    Tracks 10-11 = Ignored
+    Tracks 12-13 = Metadata
+  Mode 02:
+    Tracks 1-9 = FM
+    Tracks 10-11 = Ignored
+    Tracks 12-13 = Metadata
+
+
+Metadata tracks
+===============
+
+The two last tracks (12th and 13th) are metadata tracks.
+
+With the 13th track present, the length of the 12th track is obvious.
+
+If there is no 13th track, the 12th may be 8 unknown bytes followed by 4 useful bytes. If it's
+shorter than 4 bytes, treat the track as empty. If the 12th track's first word points to within
+~32 bytes of the file's end, then the 12th track is probably four bytes long. Otherwise it may be
+12 bytes long. Unless there are Rhythm patterns, which are indicated by word addresses pointing to
+locations inside the 12th track, which in that case may be much longer...
+
+Normally, the 12th track's length is known, and it contains rhythm sequences, each terminating
+with $FF, and a text array reference at the end. The rhythm sequences may or may not be valid, so
+only try to parse them if the rhythm track actually references them. If the 12th track's final
+byte is $FE, then the previous byte is usually $43..$48. The previous word is the address of the
+array of string references, usually at the very end of the file. However, if the 12th track's
+final byte isn't $FE, then there are no strings.
+
+The string reference array ends with 0000. The references point to null-terminated Shift-JIS
+strings, which may be empty. They always appear in this order:
+  PPZ PCM file name, PPS SSG PCM file name, PCM file name, Title, Composer, Arranger.
+  [MML 2.2, MML 2.3, MML 2.6, MML 2.7, MML 2.8, MML 2.9]
+If the 12th track's second to last byte is $46 or below, the PPZ PCM file name is skipped.
+Otherwise all 6 references should be present. If there are any further string references, those
+are general-purpose Memo strings.
+
+
+
+The 13th track contains instrument data.
+
+
+Instrument definitions
+======================
+[MML 3.1]
+
+Instrument IDs can't be assumed to map to General Midi, and in any case the IDs have a range of
+0-255, while the normal MIDI instrument range is 0-127.
+
+Each instrument uses a constant number of bytes depending on file mode. The 13th track ends with
+the bytes 00 FF, immediately followed by text strings, an array pointing to them as referenced by
+the 12th track, and the end of the file. Except if there are no strings at the end, then the 13th
+track just ends at the end of the file without even a 00 FF.
+
+Mode 00:
+Here are some instrument definitions from EVE_05.M, rearranged slightly. 26 bytes each.
+  _____________________________________________________________________________________________
+   08 | 08 04 0A 04 | 14 00 00 00 | 1F 1F 1F 1F | 1B 10 1B 10 | 00 00 00 00 | F0 F8 F8 F8 | 35
+   0A | 0F 00 08 00 | 13 7F 03 7F | 1F 1F 1F 1F | 00 00 0F 00 | 00 00 11 00 | 00 00 1F 0F | 3C
+   0B | 7F 00 38 00 | 13 7F 00 7F | 1F 1F 1F 1F | 00 00 11 00 | 00 00 0B 00 | 00 00 4F 0F | 3C
+   17 | 0F 00 31 00 | 00 00 18 00 | 1F 1F 5F 1F | 04 1A 15 00 | 00 00 04 0C | 01 DF 61 0F | 3B
+   20 | 0F 02 00 01 | 07 09 02 00 | 1F 1F 5F 9F | 00 1F 10 0F | 00 0F 0F 0F | 06 F6 3F 7F | 3C
+   2C | 7F 3F 7A 35 | 05 00 00 00 | 12 10 13 13 | 10 00 11 11 | 00 00 0E 0E | 10 00 18 18 | 2C
+   4C | 0F 00 00 01 | 07 00 00 00 | 1F 1F 5F 1F | 00 17 0F 0F | 00 0F 0E 0F | 06 C6 2F 0F | 3C
+      |             |             |             |             |             |             |
+   2A | 7E 7E 72 72 | 17 17 00 00 | 1F 1F 1F 1F | 19 19 0F 0F | 0A 0A 06 06 | 30 30 19 19 | 04
+   3A | 72 32 34 74 | 23 23 05 05 | 1F 1F 11 11 | 00 00 00 00 | 00 00 04 04 | 00 00 0A 0A | 04
+   43 | 71 32 72 31 | 14 1E 00 00 | 1F 0C 11 11 | 09 00 00 00 | 00 00 02 02 | 40 00 0A 0A | 2C
+  ____|_____________|_____________|_____________|_____________|_____________|_____________|____
+   ID    -TTTmmmm      -lllllll      KK-aaaaa      @--ddddd      ---SSSSS      ssssrrrr    FB+A
+
+The first byte is the instrument ID number. This is followed by six byte quartets, each quartet
+corresponding to operators in the order 1-3-2-4. The last byte is [--FFFAAA], with a 3-bit
+feedback level and a 3-bit algorithm selector.
+
+Mode 01:
+This is exactly the same as mode 0, except in addition to the 3-bit detune in the first quartet,
+there's a second 3-bit detune in the top 3 bits of the 5th byte, right above the 5-bit sustain
+fade rate.
+
+Mode 02:
+Since OPL chips have a different set of oscillators, the instrument definition looks different.
+Here is an instrument definition track from 3sis song SS_12, rearranged. 10 bytes each.
+  _____________________________________
+   16 | 00 00 04 00 | F0 E0 00 08 | 06
+   17 | 01 06 07 03 | F0 F0 0C 04 | 08
+   20 | 0E 0F 00 84 | F9 F8 11 14 | 0E
+   23 | 02 05 01 04 | F0 F1 F0 07 | 0E
+   24 | 0F 0C 0D 06 | FF F7 01 08 | 0E
+      |             |             |
+   02 | E1 61 16 00 | A5 D7 24 16 | 0A
+   2F | E2 F4 00 03 | F3 F3 D4 F4 | 01
+   41 | 62 62 CA 00 | F9 F3 14 55 | 00
+  ____|_____________|_____________|____
+   ID   oscillators and envelopes  FB+A
+
+  1st byte     op 1       op 2       op 1       op 2
+.----------.----------.----------.----------.----------.
+| iiiiiiii | tvekmmmm | tvekmmmm | ccllllll | ccllllll |
++----------+----------+----------+----------+----------+
+
+    op 1       op 2       op 1       op 2     last byte
+.----------.----------.----------.----------.----------.
+| aaaadddd | aaaadddd | ssssrrrr | ssssrrrr | ----FFFA |
++----------+----------+----------+----------+----------+
+
+  iiiiiiii = instrument number
+  TTT = detune
+  t = tremolo flag
+  v = vibrato flag
+  e = egt? Probably the flag for enabling the volume envelope sustain phase
+  k = envelope scaling flag, enables key scale level when set
+  mmmm = frequency multiplication factor, higher is higher pitch, each doubling is +1 octave
+  cc = key scale level? attenuates output towards higher pitch, 0 = none, 3 = 6.0 dB/octave
+  llllll = loudness or attenuation level, higher is quieter (or less modulative)
+  KK = key scale rate? volume envelope rates are multiplied by this at higher pitch notes
+  aaaa = attack rate, higher is faster
+  @ = AMS mask flag
+  dddd = decay rate, higher is faster
+  SSSSS = sustain rate, higher causes sound to fade faster past sustain level until NoteOff
+  ssss = sustain level, level at which decay stops and sustain starts, 1 = -3dB, 2 = -6dB
+  rrrr = release rate, higher causes sound to fade faster after NoteOff
+  FFF = feedback: 0 = 0%, 1 = 6.25%, 3 = 25%, 5 = 100%, 7 = 400%
+  A = algorithm; assuming the value is passed directly to the OPL chip, 0 = FM, 1 = AM
+
+The exact functions of these are best found in actual OPN/OPL programming guides.
+
+If decay rate is 0, the operator will remain at 0 attenuation. Since the sustain phase is only
+begun when decay has reached the sustain level of attenuation, if DR = 0 and SL != 0, the operator
+is stuck at maximum volume until NoteOff. If DR = 0 and SL = 0, the sustain phase starts
+immediately after attack. In either case, the release phase starts immediately on NoteOff.
+
+The decay, sustain, and release rates' effect on attenuation is probably calculated identically.
+The envelope runs independently of the song's tempo. Based on analysis of FM-PMD's output, the
+time it takes to decay from full volume to silence can be approximated with this:
+  decay duration in seconds = 0.48 * 0.5 ^ ((rate - 16) / 2), where rate is 1..31
+
+Further observation suggests that the time taken to decay to half amplitude or about -6dB is:
+  decay rate in seconds = 11.25 * 0.5 ^ (rate / 2), where rate is 1..31
+
+Here are rough sketches of the algorithms, where an arrow indicates modulation. Where an operator
+modulates its own frequency, that's feedback, whose strength can be separately controlled. The
+OPN's algorithms are supposed to be the same as those on the OPM and the DX-21 synth, although the
+operator numbering appears to be reversed. (Reminder: "AM" on OPL isn't amplitude modulation, it's
+just adding operators.)
+
+  Algorithm   Feedback   Modulators               Output
+.-----------.----------.------------------------.---------------.
+| OPL 0 FM  |   op 1   | 1 -> 2                 | 2             |
+| OPL 1 AM  |   op 1   | none                   | 1 + 2         |
++-----------+----------+------------------------+---------------+
+| OPN 0     |   op 1   | 1 -> 2 -> 3 -> 4       | 4             |
+| OPN 1     |   op 1   | (1 + 2) -> 3 -> 4      | 4             |
+| OPN 2     |   op 1?  | 2 -> 3, (1 + 3) -> 4   | 4             |
+| OPN 3     |   op 1   | 1 -> 2, (2 + 3) -> 4   | 4             |
+| OPN 4     |   op 1   | 1 -> 2, 3 -> 4         | 2 + 4         |
+| OPN 5     |   op 1   | 1 -> 2, 1 -> 3, 1 -> 4 | 2 + 3 + 4     |
+| OPN 6     |   op 1   | 1 -> 2                 | 2 + 3 + 4     |
+| OPN 7     |   op 1   | none                   | 1 + 2 + 3 + 4 |
++-----------+----------+------------------------+---------------+
+
+If an instrument hasn't been selected on a track, then the default instrument depends on mode:
+  OPL: square wave
+  OPN: ?
+  SSG: square wave
+
+It would be possible to write some fuzzy code to make decent guesses on what MIDI instruments
+should be picked for each channel. It would also be a lot easier to just specify each instrument
+by hand. Percussion is particularly problematic, since FM cymbals tend to all sound very alike,
+mainly differentiated by individual note duration.
+
+The pitch of the note played affects the percussion's pitch as well. While translating into MIDI,
+probably the most important thing is to map the tom-toms into the melodic tom instrument, for
+proper pitch control. Likewise the timpani.
+
+Possible MIDI percussion assignments for OPL versions of 3sis/runaway/sakura:
+
+  PMD instrument   Note range   Duration range      MIDI percussion
+.----------------.------------.----------------.----------------------.
+|      $0A       |   ???????  |       ???      | closed hi-hat?       |
+|      $0B       |   ???????  |       ???      | open hi-hat?         |
+|      $16       |   12 - 23  |       any      | bass drum     C-3/36 |
+|      $23       |   14 - 14  |       any      | snare         D-3/38 |
+|      $24       |   76 - 78  |       any      | closed hi-hat F#3/42 |
++----------------+------------+----------------+----------------------+
+|      $20       |   91 - 94  |     16 - 19    | pedal hi-hat  G#3/44 |
+|                |   91 - 94  |     20 - 48    | open hi-hat   A#3/46 |
+|                |   90 - 94  |     49 - 72    | splash cymbal G-4/55 |
+|                |   84 - 95  |       73+      | crash cymbal  C#4/49 |
++----------------+------------+----------------+----------------------+
+|      $43       |   95 - 95  |      8 - 16    | cabasa        A-5/69 |
+|                |   94 - 94  |     24 - 36    | open hi-hat   A#3/46 |
+|                |     101    |     48 - 48    | splash cymbal G-4/55 |
+|                |   95 - 95  |       49+      | crash cymbal  A-4/57 |
++----------------+------------+----------------+----------------------+
+
+
+Splitting the third FM channel
+==============================
+[MML 2.20, MML 6.2]
+
+This is a special feature of OPN chips, not available on OPM or OPL.
+
+While normally restricted to 3 (OPN) or 6 (OPNA) 4-operator FM channels, the third channel's
+operators can be controlled separately, allowing splitting the single 4-operator channel into two
+2-operator tracks, or four single-operator tracks, or other combinations. This was obviously more
+useful on the older chip, allowing more complex polyphony.
+
+The channel can be split using the $C6 command. Operators used by each split track must then be
+selected using the $CF command.
+
+If a PMD file is targeting the older OPN chip, then the fourth through sixth FM tracks are already
+by default split from the third, but with all operators masked. An explicit split command in this
+case leaves the default split tracks empty, in favor of the three new tracks.
+
+If the file is targeting the newer OPNA chip, then the fourth through sixth FM tracks are full FM
+channels, and a split adds three extra tracks.
+
+Playing a note in general sets the operator frequencies to that note, and switches all operators'
+volume envelopes into their attack phase. However, this is skipped for any masked operators, so
+the split tracks can play different notes without affecting each other.
+
+Normally an instrument change command $FF on a track reads the instrument's parameters from the
+instrument data track, and writes those into the four FM operators. Again, if an operator is
+masked, then the instrument change only applies to the unmasked operators' parameters, plus it
+sets the FM algorithm. The feedback parameter is only applied if operator 1 is not masked on the
+effecting track.
+
+There are a few other commands which tweak individual operator parameters on a track. These will
+generally ignore operator masking, so a track can affect other split tracks by poking at shared
+operators. However, composers are asked to please not do this, so it's not normally a problem.
+
+The output of a split track still has to come from one or more carrier operators, as specified by
+the selected FM algorithm. If a track doesn't have an unmasked carrier, it won't produce sound.
+Unmasked modulators are applied to other unmasked operators only.
+
+Example: Using algorithm 0 (1 -> 2 -> 3 -> 4 -> output), masking operator 3 will also cut off the
+first two. The output will be a simple enveloped sine wave from operator 4. Masking operator 2 but
+not 3 would result in a classic 3 -> 4 two-operator FM output.
+
+Another example: Using algorithm 7 (no modulation, all operators are carriers), masking operators
+3 and 4 will result in operators 1 and 2 being summed as output. Operator 1 can still use feedback
+for a more interesting sound on this track.
+
+
+Notes
+=====
+[MML 4.1]
+
+The notes are stored per-channel, monophonically; chords are split across channels or arpeggioed.
+Tones are notated as bytes, where the top nibble means the octave and the lower nibble the note in
+the octave. There are 8 octaves, $00 though $7B. Example:
+  $40 = C-4
+  $42 = D-4
+  $49 = A-4
+  $4B = B-4 ($4C to $4F are left out)
+  $50 = C-5
+
+Although MML specifies various octave-selection commands, those are resolved at compile time into
+the above note values. There are no specific octave selection commands in PMD files. Note that in
+MML, "o1" is the lowest allowed octave, so "o1 c" will produce C-0.
+[MML 4.4, MML 4.5, MML 4.6, MML 4.7]
+
+On FM/SSG/PCM tracks, each note command is followed by a note length byte. Effectively, this is
+how many ticks the note will play, NoteOn to NoteOff. Valid values are 0-255. Although MML again
+specifies some length selection commands, those are resolved at compile time, so there's no need
+to worry about them when reading a PMD file.
+[MML 4.8, MML 4.9]
+
+However, if staccato has been enabled, NoteOff is triggered earlier by the total staccato amount,
+with an implicit rest for the remaining note duration. Staccato includes $C4 relative staccato,
+$FE absolute staccato, and $B1 random staccato, which all stack. No matter how high the staccato
+value, it can never reduce the note below a specific minimum note length. This is 1 tick by
+default, and can be adjusted to be longer with the $B3 command. If a note's explicit duration is
+shorter than the minimum staccatoed note length, the explicit duration is used and staccato is
+ignored for that note.
+
+Staccato is overridden, if the note command and its duration is followed immediately by $C1 or
+$FB, tie/slur. In this case the note continues playing until the next note is triggered, or until
+the next rest command.
+[MML 4.10]
+
+Sometimes $FB is followed by $DA, which is used for explicit pitch slides from note xx to note yy
+over duration zz.
+
+As a special case, when staccato is 0, if a $DA slide continues the note that was playing
+immediately prior, the $DA should also have an implicit $FB, carrying the note smoothly into the
+slide. This isn't how FM-PMD plays it (without an $FB the note is retriggered even if there's no
+rest between noteoff and noteon), but there are some cases where pitch slides are obviously
+supposed to continue the ongoing note, and the lack of $FB is merely masked by the lo-fi sound
+quality. For an example, see track 6 in 3sis SS_02.
+
+On the SSG rhythm track, byte values below $80 are actually rhythm pattern indexes instead of
+notes, and don't have any additional data bytes. When a pattern index is encountered, paste the
+indicated pattern into the rhythm track replacing the index byte.
+[MML 6.7]
+
+
+Rhythm and wave samples
+=======================
+
+There are four kinds of rhythm available:
+- Built-in PCM samples, triggered with the $EB command. OPNA only. [MML 1.2.2, MML 14.1]
+- Default SSG rhythm sounds, played on the rhythm track. OPN/OPNA only. [MML 1.2.1, MML 6.1.3]
+- Custom-defined FM rhythm, played as normal FM sounds.
+- Custom wave samples.
+
+Depending on hardware configuration, different custom wave samples may be used:
+- SSG PCM, relying on a "PPS" driver, samples loaded from a .PPS file
+- PCM/ADPCM samples, loaded from a .PPC, .PVI, or .P86 file
+- PPZ samples, loaded from a .PVI or .PZI file; two files can be loaded at the same time
+
+The rhythm track is only really used for built-in SSG rhythm sounds. These are played on the 3rd
+SSG channel, and take precedence over melodic notes. As long as a rhythm sound is playing, the
+note is not played. Only one sound can play at once on each SSG channel. A song may of course
+define its own noisy SSG instruments on any SSG channel and trigger those like normal notes.
+
+There is a "PPS" driver, which plays SSG rhythm notes using PPS samples. SSG rhythm volume
+can't be adjusted unless this PPS thing has been enabled. [MML 1.2.1]
+With "PPS" active, two SSG rhythm sounds or samples can play simultaneously, provided its PDR
+operation is in double mode, which it should be by default. [MML 15.2]
+"PPS" allows loading custom samples from a .PPS file to override the default rhythm sounds.
+It also has space for three extra rhythm sounds that are otherwise empty. SSG rhythm sounds,
+with or without PPS, are playable with the $80..$87 commands. [MML 6.1.4]
+I don't think it's possible to play PPS samples at different pitches, so they're useful for
+rhythm and sound effects but not good for melodic sounds.
+
+Built-in PCM samples can be triggered on any track. They are played on the PCM track anyway, so
+they don't interfere with other notes on the triggering track.
+Custom samples can be used by loading a wave data file or two. On the PCM track or extended PPZ
+tracks, you can select an instrument and play notes normally. Pitch bending and fine volume
+enveloping can be used. Only one PCM/ADPCM sample can play at a time. Two PPZ samples can play
+simultaneously on separate PPZ tracks.
+Sample mode can be set to PCM or ADPCM with the $C0 command. This changes how sample data is
+interpreted, and how sample volume and looping is calculated. [MML 2.23, MML 15.10]
+PCM/ADPCM/PPZ samples can select a part of the sample to loop as long as the note is on.
+PCM/ADPCM can also define a release part that plays after noteoff. [MML 6.1.5]
+PCM/PPZ are the only kind of sound that has proper stereo panning controls. [MML 13.2]
+
+Examples from the Hoot archive:
+- PPS samples are used by TMix98, AVG2, MP_BOX_98, and Virgin Angel
+  (TMix98 uses PPS but tries to load a PPS02.PPS which I don't have...)
+  (AVG2 tries to load CMLPPS1.PPS, which exists with a slightly different name...)
+  (Rusty has some PPS files but they don't appear to be used...)
+  (Virgin Angel has both PPC and PPS playing the same thing, likely should only play one...)
+
+- PPC samples are used by GaoGao 1, Groundseed, Virgin Angel, MJGFant, and Sucharaka
+  (GaoGao has LSP music files, which FMPMD happily plays, but they don't use the PPC file...)
+  (MJGFant file N03 hangs FMPMD... S03 does work. None of them uses the PPC file...)
+
+- PVI samples are only used by MForce, and FMPMD can't play its MDZ files...
+
+- P86 samples are used by AVG2, Groundseed, Outsider, and MForce
+  (No Groundseed song actually uses the P86 samples...)
+  (Outsider uses samples, but FMPMD doesn't show it loaded the file and plays what sounds like
+  the wrong sample indexes...)
+
+- PZI samples are only used by Eve Burst Error
+
+Although OPL chips have built-in FM rhythm sounds, using those requires switching to a rhythm
+mode, which prevents using all 9 melodic channels. PMD doesn't bother with this, and always runs
+in the full 9-channel mode, and as such doesn't support the built-in FM rhythm sounds. OPL music
+has to define and use its own rhythm instruments like any other FM instrument.
+
+
+Volume
+======
+
+There are a couple different volume values that all need to be considered together to calculate
+the initial and ongoing volume of any note. For convenience, they are:
+
+Track volume/channel volume:
+  $FD to set, $F3/$F4 to adjust by one step, $E2/$E3 to adjust by any amount. Takes effect
+  immediately, both on the current fading note and on any future note. Higher numbers are louder.
+    PCM tracks: Range 0-255, default 128, step size 16. Linear, not logarithmic.
+    SSG tracks, PPZ PCM: Range 0-15, default 8, step size 1.
+    SSG rhythm tracks: Range 0-15, default 15, step size 1.
+    FM tracks: Range 0-127, default 108, step size 4.
+
+Next note volume tweak/accent:
+  $DD/$DE to adjust. Directly increases/decreases track volume for the next note only at noteon.
+  The following noteon afterward should restore the non-tweaked channel volume. This might be best
+  translated to MIDI as a noteon velocity modifier, leaving the MIDI channel volume untouched.
+
+Sound type volume attenuation:
+  $C0 to set/adjust. Higher numbers are softer.
+  All sound types: Range 0-255, default 0 = no attenuation.
+  Since this is a global change, attenuation changes in the middle of a track must apply
+  synchronously to all other tracks of the given type. Best applied as a MIDI track volume.
+
+Master rhythm volume:
+  $E8 to set, $E6 to adjust. Only affects $EB built-in PCM rhythm, not $8x SSG rhythm in rhythm
+  patterns. Range 0-63, default 48, higher is louder. Best applied as a velocity modifier.
+
+Rhythm specific instrument volume:
+  $EA to set, $E5 to adjust. Range 0-31, default 15, higher is louder. Best applied as a velocity
+  modifier. Only affects $EB built-in PCM rhythm, and not $8x SSG rhythm in rhythm patterns.
+
+FM carrier attenuation:
+  $B8 to set operator attenuation directly, otherwise it's a part of the instrument definition.
+  On FM tracks, carrier operators' attenuation level directly affects the instrument's output
+  volume. Changes to this immediately affect the loudness of that track. Which operators count as
+  carriers depends on the active FM algorithm.
+
+Global volume attenuation:
+  $D2 to kick off. Used for song fade in/out. Range 0-255, default 0 = no attenuation, and
+  255 = silence. Immediately affects all active notes on all tracks, and continues to do so as the
+  fade completes.
+
+Volume envelope:
+  All tracks have an active volume envelope, specified by the instrument definition. $CD and $F0
+  allow changing the SSG/PCM envelope directly. The FM envelope is only set by instrument
+  definitions. For MIDI translation, while a carrier op's attack rate is intrinsically a part of
+  the instrument, its release rate might be applied toward note off velocity. These could also be
+  applied using MIDI expression commands.
+
+Tremolo LFO:
+  There is one hardware LFO (per channel?) and two software LFOs per track. Any of these can be
+  applied to modulate an active note's volume. Although the most common volume effect of an LFO is
+  a tremolo fluctuation, there are specialised LFO shapes that might function as an extra volume
+  envelope. These could be applied using MIDI expression commands.
+
+The "overall volume change" commands [MML 5.3] and [MML 5.4] change normal track volume commands
+at compile time only. They have no especial handling when reading a PMD file.
+
+Although it's probably safe to treat all the given ranges as linear for purposes of calculation,
+the final generated sound output will need to use some kind of a logarithmic volume scale. Here is
+a table showing the peak output amplitude each sound type produces at different PMD volume levels:
+
+(Observed by compiling an MML file with a sine and square wave bleep at each volume, then
+recording the file playback in Dosbox (0.74-3), FM-PMD (0.31, plus fixes), Anex86, and NP2kai
+(commit f229197 2019-Oct-16) for verification, and examining the wave file. A more thorough
+inspection should use real hardware and notes in more than one octave.)
+
+(OPL amplitude is suggested to be 10^(0.075 * attenuation), here:
+  https://github.com/stohrendorf/ppplay/blob/master/src/ymf262/envelopegenerator.h
+That does give credible results if attenuation is further halved, and 1/x is applied, shown here
+in the Expected column. Some sources suggest OPN may use a different curve than OPL, but this one:
+  https://lipoyang.hatenablog.com/entry/20131112/p1
+... thinks it's more of the same, ie. -0.75dB per attenuation step.)
+
+.--------.--------.-------------------.--------.--------.--------.--------.
+| OPL FM : Dosbox :     Expected      | OPN FM : FM-PMD : Anex86 : NP2kai | 
++--------+--------+-------------------+--------+--------+--------+--------+
+|  127   :   100% :       100%        |  127   :   100% :   100% :   100% |
+|  126   :    92% : -0.75 dB   91.728 |  126   : 91.72% : 88.09% : 91.76% |
+|  119   :    50% : -6 dB      50.119 |  119   : 54.55% : 47.62% : 50.02% |
+|  111   :    25% : -12 dB     25.119 |  111   : 29.72% : 27.53% : 27.29% |
+|  103   :  12.5% : -18 dB     12.589 |  103   : 16.21% : 13.84% : 13.65% |
+|   95   :  6.25% : -24 dB      6.310 |   95   :  8.80% :  7.27% :  7.46% |
+|   87   :  3.12% : -30 dB      3.162 |   87   :  4.78% :  3.72% :  3.72% |
+|   79   :  1.55% : -36 dB      1.585 |   79   :  2.56% :  2.04% :  2.04% |
+|   71   :  0.76% : -42 dB      0.794 |   71   :  1.42% :  1.07% :  1.02% |
+|   63   :  0.42% : -48 dB      0.398 |   63   :  0.73% :  0.63% :  0.58% |
+|   55   :  0.42% : -54 dB      0.200 |   55   :  0.38% :  0.37% :  0.30% |
+|   47   :  0.42% : -60 dB      0.100 |   47   :  0.17% :  0.26% :  0.19% |
+|   39   :  0.42% : -66 dB      0.050 |   39   :  0.07% :  0.16% :  0.10% |
+|   31   :  0.42% : -72 dB      0.025 |   31   :  0.04% :      ? :  0.06% |
+|   23   :  0.42% : -78 dB      0.013 |   23   :     0% :      ? :      ? |
+|   15   :  0.42% : -84 dB      0.006 |   15   :     0% :      ? :      ? |
+|    7   :  0.42% : -90 dB      0.003 |    7   :     0% :      ? :      ? |
+|    1   :  0.42% : -94.5 dB    0.002 |    1   :     0% :      ? :      ? |
+|    0   :     0% :         0%        |    0   :     0% :     0% :     0% |
++--------+--------+-------------------+--------+--------+--------+--------+
+
+.---------.--------.--------.--------.--------.
+| OPN SSG : FM-PMD : Anex86 : NP2kai | Approx |
++---------+--------+--------+--------+--------+
+|   15    :   100% :   100% :   100% |   0 dB |
+|   14    : 70.76% : 79.41% : 70.73% |  -3 dB |
+|   13    : 50.00% : 50.44% : 50.03% |  -6 dB |
+|   12    : 35.31% : 39.63% : 35.37% |  -9 dB |
+|   11    : 25.00% : 25.87% : 25.04% | -12 dB |
+|   10    : 17.62% : 18.73% : 17.69% | -15 dB |
+|    9    : 12.50% : 13.61% : 12.52% | -18 dB |
+|    8    : 12.50% :  9.75% :  8.87% | -21 dB |
+|    7    :  8.77% :  6.42% :  6.29% | -24 dB |
+|    6    :  6.15% :  4.56% :  4.44% | -27 dB |
+|    5    :  4.32% :  3.28% :  3.17% | -30 dB |
+|    4    :  3.07% :  2.58% :  2.25% | -33 dB |
+|    3    :  2.13% :  1.62% :  1.61% | -36 dB |
+|    2    :  1.54% :  1.43% :  1.13% | -39 dB |
+|    1    :     0% :  0.95% :  0.84% | -42 dB |
+|    0    :     0% :     0% :     0% |        |
++---------+--------+--------+--------+--------+
+
+(I'm measuring peak amplitudes, because a root-mean-square would be thrown off by the sustain and
+release of the instrument. An instrument's loudness may be best determined at the end of its
+attack phase, which peak amplitude somewhat matches. I'm ignoring actual perceived loudness here,
+since MIDI doesn't specify it, and as such volume levels should only apply to amplitudes.)
+
+Todo: Blow the dust off my OPL4 sound card and record an FM sample to verify first-hand.
+
+Anex86's SSG output has some kind of weird DC offset, causing every SSG note to be shifted upward
+from center at NoteOn, rapidly converging to DC 0 afterward. Surely a bug? FM notes look normal.
+Measurements from Anex86 and NP2kai are a bit imprecise at the low end due to the recording's
+noise floor. On Anex everything also seems to have a bit of implicit tremolo, inflating its
+figures slightly.
+
+Native FM volume ranges are 0-127 on OPN, and 0-63 on OPL. However, because they attenuate at the
+same rate, the 0-63 range produces similar volume levels on both. As such, all PMD files use
+a 0-127 range for FM volumes regardless of OPL/OPN mode.
+
+Based on the above, a joint FM volume curve using the given equation seems the best fit. The SSG
+volume has obvious 50% and 25% points on FMPMD, but that has weird doubled volumes at 8-9 and 0-1,
+surely incorrect. Using -3dB per attenuation step should be fine here.
+
+  FM_amplitude(x) = 100% / (10 ^ ((127 - x) * 0.0375)), where volume x is 1..127
+  SSG_amplitude(x) = 100% / (10 ^ (15 - x) * 0.15), where volume x is 1..15
+
+MIDI volumes have a different amplitude curve, as defined in the DLS specification. But MIDI
+implementations famously generally do whatever they want.
+The specification from MIDI.org says:
+
+  output = volume * expression * velocity * envelope * sample attenuation * AM * LFO tremolo
+
+Furthermore, MIDI volume, expression, and velocity values each transform to amplitude like this:
+
+  attenuation in dB = 20 * log10(127^2 / volume^2), where each 6.0206 dB halves the amplitude
+  or,
+  amplitude as fraction = (volume / 127)^2
+
+The LFO and envelope use a modified version of that.
+
+Therefore:
+
+  MIDI volume = sqrt(16129 / (10 ^ (attenuation in dB / 20)))
+  MIDI volume = sqrt(16129 / (10 ^ ((127 - FM volume) * 0.75 * 0.05)))
+  MIDI volume = sqrt(16129 / (10 ^ ((15 - SSG volume) * 3 * 0.05)))
+
+The below table has peak amplitude values recorded from four MIDI renderers at varying parameters:
+Timidity++ (2.14.0) using the well-balanced EAWPats sound set, Fluidsynth using the sweet OPL3 FM
+128 Mb sound set (AMidi-Plug as part of audacious-plugins 3.10.1-4 on Arch), Robbi-985's excellent
+Bawami-tan softsynth using its default sound set (version 134), and Microsoft's GS wavetable synth
+built into Windows XP with actual Roland Sound Canvas samples, the closest thing to an actual MIDI
+instrument standard.
+
+This evaluates each instrument in isolation, with a 100% amplitude baseline taken at the
+instrument's maximum volume and velocity at note A-4; reverb and chorus disabled if possible.
+Instruments have different top amplitude levels relative to each other, which is not being
+evaluated here.
+
+.------------.--------------------.--------------------.--------------------.--------------------.
+| MIDI       | Timidity + EAWPats | Fluidsynth + OPL3  |     MS GS Synth    |     Bawami-tan     |
+| specified  | Grand  Sqre   Acou | Grand  Sqre   Acou | Grand  Sqre   Acou | Grand  Sqre   Acou |
+| amplitude  | Piano  Lead   Bass | Piano  Lead   Bass | Piano  Lead   Bass | Piano  Lead   Bass |
++------+-----+------+------+------+------+------+------+------+------+------+------+------+------+
+|      | Volume (using note A-4, velocity 127)                                                   |
+|      +-----+------+------+------+------+------+------+------+------+------+------+------+------+
+| 100% : 127 | 100% : 100% : 100% | 100% : 100% : 100% | 100% : 100% : 100% | 100% : 100% : 100% |
+| 76.4 : 111 | 80.0 : 80.0 : 79.9 | 76.7 : 76.7 : 76.7 | 70.9 : 95.4 : 86.3 | 84.1 : 82.6 : 85.3 |
+| 56.0 :  95 | 61.7 : 61.8 : 61.7 | 56.2 : 56.2 : 56.2 | 51.0 : 71.0 : 65.2 | 69.9 : 69.5 : 70.1 |
+| 38.7 :  79 | 45.5 : 45.4 : 45.4 | 38.9 : 38.9 : 38.9 | 36.9 : 48.9 : 45.0 | 53.9 : 54.6 : 56.8 |
+| 24.6 :  63 | 31.2 : 31.2 : 31.2 | 24.8 : 24.8 : 24.8 | 23.0 : 30.2 : 28.3 | 41.2 : 43.0 : 43.4 |
+| 13.7 :  47 | 19.2 : 19.2 : 19.2 | 13.8 : 13.8 : 13.8 | 12.5 : 17.8 : 16.5 | 29.1 : 29.3 : 32.1 |
+| 5.96 :  31 | 9.61 : 9.62 : 9.59 | 6.00 : 6.00 : 6.01 | 5.21 : 7.50 : 7.27 | 19.0 : 19.8 : 18.9 |
+| 1.40 :  15 | 2.87 : 2.88 : 2.89 | 1.37 : 1.38 : 1.39 | 1.21 : 1.76 : 1.62 | 8.66 : 9.23 : 8.91 |
+| 0.01 :   1 | 0.08 : 0.08 : 0.08 | 0.00 : 0.00 : 0.00 | 0.00 : 0.00 : 0.00 | 1.97 : 1.12 : 0.70 |
++------+-----+------+------+------+------+------+------+------+------+------+------+------+------+
+|      | Velocity (using note A-4, volume 127)                                                   |
+|      +-----+------+------+------+------+------+------+------+------+------+------+------+------+
+| 76.4 : 111 | 79.9 : 80.0 : 79.9 | 76.7 : 76.7 : 76.7 | 67.7 : 94.3 : 87.7 | 84.7 : 84.7 : 87.6 |
+| 56.0 :  95 | 61.8 : 61.8 : 61.7 | 56.3 : 56.2 : 56.2 | 49.8 : 69.4 : 65.2 | 69.5 : 70.5 : 66.7 |
+| 38.7 :  79 | 45.5 : 45.4 : 45.4 | 38.9 : 38.9 : 38.9 | 33.6 : 47.8 : 46.0 | 54.6 : 55.2 : 58.0 |
+| 24.6 :  63 | 31.2 : 31.2 : 31.2 | 24.8 : 24.8 : 24.8 | 20.9 : 30.8 : 27.2 | 40.2 : 41.2 : 43.2 |
+| 13.7 :  47 | 19.2 : 19.2 : 19.2 | 13.8 : 13.8 : 13.8 | 11.7 : 17.6 : 14.3 | 28.3 : 30.7 : 30.1 |
+| 5.96 :  31 | 9.58 : 9.61 : 9.59 | 6.00 : 6.00 : 6.01 | 5.18 : 7.39 : 6.04 | 18.0 : 19.4 : 19.0 |
+| 1.40 :  15 | 2.84 : 2.90 : 2.89 | 1.41 : 1.38 : 1.37 | 1.15 : 1.72 : 1.47 | 8.05 : 8.96 : 9.07 |
+| 0.01 :   1 | 0.08 : 0.07 : 0.08 | 0.00 : 0.00 : 0.00 | 0.00 : 0.00 : 0.00 | 0.52 : 0.55 : 0.57 |
++------+-----+------+------+------+------+------+------+------+------+------+------+------+------+
+|      | Note (using volume 111, velocity 111)                                                   |
+|      +-----+------+------+------+------+------+------+------+------+------+------+------+------+
+| 58.4 : C-0 | 63.9 : 64.0 : 55.0 | 72.6 : 51.3 : 51.8 | 41.9 : 83.5 : 81.5 | 81.4 : 94.2 : 91.6 |
+| 58.4 : A-2 | 64.0 : 64.0 : 62.9 | 82.9 : 58.7 : 55.9 | 41.9 : 76.0 : 81.2 | 75.4 : 73.2 : 73.7 |
+| 58.4 : A-4 | 64.0 : 64.0 : 63.9 | 58.9 : 58.9 : 58.9 | 47.7 : 75.6 : 67.5 | 69.9 : 69.9 : 71.4 |
+| 58.4 : A-6 | 63.8 : 64.0 : 64.0 | 59.8 : 57.7 : 55.9 | 55.6 : 67.7 : 32.0 | 65.7 : 76.1 : 22.3 |
+| 58.4 : G-9 | 61.7 : 61.9 : 45.7 | 60.6 : 51.4 : 43.1 | 25.8 : 110% : 4.57 | 60.0 : 96.5 : 49.8 |
++------+-----+------+------+------+------+------+------+------+------+------+------+------+------+
+
+Findings: Fluidsynth has the most correct volume levels. The wavetable synths make no difference
+between volume and velocity, with regard to amplitude, which is also broadly correct. The MS GS
+synth reacts differently to velocity than volume, suggesting it is doing something more than just
+playing back a single sample. Generative synths like Bawami-tan need to take special care that an
+instrument's final output is at the correct amplitude; here its volumes are consistently too high,
+and almost seem linear rather than logarithmic.
+
+Todo: Extract relative instrument balances and ADSR's from MS GS synth and Fluidsynth + Fluid
+soundfont. Play three notes on each instrument. Also one of each rhythm instrument. Try to include
+GS instruments.
+
+
+Track looping
+=============
+
+Tracks make clever use of a repetition feature. For example, a simple bassline can be surrounded
+by a command to repeat it 16 times. Repetition can be nested, by at most 32 levels. Additionally
+there's a main song loop to allow songs to keep playing forever, whose loop markers can also be
+set separately on each track. All tracks loop independently of the others.
+
+Note that there are also some global commands that can appear on any track but will affect all
+tracks immediately, most notably global volume changes. All together, this means you're not going
+to have a good time unless you process all tracks simultaneously in synch.
+
+When encountering the $80 end of track marker, if an F6 main loop has been specified on that
+track, jump track parsing back to the F6 mark. Once every track has encountered $80 at least once,
+that's the true end of the main song loop; the main loop's true beginning is the last F6 marker.
+
+This assumes that the song's main loop keeps repeating exactly the same way each time. However,
+the PMD format doesn't enforce this, so the second time around the main loop could be different,
+or the tracks could even loop completely asynchronously so they'll never line up. In such cases,
+a clean MIDI translation probably isn't possible. Fortunately, composers don't normally use such
+trickery.
+
+It's normal for some tracks to have their main loops a dozen or a hundred ticks off, compared to
+other tracks. One reason for this is if the song uses a common echo effect, where a track is
+copied exactly to another track but with a short delay. The multi-channel notation in [MML 1.1.2]
+is meant precisely for this. This fattens the sound nicely, but it means the echo track's loop
+marker is also delayed.
+
+
+Tempo, timing, ticks
+====================
+[MML 2.10]
+
+PMD relies on note lengths for rhythm. By default, a "whole note" is 96 ticks. Possible values are
+1-255 ticks.
+
+In conventional music, tempo is beats per minute, where one beat is the bottom number of the
+song's time signature. So a 3/4 song has 3 quarternotes in a bar, and BPM is quarternotes per
+minute.
+
+In PMD, the default whole note is 96 ticks, and tempo is defined as some number of 48-tick-notes
+per minute. So the default whole note length assumes an x/2 time signature, half notes. If the
+whole note has been increased to 192 ticks, then tempo is still some number of 48-tick-notes per
+minute, but now refers to quarter notes, an x/4 time signature.
+
+PMD also allows a more technical tempo "timerB" setting, for the timer trigger speed. By playing
+some 3sis/saku songs in Dosbox at different cycle rates, it shows that TimerB has some processing
+overhead, and songs' tempo increases slightly as cycle rates go up. When the game was published in
+1996, western players would have been using 386's, 486's, and Pentiums, corresponding to cycle
+rates 7800-77000. Japanese players would likewise have had comparable PC98 systems. Around the
+speed of an average 486, the overhead starts to be negligible, and the tempo remains constant, so
+that should be used for the most precise calculation. This does mean, however, that music for
+older games is supposed to play slightly slower, but there's no way to tell from the PMD file
+itself how fast the composer's computer was. This is mostly not a huge problem, as the tempo
+difference will only be 1-2% even then.
+
+The tempo calculation in pmdwin.cpp uses the constant 4396 (0x112c), but that consistently
+produces slightly too fast tempos. My BPM measurements taken with Dosbox and Anex86 suggest 4296
+is a more accurate value. It gives average results very close to the observed tempo.
+  tempo = 4296 / (256 - timerB)
+  timerB = 256 - 4296 / tempo
+The default timerB is 200. Default tempo is therefore 4296 / 56 = 76.7 48-tick-notes per minute.
+(Note that 256*3=768, and 16*3=48; maybe a coincidence, but programmers like powers of two, so I
+think this must be close to the correct value.)
+
+MIDI files also use ticks and beats, but differently. Note timings are still defined by ticks, and
+ticks per beat can be changed (default 48), but the true MIDI tempo is defined as microseconds per
+beat (default 500000).
+
+I'm not sure how to get the measure length from .M files, since the Zxx command doesn't appear to
+be saved by the MC tool. So, have to assume a default 4/4 time signature for purposes of MIDI
+timing.
+
+  MIDI tempo (using 48 ticks per beat) = 60 million / PMD tempo
+
+With the tempo correctly translated, note lengths in ticks can be used interchangeably between PMD
+and MIDI, without needing further translation.
+
+Tempo is set with the $FC commands. These can appear on different tracks in the same song, and
+must take effect globally.
+
+
+List of commands
+================
+
+0F xx
+Rest for xx ticks.
+[MML 4.2]
+
+80
+Everywhere except as part of a rhythm pattern: Track end marker. Loop back to F6 loop start, if
+one exists.
+
+80..87 xx yy
+Only as part of a rhythm pattern: SSG rhythm trigger. The duration of the sound is yy ticks.
+The type of sound is cxx, where c is the lower nibble of the command byte. The type of sound is
+a bitfield, allowing different rhythm sounds to be triggered simultaneously, although if the
+"PPS" driver isn't active, only one sound can play at a time. With "PPS", two sounds can play
+simultaneously, and any of these rhythm instruments can be replaced by a custom PPS sample, with
+an extra three sample slots available.
+  001 = bass drum
+  002 = snare drum
+  004 = low tom
+  008 = mid tom
+  010 = high tom
+  020 = rimshot
+  040 = clap (more like a wet snare slap)
+  080 = closed hi-hat (very short tink, really just a metal blip)
+  100 = open hi-hat (more like a ride cymbal, metallic tone rings through)
+  200 = crash cymbal
+  400 = soft ride cymbal
+  800, 1000, 2000 = custom samples, loaded from a .PPS file
+[MML 6.1.3, MML 6.1.4]
+
+B1 xx
+Random absolute staccato modifier, stacks with the other staccatos. Every subsequent note on this
+track gets random(xx) added to its absolute staccato. A minimum note length still applies no
+matter how high staccato gets.
+[MML 4.13]
+
+B2 xx
+Set global transposition to (shortint) xx semitones. All subsequent notes on all tracks are played
+transposed. Stacks with E7/F5 per-track transposition.
+[MML 4.16]
+
+B3 xx
+Set the staccato limit on this track. Every note is guaranteed to be reduced to no less than xx
+ticks no matter how much staccato is applied. This is always at least 1 tick, the default.
+[MML 4.13]
+
+B4 xxyy zzaa bbcc ddee ffgg hhii jjkk llmm
+Only seen as the first byte on the PCM track. This spawns up to 8 new PPZ PCM tracks, with the
+given offsets as each track's base. Ignore offsets of 0000.
+[MML 2.25]
+
+B5 xx yy
+Set FM operator keyon delay to yy ticks. xx is a bitmask 1+2+4+8 for the FM ops. Should only
+appear on FM tracks.
+[MML 12.3]
+
+B6 xx
+Set FM feedback amount directly on FM tracks only. If xx is 0-7, set feedback to 0-7.
+If shortint xx is -1 to -7, decrease feedback by that amount. If xx is $80-$87, increase feedback
+by +0 to +7. The final value is capped at range 0-7.
+[MML 6.4]
+
+B7 xx
+Set LFO depth evolution limit counter on this track. Top bit set = LFO2, top bit clear = LFO1. The
+rest of the byte indicates how many times the D6/BD evolution may happen before the evolution is
+disabled.
+[MML 9.7]
+
+B8 xx yy
+Set operator attenuation directly on FM tracks only. xx indicates which FM operators to edit
+(bitfield 1+2+4+8), with an additional +$80 if the change is relative instead of absolute.
+yy indicates the volume 0-127 to set each selected operator to, or is a shortint if making
+a relative change. Larger numbers are quieter, or less modulative.
+[MML 6.3]
+Although the 0-127 range natively applies to OPN, the same range is saved for OPL files as well.
+The PMDIBM player probably just drops the most significant bit, since most of the useful
+attenuation range is covered by 0-63.
+
+B9 xx
+Set LFO2 delay to xx ticks on this track.
+[MML 9.1]
+
+BA xx
+Should only appear on FM tracks. Apply LFO2 on this track to FM operators, bitmask xx:
+  01 = op 1
+  02 = op 2
+  04 = op 3
+  08 = op 4
+If xx = 00, LFO in vibrato mode affects all operators, while LFO in tremolo mode only affects the
+carrier.
+[MML 9.4]
+
+BB xx
+Set LFO2 speed adjustment by tempo on this track. If xx = 01, LFO speed is unaffected by tempo.
+If xx = 00, the default, the LFO runs faster when tempo is higher.
+Counterpart for LFO1 is CA.
+[MML 9.5]
+
+BC xx
+Set LFO2 to waveform xx on this track, allowed range 0-6. See the MML manual for waveform shapes.
+The default is 0, basic triangle wave. Counterpart for LFO1 is CB.
+[MML 9.2]
+
+BD xx yy
+Set LFO2 depth evolution on this track. Once each xx LFO cycles, LFO depth ($BF parameter zz) is
+adjusted by shortint yy. If B7 depth evolution limit is set, the depth adjustment is only done up
+to so many times (by default infinite).
+If yy is negative, LFO depth only goes as low as 0. When an LFO is reset (usually at note on), its
+accumulated depth evolution is also reset.
+[MML 9.7]
+
+BE xx
+Set LFO2 usage on this track, bitmask:
+  00 = default, disabled
+  01 = affect pitch (vibrato)
+  02 = affect volume (tremolo)
+  04 = disable keyon synch (so LFO keeps running uninterrupted on new note)
+Vibrato shouldn't appear on PCM tracks?
+On a rhythm track, this becomes the PDR operation mode control command?..
+[MML 9.3, MML 15.2]
+
+BF xx yy zz aa
+Set LFO2 parameters on this track. Works the same as the F2 command for LFO1.
+[MML 9.1]
+
+C0 xx, where xx = 00 or 01
+Masks or mutes the track if xx = 01, otherwise unmutes. This track muting is a separate thing from
+FM operator masking.
+[MML 15.7]
+
+C0 xx yy, where xx = F7
+Sets PCM channel to PMD86 normal mode if yy = 0, or PMDB2 compatibility mode if yy = 1.
+In PMDB2 compatibility mode, ADPCM is expected instead of PCM, which changes how volume and sample
+looping are calculated.
+[MML2.23, MML 15.10]
+
+C0 xx yy
+Changes a particular sound type's volume attenuation globally. This stacks with all the other
+volume settings. The allowed range for each type is 0-255, where 0 is maximum volume, and larger
+numbers attenuate it. If yy = 0, resets that type's attenuation to default, which is 0.
+  xx = FF: Set FM attenuation to yy
+  xx = FE: Adjust FM attenuation by shortint yy
+  xx = FD: Set SSG attenuation to yy
+  xx = FC: Adjust SSG attenuation by shortint yy
+  xx = FB: Set PCM attenuation to yy
+  xx = FA: Adjust PCM attenuation by shortint yy
+  xx = F9: Set rhythm attenuation to yy
+  xx = F8: Adjust rhythm attenuation by shortint yy
+Although this can appear on any track at any time, it is normally only found at the very start of
+the seventh track. Expecting C0 only there could allow for a simpler MIDI translation.
+I'm not sure what exactly rhythm attenuation is supposed to affect. Doesn't seem to do anything to
+SSG or PCM rhythm.
+[MML 15.4]
+
+C1
+Enable "slur" for the next note. This keeps playing the current note without a NoteOff, ignoring
+the current staccato value. When the next note occurs, there is an immediate NoteOff and NoteOn to
+trigger the new note.
+The FB "tie" works similarly to this, except it switches to the next note without a new NoteOn.
+C1 may appear more than once between adjacent notes, but this has no particular extra effect.
+C1 must follow the note (or DA pitch slide) it modifies immediately, with no other commands in
+between. C1 following any other command is ignored.
+If C1 is followed by a rest, staccato is still ignored, but NoteOff is applied at the start of the
+rest.
+[MML 4.10]
+
+C2 xx
+Set LFO1 delay on this track to xx ticks.
+[MML 9.1]
+
+C3 xx yy
+Set track panning to shortint xx, fake surround enabled if yy = 01.
+The meaning of xx depends on track type and mode (00 is always center):
+  FM-OPM: -1 or less = left, +1 or more = right
+  FM-OPNA: -1 or less = right, +1 or more = left
+  PCM-AD: -1 or less = right, +1 or more = left
+  PCM-68: -1 or less = left, +1 or more = right
+  PCM-86: -1 to -128 = rightward, +1 to +128 = leftward
+  PCM-PPZ: -4 or less = hard left, -3 to +3 = left to right, +4 or more = hard right
+  SSG: not allowed?
+[MML 13.2]
+
+C4 xx
+Relative staccato setting, can be adjusted separately from absolute staccato, which stacks with
+this. The setting's range is 0-255, causing each subsequent note to be shortened by xx/255 of its
+nominal duration, with an implicit rest of the cut length.
+[MML 4.12]
+
+C5 xx
+Should only appear on FM tracks. Apply LFO1 on this track to FM operators, bitmask xx:
+  01 = op 1
+  02 = op 2
+  04 = op 3
+  08 = op 4
+If xx = 00, LFO in vibrato mode affects all operators, while LFO in tremolo mode only affects the
+carrier.
+[MML 9.4]
+
+C6 xxyy aabb ccdd
+Enable explicit third FM channel extension. Each of the three addresses points to an extra FM-type
+track, or 0000 for not used. This must always be the first command on the first track, if present.
+This command is used to split the third FM channel into up to 4 tracks, and each split track is
+responsible for masking away any operators it doesn't need, so the tracks don't mess with each
+other.
+This feature is only available for OPN mode files. FM Towns and western OPL don't support this.
+If the file is targeting the older OPN chip, then the fourth through sixth FM tracks are already
+by default split from the third, but with all operators masked. An explicit split command in this
+case leaves the default split tracks empty, in favor of the three new tracks.
+If the file is targeting the newer OPNA chip, then the fourth through sixth FM tracks are full FM
+channels, and a split adds three extra tracks.
+[MML 2.20]
+
+C7 xx yyzz
+Adjust FM operator detune directly, on the third FM track only. Operator xx is changed by
+int16 yyzz.
+  01 = op 1
+  02 = op 2
+  04 = op 3
+  08 = op 4
+If the third FM channel has been split, adjusting op detune on any such split track will apply the
+detune across all split tracks, regardless of operator masking on this track.
+[MML 7.2]
+
+C8 xx yyzz
+Set FM operator detune directly, on the third FM track only. Operator xx is set to int16 yyzz.
+  01 = op 1
+  02 = op 2
+  04 = op 3
+  08 = op 4
+If the third FM channel has been split, adjusting op detune on any such split track will apply the
+detune across all split tracks, regardless of operator masking on this track.
+[MML 7.2]
+
+C9 xx
+Set SSG/PCM volume envelope adjustment by tempo. If xx = 01, envelope speed is unaffected by
+tempo. If xx = 00, the default, envelope runs faster when tempo is higher.
+[MML 8.2]
+
+CA xx
+Set LFO1 speed adjustment by tempo on this track. If xx = 01, LFO speed is unaffected by tempo.
+If xx = 00, the default, the LFO runs faster when tempo is higher.
+Counterpart for LFO2 is BB.
+[MML 9.5]
+
+CB xx
+Set LFO1 on this track to waveform xx, allowed range 0-6. See the MML manual for waveform shapes.
+The default is 0, basic triangle wave. Counterpart for LFO2 is BC.
+[MML 9.2]
+
+CC xx
+Set SSG pitch interval correction. xx = 00 for off, 01 for on. Should only occur on SSG tracks.
+When enabled, FA/D5 pitch bends will use a constant range of +/- 256 for +/- 1 semitone,
+regardless of the note or octave being played. When disabled, the pitch bend commands use
+a different range depending on note and octave. See the FA command for details.
+[MML 7.3]
+
+CD xx yy zz ab cc
+Set SSG/PCM volume envelope parameters on this track:
+  xx = Attack rate 0-31, where higher values attack faster:
+       value [0] causes attack to be ignored, and the note remains at initial attack level
+       values [1..16] apply +1 volume every (18 - xx) ticks
+       values [17..31] apply (xx - 16) volume every tick
+  yy = Decay rate 0-31, where higher values decay faster toward the inverted sustain level:
+       value [0] causes decay to be ignored, and also ignores the sustain phase if SL > 0
+       values [1..16] apply -1 volume after every (34 - yy * 2) ticks
+       values [17..31] apply (16 - yy) volume every tick
+  zz = Sustain rate 0-31, where higher values decay faster during the sustain phase:
+       value [0] causes sustain to not decay
+       values [1..16] apply -1 volume every (34 - zz * 2) ticks
+       values [17..31] apply (16 - zz) volume every tick
+  b  = Release rate 0-15, where higher values release faster:
+       value [0] causes release to be ignored, and the note keeps playing until next noteon
+       values [1..8] apply -1 volume every (18 - b * 2) ticks
+       values [9..15] apply (16 - b * 2) volume every tick
+  a  = Sustain level 0-15, where 0 is maximum volume, 15 is silence.
+  cc = Attack initial level 0-15, where 15 is maximum volume, 0 is silence.
+The above tick counts apply when envelope speed is dependent on tempo, the default. [MML 8.2] The
+above tick/volume values are derived from analysing FM-PMD's output, which may not be correct.
+The volume envelope is multiplied with the normalised channel volume, so both can use their full
+dynamic range. The F0 command is a related, different way to define a volume envelope.
+May occur on FM tracks too, but doesn't appear to do anything there. FM-PMD ignores CD on FM
+tracks, and such songs (eg. EVE_21.M) sound no different in-game, at least using the NP2 emulator.
+[MML 8.1.2]
+
+CE xxyy aabb ccdd
+PCM tracks only. Sets the PCM sample loop start to offset xxyy, sample loop end to offset aabb,
+and the release offset to ccdd. This is a direct offset for PMD86/PPZ tracks, but is multiplied by
+16 for PMDB2/PMDVA tracks.
+Positive offsets are counted from the sample's beginning, while negative offsets
+are counted from the sample's end. If ccdd is not $8000, then on noteoff sample playback will jump
+to the ccdd offset, and play through to the sample's end without further looping. If ccdd is
+$8000, then the sample will continue looping and it's up to the volume envelope to fade it out.
+[MML 6.1.5]
+
+CF xx
+Set FM operators or "slots" to use on this track, top nibble of xx is a bitmask:
+  01 = op 1
+  02 = op 2
+  04 = op 3
+  08 = op 4
+Set a bit to enable the operator, clear the bit to mask it. A masked operator's parameters are not
+modified by instrument change commands on this track, and played notes only affect the frequency
+of non-masked slots.
+This allows splitting the third FM track into up to four separate tracks, with each track using
+a subset of the four operators. (If tracks try to share operators, they effectively overwrite each
+other's parameters and notes.)
+You can mask operators on other full FM tracks as well, but that just disables the specified
+operators, and you don't really gain anything.
+[MML 6.2]
+
+D0 xx
+Adjust noise generation frequency by shortint xx. Larger numbers produce lower-frequency noise.
+Supposed to be limited to -31 to +31, but might go up to max shortint?
+[MML 6.6]
+
+D2 xx
+Start global fadeout, adjust global volume by shortint xx, once every 8 ticks? Global volume
+starts at 0, the loudest, and can go up to 255, which would silence everything.
+[MML 15.3]
+
+D3 xx
+Play FM sound effect xx. Stop playback if xx = 0.
+[MML 15.5]
+
+D4 xx
+Play SSG sound effect xx, or SSGPCM effect if x >= 128. Stop playback if xx = 0.
+[MML 15.6]
+
+D5 xxyy
+Adjust track pitch bend by int16 xxyy. Counterpart to FA. Bend range changes are handled at
+compile time, so track pitch always exists in the same range. For notes on how to translate these
+values to semitones, see the FA command.
+[MML 7.1]
+
+D6 xx yy
+Set LFO1 depth evolution on this track. Once each xx LFO cycles, LFO depth ($BF parameter zz) is
+adjusted by shortint yy. If B7 depth evolution limit is set, the depth adjustment is only done up
+to so many times (by default infinite).
+If yy is negative, LFO depth only goes as low as 0. When an LFO is reset (usually at note on), its
+accumulated depth evolution is also reset.
+[MML 9.7]
+
+D7 xx
+Set hardware LFO frequency to xx.
+[MML 9.12]
+
+D8 xx
+Set hardware LFO vibrato/tremolo depth. If xx is in 0-127, tremolo depth is set to xx. If xx is -1
+to -64, vibrato depth is set to xx. If xx is 128-191, vibrato depth is set to xx - 128.
+[MML 9.12]
+
+D9 xx
+Set hardware LFO waveform to xx. Allowed range = 0-3.
+[MML 9.12]
+
+DA xx yy zz
+Pitch slide (portamento) from note xx to yy, duration zz ticks. Staccato applies normally. The
+slide is calculated to reach note yy at the end of zz ticks, but if the duration has been reduced
+by staccato, the slide still runs at the same speed, and a NoteOff is generated while the slide is
+still ongoing. If the sound has a slow release, it may still reach the target note while fading.
+There may be an FB/C1 tie/slur command before and after DA. These are applied just like with
+normal note triggers. If preceded by FB, the initial slide note should do a legato flow from the
+previous playing note. If followed by FB or C1, ignore staccato and carry the pitch slide through
+its full duration. The FB/C1 following must follow immediately, and is ignored if any other
+commands are between it and DA.
+The played notes are shifted by E7/F5 per-track transposition plus B2 global transposition.
+Can't be used on the rhythm channel.
+[MML 4.3]
+
+DB xx
+Adjust "Status1" byte by shortint xx. This is a value that a game can query by some other
+mechanism, if it needs to synchronise with a music track for some reason. There's no bounds check,
+so Status1 will happily rollover from 255 to 0.
+[MML 15.9]
+
+DC xx
+Set "Status1" byte to xx. This is a value that a game can query by some other mechanism, if it
+needs to synchronise with a music track for some reason.
+[MML 15.9]
+
+DD xx
+Adjust the volume of the next note only on this track, down by xx. Respect the volume bounds of
+the track.
+  FM track: range 0-127
+  SSG/rhythm/PPZ track: range 0-15
+  PCM track: range 0-255
+[MML 5.5]
+
+DE xx
+Adjust the volume of the next note only on this track, up by xx. Respect the volume bounds of the
+track.
+  FM track: range 0-127
+  SSG/rhythm/PPZ track: range 0-15
+  PCM track: range 0-255
+[MML 5.5]
+
+DF xx
+Whole note length setting, probably. Also seems to be produced by the Zxx measure length command,
+which doesn't seem right. This is the number of ticks to count per whole note. May force a tempo
+recalculation?..
+[MML 4.11, MML 15.8]
+
+E0 xy
+Set hardware LFO usage/depth. If the bottom nibble is 08-0F, the LFO is enabled, at depth y - 8.
+[MML 9.11]
+
+E1 xy
+Set hardware LFO pitch/volume change speed. Pitch change speed is the lower nibble of xy, volume
+change speed is the higher nibble. Should only appear on FM tracks?
+[MML 9.10]
+
+E2 xx
+Track volume down by xx. Respect the volume bounds of the track.
+  FM track: range 0-127
+  SSG/rhythm/PPZ track: range 0-15
+  PCM track: range 0-255
+[MML 5.5]
+
+E3 xx
+Track volume up by xx. Respect the volume bounds of the track.
+  FM track: range 0-127
+  SSG/rhythm/PPZ track: range 0-15
+  PCM track: range 0-255
+[MML 5.5]
+
+E4 xx
+Set hardware LFO delay to xx ticks after noteon. Should only appear on FM track?
+[MML 9.10, MML 9.13]
+
+E5 xx yy
+Adjust the individual built-in PCM rhythm sound xx volume by shortint yy. Volume range is 0-31,
+default 15. Larger is louder.
+  1 = bass drum
+  2 = snare
+  3 = ride cymbal
+  4 = closed hi-hat
+  5 = tomtom
+  6 = rimshot
+[MML 14.3]
+
+E6 xx
+Adjust the master volume for the EB built-in PCM rhythm triggers on this track by shortint xx.
+Default master rhythm volume starts at 48. Cap the volume range at 0-63. Higher is louder.
+[MML 14.2]
+
+E7 xx
+Adjust track's note transposing from current value by (shortint) xx semitones. Stacks with B2
+global transposing.
+[MML 4.14]
+
+E8 xx
+Set the master volume for the EB built-in PCM rhythm triggers on this track. Cap the volume at
+0-63. Default master rhythm volume is 48. Higher is louder.
+[MML 14.2]
+
+E9 xx
+Set the individual built-in PCM rhythm sound panning on this track. The top 3 bits have a value
+1-6, signifying the rhythm type. The bottom two bits signify the pan position:
+  2 = left
+  1 = right
+  3 = middle (both)
+[MML 14.4]
+
+EA xx
+Set the individual built-in PCM rhythm sound volume. The top 3 bits of xx have a value 1-6,
+signifying the rhythm type, and the bottom 5 bits are the volume. The volume range is 0-31,
+default 15, larger is louder.
+  1 = bass drum
+  2 = snare
+  3 = ride cymbal
+  4 = closed hi-hat
+  5 = tomtom
+  6 = rimshot
+[MML 14.3]
+
+EB xx
+Trigger a built-in PCM rhythm sound. xx is a bitmask to select which sounds are desired. If $80 is
+set, that means to note off instead of note on.
+  01 = bass drum
+  02 = snare
+  04 = ride cymbal
+  08 = closed hi-hat
+  10 = tomtom
+  20 = rimshot
+These are only available in OPN mode, and can play simultaneously with all other channels. These
+are ignored in OPL mode, where rhythm can only be used by defining suitable sounds for normal FM
+instruments.
+The EB command can appear on any track, not just the rhythm or PCM track. Only one of these can
+play at the same time. Songs aren't forced to off notes, so a MIDI conversion would have to keep
+track of notes and off them explicitly if still on when the same sound is triggered again, or the
+main loop ends.
+The global rhythm volume can be modified with the commands E8/E6; the individual types with EA/E5.
+[MML 14.1]
+
+EC xx
+Set track panning to xx. Allowed values depend on file mode and track type?
+  00 = PCM only, fake surround
+  01 = OPM-FM or PCM-68: left; otherwise: right
+  02 = OPM-FM or PCM-68: right; otherwise: left
+  03 = center
+[MML 13.2]
+
+ED xx
+Set tone/noise generation to xx.
+  $00 = silence?, $07 = tone, $38 = noise, $3F = both
+Should be different on SSG/FM tracks, but the output looks the same... Presumably defaults to tone
+being enabled and noise disabled.
+[MML 6.5]
+
+EE xx
+Set noise generation frequency to xx. Larger numbers produce lower-frequency noise. Supposed to be
+limited to 0-31, but might go up to 255?
+This is supposed to be limited to mainly SSG tracks only, but it can appear anywhere, it'll just
+be ignored outside SSG tracks.
+[MML 6.6]
+
+EF xx yy
+Feed byte yy to the FM chip's address xx. Only useful if emulating the actual chip.
+[MML 15.1]
+
+F0 xx yy zz aa
+Set SSG/PCM volume envelope parameters: attack length, decay depth, sustain rate, release rate.
+Shouldn't appear on FM tracks. Some special named combinations:
+  00 00 00 00 = default square wave
+  02 FF 00 01 = Synth 1
+  02 FE 00 01 = Synth 2, more distinct attack and slightly stronger decay
+  02 FE 00 08 = Synth 3, more distinct attack and slightly stronger decay, gradual release
+  02 FF 18 01 = Piano 1
+  02 FE 18 01 = Piano 2, more distinct attack and slightly stronger decay
+  02 FE 04 01 = Glockenspiel/Marimba, rapid decay
+  02 01 00 01 = Strings
+  01 02 00 01 = Brass 1
+  01 02 18 01 = Brass 2, not sustained
+Allowed ranges: AL 0-255, DD -15 to +15, SR 0-255, RR 0-255.
+The note plays at the channel's volume for AL ticks, then gets shortint(DD) added to it. The note
+volume may be pushed above 15 by this, but the output volume remains capped at 15, so the sustain
+and release phases only become noticeable after bringing the note volume below 15. In the sustain
+phase, -1 is applied to the note volume every SR ticks until a noteoff begins the release phase,
+where -1 is applied every RR ticks.
+If SR = 0, it sustains without fading; if RR = 0, release is immediate.
+The above is derived from analysing FM-PMD's output, which may not be correct.
+To vaguely translate to the CD command's style:
+  attack start level = if shortint(DD) > 0, then level = 15 - shortint(DD), else level = 15
+  attack rate (fractional) = attack start level / AL; if shortint(DD) > 0, then rate += 16
+  decay rate = immediate, 31
+  sustain level = if shortint(DD) > 0, then level = 0, else level = -shortint(DD)
+  sustain rate = if SR > 0, then rate = 17 - SR / 2 (cap result above 0), else rate = 0
+  release rate = if RR > 0, then rate = 9 - RR / 2 (cap result above 0), else rate = 15
+[MML 6.1.2, MML 8.1]
+
+F1 xx
+Set LFO1 usage on this track, bitmask:
+  00 = default disabled
+  01 = affect pitch (vibrato)
+  02 = affect volume (tremolo)
+  04 = disable keyon synch (so LFO keeps running uninterrupted on new note)
+Vibrato shouldn't appear on PCM tracks?
+On a rhythm track, this is instead the PDR operation mode control command:
+  00 = Double mode, can play two rhythm samples simultaneously?
+  01 = Single mode
+  02 = 16kHz mode, better quality mixing?
+  03 = 8kHz mode
+  04 = EI mode??
+  05 = DI mode??
+[MML 9.3, MML 15.2]
+
+F2 xx yy zz aa
+Set LFO1 parameters on this track. The BF command is used for LFO2.
+Delay xx ticks from noteon, adjust every yy ticks afterward, by (shortint) zz amount, with aa
+repetitions per phase. The MML document describes how each waveform uses these values.
+High values of yy cause the LFO effect to be noticeably stepped. A value of 1 or 2 gives a smooth
+ride along the waveform.
+Interpretation of zz depends on track type (tested using the one-shot waveform):
+  OPN: one semitone = 50
+  OPL: one semitone = 25? OPL is twice as sensitive...
+  SSG: if SSG pitch interval correction is enabled for this track, one semitone = 256.
+    If it is disabled, then one semitone = 8 at G-4, 16 at G-3, 32 at G-2.
+    This can be calculated using the expression
+      f(x) = 192 * 0.5 ^ (x/12)
+    where x is 0 for C-0 (note number 0), and increases by 1 per semitone.
+The CB/BC commands are used to select the LFO wafeform.
+For the default triangle waveform, the value of (shortint) zz is added to the current note once
+every yy ticks, aa times before being negated. Then it is added aa*2 times, before being negated
+again. Therefore, the LFO cycles once in yy * aa * 4 ticks, with a depth of
++/- (zz * aa / semitone_size) semitones.
+MIDI vibrato is poorly defined, but assume a constant rate, and at maximum vibration a depth of
++/- 1 semitone.
+The PMDIBM driver for OPL chips doesn't seem to implement software LFO's?
+[MML 9.1]
+
+F3
+Decrease track volume:
+  SSG/rhythm/PPZ channel: -1 (bounds 0..15)
+  FM channel: -4 (bounds 0..127)
+  PCM channel: -16 (bounds 0..255)
+[MML 5.5]
+
+F4
+Increase track volume:
+  SSG/rhythm/PPZ channel: +1 (bounds 0..15)
+  FM channel: +4 (bounds 0..127)
+  PCM channel: +16 (bounds 0..255)
+[MML 5.5]
+
+F5 xx
+Set track's note transposing. All subsequent notes on this track are transposed by (shortint) xx
+semitones. Stacks with B2 global transposing.
+[MML 4.14]
+
+F6
+Track loop begin marker; jump back here automatically from end of track. One of these should exist
+on every track that loops.
+[MML 10.2]
+
+F7 xxyy
+When playing the last repetition of the containing loop F9 xxyy where the xxyy is the same as
+here, this breaks out of the loop. If it's not yet the last repetition, do nothing.
+If the loop is infinite, F7 is ignored.
+[MML 10.1]
+
+F8 xx yy aabb
+Repeat xx times from the F9 command at aabb. If xx is 0, repeat infinitely, so the original F9 is
+actually an F6.
+The yy appears to be the repetition counter, which should always be the same as xx, unless there's
+an F7 early break in the loop, in which case it's xx - 1. yy could also be just 00, in which case
+count to xx normally anyway.
+[MML 10.1]
+
+F9 xxyy
+Begin a repeat sequence; xxyy is the address of the sequence-ending F8 command parameters. Repeat
+sequences can be nested up to 32 levels.
+[MML 10.1]
+
+FA xxyy
+Set track detune or pitch bend to xxyy. Counterpart to D5. This is normally only used for slight
+detuning by a few cents, for a fatter sound. Due to the terrible pitch accuracy, the separate DA
+command is used for pitch slides.
+  PCM tracks: same as SSG?
+  Rhythm tracks: not allowed, or same as SSG?
+  SSG tracks: If SSG pitch interval correction is enabled for this track, +/- 256 is one semitone.
+    If it is disabled, then +/- 32 is one semitone at C-4; +/- 64 at C-3; and +/- 128 at C-2.
+    This can be calculated using the expression
+      f(x) = 512 * 0.5 ^ (x/12)
+    where x is 0 for C-0 (note number 0), and increases by 1 per semitone.
+  FM tracks: bend range changes are handled at MML compile time, so the FA command has a constant
+    bend range. The bend amount doesn't have a simple relationship with the resulting frequency.
+    The pitch change required depends on the note being played, but not the octave.
+    Approximate +1 semitone on OPN (tuned by ear):
+      C  = +36
+      C# = +37
+      D  = +38
+      D# = +40
+	  E  = +43
+      F  = +45
+      F# = +48
+      G  = +50
+      G# = +53
+      A  = +56
+      A# = +60
+      B  = +64
+      C back down to B = -64
+    But if you try to move more than 1 semitone, simply adding these numbers won't be in tune, and
+    I don't know how to calculate it more exactly. The above can be approximated with the equation
+      f(x) = 6/55 * x^2 + 74/55 * x + 36
+    where x ranges 0..11 for C..B.
+    The song P14 in Princess Maker 2 suggests that +/- 50 should on average count as 1 semitone.
+    OPL is twice as sensitive, so it uses these values divided by two.
+MML commands D and I both produce the FA command, with D setting the FM pitch bend directly, and I
+trying to map a semitone more precisely depending on the base frequency. However, in both cases
+the result is more or less out of tune, FM being quite difficult to tune perfectly.
+While it would be possible to use MIDI pitch bends for this, the actual detune controller might be
+preferable, although it's not supported everywhere.
+Detuning has some special behavior around repetition sequences, but it's all done at compile time;
+in some conditions detune is implicitly reset on loopback or loop exit, but that's done by
+generating an extra FA command, so requires no special handling.
+[MML 7.1, MML 7.4, MML 7.5]
+Master detune is added into normal detuning at compile time, so it needs no especial handling.
+[MML 7.6]
+
+FB
+Enable "tie" or legato for the next note. This keeps playing the current note without a NoteOff,
+ignoring the current staccato value. When the next note occurs, the active note's pitch is set to
+the new note, but without retriggering the note. If the next note is the same as the previous
+note, the note simply continues playing without interruption.
+The C1 "slur" works similarly to this, except it does retrigger the note on the next NoteOn.
+FB may appear more than once in a row, but this has no particular extra effect.
+FB must follow the note (or DA pitch slide) it modifies immediately, with no other commands in
+between. FB following any other command is ignored.
+If FB is followed by a rest, the note keeps playing without interruption.
+This may be best translated to MIDI using the legato pedal controller or instant portamento.
+[MML 4.10]
+
+FC FD xx
+Adjust global tempo by shortint xx. Valid result values are 18-255.
+[MML 11.1]
+
+FC FE xx
+Adjust global timerB tempo by shortint xx. Valid result values are 0-250.
+[MML 11.2]
+
+FC FF xx
+Set global tempo to xx. Valid result values are 18-255.
+[MML 11.1]
+
+FC xx
+Set global timerB tempo to xx. Valid result values are 0-250.
+[MML 11.2]
+
+FD xx
+Set the track volume to xx.
+  PCM tracks: Valid range is 0-255, simple linear multiplier? Default 128.
+  SSG/PPZ tracks: Valid range is 0-15, default 8. Larger values may be encountered, but it's not
+    clear what they mean, and can probably be ignored.
+  FM tracks: Valid range is 0-127, logarithmic. Default 108.
+  SSG rhythm track: Valid range is 0-15. Default 15.
+[MML 5.1, MML 5.2]
+
+FE xx
+Set absolute staccato on this track to xx ticks; 00 is no pause between notes. Each subsequent
+note on this track is shortened by this amount, followed by an implicit rest of the cut duration.
+Can be adjusted separately from relative staccato, which stacks with this.
+Staccato is ignored if FB/C1 tie/slur is used.
+[MML 4.13]
+
+FF
+Rhythm pattern only: ends the pattern.
+
+FF xx
+FM and PCM tracks: Select instrument xx, as defined in the instrument metatrack. Shouldn't exist
+on SSG channel, since those are expanded at compile time to an F0 command. Instrument numbers can
+go up to 255.
+[MML 6.1.1]
+The instrument parameters won't be applied on any operators that have been masked with the CF
+command. The feedback parameter is only applied if operator 1 is not masked on this track. The FM
+algorithm used by the instrument is set regardless of masking.
+[MML 6.2]
+
+
+
+
+
+Operating environment
+
+The program is designed to run in a Win32 environment with a sound card, DirectX7 or DirectX9, and IE6 (Microsoft's XML parser: MSXML3) installed.
+sound card, DirectX7 or DirectX9, IE6 (Microsoft's XML parser: MSXML3) installed in Win32 environment. It is
+If you don't have them, you will get an error immediately.
+Create a directory with the name contained in data_dir in shoot.ini, and put the data files in it.
+The YM2608 rhythm sound data is based on M88.
+Please put them in the same directory as shoot.exe.
+Please place it in the same directory as shoot.exe.
+
+If you start it with the -list option, it will output drivers.xml in the current directory.
+When started with the -list option, drivers.xml is output to the current directory.
+
+When invoked with the -ini option followed by the name of the ini file to be used, it will output drivers.xml in the current directory.
+When you start with the -ini option followed by the name of the ini file to be used, the ini file that exists in the specified location will be used.
+
+
+Operation (keyboard)
+
+Cursor up/down Title selection
+Cursor left/right Folder/title scroll
+BS,ESC Go back one layer from folder/title selection.
+			When incremental search is in progress
+			BS : Delete one character
+			ESC : End of search mode
+Return/Space key Title decision, driver loading
+Alt+Enter Full screen mode
+P Stop playing
+			(In many cases, "stop playing" is not implemented.
+			In many cases, it is not implemented.)
+0 Issue call number 0
+Ctrl-F/S Fast/slow playback
+Ctrl-C Hexadecimal dump of sound register contents to clipboard
+Ctrl-R Reload title definition file when relocating dataCtrl-W Wave output ON/OFF
+Ctrl-I Incremental search mode switch
+/ Speaner ON/OFF
+Ctrl+cursor left/right keyboard scroll
+Ctrl+Cursor Up/Down register display scroll (+/-$10 each)
+Ctrl+Page Up/Down register display scroll (+/-$100 each)
+Ctrl+Home register start display
+Ctrl+End End of register display
+Ctrl+1/2 Switch between window equal-mode and double-mode
+F1/F2/F3/F4/F5/F6/F7/F8 Register display sound source switching
+			When scrolling, switches while maintaining the display offset.
+TAB selector/channel mask mode switching
+12345678 Channel Mask (ch0-7)
+QWERTYUI Channel Mask (ch8-16)
+			Hold down SHIFT to turn on that channel only.
+9/O All channels ON/OFF
+- Invert channel mask
+L LPF ON/OFF
+Z (driver selected) Display of chip clock information, etc.
+
+Operation (mouse)
+
+[Selector]
+Left click Move cursor
+Right-click Go back one level up (equivalent to [BS]/[ESC])
+Back Go back one level up (=equivalent to [BS]/[ESC])
+Double left click Select folder/play title (=equivalent to [ENTER])
+Wheel Scroll folder/title
+
+[Register Dump]
+Left click Dump forward direction switching
+Right-click to switch to reverse dump direction
+Forward Dump forward direction switching
+Back Dump reverse direction switching
+Wheel Scroll dump range
+
+[Keyboard]
+Left click Mask ON/OFF
+Right-click to release all masks (equivalent to [9])
+
+
+About Incremental Search
+
+Use CTRL+[I] to switch between search and normal mode.
+The search targets are folder names, driver names, and title names, not individual song names of each title.
+The search does not apply to individual song titles.
+The search is performed by partial matching using up to 24 single-byte alphanumeric characters (with large and small comparisons).
+The cursor moves up and down to the corresponding list. Press [BS] to delete one character at a time.
+The [BS] key deletes one character at a time, but the search mode is maintained even if the character is lost.
+To cancel the search mode, press CTRL+[I], [ESC], or [RETURN] again.
+or scrolling the selector by any key other than up/down cursor.
+Left and right mouse clicks in the selector area are ignored during search.
+When the title is reloaded, the search mode is canceled.
+
+
+Setting
+
+Currently, it is almost impossible to configure the data directory, playback frequency, and each sound source by editing shoot.ini.
+By editing shoot.ini, you can change the data directory, playback frequency, mixing level of each sound source, LPF characteristics, etc.
+You can change the data directory, playback frequency, mixing level of each sound source, LPF characteristics, etc. by editing hoot.ini. Please 
+refer to the hoot.ini file in the distribution archive.
+
+
+Code used
+
 *****************************************************************************************
 * SOUND ROM NOTES:                                                                      *
 *****************************************************************************************
@@ -100,6 +1731,10 @@ audiocpu: C001 sound one? c800 sound 2?
 c500 - queue for YM1. C515 start ptr (big endian) C517 end ptr (big endian) c51b - Original control value (from A)
 C530 - queue for YM2. C545 start ptr (big endian) C547 end ptr (big endian) c54b - Original control value (from A)
 
+
+[Black Tiger] Black Tiger (ブラックドラゴン)
+capcom
+Arcade
 
 *****************************************************************************************
 * MAME NOTES:                                                                           *
@@ -10664,3 +12299,135 @@ In this case, by adding preserve -n
 o5cedf>c<gabo6
 and the last note (=octave) will be preserved.
 v, @, l, etc. can be specified in the same way.
+
+
+
+
+
+
+The source of IRQ 0 is /IRQ from the YM2203 in the single processor L System games. Pin 25 (/IRQ) of the YM2203 is connected to pin 37 of the TC0090LVC. Pin 25 is pulled low when either timer-A or timer-B expires, and that triggers IRQ 0. I've looked through the code of all the single processor games and none of them actually start either of the timers (although all of them do actually initialise both timers). MAME currently fires IRQ 0 at scanline 120 for all L System games. I currently own Plotting, Puzznic (effectively the same base board as Plotting) and Play Girls single processor boards and have verified my findings on those boards. I'd imagine that all single processor boards have pin 25 of the YM2203 connected to pin 37 of the TC0090LVC.
+
+Steps to reproduce this, on hardware, are detailed below.
+
+I've looked at the dual and triple cpu games and found the following :-
+
+Kuri Kinton - IRQ 0 routine is just ei/ret and is not enabled. The timers on the sound chip are NOT started by the audio program. I don't know what pin 37 of the TC0090LVC is connected to as I don't own a Kuri Kinton board
+
+Evil Stone - not looked at the code for this game, nor do I own this board
+
+Fighting Hawk - pin 37 of the TC0090LVC is connected to pin 62 of the TC0170ABT custom. There's very little documentation available for this custom and I've no idea what it does or what pin 62 is. The IRQ 0 routine in the main program is simply a ret statement and IRQ 0 is never enabled. Pin 16 (/INT) of the audio CPU is connected to pin 25 (/IRQ) of the YM2203. The audio program starts the timers and interrupts are generated on the audio CPU by the YM2203, as expected. I own a Fighting Hawk board.
+
+Raimais - pin 37 of the TC0090LVC is connected to pin 4 (/INT L) of the MB8421 dual port ram. The slave CPU /NMI (pin 17) is connected to pin 48 (INT /R) of the dual port ram. The IRQ 0 routine in the main program is simply a ret statement and IRQ 0 is never enabled. Pin 16 of the audio CPU is connected to pin 56 (/IRQ) of the YM2610. The audio program starts the timers and interrupts are generated on the audio CPU by the YM2610, as expected. The slave and audio CPU's run at 8MHz (measured by me, on my own board, pics attached). The L System driver incorrectly has them at 4MHz (12000000/3) and states that these are "not verified". I've also verified the TC0090LVC runs at 6.66528 MHz on this board, from pin 5 of the 74F74 (which is connected to pin 122 of CPU). This is shown as "needs verification from pin 122" in the driver.
+
+Champion Wrestler - I've not looked at the code for this game yet, although I do own a Champion Wrestler board and it's on my list of things to do next
+
+
+
+Control register
+---------------------
+This is shown as "function unknown" for all the single processor games (with the exception of the American Horseshoes). The control register is used for coin counters & coin lockouts. I've studied the code for Plotting and Play Girls 2 and have verified my findings on those boards. The control register for Plotting is at $b800 and is comprised of :-
+
+bit 0 - coin lockout #1
+bit 1 - coin lockout #2
+bit 2 - coin counter #1
+bit 3 - coin counter #2
+
+These values are clocked through a 74LS174 to a TD62064 and then out to the JAMMA edge connector.
+
+Play Girls 2 follows a slightly different pattern and utilises 6 bits instead of 4 for the control register :-
+
+bit 0 - coin counter #1 (this output does NOT go to the JAMMA edge connector, instead it goes to pin 3 of an unpopulated 4-pin area to the left of the 74LS174) (can be seen at http://blog.system11.org/wp-content/uploads/2013/09/1809_playgirls2_conv.jpg)
+bit 1 - coin counter #2 (this output does NOT go to the JAMMA edge connector, instead it goes to pin 4 of an unpopulated 4-pin area to the left of the 74 LS174)
+bit 2 - coin counter #1
+bit 3 - coin counter #2
+bit 4 - coin lockout #1
+bit 5 - coin lockout #2
+
+I haven't looked at the control register code of any of the other single processor games but I'd be surprised if it wasn't used for coin counters/lockouts on all of them.
+Steps To Reproduce	The simplest way to demonstrate this functionality, on real hardware (using Plotting as my target board), is to change 4 bytes in the program :-
+
+1) change the byte at $0036 to any non-zero value (this is a debug flag which, when non-zero, means the rom check is skipped)
+2) change the word at $099c from 3b 00 to 8f 05 (this is the address IRQ0 will jump to when it fires, it's the start of the service menu code)
+3) change the byte at $0bfe from 30 to 35 (this changes ld a,$30 to ld a,$35 and will start timer-A on the sound chip)
+
+With these changes made the game will boot to service mode approx 1 frame after timer-A has been started (the period of timer-A is 16.39 milliseconds). This is because the timer expires, triggers IRQ0 and the code jumps to the new address. This simple demo can be seen in this video (you can just about see the service mode test grid appear when the logic probe goes low when timer-A expires) :-
+
+
+
+
+Changing the byte at $0bfe back to 30 will allow the game to boot as normal (when running on hardware) as timer-A will not be started. When running on MAME however the code will still jump to the service mode as IRQ0 always fires at scanline 120.
+
+
+A slightly more complex example involves resetting timer-B in the IRQ 0 routine, when it expires. This is done by making the following changes :-
+
+1) change debug flag at $0036 to any non-zero value
+2) change word at $099c from 3b 00 to 00 5d (new IRQ 0 routine address)
+3) change byte at $0bf7 from d0 to 00 (this sets timer-B period to 88.49ms (approx 5.3 frames))
+4) change byte at $0bfe from 30 to 2a (this loads/enables/starts timer-B)
+5) insert new IRQ 0 routine at $5d00
+f5 push af
+c5 push bc
+e5 push hl
+21 00 a0 ld hl,$a000 ; point HL at the sound chip
+06 27 ld b,$27 ; register $27
+3e 2a ld a,$2a ; load/enable/start timer-B
+cd b6 1a call $1ab6 ; send data to sound chip
+e1 pop hl
+c1 pop bc
+f1 pop af
+c3 3b 00 jp $003b ; jump to ei/reti
+
+The results of the above code changes can be seen in this video. You can see pin 25 of the YM2203 (and hence pin 37 of the CPU) pulsing low when timer-B expires and is reset by the IRQ 0 routine.
+
+
+Additional Information	I realise that adding the correct IRQ 0 trigger mechanism will have very little effect on the single processor games (the only difference being that they'll no longer call IRQ 0 at scanline 120 but that routine is merely an ei/reti combo in all the single processor games so the timing difference, per frame, will be 18 T-states plus the overhead of servicing the interrupt). I'd still very much like to see the correct behaviour emulated, if purely for personal reasons, as I'm planning on writing an audio engine to run on the Plotting board which requires the sound chip timers to generate an interrupt and it would be beneficial to be able to test the audio engine in MAME before deploying to hardware.
+
+Thank you for all the hard work and dedication that the MAME dev team consistently put in to constantly improve MAME.
+Github Commit	
+Flags	Verified with Original, Noted in Source, Verified with Code
+Regression Version	
+Affected Sets / Systems	plotting, puzznic, cachat, tubeit, palamed, plgirls, plgirls2
+Attached Files
+jpg file icon Raimais main CPU.jpg (2,843,079 bytes) May 23, 2018, 00:25 Uploaded by cmonkey
+Raimais main CPU speed
+jpg file icon Raimais slave CPU.jpg (2,513,770 bytes) May 23, 2018, 00:26 Uploaded by cmonkey
+Raimais slave CPU speed
+jpg file icon Raimais audio CPU.jpg (2,543,931 bytes) May 23, 2018, 00:27 Uploaded by cmonkey
+Raimais audio CPU speed
+jpg file icon Raimais pin 11 PAL.jpg (3,039,581 bytes) May 29, 2018, 00:11 Uploaded by cmonkey
+pdf file icon LQV-8M00-012.pdf (752,276 bytes) May 29, 2018, 00:11 Uploaded by cmonkey
+Changing the byte at $0bfe back to 30 will allow the game to boot as normal (when running on hardware) as timer-A will not be started. When running on MAME however the code will still jump to the service mode as IRQ0 always fires at scanline 120.
+
+
+A slightly more complex example involves resetting timer-B in the IRQ 0 routine, when it expires. This is done by making the following changes :-
+
+1) change debug flag at $0036 to any non-zero value
+2) change word at $099c from 3b 00 to 00 5d (new IRQ 0 routine address)
+3) change byte at $0bf7 from d0 to 00 (this sets timer-B period to 88.49ms (approx 5.3 frames))
+4) change byte at $0bfe from 30 to 2a (this loads/enables/starts timer-B)
+5) insert new IRQ 0 routine at $5d00
+f5 push af
+c5 push bc
+e5 push hl
+21 00 a0 ld hl,$a000 ; point HL at the sound chip
+06 27 ld b,$27 ; register $27
+3e 2a ld a,$2a ; load/enable/start timer-B
+cd b6 1a call $1ab6 ; send data to sound chip
+e1 pop hl
+c1 pop bc
+f1 pop af
+c3 3b 00 jp $003b ; jump to ei/reti
+
+The results of the above code changes can be seen in this video. You can see pin 25 of the YM2203 (and hence pin 37 of the CPU) pulsing low when timer-B expires and is reset by the IRQ 0 routine.
+
+I realise that adding the correct IRQ 0 trigger mechanism will have very little effect on the single processor games (the only difference being that they'll no longer call IRQ 0 at scanline 120 but that routine is merely an ei/reti combo in all the single processor games so the timing difference, per frame, will be 18 T-states plus the overhead of servicing the interrupt). I'd still very much like to see the correct behaviour emulated, if purely for personal reasons, as I'm planning on writing an audio engine to run on the Plotting board which requires the sound chip timers to generate an interrupt and it would be beneficial to be able to test the audio engine in MAME before deploying to hardware.
+
+Thank you for all the hard work and dedication that the MAME dev team consistently put in to constantly improve MAME.
+
+YM2203 SSG-EG inaccuracy: Seems to be emulation of YM2203 feature 'SSG-EG' has inaccuracy in MAME. We (I as programmer and some other people as hardware developers) construct some sort of sound card which uses YM2203, and I wrote software for it. For testing purposes I use some of source code from MAME, related to YM2203 emulation (to make fast tests on PC, instead of real thing).
+Now listen to two attached samples - which contains short part of music and then all possible SSG-ENV types in one channel. One of these samples recorded from real thing, YM2203 @3.5 MHz, and another rendered by YM2203 emulation code from MAME. Comments in fm.c code said:
+
+The difference (when compared to normal Envelope Generator mode) is that the resolution in Decay and Sustain phases is 4 times lower;
+this results in only 256 steps instead of normal 1024.
+
+But seems to resolution in SSG-EG mode 8 times lower, not 4. I checked that by changing adding value from 4 to 8 in strings 1147 and 1170 of fm.c, and it sounds more like true. But there still some differences with envelope stages, by now I can't figure it clearly (you can see this in samples with any audio editor).I also can provide test register array (in simply format, .GYM-like), which was used to record these samples.

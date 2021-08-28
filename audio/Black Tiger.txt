@@ -1,0 +1,72 @@
+***********************************************
+* VGM music package                           *
+* http://vgm.mdscene.net/                     *
+***********************************************
+Game name:           Black Tiger (U) /
+                     Black Dragon (J)
+System:              Arcade Machine
+Music hardware:      2xYM2203
+
+Music author:        Tamayo Kawamoto
+Game developer:      Capcom
+Game publisher:      Capcom
+Game release date:   1987-08
+
+Package created by:  rainwarrior
+Package version:     1.01
+
+Song list, in approximate game order:
+Song name                           Length:
+                                    Total  Loop
+01 Coin                             0:03   -
+02 Start Demo                       0:14   -
+03 Ancient Cave (Round 1)           1:16   1:12
+04 Dungeon                          0:22   0:22
+05 Shop                             0:39   0:38
+06 Normal Boss                      0:37   0:30
+07 Round Clear                      0:09   -
+08 Underground (Round 2)            1:16   1:12
+09 Wall of Fire (Round 3)           0:54   0:52
+10 Blue and Red Dragons             0:49   0:25
+11 Great Volcanic Range (Round 4)   1:13   1:08
+12 The Road to Hell (Round 5)       0:48   0:48
+13 Sky Passage (Round 6)            2:12   1:05
+14 Church of Death (Round 7)        2:04   1:04
+15 Dragon's Castle (Round 8)        1:45   0:22
+16 Black Dragon                     0:31   0:30
+17 Last Round Clear                 1:22   -
+18 Game Over                        0:10   -
+19 Continue                         0:15   -
+20 Ranking                          1:28   0:25
+21 Ranking Display                  0:09   -
+22 Unused 1                         0:05   -
+23 Unused 2                         0:06   -
+24 Unused 3                         0:05   -
+25 Unused 4                         0:09   -
+
+Total Length                       18:41  26:38
+
+
+Notes:
+Tamayo Kawamoto is listed as TAMASAN in the
+ending credits.
+
+Comments in the VGZ tracks indicate the
+original hexidecimal index of the music track
+in the game's code.
+
+Tracks 10, 13 and 14 have subtly different
+first loops, probably as an accident on the
+part of the developers.
+ - 10 the accompaniment at 0:12 sounds thinner
+      than later loops.
+ - 13 the drum at 0:36 sounds thinner than
+      later loops.
+ - 14 the first loop plays subtly faster than
+      subsequent loops.
+
+
+Package history:
+1.00 2013-02-06 rainwarrior: Initial release.
+1.01 2014-08-15 Valley Bell: Fixed volume gain
+ (broken when default AY volume got changed)
