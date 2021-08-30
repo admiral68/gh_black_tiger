@@ -45,7 +45,56 @@ PLAN FOR PORTING AUDIO:
 	static constexpr uint8_t STATUS_TIMERB = 0x02;
 	static constexpr uint8_t STATUS_BUSY = 0x80;
 	static constexpr uint8_t STATUS_IRQ = 0;
+template<bool IsOpnA>
+bool opn_registers_base<IsOpnA>::write(uint16_t index, uint8_t data, uint32_t &channel, uint32_t &opmask)
+{
+	assert(index < REGISTERS);
+
+	// writes in the 0xa0-af/0x1a0-af region are handled as latched pairs
+	// borrow unused registers 0xb8-bf/0x1b8-bf as temporary holding locations
+	if ((index & 0xf0) == 0xa0)
+	{
+		uint32_t latchindex = 0xb8 | (bitfield(index, 3) << 2) | bitfield(index, 0, 2);
+		if (IsOpnA)
+			latchindex |= index & 0x100;
+
+		// writes to the upper half just latch (only low 6 bits matter)
+		if (bitfield(index, 2))
+			m_regdata[latchindex] = data | 0x80;
+
+		// writes to the lower half only commit if the latch is there
+		else if (bitfield(m_regdata[latchindex], 7))
+		{
+			m_regdata[index | 4] = m_regdata[latchindex] & 0x3f;
+			m_regdata[latchindex] = 0;
+		}
+	}
+
+	// everything else is normal
+	m_regdata[index] = data;
+
+	// handle writes to the key on index
+	if (index == 0x28)
+	{
+		channel = bitfield(data, 0, 2);
+		if (channel == 3)
+			return false;
+		if (IsOpnA)
+			channel += bitfield(data, 2, 1) * 3;
+		opmask = bitfield(data, 4, 4);
+		return true;
+	}
+	return false;
+}
+
+	LOG_FM_WRITES = true
 	
+	
+		operator_list(  0,  6,  3,  9 ),  // Channel 0 operators
+		operator_list(  1,  7,  4, 10 ),  // Channel 1 operators
+		operator_list(  2,  8,  5, 11 ),  // Channel 2 operators
+	
+	If you write pc98dos_debug=2 in the hoot.ini file, the console will be displayed at runtime and you can check the error messages.
 //
 // OPN register map:
 //
