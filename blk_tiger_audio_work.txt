@@ -130,15 +130,15 @@ AF 00 CF 00 1C
 
 
 
-00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00 
-06 00 07 38 00 5C 01 02 02 3C 03 01 04 D7 05 02 08 0F 09 0F 0A 0F 09 0E 
-06 00 07 38 00 00 01 00 02 00 03 00 04 00 05 00 08 00 09 00 0A 00 
-06 00 07 38 00 35 01 04 02 68 03 01 04 3B 05 02 08 0F 09 0F 0A 0F 
+00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
 06 00 07 38 00 5C 01 02 02 3C 03 01 04 D7 05 02 08 0F 09 0F 0A 0F 09 0E
-06 00 07 38 00 00 01 00 02 00 03 00 04 00 05 00 08 00 09 00 0A 00 
-06 00 07 38 00 35 01 04 02 68 03 01 04 3B 05 02 08 0F 09 0F 0A 0F 
-06 00 07 38 00 C5 01 01 02 1B 03 02 04 0E 05 01 08 0F 09 0F 0A 0F 
-00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00 
+06 00 07 38 00 00 01 00 02 00 03 00 04 00 05 00 08 00 09 00 0A 00
+06 00 07 38 00 35 01 04 02 68 03 01 04 3B 05 02 08 0F 09 0F 0A 0F
+06 00 07 38 00 5C 01 02 02 3C 03 01 04 D7 05 02 08 0F 09 0F 0A 0F 09 0E
+06 00 07 38 00 00 01 00 02 00 03 00 04 00 05 00 08 00 09 00 0A 00
+06 00 07 38 00 35 01 04 02 68 03 01 04 3B 05 02 08 0F 09 0F 0A 0F
+06 00 07 38 00 C5 01 01 02 1B 03 02 04 0E 05 01 08 0F 09 0F 0A 0F
+00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
 
 
 SET SSG TONE PERIOD A (FINE): 00
@@ -242,35 +242,35 @@ SET SSG TONE PERIOD C (FINE): 00
 SET SSG TONE PERIOD C (COARSE): 00
 
 
-		AY_AFINE    = 0x00,
-		AY_ACOARSE  = 0x01,
-		AY_BFINE    = 0x02,
-		AY_BCOARSE  = 0x03,
-		AY_CFINE    = 0x04,
-		AY_CCOARSE  = 0x05,
-		AY_NOISEPER = 0x06,
-		AY_ENABLE   = 0x07,
-		AY_AVOL     = 0x08,
-		AY_BVOL     = 0x09,
-		AY_CVOL     = 0x0a,
-		AY_EAFINE   = 0x0b,
-		AY_EACOARSE = 0x0c,
-		AY_EASHAPE  = 0x0d,
-		AY_PORTA    = 0x0e,
-		AY_PORTB    = 0x0f,
-		AY_EBFINE   = 0x10,
-		AY_EBCOARSE = 0x11,
-		AY_ECFINE   = 0x12,
-		AY_ECCOARSE = 0x13,
-		AY_EBSHAPE  = 0x14,
-		AY_ECSHAPE  = 0x15,
-		AY_ADUTY    = 0x16,
-		AY_BDUTY    = 0x17,
-		AY_CDUTY    = 0x18,
-		AY_NOISEAND = 0x19,
-		AY_NOISEOR  = 0x1a,
-		AY_TEST     = 0x1f
-		
+        AY_AFINE    = 0x00,
+        AY_ACOARSE  = 0x01,
+        AY_BFINE    = 0x02,
+        AY_BCOARSE  = 0x03,
+        AY_CFINE    = 0x04,
+        AY_CCOARSE  = 0x05,
+        AY_NOISEPER = 0x06,
+        AY_ENABLE   = 0x07,
+        AY_AVOL     = 0x08,
+        AY_BVOL     = 0x09,
+        AY_CVOL     = 0x0a,
+        AY_EAFINE   = 0x0b,
+        AY_EACOARSE = 0x0c,
+        AY_EASHAPE  = 0x0d,
+        AY_PORTA    = 0x0e,
+        AY_PORTB    = 0x0f,
+        AY_EBFINE   = 0x10,
+        AY_EBCOARSE = 0x11,
+        AY_ECFINE   = 0x12,
+        AY_ECCOARSE = 0x13,
+        AY_EBSHAPE  = 0x14,
+        AY_ECSHAPE  = 0x15,
+        AY_ADUTY    = 0x16,
+        AY_BDUTY    = 0x17,
+        AY_CDUTY    = 0x18,
+        AY_NOISEAND = 0x19,
+        AY_NOISEOR  = 0x1a,
+        AY_TEST     = 0x1f
+
 C:\Users\Public\msys64\usr\bin\make.exe vs2017 PYTHON_EXECUTABLE=c:/Users/Public/msys64/mingw64/bin/python.exe
 PATH=C:\Users\Public\msys64\usr\bin make vs2019
 
@@ -293,275 +293,577 @@ wp fd4,2a,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; 
 ymfm_opn.h:
 YM2203 (OPN) [1984: NEC PC-88, PC-98, NEC PC-6001mkII SR, PC-6601 SR]
 
-	static constexpr uint32_t OUTPUTS = 1;
-	static constexpr uint32_t CHANNELS = 3;
-	static constexpr uint32_t ALL_CHANNELS = (1 << CHANNELS) - 1;
-	static constexpr uint32_t OPERATORS = CHANNELS * 4;
-	static constexpr uint32_t WAVEFORMS = 1;
-	static constexpr uint32_t REGISTERS = 0x100;
-	static constexpr uint32_t REG_MODE = 0x27;
-	static constexpr uint32_t DEFAULT_PRESCALE = 6;
-	static constexpr uint32_t EG_CLOCK_DIVIDER = 3;
-	static constexpr bool EG_HAS_SSG = true;
-	static constexpr bool MODULATOR_DELAY = false;
-	static constexpr uint32_t CSM_TRIGGER_MASK = 1 << 2;
-	static constexpr uint8_t STATUS_TIMERA = 0x01;
-	static constexpr uint8_t STATUS_TIMERB = 0x02;
-	static constexpr uint8_t STATUS_BUSY = 0x80;
-	static constexpr uint8_t STATUS_IRQ = 0;
+    static constexpr uint32_t OUTPUTS = 1;
+    static constexpr uint32_t CHANNELS = 3;
+    static constexpr uint32_t ALL_CHANNELS = (1 << CHANNELS) - 1; //5
+    static constexpr uint32_t OPERATORS = CHANNELS * 4; //12
+    static constexpr uint32_t WAVEFORMS = 1;
+    static constexpr uint32_t REGISTERS = 0x100;
+    static constexpr uint32_t REG_MODE = 0x27;
+    static constexpr uint32_t DEFAULT_PRESCALE = 6;
+    static constexpr uint32_t EG_CLOCK_DIVIDER = 3;
+    static constexpr bool EG_HAS_SSG = true;
+    static constexpr bool MODULATOR_DELAY = false;
+    static constexpr uint32_t CSM_TRIGGER_MASK = 1 << 2; //4
+    static constexpr uint8_t STATUS_TIMERA = 0x01;
+    static constexpr uint8_t STATUS_TIMERB = 0x02;
+    static constexpr uint8_t STATUS_BUSY = 0x80;
+    static constexpr uint8_t STATUS_IRQ = 0;
 
-	// system-wide registers
-	uint32_t test() const                       { return byte(0x21, 0, 8); }
-	uint32_t lfo_enable() const                 { return 0; }
-	uint32_t lfo_rate() const                   { return 0; }
-	uint32_t timer_a_value() const              { return word(0x24, 0, 8, 0x25, 0, 2); }
-	uint32_t timer_b_value() const              { return byte(0x26, 0, 8); }
-	uint32_t csm() const                        { return (byte(0x27, 6, 2) == 2); }
-	uint32_t multi_freq() const                 { return (byte(0x27, 6, 2) != 0); }
-	uint32_t reset_timer_b() const              { return byte(0x27, 5, 1); }
-	uint32_t reset_timer_a() const              { return byte(0x27, 4, 1); }
-	uint32_t enable_timer_b() const             { return byte(0x27, 3, 1); }
-	uint32_t enable_timer_a() const             { return byte(0x27, 2, 1); }
-	uint32_t load_timer_b() const               { return byte(0x27, 1, 1); }
-	uint32_t load_timer_a() const               { return byte(0x27, 0, 1); }
-	uint32_t multi_block_freq(uint32_t num) const    { return word(0xac, 0, 6, 0xa8, 0, 8, num); }
+    // system-wide registers
+    test						// 0x21 (ALL)
+    timer_a_value				// 0x24 (ALL) | 0x25 BITS 0/1
+    timer_b_value				// 0x26 (ALL)
+    csm							// 0x27 BITS  (010.....)
+    multi_freq 					// 0x27 BITS !(000.....)
+    reset_timer_b 				// 0x27 BIT  5
+    reset_timer_a 				// 0x27 BIT  4
+    enable_timer_b 				// 0x27 BIT  3
+    enable_timer_a 				// 0x27 BIT  2
+    load_timer_b 				// 0x27 BIT  1
+    load_timer_a 				// 0x27 BIT  0
+    multi_block_freq + num		// (0xAC + num) BITS 0/1/2/3/4/5 << 8 | (0xA8 + num) (ALL)
 
-	// per-channel registers
-	uint32_t ch_block_freq(uint32_t choffs) const    { return word(0xa4, 0, 6, 0xa0, 0, 8, choffs); }
-	uint32_t ch_feedback(uint32_t choffs) const      { return byte(0xb0, 3, 3, choffs); }
-	uint32_t ch_algorithm(uint32_t choffs) const     { return byte(0xb0, 0, 3, choffs); }
-	uint32_t ch_output_any(uint32_t choffs) const    { return 1; }
-	uint32_t ch_output_0(uint32_t choffs) const      { return 1; }
-	uint32_t ch_output_1(uint32_t choffs) const      { return 0; }
-	uint32_t ch_output_2(uint32_t choffs) const      { return 0; }
-	uint32_t ch_output_3(uint32_t choffs) const      { return 0; }
-	uint32_t ch_lfo_am_sens(uint32_t choffs) const   { return 0; }
-	uint32_t ch_lfo_pm_sens(uint32_t choffs) const   { return 0; }
+    // per-channel registers
+    ch_block_freq + choffs 		// (0xA4 + choffs) BITS 0/1/2/3/4/5  | (0xA0 + choffs) BITS (ALL)
+    ch_feedback  + choffs		// 0xB_ BITS 3/4/5
+    ch_algorithm  + choffs		// 0xB_ BITS 0/1/2
+    ch_output_any				{ return 1; }
+    ch_output_0					{ return 1; }
 
-	// per-operator registers
-	uint32_t op_detune(uint32_t opoffs) const        { return byte(0x30, 4, 3, opoffs); }
-	uint32_t op_multiple(uint32_t opoffs) const      { return byte(0x30, 0, 4, opoffs); }
-	uint32_t op_total_level(uint32_t opoffs) const   { return byte(0x40, 0, 7, opoffs); }
-	uint32_t op_ksr(uint32_t opoffs) const           { return byte(0x50, 6, 2, opoffs); }
-	uint32_t op_attack_rate(uint32_t opoffs) const   { return byte(0x50, 0, 5, opoffs); }
-	uint32_t op_decay_rate(uint32_t opoffs) const    { return byte(0x60, 0, 5, opoffs); }
-	uint32_t op_lfo_am_enable(uint32_t opoffs) const { return 0; }
-	uint32_t op_sustain_rate(uint32_t opoffs) const  { return byte(0x70, 0, 5, opoffs); }
-	uint32_t op_sustain_level(uint32_t opoffs) const { return byte(0x80, 4, 4, opoffs); }
-	uint32_t op_release_rate(uint32_t opoffs) const  { return byte(0x80, 0, 4, opoffs); }
-	uint32_t op_ssg_eg_enable(uint32_t opoffs) const { return byte(0x90, 3, 1, opoffs); }
-	uint32_t op_ssg_eg_mode(uint32_t opoffs) const   { return byte(0x90, 0, 3, opoffs); }
+    // per-operator registers
+    op_detune + opoffs          // 0x3_ BITS 4/5/6
+    op_multiple + opoffs        // 0x3_ BITS 0/1/2/3
+    op_total_level + opoffs     // 0x4_ BITS 0/1/2/3/4/5/6
+    op_ksr + opoffs             // 0x5_ BITS 6/7/8
+    op_attack_rate + opoffs     // 0x5_ BITS 0/1/2/3/4/5
+    op_decay_rate + opoffs      // 0x6_ BITS 0/1/2/3/4/5
+    op_sustain_rate  + opoffs   // 0x7_ BITS 0/1/2/3/4/5
+    op_sustain_level + opoffs   // 0x8_ BITS 4/5/6/7
+    op_release_rate  + opoffs   // 0x8_ BITS 0/1/2/3
+    op_ssg_eg_enable + opoffs   // 0x9_ BIT  3
+    op_ssg_eg_mode   + opoffs   // 0x9_ BITS 0/1/2
 
 
+YM2203 REGISTER MAP:
 
-	RegisterType m_regs;             // register accessor
+    SSG:
+0x00
+0x01
+0x02
+0x03
+0x04
+0x05
+0x06
+0x07
+0x08
+0x09
+0x0a
+0x0b
+0x0c
+0x0d
+0x0e
+0x0f
 
-	std::unique_ptr<fm_channel<RegisterType>> m_channel[CHANNELS]; // channel pointers
-	std::unique_ptr<fm_operator<RegisterType>> m_operator[OPERATORS]; // operator pointers	
-	
-	fm_engine_base<RegisterType>::write(uint16_t regnum, uint8_t data)
-	
-	if (m_regs.write(regnum, data, keyon_channel, keyon_opmask))
-	{
-		// handle writes to the keyon register(s)
-		if (keyon_channel < CHANNELS)
-		{
-			// normal channel on/off
-			m_channel[keyon_channel]->keyonoff(keyon_opmask, KEYON_NORMAL, keyon_channel);
-		}
-	}	
-	
+    FM:
+0x10
+0x11
+0x12
+0x13
+0x14
+0x15
+0x16
+0x17
+0x18
+0x19
+0x1a
+0x1b
+0x1c
+0x1d
+0x1e
+0x1f
+0x20
+0x21
+0x22
+0x23
+0x24
+0x25
+0x26
+0x27        SET MODE
+0x28        KEY ON (WRITE)
+0x29
+0x2a
+0x2b
+0x2c
+0x2d
+0x2e
+0x2f
+0x30
+0x31
+0x32
+0x33
+0x34
+0x35
+0x36
+0x37
+0x38
+0x39
+0x3a
+0x3b
+0x3c
+0x3d
+0x3e
+0x3f
+0x40
+0x41
+0x42
+0x43
+0x44
+0x45
+0x46
+0x47
+0x48
+0x49
+0x4a
+0x4b
+0x4c
+0x4d
+0x4e
+0x4f
+0x50
+0x51
+0x52
+0x53
+0x54
+0x55
+0x56
+0x57
+0x58
+0x59
+0x5a
+0x5b
+0x5c
+0x5d
+0x5e
+0x5f
+0x60
+0x61
+0x62
+0x63
+0x64
+0x65
+0x66
+0x67
+0x68
+0x69
+0x6a
+0x6b
+0x6c
+0x6d
+0x6e
+0x6f
+0x70
+0x71
+0x72
+0x73
+0x74
+0x75
+0x76
+0x77
+0x78
+0x79
+0x7a
+0x7b
+0x7c
+0x7d
+0x7e
+0x7f
+0x80
+0x81
+0x82
+0x83
+0x84
+0x85
+0x86
+0x87
+0x88
+0x89
+0x8a
+0x8b
+0x8c
+0x8d
+0x8e
+0x8f
+0x90
+0x91
+0x92
+0x93
+0x94
+0x95
+0x96
+0x97
+0x98
+0x99
+0x9a
+0x9b
+0x9c
+0x9d
+0x9e
+0x9f
+0xa0
+0xa1
+0xa2
+0xa3
+0xa4
+0xa5
+0xa6
+0xa7
+0xa8
+0xa9
+0xaa
+0xab
+0xac
+0xad
+0xae
+0xaf
+
+0xb0    (TEMPORARY USAGE ONLY)
+0xb1    (TEMPORARY USAGE ONLY)
+0xb2    (TEMPORARY USAGE ONLY)
+0xb3    (TEMPORARY USAGE ONLY)
+0xb4    (TEMPORARY USAGE ONLY)
+0xb5    (TEMPORARY USAGE ONLY)
+0xb6    (TEMPORARY USAGE ONLY)
+0xb7    (TEMPORARY USAGE ONLY)
+0xb8    (TEMPORARY USAGE ONLY)
+0xb9    (TEMPORARY USAGE ONLY)
+0xba    (TEMPORARY USAGE ONLY)
+0xbb    (TEMPORARY USAGE ONLY)
+0xbc    (TEMPORARY USAGE ONLY)
+0xbd    (TEMPORARY USAGE ONLY)
+0xbe    (TEMPORARY USAGE ONLY)
+0xbf    (TEMPORARY USAGE ONLY)
+
+0xc0
+0xc1
+0xc2
+0xc3
+0xc4
+0xc5
+0xc6
+0xc7
+0xc8
+0xc9
+0xca
+0xcb
+0xcc
+0xcd
+0xce
+0xcf
+0xd0
+0xd1
+0xd2
+0xd3
+0xd4
+0xd5
+0xd6
+0xd7
+0xd8
+0xd9
+0xda
+0xdb
+0xdc
+0xdd
+0xde
+0xdf
+0xe0
+0xe1
+0xe2
+0xe3
+0xe4
+0xe5
+0xe6
+0xe7
+0xe8
+0xe9
+0xea
+0xeb
+0xec
+0xed
+0xee
+0xef
+0xf0
+0xf1
+0xf2
+0xf3
+0xf4
+0xf5
+0xf6
+0xf7
+0xf8
+0xf9
+0xfa
+0xfb
+0xfc
+0xfd
+0xfe
+0xff
+
+    RegisterType m_regs;             // register accessor
+
+    std::unique_ptr<fm_channel<RegisterType>> m_channel[CHANNELS]; // channel pointers
+    std::unique_ptr<fm_operator<RegisterType>> m_operator[OPERATORS]; // operator pointers
+
+    fm_engine_base<RegisterType>::write(uint16_t regnum, uint8_t data)
+
+    if (m_regs.write(regnum, data, keyon_channel, keyon_opmask)) // if 0x28 was index and keyon_channel <= 2
+    {
+        // handle writes to the keyon register(s)
+        if (keyon_channel < CHANNELS)
+        {
+            // normal channel on/off
+            m_channel[keyon_channel]->keyonoff(keyon_opmask, KEYON_NORMAL, keyon_channel);
+
+            //
+        }
+    }
+
+    (0xA0) 10100000 -> 0xb8 | 00000000 | 00000000 = latchindex = 0xB8 => (if m_regdata[0xB8] & 80) { m_regdata[0xA4] = m_regdata[0xB8] & 0x3F; m_regdata[0xB8] = 0;  }
+    (0xA1) 10100001 -> 0xb8 | 00000000 | 00000001 = latchindex = 0xB9 => (if m_regdata[0xB9] & 80) { m_regdata[0xA5] = m_regdata[0xB9] & 0x3F; m_regdata[0xB9] = 0;  }
+    (0xA2) 10100011 -> 0xb8 | 00000000 | 00000010 = latchindex = 0xBA => (if m_regdata[0xBA] & 80) { m_regdata[0xA6] = m_regdata[0xBA] & 0x3F; m_regdata[0xBA] = 0;  }
+    (0xA3) 10100011 -> 0xb8 | 00000000 | 00000011 = latchindex = 0xBB => (if m_regdata[0xBB] & 80) { m_regdata[0xA7] = m_regdata[0xBB] & 0x3F; m_regdata[0xBB] = 0;  }
+    (0xA4) 10100100 -> 0xb8 | 00000000 | 00000000 = latchindex = 0xB8 => m_regdata[0xB8] = 80 | data;
+    (0xA5) 10100101 -> 0xb8 | 00000000 | 00000001 = latchindex = 0xB9 => m_regdata[0xB9] = 80 | data;
+    (0xA6) 10100110 -> 0xb8 | 00000000 | 00000010 = latchindex = 0xBA => m_regdata[0xBA] = 80 | data;
+    (0xA7) 10100111 -> 0xb8 | 00000000 | 00000011 = latchindex = 0xBB => m_regdata[0xBB] = 80 | data;
+    (0xA8) 10101000 -> 0xb8 | 00000100 | 00000000 = latchindex = 0xBC => (if m_regdata[0xBC] & 80) { m_regdata[0xAC] = m_regdata[0xBC] & 0x3F; m_regdata[0xBC] = 0;  }
+    (0xA9) 10101001 -> 0xb8 | 00000100 | 00000001 = latchindex = 0xBD => (if m_regdata[0xBD] & 80) { m_regdata[0xAD] = m_regdata[0xBD] & 0x3F; m_regdata[0xBD] = 0;  }
+    (0xAA) 10101010 -> 0xb8 | 00000100 | 00000010 = latchindex = 0xBE => (if m_regdata[0xBE] & 80) { m_regdata[0xAE] = m_regdata[0xBE] & 0x3F; m_regdata[0xBE] = 0;  }
+    (0xAB) 10101011 -> 0xb8 | 00000100 | 00000011 = latchindex = 0xBF => (if m_regdata[0xBF] & 80) { m_regdata[0xAF] = m_regdata[0xBF] & 0x3F; m_regdata[0xBF] = 0;  }
+    (0xAC) 10101100 -> 0xb8 | 00000100 | 00000000 = latchindex = 0xBC => m_regdata[0xBC] = 80 | data;
+    (0xAD) 10101101 -> 0xb8 | 00000100 | 00000001 = latchindex = 0xBD => m_regdata[0xBD] = 80 | data;
+    (0xAE) 10101110 -> 0xb8 | 00000100 | 00000010 = latchindex = 0xBE => m_regdata[0xBF] = 80 | data;
+    (0xAF) 10101111 -> 0xb8 | 00000100 | 00000011 = latchindex = 0xBF => m_regdata[0xBF] = 80 | data;
+
+
+    00000100
+
 template<bool IsOpnA>
 bool opn_registers_base<IsOpnA>::write(uint16_t index, uint8_t data, uint32_t &channel, uint32_t &opmask)
 {
-	assert(index < REGISTERS);
+    assert(index < REGISTERS);
 
-	// writes in the 0xa0-af/0x1a0-af region are handled as latched pairs
-	// borrow unused registers 0xb8-bf/0x1b8-bf as temporary holding locations
-	if ((index & 0xf0) == 0xa0)
-	{
-		uint32_t latchindex = 0xb8 | (bitfield(index, 3) << 2) | bitfield(index, 0, 2);
-		if (IsOpnA)
-			latchindex |= index & 0x100;
+    // writes in the 0xa0-af region are handled as latched pairs
+    // borrow unused registers 0xb8-bf as temporary holding locations
+    if ((index & 0xf0) == 0xa0)
+    {
+        uint32_t latchindex = 0xb8 | (bitfield(index, 3) << 2) | bitfield(index, 0, 2);
 
-		// writes to the upper half just latch (only low 6 bits matter)
-		if (bitfield(index, 2))
-			m_regdata[latchindex] = data | 0x80;
+        // writes to the upper half just latch (only low 6 bits matter)
+        if (bitfield(index, 2))
+        {
+            m_regdata[latchindex] = data | 0x80;
+        }
 
-		// writes to the lower half only commit if the latch is there
-		else if (bitfield(m_regdata[latchindex], 7))
-		{
-			m_regdata[index | 4] = m_regdata[latchindex] & 0x3f;
-			m_regdata[latchindex] = 0;
-		}
-	}
+        // writes to the lower half only commit if the latch is there
+        else if (bitfield(m_regdata[latchindex], 7))
+        {
+            m_regdata[index | 4] = m_regdata[latchindex] & 0x3f;
+            m_regdata[latchindex] = 0;
+        }
+    }
 
-	// everything else is normal
-	m_regdata[index] = data;
+    // everything else is normal
+    m_regdata[index] = data;
 
-	// handle writes to the key on index
-	if (index == 0x28)
-	{
-		channel = bitfield(data, 0, 2);
-		if (channel == 3)
-			return false;
-		opmask = bitfield(data, 4, 4);
-		return true;
-	}
-	
-	return false;
-}	
-	
-	
-void opn_registers_base<false>::operator_map(operator_mapping &dest) const
-{
-	// Note that the channel index order is 0,2,1,3, so we bitswap the index.
-	//
-	// This is because the order in the map is:
-	//    carrier 1, carrier 2, modulator 1, modulator 2
-	//
-	// But when wiring up the connections, the more natural order is:
-	//    carrier 1, modulator 1, carrier 2, modulator 2
-	static const operator_mapping s_fixed_map =
-	{ {
-		operator_list(  0,  6,  3,  9 ),  // Channel 0 operators
-		operator_list(  1,  7,  4, 10 ),  // Channel 1 operators
-		operator_list(  2,  8,  5, 11 ),  // Channel 2 operators
-	} };
-	dest = s_fixed_map;
-}	
-	
+    // handle writes to the key on index
+    if (index == 0x28) // 0,1,2 => return true and channel = set
+    {
+        channel = bitfield(data, 0, 2);
+        if (channel == 3)
+            return false;
+        opmask = bitfield(data, 4, 4); => upper 4 bits of data is OPMASK
+        return true;
+    }
 
-	
-	
-template<bool IsOpnA>
-std::string opn_registers_base<IsOpnA>::log_keyon(uint32_t choffs, uint32_t opoffs)
-{
-	uint32_t chnum = (choffs & 3) + 3 * bitfield(choffs, 8);
-	uint32_t opnum = (opoffs & 15) - ((opoffs & 15) / 4) + 12 * bitfield(opoffs, 8);
-
-	uint32_t block_freq = ch_block_freq(choffs);
-	if (multi_freq() && choffs == 2)
-	{
-		if (opoffs == 2)
-			block_freq = multi_block_freq(1);
-		else if (opoffs == 10)
-			block_freq = multi_block_freq(2);
-		else if (opoffs == 6)
-			block_freq = multi_block_freq(0);
-	}
-
-	char buffer[256];
-	char *end = &buffer[0];
-
-	end += sprintf(end, "%u.%02u freq=%04X dt=%u fb=%u alg=%X mul=%X tl=%02X ksr=%u adsr=%02X/%02X/%02X/%X sl=%X",
-		chnum, opnum,
-		block_freq,
-		op_detune(opoffs),
-		ch_feedback(choffs),
-		ch_algorithm(choffs),
-		op_multiple(opoffs),
-		op_total_level(opoffs),
-		op_ksr(opoffs),
-		op_attack_rate(opoffs),
-		op_decay_rate(opoffs),
-		op_sustain_rate(opoffs),
-		op_release_rate(opoffs),
-		op_sustain_level(opoffs));
-
-	if (OUTPUTS > 1)
-		end += sprintf(end, " out=%c%c",
-			ch_output_0(choffs) ? 'L' : '-',
-			ch_output_1(choffs) ? 'R' : '-');
-	if (op_ssg_eg_enable(opoffs))
-		end += sprintf(end, " ssg=%X", op_ssg_eg_mode(opoffs));
-	bool am = (lfo_enable() && op_lfo_am_enable(opoffs) && ch_lfo_am_sens(choffs) != 0);
-	if (am)
-		end += sprintf(end, " am=%u", ch_lfo_am_sens(choffs));
-	bool pm = (lfo_enable() && ch_lfo_pm_sens(choffs) != 0);
-	if (pm)
-		end += sprintf(end, " pm=%u", ch_lfo_pm_sens(choffs));
-	if (am || pm)
-		end += sprintf(end, " lfo=%02X", lfo_rate());
-	if (multi_freq() && choffs == 2)
-		end += sprintf(end, " multi=1");
-
-	return buffer;
+    return false;
 }
 
 
-	fm_engine_base<opn_registers> m_fm;                     // core FM engine
-	ssg_engine m_ssg;                   // SSG engine
+void opn_registers_base<false>::operator_map(operator_mapping &dest) const
+{
+    // Note that the channel index order is 0,2,1,3, so we bitswap the index.
+    //
+    // This is because the order in the map is:
+    //    carrier 1, carrier 2, modulator 1, modulator 2
+    //
+    // But when wiring up the connections, the more natural order is:
+    //    carrier 1, modulator 1, carrier 2, modulator 2
+    static const operator_mapping s_fixed_map =
+    { {
+        operator_list(  0,  6,  3,  9 ),  // Channel 0 operators
+        operator_list(  1,  7,  4, 10 ),  // Channel 1 operators
+        operator_list(  2,  8,  5, 11 ),  // Channel 2 operators
+    } };
+    dest = s_fixed_map;
+}
+
+
+
+
+template<bool IsOpnA>
+std::string opn_registers_base<IsOpnA>::log_keyon(uint32_t choffs, uint32_t opoffs)
+{
+    uint32_t chnum = (choffs & 3) + 3 * bitfield(choffs, 8);
+    uint32_t opnum = (opoffs & 15) - ((opoffs & 15) / 4) + 12 * bitfield(opoffs, 8);
+
+    uint32_t block_freq = ch_block_freq(choffs);
+    if (multi_freq() && choffs == 2)
+    {
+        if (opoffs == 2)
+            block_freq = multi_block_freq(1);
+        else if (opoffs == 10)
+            block_freq = multi_block_freq(2);
+        else if (opoffs == 6)
+            block_freq = multi_block_freq(0);
+    }
+
+    char buffer[256];
+    char *end = &buffer[0];
+
+    end += sprintf(end, "%u.%02u freq=%04X dt=%u fb=%u alg=%X mul=%X tl=%02X ksr=%u adsr=%02X/%02X/%02X/%X sl=%X",
+        chnum, opnum,
+        block_freq,
+        op_detune(opoffs),
+        ch_feedback(choffs),
+        ch_algorithm(choffs),
+        op_multiple(opoffs),
+        op_total_level(opoffs),
+        op_ksr(opoffs),
+        op_attack_rate(opoffs),
+        op_decay_rate(opoffs),
+        op_sustain_rate(opoffs),
+        op_release_rate(opoffs),
+        op_sustain_level(opoffs));
+
+    if (OUTPUTS > 1)
+        end += sprintf(end, " out=%c%c",
+            ch_output_0(choffs) ? 'L' : '-',
+            ch_output_1(choffs) ? 'R' : '-');
+    if (op_ssg_eg_enable(opoffs))
+        end += sprintf(end, " ssg=%X", op_ssg_eg_mode(opoffs));
+    bool am = (lfo_enable() && op_lfo_am_enable(opoffs) && ch_lfo_am_sens(choffs) != 0);
+    if (am)
+        end += sprintf(end, " am=%u", ch_lfo_am_sens(choffs));
+    bool pm = (lfo_enable() && ch_lfo_pm_sens(choffs) != 0);
+    if (pm)
+        end += sprintf(end, " pm=%u", ch_lfo_pm_sens(choffs));
+    if (am || pm)
+        end += sprintf(end, " lfo=%02X", lfo_rate());
+    if (multi_freq() && choffs == 2)
+        end += sprintf(end, " multi=1");
+
+    return buffer;
+}
+
+
+    fm_engine_base<opn_registers> m_fm;                     // core FM engine
+    ssg_engine m_ssg;                   // SSG engine
 
 
 void ym2203::write_data(uint8_t data)
 {
-	if (m_address < 0x10)
-	{
-		// 00-0F: write to SSG
-		m_ssg.write(m_address & 0x0f, data); // void ssg_engine::write(uint32_t regnum, uint8_t data)
-	}
-	else
-	{
-		// 10-FF: write to FM
-		m_fm.write(m_address, data); //fm_engine_base<RegisterType>::write(uint16_t regnum, uint8_t data)
-	}
+    if (m_address < 0x10)
+    {
+        // 00-0F: write to SSG
+        m_ssg.write(m_address & 0x0f, data); // void ssg_engine::write(uint32_t regnum, uint8_t data)
+    }
+    else
+    {
+        // 10-FF: write to FM
+        m_fm.write(m_address, data); //fm_engine_base<RegisterType>::write(uint16_t regnum, uint8_t data)
+    }
 
-	// mark busy for a bit
-	m_fm.intf().ymfm_set_busy_end(32 * m_fm.clock_prescale());
+    // mark busy for a bit
+    m_fm.intf().ymfm_set_busy_end(32 * m_fm.clock_prescale());
 }
-	
+
 void ym2203::write(uint32_t offset, uint8_t data)
 {
-	switch (offset & 1)
-	{
-		case 0: // address port
-			write_address(data);
-			break;
+    switch (offset & 1)
+    {
+        case 0: // address port
+            write_address(data);
+            break;
 
-		case 1: // data port
-			write_data(data);
-			break;
-	}
+        case 1: // data port
+            write_data(data);
+            break;
+    }
 }
+
+
+SSG
+    static constexpr uint32_t OUTPUTS = 3;
+    static constexpr uint32_t CHANNELS = 3;
+    static constexpr uint32_t REGISTERS = 0x10;
+    static constexpr uint32_t ALL_CHANNELS = (1 << CHANNELS) - 1;
+    uint32_t noise_period() const                       { return bitfield(m_regdata[0x06], 0, 5); }
+    uint32_t io_b_out() const                           { return bitfield(m_regdata[0x07], 7); }
+    uint32_t io_a_out() const                           { return bitfield(m_regdata[0x07], 6); }
+    uint32_t envelope_period() const                    { return m_regdata[0x0b] | (m_regdata[0x0c] << 8); }
+    uint32_t envelope_continue() const                  { return bitfield(m_regdata[0x0d], 3); }
+    uint32_t envelope_attack() const                    { return bitfield(m_regdata[0x0d], 2); }
+    uint32_t envelope_alternate() const                 { return bitfield(m_regdata[0x0d], 1); }
+    uint32_t envelope_hold() const                      { return bitfield(m_regdata[0x0d], 0); }
+    uint32_t io_a_data() const                          { return m_regdata[0x0e]; }
+    uint32_t io_b_data() const                          { return m_regdata[0x0f]; }
+
+    // per-channel registers
+    uint32_t ch_noise_enable(uint32_t choffs) const     { return bitfield(~m_regdata[0x07], 3 + choffs); }
+    uint32_t ch_tone_enable(uint32_t choffs) const      { return bitfield(~m_regdata[0x07], 0 + choffs); }
+    uint32_t ch_tone_period(uint32_t choffs) const      { return m_regdata[0x00 + 2 * choffs] | (bitfield(m_regdata[0x01 + 2 * choffs], 0, 4) << 8); }
+    uint32_t ch_envelope_enable(uint32_t choffs) const  { return bitfield(m_regdata[0x08 + choffs], 4); }
+    uint32_t ch_amplitude(uint32_t choffs) const        { return bitfield(m_regdata[0x08 + choffs], 0, 4); }
+uint8_t m_regdata[REGISTERS];         // register data
 
 
 class ym2203_device : public ymfm_ssg_device_base<ymfm::ym2203>
 {
-	using parent = ymfm_ssg_device_base<ymfm::ym2203>;
+    using parent = ymfm_ssg_device_base<ymfm::ym2203>;
 
 public:
-	// constructor
-	ym2203_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
+    // constructor
+    ym2203_device(const machine_config &mconfig, const char *tag, device_t *owner, uint32_t clock);
 
-	// configuration helpers, handled by the interface
-	auto port_a_read_callback() { return io_read_handler(0); }
-	auto port_b_read_callback() { return io_read_handler(1); }
-	auto port_a_write_callback() { return io_write_handler(0); }
-	auto port_b_write_callback() { return io_write_handler(1); }
+    // configuration helpers, handled by the interface
+    auto port_a_read_callback() { return io_read_handler(0); }
+    auto port_b_read_callback() { return io_read_handler(1); }
+    auto port_a_write_callback() { return io_write_handler(0); }
+    auto port_b_write_callback() { return io_write_handler(1); }
 
-	// data register read
-	u8 data_r() { return update_streams().read_data(); }
+    // data register read
+    u8 data_r() { return update_streams().read_data(); }
 
 protected:
-	// device-level overrides
-	virtual void device_start() override;
+    // device-level overrides
+    virtual void device_start() override;
 };
 
 
-	// system-wide register defaults
-	uint32_t status_mask() const                     { return 0; } // OPL only
-	uint32_t irq_reset() const                       { return 0; } // OPL only
-	uint32_t noise_enable() const                    { return 0; } // OPM only
-	uint32_t rhythm_enable() const                   { return 0; } // OPL only
+    // system-wide register defaults
+    uint32_t status_mask() const                     { return 0; } // OPL only
+    uint32_t irq_reset() const                       { return 0; } // OPL only
+    uint32_t noise_enable() const                    { return 0; } // OPM only
+    uint32_t rhythm_enable() const                   { return 0; } // OPL only
 
-	// per-operator register defaults
-	uint32_t op_ssg_eg_enable(uint32_t opoffs) const { return 0; } // OPN(A) only
-	uint32_t op_ssg_eg_mode(uint32_t opoffs) const   { return 0; } // OPN(A) only	
-	
-	
+    // per-operator register defaults
+    uint32_t op_ssg_eg_enable(uint32_t opoffs) const { return 0; } // OPN(A) only
+    uint32_t op_ssg_eg_mode(uint32_t opoffs) const   { return 0; } // OPN(A) only
 
-	
+
+
+
 FUN_ram_07c5
 FUN_ram_07f9
 FUN_ram_0800
@@ -581,293 +883,293 @@ static BYTE kssipl [] = {
 "BLOOP":
 
 
-0F7F (PC=0219) CF 				=> YM2 E002: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
-0F80 (PC=0DAF) 04 
+0F7F (PC=0219) CF               => YM2 E002: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
+0F80 (PC=0DAF) 04
 
-0F81 (PC=0DAF) 00 05 E0 FF 		=> YM2 E002: 06 00 07 38
-0F85 (PC=0DAF) 00 22 5C 		=> YM2 E002: 00 5C 01 02
-0F88 (PC=0DAF) 00 41 3C 		=> YM2 E002: 02 3C 03 01
-0F8B (PC=0DAF) 00 62 D7 		=> YM2 E002: 04 D7 05 02
-0F8E (PC=0DAF) 00 8F 			=> YM2 E002: 08 0F
-0F90 (PC=0DAF) 00 AF 			=> YM2 E002: 09 0F
-0F92 (PC=0DAF) FF CF 			=> YM2 E002: 0A 0F
+0F81 (PC=0DAF) 00 05 E0 FF      => YM2 E002: 06 00 07 38
+0F85 (PC=0DAF) 00 22 5C         => YM2 E002: 00 5C 01 02
+0F88 (PC=0DAF) 00 41 3C         => YM2 E002: 02 3C 03 01
+0F8B (PC=0DAF) 00 62 D7         => YM2 E002: 04 D7 05 02
+0F8E (PC=0DAF) 00 8F            => YM2 E002: 08 0F
+0F90 (PC=0DAF) 00 AF            => YM2 E002: 09 0F
+0F92 (PC=0DAF) FF CF            => YM2 E002: 0A 0F
 0F94 (PC=0DAF) 00
-0F95 (PC=0DAF) 00 02 E0 FF 		=> YM2 E002: 06 00 07 38
-0F99 (PC=0DAF) 00 20 00 		=> YM2 E002: 00 00 01 00
-0F9C (PC=0DAF) 00 40 00 		=> YM2 E002: 02 00 03 00
-0F9F (PC=0DAF) 00 60 00 		=> YM2 E002: 04 00 05 00
-0FA2 (PC=0DAF) 00 80 			=> YM2 E002: 08 00
-0FA4 (PC=0DAF) 00 A0 			=> YM2 E002: 09 00
-0FA6 (PC=0DAF) 00 C0 			=> YM2 E002: 0A 00
+0F95 (PC=0DAF) 00 02 E0 FF      => YM2 E002: 06 00 07 38
+0F99 (PC=0DAF) 00 20 00         => YM2 E002: 00 00 01 00
+0F9C (PC=0DAF) 00 40 00         => YM2 E002: 02 00 03 00
+0F9F (PC=0DAF) 00 60 00         => YM2 E002: 04 00 05 00
+0FA2 (PC=0DAF) 00 80            => YM2 E002: 08 00
+0FA4 (PC=0DAF) 00 A0            => YM2 E002: 09 00
+0FA6 (PC=0DAF) 00 C0            => YM2 E002: 0A 00
 0FA8 (PC=0DAF) 00
-0FA9 (PC=0DAF) 00 08 E0 FF 		=> YM2 E002: 06 00 07 38
-0FAD (PC=0DAF) 00 24 35 		=> YM2 E002: 00 35 01 04
-0FB0 (PC=0DAF) 00 41 68 		=> YM2 E002: 02 68 03 01
-0FB3 (PC=0DAF) 00 62 3B 		=> YM2 E002: 04 3B 05 02
-0FB6 (PC=0DAF) 00 8F 			=> YM2 E002: 08 0F
-0FB8 (PC=0DAF) 00 AF 			=> YM2 E002: 09 0F
-0FBA (PC=0DAF) 00 CF 			=> YM2 E002: 0A 0F
+0FA9 (PC=0DAF) 00 08 E0 FF      => YM2 E002: 06 00 07 38
+0FAD (PC=0DAF) 00 24 35         => YM2 E002: 00 35 01 04
+0FB0 (PC=0DAF) 00 41 68         => YM2 E002: 02 68 03 01
+0FB3 (PC=0DAF) 00 62 3B         => YM2 E002: 04 3B 05 02
+0FB6 (PC=0DAF) 00 8F            => YM2 E002: 08 0F
+0FB8 (PC=0DAF) 00 AF            => YM2 E002: 09 0F
+0FBA (PC=0DAF) 00 CF            => YM2 E002: 0A 0F
 0FBC (PC=0DAF) 00
 
 0FBD (PC=0DAF) 08 02
 
-0F81 (PC=0DAF) 00 05 E0 FF 		=> YM2 E002: 06 00 07 38
-0F85 (PC=0DAF) 00 22 5C 		=> YM2 E002: 00 5C 01 02
-0F88 (PC=0DAF) 00 41 3C 		=> YM2 E002: 02 3C 03 01
-0F8B (PC=0DAF) 00 62 D7 		=> YM2 E002: 04 D7 05 02
-0F8E (PC=0DAF) 00 8F 			=> YM2 E002: 08 0F
-0F90 (PC=0DAF) 00 AF 			=> YM2 E002: 09 0F
-0F92 (PC=0DAF) FF CF 			=> YM2 E002: 0A 0F
+0F81 (PC=0DAF) 00 05 E0 FF      => YM2 E002: 06 00 07 38
+0F85 (PC=0DAF) 00 22 5C         => YM2 E002: 00 5C 01 02
+0F88 (PC=0DAF) 00 41 3C         => YM2 E002: 02 3C 03 01
+0F8B (PC=0DAF) 00 62 D7         => YM2 E002: 04 D7 05 02
+0F8E (PC=0DAF) 00 8F            => YM2 E002: 08 0F
+0F90 (PC=0DAF) 00 AF            => YM2 E002: 09 0F
+0F92 (PC=0DAF) FF CF            => YM2 E002: 0A 0F
 0F94 (PC=0DAF) 00
-0F95 (PC=0DAF) 00 02 E0 FF 		=> YM2 E002: 06 00 07 38
-0F99 (PC=0DAF) 00 20 00 		=> YM2 E002: 00 00 01 00
-0F9C (PC=0DAF) 00 40 00 		=> YM2 E002: 02 00 03 00
-0F9F (PC=0DAF) 00 60 00 		=> YM2 E002: 04 00 05 00
-0FA2 (PC=0DAF) 00 80 			=> YM2 E002: 08 00
-0FA4 (PC=0DAF) 00 A0 			=> YM2 E002: 09 00
-0FA6 (PC=0DAF) 00 C0 			=> YM2 E002: 0A 00
+0F95 (PC=0DAF) 00 02 E0 FF      => YM2 E002: 06 00 07 38
+0F99 (PC=0DAF) 00 20 00         => YM2 E002: 00 00 01 00
+0F9C (PC=0DAF) 00 40 00         => YM2 E002: 02 00 03 00
+0F9F (PC=0DAF) 00 60 00         => YM2 E002: 04 00 05 00
+0FA2 (PC=0DAF) 00 80            => YM2 E002: 08 00
+0FA4 (PC=0DAF) 00 A0            => YM2 E002: 09 00
+0FA6 (PC=0DAF) 00 C0            => YM2 E002: 0A 00
 0FA8 (PC=0DAF) 00
-0FA9 (PC=0DAF) 00 08 E0 FF 		=> YM2 E002: 06 00 07 38
-0FAD (PC=0DAF) 00 24 35 		=> YM2 E002: 00 35 01 04
-0FB0 (PC=0DAF) 00 41 68 		=> YM2 E002: 02 68 03 01
-0FB3 (PC=0DAF) 00 62 3B 		=> YM2 E002: 04 3B 05 02
-0FB6 (PC=0DAF) 00 8F 			=> YM2 E002: 08 0F
-0FB8 (PC=0DAF) 00 AF 			=> YM2 E002: 09 0F
-0FBA (PC=0DAF) 00 CF 			=> YM2 E002: 0A 0F
+0FA9 (PC=0DAF) 00 08 E0 FF      => YM2 E002: 06 00 07 38
+0FAD (PC=0DAF) 00 24 35         => YM2 E002: 00 35 01 04
+0FB0 (PC=0DAF) 00 41 68         => YM2 E002: 02 68 03 01
+0FB3 (PC=0DAF) 00 62 3B         => YM2 E002: 04 3B 05 02
+0FB6 (PC=0DAF) 00 8F            => YM2 E002: 08 0F
+0FB8 (PC=0DAF) 00 AF            => YM2 E002: 09 0F
+0FBA (PC=0DAF) 00 CF            => YM2 E002: 0A 0F
 0FBC (PC=0DAF) 00
 
-0FBD (PC=0DAF) 08 02 
+0FBD (PC=0DAF) 08 02
 
-0FC0 (PC=0DAF) 00 0E E0 FF 		=> YM2 E002: 06 00 07 38
-0FC3 (PC=0DAF) 00 21 C5 		=> YM2 E002: 00 C5 01 01
-0FC6 (PC=0DAF) 00 42 1B 		=> YM2 E002: 02 1B 03 02
-0FC9 (PC=0DAF) 00 61 0E 		=> YM2 E002: 04 0E 05 01
-0FCC (PC=0DAF) 00 8F 			=> YM2 E002: 08 0F
-0FCE (PC=0DAF) 00 AF 			=> YM2 E002: 09 0F
-0FD0 (PC=0DAF) 00 CF 			=> YM2 E002: 0A 0F
+0FC0 (PC=0DAF) 00 0E E0 FF      => YM2 E002: 06 00 07 38
+0FC3 (PC=0DAF) 00 21 C5         => YM2 E002: 00 C5 01 01
+0FC6 (PC=0DAF) 00 42 1B         => YM2 E002: 02 1B 03 02
+0FC9 (PC=0DAF) 00 61 0E         => YM2 E002: 04 0E 05 01
+0FCC (PC=0DAF) 00 8F            => YM2 E002: 08 0F
+0FCE (PC=0DAF) 00 AF            => YM2 E002: 09 0F
+0FD0 (PC=0DAF) 00 CF            => YM2 E002: 0A 0F
 
 0FD2 (PC=0DAF) 00
-0FD3 (PC=0DAF) 1C 				=> YM2 E002: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
+0FD3 (PC=0DAF) 1C               => YM2 E002: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
 
 
 "ENEMY INJURED"
 
-0FD4: CF 				=> YM2: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
-0FD5: 00 1D FF D7 		=> YM2: 06 1F 07 10
-0FD9: 00 22 FA 			=> YM2: 00 FA 01 02
-0FDC: 00 45 F4 			=> YM2: 02 F4 03 05
-0FDF: 00 61 68 			=> YM2: 04 68 05 01
-0FE2: 00 8F 			=> YM2: 08 0F
-0FE4: 00 AF 			=> YM2: 09 0F
-0FE6: 00 CF 			=> YM2: 0A 0F
-0FE8: 00 
-0FE9: 00 39 FF D7 		=> YM2: 06 1F 07 10
-0FED: FC 22 FA 			=> YM2: 00 FA 01 02
-0FF0: F2 45 F4 			=> YM2: 02 F4 03 05
-0FF3: F4 61 68 			=> YM2: 04 68 05 01
-0FF6: F6 8F 			=> YM2: 08 0F
-0FF8: FF AF 			=> YM2: 09 0F
-0FFA: FF CF 			=> YM2: 0A 0F
+0FD4: CF                => YM2: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
+0FD5: 00 1D FF D7       => YM2: 06 1F 07 10
+0FD9: 00 22 FA          => YM2: 00 FA 01 02
+0FDC: 00 45 F4          => YM2: 02 F4 03 05
+0FDF: 00 61 68          => YM2: 04 68 05 01
+0FE2: 00 8F             => YM2: 08 0F
+0FE4: 00 AF             => YM2: 09 0F
+0FE6: 00 CF             => YM2: 0A 0F
+0FE8: 00
+0FE9: 00 39 FF D7       => YM2: 06 1F 07 10
+0FED: FC 22 FA          => YM2: 00 FA 01 02
+0FF0: F2 45 F4          => YM2: 02 F4 03 05
+0FF3: F4 61 68          => YM2: 04 68 05 01
+0FF6: F6 8F             => YM2: 08 0F
+0FF8: FF AF             => YM2: 09 0F
+0FFA: FF CF             => YM2: 0A 0F
 0FFC: FF
 
-YM2: 00 F9 01 02 
-     02 F3 03 05 
-	 04 67 05 01
-YM2: 00 F8 01 02 
-     02 F2 03 05 
-	 04 66 05 01
-YM2: 00 F7 01 02 
-     02 F1 03 05 
-	 04 66 05 01
-YM2: 00 F6 01 02 
-     02 F1 03 05 
-	 04 65 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1E 07 10
-YM2: 00 F5 01 02 
-     02 F0 03 05 
-	 04 64 05 01                           
-YM2: 00 F4 01 02 
-     02 EF 03 05 
-	 04 64 05 01                           
-YM2: 00 F3 01 02 
-     02 EE 03 05 
-	 04 63 05 01                           
-YM2: 00 F3 01 02 
-     02 EE 03 05 
-	 04 63 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1E 07 10
-YM2: 00 F2 01 02 
-     02 ED 03 05 
-	 04 62 05 01                           
-YM2: 00 F1 01 02 
-     02 EC 03 05 
-	 04 61 05 01                           
-YM2: 00 F0 01 02 
-     02 EB 03 05 
-	 04 61 05 01                           
-YM2: 00 EF 01 02 
-     02 EB 03 05 
-	 04 60 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1D 07 10
-YM2: 00 EE 01 02 
-     02 EA 03 05 
-	 04 5F 05 01                           
-YM2: 00 ED 01 02 
-     02 E9 03 05 
-	 04 5F 05 01                           
-YM2: 00 EC 01 02 
-     02 E8 03 05 
-	 04 5E 05 01                           
-YM2: 00 EC 01 02 
-     02 E8 03 05 
-	 04 5E 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1D 07 10
-YM2: 00 EB 01 02 
-     02 E7 03 05 
-	 04 5D 05 01                           
-YM2: 00 EA 01 02 
-     02 E6 03 05 
-	 04 5C 05 01                           
-YM2: 00 E9 01 02 
+YM2: 00 F9 01 02
+     02 F3 03 05
+     04 67 05 01
+YM2: 00 F8 01 02
+     02 F2 03 05
+     04 66 05 01
+YM2: 00 F7 01 02
+     02 F1 03 05
+     04 66 05 01
+YM2: 00 F6 01 02
+     02 F1 03 05
+     04 65 05 01
+     08 0E 09 0E 0A 0E
+     06 1E 07 10
+YM2: 00 F5 01 02
+     02 F0 03 05
+     04 64 05 01
+YM2: 00 F4 01 02
+     02 EF 03 05
+     04 64 05 01
+YM2: 00 F3 01 02
+     02 EE 03 05
+     04 63 05 01
+YM2: 00 F3 01 02
+     02 EE 03 05
+     04 63 05 01
+     08 0E 09 0E 0A 0E
+     06 1E 07 10
+YM2: 00 F2 01 02
+     02 ED 03 05
+     04 62 05 01
+YM2: 00 F1 01 02
+     02 EC 03 05
+     04 61 05 01
+YM2: 00 F0 01 02
+     02 EB 03 05
+     04 61 05 01
+YM2: 00 EF 01 02
+     02 EB 03 05
+     04 60 05 01
+     08 0E 09 0E 0A 0E
+     06 1D 07 10
+YM2: 00 EE 01 02
+     02 EA 03 05
+     04 5F 05 01
+YM2: 00 ED 01 02
+     02 E9 03 05
+     04 5F 05 01
+YM2: 00 EC 01 02
+     02 E8 03 05
+     04 5E 05 01
+YM2: 00 EC 01 02
+     02 E8 03 05
+     04 5E 05 01
+     08 0E 09 0E 0A 0E
+     06 1D 07 10
+YM2: 00 EB 01 02
+     02 E7 03 05
+     04 5D 05 01
+YM2: 00 EA 01 02
+     02 E6 03 05
+     04 5C 05 01
+YM2: 00 E9 01 02
      02 E5 03 05
-	 04 5C 05 01                           
-YM2: 00 E8 01 02 
+     04 5C 05 01
+YM2: 00 E8 01 02
      02 E5 03 05
-	 04 5B 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1C 07 10
-YM2: 00 E7 01 02 
-     02 E4 03 05 
-	 04 5A 05 01                           
-YM2: 00 E6 01 02 
-     02 E3 03 05 
-	 04 5A 05 01                           
-YM2: 00 E5 01 02 
-     02 E2 03 05 
-	 04 59 05 01                           
-YM2: 00 E5 01 02 
-     02 E2 03 05 
-	 04 59 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1C 07 10
-YM2: 00 E4 01 02 
-     02 E1 03 05 
-	 04 58 05 01                           
-YM2: 00 E3 01 02 
-     02 E0 03 05 
-	 04 57 05 01                           
-YM2: 00 E2 01 02 
-     02 DF 03 05 
-	 04 57 05 01                           
-YM2: 00 E1 01 02 
-     02 DF 03 05 
-	 04 56 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1B 07 10
-YM2: 00 E0 01 02 
-     02 DE 03 05 
-	 04 55 05 01                           
-YM2: 00 DF 01 02 
-     02 DD 03 05 
-	 04 55 05 01                           
-YM2: 00 DE 01 02 
-     02 DC 03 05 
-	 04 54 05 01                           
-YM2: 00 DE 01 02 
-     02 DC 03 05 
-	 04 54 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1B 07 10
-YM2: 00 DD 01 02 
-     02 DB 03 05 
-	 04 53 05 01                           
-YM2: 00 DC 01 02 
-     02 DA 03 05 
-	 04 52 05 01                           
-YM2: 00 DB 01 02 
-     02 D9 03 05 
-	 04 52 05 01                           
-YM2: 00 DA 01 02 
-     02 D9 03 05 
-	 04 51 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1A 07 10
-YM2: 00 D9 01 02 
-     02 D8 03 05 
-	 04 50 05 01                           
-YM2: 00 D8 01 02 
-     02 D7 03 05 
-	 04 50 05 01                           
-YM2: 00 D7 01 02 
-     02 D6 03 05 
-	 04 4F 05 01                           
-YM2: 00 D7 01 02 
-     02 D6 03 05 
-	 04 4F 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 1A 07 10
-YM2: 00 D6 01 02 
-     02 D5 03 05 
-	 04 4E 05 01                           
-YM2: 00 D5 01 02 
-     02 D4 03 05 
-	 04 4D 05 01                           
-YM2: 00 D4 01 02 
-     02 D3 03 05 
-	 04 4D 05 01                           
-YM2: 00 D3 01 02 
-     02 D3 03 05 
-	 04 4C 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 19 07 10
-YM2: 00 D2 01 02 
-     02 D2 03 05 
-	 04 4B 05 01                           
-YM2: 00 D1 01 02 
-     02 D1 03 05 
-	 04 4B 05 01                           
-YM2: 00 D0 01 02 
-     02 D0 03 05 
-	 04 4A 05 01                           
-YM2: 00 D0 01 02 
-     02 D0 03 05 
-	 04 4A 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 19 07 10
-YM2: 00 CF 01 02 
-     02 CF 03 05 
-	 04 49 05 01                           
-YM2: 00 CE 01 02 
-     02 CE 03 05 
-	 04 48 05 01                           
-YM2: 00 CD 01 02 
-     02 CD 03 05 
-	 04 48 05 01                           
-YM2: 00 CC 01 02 
-     02 CD 03 05 
-	 04 47 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 18 07 10
-YM2: 00 CB 01 02 
-     02 CC 03 05 
-	 04 46 05 01                           
-YM2: 00 CA 01 02 
-     02 CB 03 05 
-	 04 46 05 01                           
-YM2: 00 C9 01 02 
-     02 CA 03 05 
-	 04 45 05 01                           
-YM2: 00 C9 01 02 
-     02 CA 03 05 
-	 04 45 05 01 
-	 08 0E 09 0E 0A 0E 
-	 06 18 07 10
+     04 5B 05 01
+     08 0E 09 0E 0A 0E
+     06 1C 07 10
+YM2: 00 E7 01 02
+     02 E4 03 05
+     04 5A 05 01
+YM2: 00 E6 01 02
+     02 E3 03 05
+     04 5A 05 01
+YM2: 00 E5 01 02
+     02 E2 03 05
+     04 59 05 01
+YM2: 00 E5 01 02
+     02 E2 03 05
+     04 59 05 01
+     08 0E 09 0E 0A 0E
+     06 1C 07 10
+YM2: 00 E4 01 02
+     02 E1 03 05
+     04 58 05 01
+YM2: 00 E3 01 02
+     02 E0 03 05
+     04 57 05 01
+YM2: 00 E2 01 02
+     02 DF 03 05
+     04 57 05 01
+YM2: 00 E1 01 02
+     02 DF 03 05
+     04 56 05 01
+     08 0E 09 0E 0A 0E
+     06 1B 07 10
+YM2: 00 E0 01 02
+     02 DE 03 05
+     04 55 05 01
+YM2: 00 DF 01 02
+     02 DD 03 05
+     04 55 05 01
+YM2: 00 DE 01 02
+     02 DC 03 05
+     04 54 05 01
+YM2: 00 DE 01 02
+     02 DC 03 05
+     04 54 05 01
+     08 0E 09 0E 0A 0E
+     06 1B 07 10
+YM2: 00 DD 01 02
+     02 DB 03 05
+     04 53 05 01
+YM2: 00 DC 01 02
+     02 DA 03 05
+     04 52 05 01
+YM2: 00 DB 01 02
+     02 D9 03 05
+     04 52 05 01
+YM2: 00 DA 01 02
+     02 D9 03 05
+     04 51 05 01
+     08 0E 09 0E 0A 0E
+     06 1A 07 10
+YM2: 00 D9 01 02
+     02 D8 03 05
+     04 50 05 01
+YM2: 00 D8 01 02
+     02 D7 03 05
+     04 50 05 01
+YM2: 00 D7 01 02
+     02 D6 03 05
+     04 4F 05 01
+YM2: 00 D7 01 02
+     02 D6 03 05
+     04 4F 05 01
+     08 0E 09 0E 0A 0E
+     06 1A 07 10
+YM2: 00 D6 01 02
+     02 D5 03 05
+     04 4E 05 01
+YM2: 00 D5 01 02
+     02 D4 03 05
+     04 4D 05 01
+YM2: 00 D4 01 02
+     02 D3 03 05
+     04 4D 05 01
+YM2: 00 D3 01 02
+     02 D3 03 05
+     04 4C 05 01
+     08 0E 09 0E 0A 0E
+     06 19 07 10
+YM2: 00 D2 01 02
+     02 D2 03 05
+     04 4B 05 01
+YM2: 00 D1 01 02
+     02 D1 03 05
+     04 4B 05 01
+YM2: 00 D0 01 02
+     02 D0 03 05
+     04 4A 05 01
+YM2: 00 D0 01 02
+     02 D0 03 05
+     04 4A 05 01
+     08 0E 09 0E 0A 0E
+     06 19 07 10
+YM2: 00 CF 01 02
+     02 CF 03 05
+     04 49 05 01
+YM2: 00 CE 01 02
+     02 CE 03 05
+     04 48 05 01
+YM2: 00 CD 01 02
+     02 CD 03 05
+     04 48 05 01
+YM2: 00 CC 01 02
+     02 CD 03 05
+     04 47 05 01
+     08 0E 09 0E 0A 0E
+     06 18 07 10
+YM2: 00 CB 01 02
+     02 CC 03 05
+     04 46 05 01
+YM2: 00 CA 01 02
+     02 CB 03 05
+     04 46 05 01
+YM2: 00 C9 01 02
+     02 CA 03 05
+     04 45 05 01
+YM2: 00 C9 01 02
+     02 CA 03 05
+     04 45 05 01
+     08 0E 09 0E 0A 0E
+     06 18 07 10
 
-0FFD: 1C 				=> YM2: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
+0FFD: 1C                => YM2: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
 
 
 
@@ -36415,58 +36717,58 @@ BT COMMAND AT 5511 (PC=08F7) E6 => YM2 E002: 42 1B 46 09 4A 16 4E 0D A6 23 A2 93
 
 
 
-61 02 02 
-A5 42 7F 71 
-A5 46 7F 71 
-A5 4A 7F 71 
-A5 4E 7F 71 
-A5 28 F2 72 
-A5 41 7F 71 
-A5 45 7F 71 
-A5 49 7F 70 
-A5 4D 7F 71 
-A5 28 F1 73 
-A5 40 7F 71 
-A5 44 7F 71 
-A5 48 7F 70 
-A5 4C 7F 71 
-A5 28 F0 73 
+61 02 02
+A5 42 7F 71
+A5 46 7F 71
+A5 4A 7F 71
+A5 4E 7F 71
+A5 28 F2 72
+A5 41 7F 71
+A5 45 7F 71
+A5 49 7F 70
+A5 4D 7F 71
+A5 28 F1 73
+A5 40 7F 71
+A5 44 7F 71
+A5 48 7F 70
+A5 4C 7F 71
+A5 28 F0 73
 
-55 42 7F 71 
-55 46 7F 70 
-55 4A 7F 71 
-55 4E 7F 71 
-55 28 F2 73 
-55 41 7F 70 
-55 45 7F 71 
-55 49 7F 71 
-55 4D 7F 71 
-55 28 F1 72 
-55 40 7F 71 
-55 44 7F 71 
-55 48 7F 71 
-55 4C 7F 71 
-55 28 F0 72 
+55 42 7F 71
+55 46 7F 70
+55 4A 7F 71
+55 4E 7F 71
+55 28 F2 73
+55 41 7F 70
+55 45 7F 71
+55 49 7F 71
+55 4D 7F 71
+55 28 F1 72
+55 40 7F 71
+55 44 7F 71
+55 48 7F 71
+55 4C 7F 71
+55 28 F0 72
 
-A5 
-28 02 73 A5 
-28 01 72 A5 
-28 00 73 55 
-28 02 72 55 
-28 01 73 55 
-28 00 72 55 
-00 00 71 55 01 00 71 55 
-02 00 71 55 03 00 71 55 
-04 00 71 55 05 00 71 55 
-06 00 71 55 07 F8 71 55 
-08 00 71 55 09 00 71 55 
-0A 00 72 A5 
+A5
+28 02 73 A5
+28 01 72 A5
+28 00 73 55
+28 02 72 55
+28 01 73 55
+28 00 72 55
+00 00 71 55 01 00 71 55
+02 00 71 55 03 00 71 55
+04 00 71 55 05 00 71 55
+06 00 71 55 07 F8 71 55
+08 00 71 55 09 00 71 55
+0A 00 72 A5
 
-00 00 71 A5 01 00 71 A5 
-02 00 71 A5 03 00 71 A5 
-04 00 71 A5 05 00 71 A5 
-06 00 71 A5 07 F8 71 A5 
-08 00 71 A5 09 00 71 A5 
+00 00 71 A5 01 00 71 A5
+02 00 71 A5 03 00 71 A5
+04 00 71 A5 05 00 71 A5
+06 00 71 A5 07 F8 71 A5
+08 00 71 A5 09 00 71 A5
 0A 00 71 55 2D 01 71 A5 2D 01 71 55 27 00 61 BC 0F 55 28 F0 72 55 28 00 7A 55 28 F1 72 55 28 01 7A 55 28 F2 72 55 28 02 79 A5 28 F0 72 A5 28 00 7A A5 28 F1 72 A5 28 01 7A A5 28 F2 72 A5 28 02 61 24 00 55 B0 3D 73 55 30 01 74 55 34 01 74 55 38 01 74 55 3C 01 74 55 50 0D 74 55 54 14 74 55 58 12 73 55 5C 14 74 55 60 07 74 55 64 0E 74 55 68 08 73 55 6C 03 74 55 70 00 74 55 74 00 74 55 78 00 73 55 7C 00 74 55 80 14 74 55 84 18 74 55 88 18 73 55 8C 1A 61 57 00 55 40 1F 7F 70 55 44 05 7F 70 55 48 07 7F 55 4C 07 75 55 A4 23 73 55 A0 93 73 55 28 F0 7F 78 55 B1 3D 73 55 31 01 74 55 35 01 74 55 39 01 73 55 3D 01 75 55 51 0D 73 55 55 14 74 55 59 12 74 55 5D 14 74 55 61 07 73 55 65 0E 74 55 69 08 74 55 6D 03 74 55 71 00 73 55 75 00 74 55 79 00 74 55 7D 00 74 55 81 14 73 55 85 18 74 55 89 18 74 55 8D 1A 61 57 00 55 41 1E 7F 70 55 45 05 7F 70 55 49 07 7F 55 4D 07 75 55 A5 1D 73 55 A1 5B 73 55 28 F1 7F 78 55 B2 3D 73 55 32 01 74 55 36 01 74 55 3A 01 74 55 3E 01 74 55 52 0D 74 55 56 14 74 55 5A 12 73 55 5E 14 74 55 62 07 74 55 66 0E 74 55 6A 08 73 55 6E 03 74 55 72 00 74 55 76 00 74 55 7A 00 73 55 7E 00 74 55 82 14 74 55 86 18 74 55 8A 18 73 55 8E 1A 61 57 00 55 42 1E 7F 70 55 46 05 7F 70 55 4A 07 7F 55 4E 07 75 55 A6 1C 73 55 A2 40 73 55 28 F2 7F 78 A5 B0 38 74 A5 30 02 74 A5 34 02 74 A5 38 02 74 A5 3C 01 74 A5 50 1F 74 A5 54 11 74 A5 58 11 74 A5 5C 10 74 A5 60 00 74 A5 64 00 74 A5 68 00 74 A5 6C 02 74 A5 70 01 74 A5 74 01 74 A5 78 01 74 A5 7C 01 74 A5 80 03 74 A5 84 03 74 A5 88 03 74 A5 8C 38 61 5A 00 A5 40 28 7F 70 A5 44 1B 7F 70 A5 48 1B 7F 70 A5 4C 07 75 A5 A4 1B 73 A5 A0 93 73 A5 28 F0 7F 78 A5 B1 3D 74 A5 31 01 74 A5 35 01 74 A5 39 01 74 A5 3D 01 74 A5 51 0D 74 A5 55 14 74 A5 59 12 74 A5 5D 14 74 A5 61 07 74 A5 65 0E 74 A5 69 08 74 A5 6D 03 74 A5 71 00 74 A5 75 00 74 A5 79 00 74 A5 7D 00 74 A5 81 14 74 A5 85 18 74 A5 89 18 74 A5 8D 1A 61 36 00 A5 B2 3A 74 A5 32 01 74 A5 36 01 74 A5 3A 27 74 A5 3E 01 74 A5 52 0E 74 A5 56 5F 74 A5 5A 19 74 A5 5E 12 74 A5 62 0A 74 A5 66 0B 74 A5 6A 0D 74 A5 6E 03 74 A5 72 00 74 A5 76 00 74 A5 7A 03 74 A5 7E 00 74 A5 82 15 74 A5 86 25 74 A5 8A FF 74 A5 8E 28 61 57 00 A5 42 1A 7F 70 A5 46 2F 7F 70 A5 4A 1A 7F 70 A5 4E 00 75 A5 A6 23 73 A5 A2 93 73 A5 28 F2 61 6C 1C 55 28 00 78 55 28 01 79 55 28 02 7F 76 A5 28 02 61 54 09 55 28 F0 61 90 00 55 28 F1 61 90 00 55 28 F2 61 9E 00 A5 28 F2 61 97 0D 55 28 00 78 55 28 01 79 55 28 02 7F 76 A5 28 02 61 31 05 55 28 F0 61 90 00 55 28 F1 61 90 00 55 28 F2 61 9E 00 A5 28 F2 61 96 0D 55 28 00 79 55 28 01 79 55 28 02 7F 76 A5 28 02 61 28 05 55 A4 25 73 55 A0 5B 73 55 28 F0 61 4F 00 55 41 1F 61 39 00 55 A5 24 73 55 A1 40 73 55 28 F1 61 4F 00 55 42 1F 61 38 00 55 A6 23 73 55 A2 93 73 55 28 F2 61 96 00 A5 A6 25 73 A5 A2 5B 73 A5 28 F2 61 4A 0C A5 28 00 61 0C 1A A5 28 F0 61 F2 0D A5 28 00 61 5D 05 A5 28 F0 61 82 01 55 28 02 61 70 0C A5 28 00 61 4C 05 55 A6 23 73 55 A2 2F 73 55 28 F2 61 91 00 A5 28 F0 61 95 1C A5 28 00 61 7F 09 A5 28 F0 61 38 04 55 28 00 78 55 28 01 7F 7C A5 28 02 61 BF 18 A5 28 00 61 6C 09 55 28 F0 61 90 00 55 28 F1 61 B4 00 A5 28 F2 61 1E 26 A5 28 F0 61 45 04 55 28 02 61 7F 10 55 28 00 79 55 28 01 7F 7C A5 28 02 61 32 08 A5 28 00 61 64 09 55 A4 24 73 55 A0 C6 73 55 28 F0 61 88 00 55 A5 24 73 55 A1 C6 73 55 28 F1 61 8A 00 55 A6 22 73 55 A2 D6 73 55 28 F2 61 8C 00 A5 A4 1B 73 A5 A0 C9 73 A5 28 F0 61 A0 00 A5 A6 24 73 A5 A2 C6 73 A5 28 F2 61 A7 0D 55 28 00 78 55 28 01 7F 79 A5 28 02 61 30 05 55 A4 25 73 55 A0 5B 73 55 28 F0 61 88 00 55 A5 25 73 55 A1 5B 73 55 28 F1 61 99 00 A5 A6 25 73 A5 A2 5B 73 A5 28 F2 61 73 0D 55 28 00 78 55 28 01 7F 79 A5 28 02 61 FA 04 55 40 20 61 38 00 55 A4 2A 73 55 A0 D6 73 55 28 F0 61 8B 00 55 A5 24 73 55 A1 C6 73 55 28 F1 61 74 00 A5 46 30 61 28 00 A5 A6 2A 73 A5 A2 D6 73 A5 28 F2 61 E8 25 A5 41 1F 7F 70 A5 45 05 7F 70 A5 49 07 7F 70 A5 4D 07 75 A5 A5 24 73 A5 A1 C6 73 A5 28 F1 61 F3 0D A5 28 01 61 54 05 A5 A5 25 73 A5 A1 5B 73 A5 28 F1 61 F3 0D A5 28 01 61 35 05 A5 41 20 61 39 00 A5 A5 2A 73 A5 A1 D6 73 A5 28 F1 61 04 1D A5 28 01 61 47 0B A5 B1 34 7F 78 A5 51 14 79 A5 59 0F 74 A5 5D 0F 74 A5 61 0D 74 A5 65 00 74 A5 69 0A 74 A5 6D 0A 7F 78 A5 81 13 74 A5 85 13 74 A5 89 38 74 A5 8D 47 61 52 00 A5 41 0C 7F 70 A5 45 11 7F 70 A5 49 09 7F 70 A5 4D 03 75 A5 A5 23 73 A5 A1 C9 73 A5 28 F1 61 BE 10 A5 28 01 61 58 05 A5 A5 24 73 A5 A1 40 73 A5 28 F1 61 C3 0B 55 28 00 78 55 28 01 79 55 28 02 79 A5 28 00 7F 70 A5 28 02 61 BD 04 A5 28 01 61 3C 05 55 A4 2B 73 55 A0 2F 73 55 28 F0 61 90 00 55 28 F1 61 88 00 55 A6 23 73 55 A2 93 73 55 28 F2 61 91 00 A5 28 F0 61 89 00 A5 A5 24 73 A5 A1 81 73 A5 28 F1 61 8A 00 A5 A6 2B 73 A5 A2 2F 73 A5 28 F2 61 E0 21 55 28 00 79 55 28 01 79 55 28 02 79 A5 28 00 79 A5 28 01 79 A5 28 02 61 F5 09 55 A4 2A 73 55 A0 D6 73 55 28 F0 61 8F 00 55 28 F1 61 91 00 55 28 F2 61 90 00 A5 28 F0 7F 75 A5 B1 3A 7F 78 A5 51 0E 74 A5 55 0C 74 A5 59 0D 79 A5 61 07 79 A5 69 07 74 A5 6D 02 7E A5 79 01 79 A5 81 05 74 A5 85 04 74 A5 89 05 74 A5 8D 08 61 4C 00 A5 41 21 7F 70 A5 45 1A 7F 70 A5 49 2E 7F 70 A5 4D 00 75 A5 A5 1A 73 A5 A1 D6 73 A5 28 F1 61 8A 00 A5 A6 2A 73 A5 A2 D6 73 A5 28 F2 61 49 10 A5 28 01 61 54 05 A5 A5 1B 72 A5 A1 2F 73 A5 28 F1 61 C8 0B 55 28 00 78 55 28 01 79 55 28 02 79 A5 28 00 7F 70 A5 28 02 61 BD 04 A5 28 01 61 3B 05 55 A4 2B 73 55 A0 2F 73 55 28 F0 61 90 00 55 28 F1 61 90 00 55 28 F2 61 91 00 A5 28 F0 61 8A 00 A5 A5 1B 73 A5 A1 60 73 A5 28 F1 61 8A 00 A5 A6 2B 73 A5 A2 2F 73 A5 28 F2 61 E0 21 55 28 00 78 55 28 01 79 55 28 02 79 A5 28 00 79 A5 28 01 79 A5 28 02 61 FE 09 55 A4 2B 73 55 A0 93 73 55 28 F0 61 91 00 55 A5 25 73 55 A1 5B 73 55 28 F1 61 91 00 55 A6 24 73 55 A2 81 73 55 28 F2 61 90 00 A5 A4 1B 73 A5 A0 93 73 A5 28 F0 61 92 00 A5 A5 1B 73 A5 A1 93 73 A5 28 F1 61 57 00 A5 42 1B 61 39 00 A5 A6 2B 73 A5 A2 93 73 A5 28 F2 61 80 4C A5 28 00 7E A5 28 02 61 4D 16 A5 40 27 61 39 00 A5 A4 15 73 A5 A0 5B 73 A5 28 F0 7F 79 A5 B2 06 74 A5 32 7D 74 A5 36 34 74 A5 3A 32 74 A5 3E 74 74 A5 52 1F 74 A5 56 1F 74 A5 5A 1F 74 A5 5E 1F 74 A5 62 0D 74 A5 66 0A 74 A5 6A 0A 74 A5 6E 0A 7E A5 7A 00 79 A5 82 F5 74 A5 86 F5 74 A5 8A F5 74 A5 8E F5 61 5D 00 A5 46 07 7F 70 A5 4A 16 7F 70 A5 4E 0D 75 A5 A6 25 73 A5 A2 5B 73 A5 28 F2 61 54 4C A5 28 00 7E A5 28 02 61 AA 16 A5 A4 1B 73 A5 A0 01 73 A5 28 F0 61 1A 01 A5 A6 2B 73 A5 A2 01 73 A5 28 F2 61 7B 25 A5 28 00 7F A5 28 02 61 7A 0B A5 A4 15 73 A5 A0 5B 73 A5 28 F0 61 92 00 A5 A6 25 73 A5 A2 5B 73 A5 28 F2 61 62 68 A5 28 01 61 52 0A A5 28 00 7F A5 28 02 61 50 21 A5 40 26 61 39 00 A5 A4 13 73 A5 A0 93 73 A5 28 F0 61 8A 00 A5 A5 1D 73 A5 A1 5B 73 A5 28 F1 61 62 00 A5 46 09 61 28 00 A5 A6 23 73 A5 A2 93 73 A5 28 F2 61 FF FF 61 B5 36 A5 28 00 79 A5 28 01 79 A5 28 02 61 99 2A 55 28 00 78 55 28 01 79 55 28 02 61 25 2C 55 40 7F 70 55 44 7F 71 55 48 7F 71 55 4C 7F 71 55 28 F0 72 55 28 00 74 55 41 7F 70 55 45 7F 71 55 49 7F 71 55 4D 7F 71 55 28 F1 72 55 28 01 74 55 42 7F 70 55 46 7F 71 55 4A 7F 71 55 4E 7F 71 55 28 F2 72 55 28 02 74 A5 40 7F 71 A5 44 7F 70 A5 48 7F 71 A5 4C 7F 71 A5 28 F0 72 A5 28 00 74 A5 41 7F 71 A5 45 7F 71 A5 49 7F 70 A5 4D 7F 71 A5 28 F1 72 A5 28 01 75 A5 42 7F 70 A5 46 7F 71 A5 4A 7F 71 A5 4E 7F 71 A5 28 F2 72 A5 28 02 61 FF FF 61
 
 
@@ -36475,22 +36777,22 @@ A5
 class ssAY8910 : public ssSoundChip
 {
 public:
-	enum {
-		TYPE_NORMAL = 0,
-		TYPE_YM2203,
-		TYPE_YM2608,
-		TYPE_YM2610,
-		TYPE_M88 = 0x10,
-		TYPE_YM2203_M88,
-		TYPE_YM2608_M88,
-		TYPE_YM2610_M88,
-	};
-	enum {
-		PORT_A = 0,
-		PORT_B,
-	};
-	
-	
+    enum {
+        TYPE_NORMAL = 0,
+        TYPE_YM2203,
+        TYPE_YM2608,
+        TYPE_YM2610,
+        TYPE_M88 = 0x10,
+        TYPE_YM2203_M88,
+        TYPE_YM2608_M88,
+        TYPE_YM2610_M88,
+    };
+    enum {
+        PORT_A = 0,
+        PORT_B,
+    };
+
+
 READ 0F7F (PC=0219) CF
 YM2: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
 
@@ -36847,8 +37149,8 @@ READ 0FD3 (CURRENT) 1C
 YM2: 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
 
 
-	
-	
+
+
 BT COMMAND AT 5448 (YM1) 06
 BT COMMAND AT 5449 (YM1) 55
 BT COMMAND AT 544A (YM1) 54
@@ -111457,4 +111759,3 @@ YM1 E001: 01
 YM1 E000: 27
 YM1 E001: 1F
 
-	
