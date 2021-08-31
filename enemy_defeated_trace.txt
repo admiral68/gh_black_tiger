@@ -1,0 +1,3169 @@
+0055: call $01FC
+BT COMMAND AT 0FD4 (PC=0219) CF
+YM2 E002: 00  00 01  00 02  00 03  00 04  00 05  00 06  00 07  F8 08  00 09  00 0A  00
+
+0041: call $011B
+
+0044: call $0A50
+BT COMMAND AT 0FD5 (PC=0DAF) 00 1D FF D7
+YM2 E002: 06  1F 07  10
+BT COMMAND AT 0FD9 (PC=0DAF) 00
+BT COMMAND AT 0FDA (PC=0DAF) 22
+BT COMMAND AT 0FDB (PC=0DAF) FA
+YM2 E002: 00  FA 01  02
+BT COMMAND AT 0FDC (PC=0DAF) 00
+BT COMMAND AT 0FDD (PC=0DAF) 45
+BT COMMAND AT 0FDE (PC=0DAF) F4
+YM2 E002: 02  F4 03  05
+BT COMMAND AT 0FDF (PC=0DAF) 00
+BT COMMAND AT 0FE0 (PC=0DAF) 61
+BT COMMAND AT 0FE1 (PC=0DAF) 68
+YM2 E002: 04  68 05  01
+BT COMMAND AT 0FE2 (PC=0DAF) 00
+BT COMMAND AT 0FE3 (PC=0DAF) 8F
+YM2 E002: 08  0F
+BT COMMAND AT 0FE4 (PC=0DAF) 00
+BT COMMAND AT 0FE5 (PC=0DAF) AF
+YM2 E002: 09  0F
+BT COMMAND AT 0FE6 (PC=0DAF) 00
+BT COMMAND AT 0FE7 (PC=0DAF) CF
+YM2 E002: 0A  0F
+BT COMMAND AT 0FE8 (PC=0DAF) 00
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+BT COMMAND AT 0FE9 (PC=0DAF) 00
+BT COMMAND AT 0FEA (PC=0DAF) 39
+BT COMMAND AT 0FEB (PC=0DAF) FF
+BT COMMAND AT 0FEC (PC=0DAF) D7
+YM2 E002: 06  1F 07  10
+BT COMMAND AT 0FED (PC=0DAF) FC
+BT COMMAND AT 0FEE (PC=0DAF) 22
+BT COMMAND AT 0FEF (PC=0DAF) FA
+YM2 E002: 00  FA 01  02
+BT COMMAND AT 0FF0 (PC=0DAF) F2
+BT COMMAND AT 0FF1 (PC=0DAF) 45
+BT COMMAND AT 0FF2 (PC=0DAF) F4
+YM2 E002: 02  F4 03  05
+BT COMMAND AT 0FF3 (PC=0DAF) F4
+BT COMMAND AT 0FF4 (PC=0DAF) 61
+BT COMMAND AT 0FF5 (PC=0DAF) 68
+YM2 E002: 04  68 05  01
+BT COMMAND AT 0FF6 (PC=0DAF) F6
+BT COMMAND AT 0FF7 (PC=0DAF) 8F
+YM2 E002: 08  0F
+BT COMMAND AT 0FF8 (PC=0DAF) FF
+BT COMMAND AT 0FF9 (PC=0DAF) AF
+YM2 E002: 09  0F
+BT COMMAND AT 0FFA (PC=0DAF) FF
+BT COMMAND AT 0FFB (PC=0DAF) CF
+YM2 E002: 0A  0F
+BT COMMAND AT 0FFC (PC=0DAF) FF
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  F9 01  02 02  F3 03  05 04  67 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  F8 01  02 02  F2 03  05 04  66 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  F7 01  02 02  F1 03  05 04  66 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  F6 01  02 02  F1 03  05 04  65 05  01 08  0E 09  0E 0A  0E 06  1E 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  F5 01  02 02  F0 03  05 04  64 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  F4 01  02 02  EF 03  05 04  64 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  F3 01  02 02  EE 03  05 04  63 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  F3 01  02 02  EE 03  05 04  63 05  01 08  0E 09  0E 0A  0E 06  1E 07  10
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+0044: call $0A50
+YM2 E002: 00  F2 01  02 02  ED 03  05 04  62 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  F1 01  02 02  EC 03  05 04  61 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  F0 01  02 02  EB 03  05 04  61 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  EF 01  02 02  EB 03  05 04  60 05  01 08  0E 09  0E 0A  0E 06  1D 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  EE 01  02 02  EA 03  05 04  5F 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  ED 01  02 02  E9 03  05 04  5F 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  EC 01  02 02  E8 03  05 04  5E 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  EC 01  02 02  E8 03  05 04  5E 05  01 08  0E 09  0E 0A  0E 06  1D 07  10
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  EB 01  02 02  E7 03  05 04  5D 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  EA 01  02 02  E6 03  05 04  5C 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  E9 01  02 02  E5 03  05 04  5C 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  E8 01  02 02  E5 03  05 04  5B 05  01 08  0E 09  0E 0A  0E 06  1C 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  E7 01  02 02  E4 03  05 04  5A 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  E6 01  02 02  E3 03  05 04  5A 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  E5 01  02 02  E2 03  05 04  59 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  E5 01  02 02  E2 03  05 04  59 05  01 08  0E 09  0E 0A  0E 06  1C 07  10
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  E4 01  02 02  E1 03  05 04  58 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  E3 01  02 02  E0 03  05 04  57 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  E2 01  02 02  DF 03  05 04  57 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  E1 01  02 02  DF 03  05 04  56 05  01 08  0E 09  0E 0A  0E 06  1B 07  10
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  E0 01  02 02  DE 03  05 04  55 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  DF 01  02 02  DD 03  05 04  55 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  DE 01  02 02  DC 03  05 04  54 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  DE 01  02 02  DC 03  05 04  54 05  01 08  0E 09  0E 0A  0E 06  1B 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  DD 01  02 02  DB 03  05 04  53 05  01
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+0058: ei
+0059: reti
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+0044: call $0A50
+YM2 E002: 00  DC 01  02 02  DA 03  05 04  52 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  DB 01  02 02  D9 03  05 04  52 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  DA 01  02 02  D9 03  05 04  51 05  01 08  0E 09  0E 0A  0E 06  1A 07  10
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+0044: call $0A50
+YM2 E002: 00  D9 01  02 02  D8 03  05 04  50 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  D8 01  02 02  D7 03  05 04  50 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  D7 01  02 02  D6 03  05 04  4F 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  D7 01  02 02  D6 03  05 04  4F 05  01 08  0E 09  0E 0A  0E 06  1A 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  D6 01  02 02  D5 03  05 04  4E 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  D5 01  02 02  D4 03  05 04  4D 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  D4 01  02 02  D3 03  05 04  4D 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  D3 01  02 02  D3 03  05 04  4C 05  01 08  0E 09  0E 0A  0E 06  19 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  D2 01  02 02  D2 03  05 04  4B 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  D1 01  02 02  D1 03  05 04  4B 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  D0 01  02 02  D0 03  05 04  4A 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  D0 01  02 02  D0 03  05 04  4A 05  01 08  0E 09  0E 0A  0E 06  19 07  10
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  CF 01  02 02  CF 03  05 04  49 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  CE 01  02 02  CE 03  05 04  48 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  CD 01  02 02  CD 03  05 04  48 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  CC 01  02 02  CD 03  05 04  47 05  01 08  0E 09  0E 0A  0E 06  18 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  CB 01  02 02  CC 03  05 04  46 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+
+0052: call $0136
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+YM2 E002: 00  CA 01  02 02  CB 03  05 04  46 05  01
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret
+
+039F: ld   hl,$C013
+03A2: inc  (hl)
+03A3: ld   ix,$C100
+03A7: call $03B9
+03AA: ld   a,($C011)
+03AD: bit  6,a
+03AF: ret  z
+
+0136: ld   bc,$E000
+0139: ld   a,$26
+013B: ld   d,$F4
+013D: call $0153
+
+0140: ld   d,$0F
+0142: set  5,d
+0144: ld   a,$27
+0146: call $0153
+
+0149: ret
+0055: call $01FC
+0058: ei
+0059: reti
+0009: ei
+000A: jr   $0009
+0009: ei
+000A: jr   $0009
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  C9 01  02 02  CA 03  05 04  45 05  01
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+0055: call $01FC
+0058: ei
+0059: reti
+
+0038: di
+0039: ld   bc,$E000
+003C: ld   a,(bc)
+003D: bit  0,a
+003F: jr   z,$0052
+0041: call $011B
+
+0044: call $0A50
+YM2 E002: 00  C9 01  02 02  CA 03  05 04  45 05  01 08  0E 09  0E 0A  0E 06  18 07  10
+0047: call $039F
+004A: ld   bc,$E000
+004D: ld   a,(bc)
+004E: bit  1,a
+0050: jr   z,$0058
+0052: call $0136
+
+01FC: ld   a,($C001)
+01FF: ld   c,a
+0200: ld   a,($C800)
+0203: ld   ($C000),a
+0206: cp   c
+0207: ret  z
+
+011B: ld   bc,$E000
+011E: ld   a,$24
+0120: ld   d,$CE
+0122: call $0153
+
+0125: ld   a,$25
+0127: ld   d,$01
+0129: call $0153
+
+012C: ld   d,$0F
+012E: set  4,d
+0130: ld   a,$27
+0132: call $0153
+
+0135: ret
+
+0A50: ld   hl,$C022
+0A53: inc  (hl)
+0A54: ld   ix,$C500
+0A58: ld   iy,$E000
+0A5C: ld   a,(ix+$00)
+0A5F: or   a
+0A60: call nz,$0A7F
+0A63: ld   a,(ix+$1f)
+0A66: ld   ($C020),a
+0A69: ld   ix,$C530
+0A6D: ld   iy,$E002
+0A71: ld   a,(ix+$00)
+0A74: or   a
+0A75: call nz,$0A7F
+BT COMMAND AT 0FFD (PC=0DAF) 1C
+YM2 E002: 00  00 01  00 02  00 03  00 04  00 05  00 06  00 07  F8 08  00 09  00 0A  00
+0A78: ld   a,(ix+$1f)
+0A7B: ld   ($C021),a
+0A7E: ret

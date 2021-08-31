@@ -1,0 +1,38 @@
+HOOT: BLACK TIGER (OBJ) 0084dc18
+
+    Maybe_LoadGameNamed("BLACK TIGER");
+    local_8 = 7;
+    break;
+	
+	
+  EnterCriticalSection((LPCRITICAL_SECTION)(ptr_object + 2));
+  (**(code **)(*ptr_object + 0x18))(ptr_object[9]);
+  LeaveCriticalSection((LPCRITICAL_SECTION)(ptr_object + 2));
+  return 1;
+  
+  
+    switch(param_1) {
+    case 0x10001:
+      *param_2 = Maybe_UpdateZ80CPUStatus;
+      return;
+    case 0x10002:
+      *param_2 = Maybe_SetZ80Registers;
+      return;
+    case 0x10003:
+      *param_2 = Maybe_InitNewZ80CPU;
+      return;
+    case 0x10004:
+      *param_2 = Maybe_ResetZ80CPU;
+      return;
+    case 0x10005:
+      *param_2 = Maybe_FreeZ80CPU;
+      return;
+    case 0x10006:
+      *param_2 = Maybe_Z80RunOneInstruction;
+      return;
+    case 0x10007:
+                    /* 
+                       Null function
+                        */
+      *param_2 = (code *)0x0;
+      return;  
