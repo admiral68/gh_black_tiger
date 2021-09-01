@@ -3118,6 +3118,9 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::resample_2_9(OutputType *ou
 		if (bitfield(m_sampindex, 0) != 0)
 			add_last(sum0, sum1, sum2, 1);
 		clock_and_add(sum0, sum1, sum2, 2);
+		clock_and_add(sum0, sum1, sum2, 2);
+		clock_and_add(sum0, sum1, sum2, 2);
+		clock_and_add(sum0, sum1, sum2, 2);
 		if (bitfield(m_sampindex, 0) == 0)
 			clock_and_add(sum0, sum1, sum2, 1);
 		write_to_output(output, sum0, sum1, sum2, 9);
@@ -4223,6 +4226,7 @@ inline int32_t opn_lfo_pm_phase_adjustment(uint32_t fnum_bits, uint32_t pm_sensi
 		{ 0x77, 0x77, 0x77, 0x72, 0x72, 0x72, 0x17, 0x17 },
 		{ 0x77, 0x77, 0x72, 0x72, 0x17, 0x17, 0x12, 0x12 },
 		{ 0x77, 0x77, 0x72, 0x17, 0x17, 0x17, 0x12, 0x07 },
+		{ 0x77, 0x77, 0x17, 0x12, 0x07, 0x07, 0x02, 0x01 },
 		{ 0x77, 0x77, 0x17, 0x12, 0x07, 0x07, 0x02, 0x01 },
 		{ 0x77, 0x77, 0x17, 0x12, 0x07, 0x07, 0x02, 0x01 }
 	};
@@ -6184,6 +6188,7 @@ https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.cpp
 	This is useful for CHECKing if there is a gap in the loop.
 
 	However, if there is a local infinite loop such as [ ... ] 0, the length will not be displayed.
+	However, if there is a local infinite loop such as [ ... ] 0, the length will not be displayed.
 
 -------------------------------------------------------------------------------
 
@@ -7386,6 +7391,7 @@ Example] #Include default.mml [Result] The default.mml is read and inserted in i
 [Related] _M command (->§4-16)
 
 ===============================================================================
+===============================================================================
 *******************************************************************************
 §3 [[[[ Definition commands ]]]]
 *******************************************************************************
@@ -7403,9 +7409,16 @@ Example] #Include default.mml [Result] The default.mml is read and inserted in i
 -------------------------------------------------------------------------------
 [Format 1] @ Tone number ALG FB
 	 AR DR SR RR SL TL KS ML DT AMS
+	 AR DR SR RR SL TL KS ML DT AMS
+	 AR DR SR RR SL TL KS ML DT AMS
+	 AR DR SR RR SL TL KS ML DT AMS
 [Format 2] @ Tone number ALG FB
 	 AR DR SR RR SL TL KS ML DT DT2 AMS
+	 AR DR SR RR SL TL KS ML DT DT2 AMS
+	 AR DR SR RR SL TL KS ML DT DT2 AMS
+	 AR DR SR RR SL TL KS ML DT DT2 AMS
 [Form 3] @ Tone number ALG FB
+	 AR DR RR SL TL KSL ML KSR EGT VIB AM
 	 AR DR RR SL TL KSL ML KSR EGT VIB AM
 -------------------------------------------------------------------------------
 [Note] The = tone name can be written in any position.
@@ -10796,6 +10809,7 @@ H cde ` fga b
 	In the above example, the second ` symbol is ignored and all subsequent MML is SKIPed.
 
 	In this case, the
+` Comment
 ` Comment
 	in this case, it should be written as
 
