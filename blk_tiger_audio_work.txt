@@ -311,25 +311,25 @@ YM2203 (OPN) [1984: NEC PC-88, PC-98, NEC PC-6001mkII SR, PC-6601 SR]
     static constexpr uint8_t STATUS_IRQ = 0;
 
     // system-wide registers
-    test						// 0x21 (ALL)
-    timer_a_value				// 0x24 (ALL) | 0x25 BITS 0/1
-    timer_b_value				// 0x26 (ALL)
-    csm							// 0x27 BITS  (010.....)
-    multi_freq 					// 0x27 BITS !(000.....)
-    reset_timer_b 				// 0x27 BIT  5
-    reset_timer_a 				// 0x27 BIT  4
-    enable_timer_b 				// 0x27 BIT  3
-    enable_timer_a 				// 0x27 BIT  2
-    load_timer_b 				// 0x27 BIT  1
-    load_timer_a 				// 0x27 BIT  0
-    multi_block_freq + num		// (0xAC + num) BITS 0/1/2/3/4/5 << 8 | (0xA8 + num) (ALL)
+    test                        // 0x21 (ALL)
+    timer_a_value               // 0x24 (ALL) | 0x25 BITS 0/1
+    timer_b_value               // 0x26 (ALL)
+    csm                         // 0x27 BITS  (010.....)
+    multi_freq                  // 0x27 BITS !(000.....)
+    reset_timer_b               // 0x27 BIT  5
+    reset_timer_a               // 0x27 BIT  4
+    enable_timer_b              // 0x27 BIT  3
+    enable_timer_a              // 0x27 BIT  2
+    load_timer_b                // 0x27 BIT  1
+    load_timer_a                // 0x27 BIT  0
+    multi_block_freq + num      // (0xAC + num) BITS 0/1/2/3/4/5 << 8 | (0xA8 + num) (ALL)
 
     // per-channel registers
-    ch_block_freq + choffs 		// (0xA4 + choffs) BITS 0/1/2/3/4/5  | (0xA0 + choffs) BITS (ALL)
-    ch_feedback  + choffs		// 0xB_ BITS 3/4/5
-    ch_algorithm  + choffs		// 0xB_ BITS 0/1/2
-    ch_output_any				{ return 1; }
-    ch_output_0					{ return 1; }
+    ch_block_freq + choffs      // (0xA4 + choffs) BITS 0/1/2/3/4/5  | (0xA0 + choffs) BITS (ALL)
+    ch_feedback  + choffs       // 0xB_ BITS 3/4/5
+    ch_algorithm  + choffs      // 0xB_ BITS 0/1/2
+    ch_output_any               { return 1; }
+    ch_output_0                 { return 1; }
 
     // per-operator registers
     op_detune + opoffs          // 0x3_ BITS 4/5/6
@@ -390,7 +390,7 @@ YM2203 REGISTER MAP:
 0x25
 0x26
 0x27        SET MODE
-0x28        KEY ON (WRITE)
+0x28        KEY ON (WRITE) (DATA & 0x3) = CHANNEL. IF 3, return false. OPMASK = (DATA & F0). Write channel KEY ON/OFF if true.
 0x29
 0x2a
 0x2b
@@ -510,39 +510,39 @@ YM2203 REGISTER MAP:
 0x9d
 0x9e
 0x9f
-0xa0
-0xa1
-0xa2
-0xa3
-0xa4
-0xa5
-0xa6
-0xa7
-0xa8
-0xa9
-0xaa
-0xab
-0xac
-0xad
-0xae
-0xaf
+0xa0        => A4 = (LATCHED DATA B8) & 0x3F
+0xa1        => A5 = (LATCHED DATA B9) & 0x3F
+0xa2        => A6 = (LATCHED DATA BA) & 0x3F
+0xa3        => A7 = (LATCHED DATA BB) & 0x3F
+0xa4        LATCH: B8 = data | 0x80
+0xa5        LATCH: B9 = data | 0x80
+0xa6        LATCH: BA = data | 0x80
+0xa7        LATCH: BB = data | 0x80
+0xa8        => AC = (LATCHED DATA BC) & 0x3F
+0xa9        => AD = (LATCHED DATA BD) & 0x3F
+0xaa        => AE = (LATCHED DATA BE) & 0x3F
+0xab        => AF = (LATCHED DATA BF) & 0x3F
+0xac        LATCH: BC = data | 0x80
+0xad        LATCH: BD = data | 0x80
+0xae        LATCH: BE = data | 0x80
+0xaf        LATCH: BF = data | 0x80
+0xb0
+0xb1
+0xb2
+0xb3
+0xb4
+0xb5
+0xb6
+0xb7
 
-0xb0    (TEMPORARY USAGE ONLY)
-0xb1    (TEMPORARY USAGE ONLY)
-0xb2    (TEMPORARY USAGE ONLY)
-0xb3    (TEMPORARY USAGE ONLY)
-0xb4    (TEMPORARY USAGE ONLY)
-0xb5    (TEMPORARY USAGE ONLY)
-0xb6    (TEMPORARY USAGE ONLY)
-0xb7    (TEMPORARY USAGE ONLY)
-0xb8    (TEMPORARY USAGE ONLY)
-0xb9    (TEMPORARY USAGE ONLY)
-0xba    (TEMPORARY USAGE ONLY)
-0xbb    (TEMPORARY USAGE ONLY)
-0xbc    (TEMPORARY USAGE ONLY)
-0xbd    (TEMPORARY USAGE ONLY)
-0xbe    (TEMPORARY USAGE ONLY)
-0xbf    (TEMPORARY USAGE ONLY)
+0xb8        (TEMPORARY USAGE ONLY)
+0xb9        (TEMPORARY USAGE ONLY)
+0xba        (TEMPORARY USAGE ONLY)
+0xbb        (TEMPORARY USAGE ONLY)
+0xbc        (TEMPORARY USAGE ONLY)
+0xbd        (TEMPORARY USAGE ONLY)
+0xbe        (TEMPORARY USAGE ONLY)
+0xbf        (TEMPORARY USAGE ONLY)
 
 0xc0
 0xc1
