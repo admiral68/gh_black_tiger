@@ -19,15 +19,96 @@ PLAN FOR PORTING AUDIO:
 3) Put each sound/song into an intermediate format
 4) Translate that intermediate format into something protracker can play on the Amiga hardware
 
+traceover blktiger.tr,1
+traceover off
 
+wp 5448,CB,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; g}
+wp f7f,55,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; g}
+wp fd4,2a,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; g}
 
- you can now use BambooTracker to make YM2203 music
- 
- 
- 
- 
- 
+you can now use BambooTracker to make YM2203 music
 
+BLACK TIGER COMMANDS:
+=====================
+	(SOUND LEVEL (PC=0219))
+	0x06 		- (21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F,30,31,32,33,34,35,36,37,39)
+	0x4F		- (20)
+	0x81		- (11,14)
+	0x88		- (05,06,07,0B,0E,10,12,1A,1B,1C,1D,1E,3A,40)
+	0x8F		- (01,02,03,0D,17)
+	0x90		- (3F)
+	0xC1		- (3B,3C)
+	0xC8		- (08,09,0A,0C,0F,13,15,16,18,19,3D,3E,41,42,43)
+	0xCF		- (04)
+ 
+	(SUB-SOUND LEVEL (PC=08F7))
+	0x00		-
+		07		-
+		08		-
+		09		-
+	0x02
+		C8 03
+			2F
+			23
+			17
+	0x06		-
+	0x07		-
+	0x0F
+	0x21		-
+	0x22		-
+
+	0x69 (note 440h)
+	0x6D (note 55Bh)
+	0x6E (note 2D6h)
+	0x70 (note 32Fh)
+	0x72 (note 393h)
+	0x75 (note 440h)
+	0x77 (note 4C6h)
+	0x79 (note 55Bh)
+	0x8F (note 301h)
+	0x91 (note 360h)
+	0x92 (note 393h)
+	0x93 (note 3C9h)
+	0x96 (note 481h)
+	0x97 (no notes)
+	0x97 (note 4C6h)
+	0x9A (no notes)
+	0x9A (note 2D6h)
+	0x9C (note 32Fh)
+	0xA0 (no notes)
+	0xAD (note 55Bh)
+	0xB2 (note 393h)
+	0xB9 (note 55Bh)
+	0xD0 (note 32Fh)
+	0xD2 (note 393h)
+	0xD5 (note 440h)
+	0xD6 (note 481h)
+	0xD9 (note 55Bh)
+	0xDE (note 393h)
+	0xE6 (note 393h)
+	0xF6 (no notes)
+	0xF9 (no notes)
+	0xF9 (note 55Bh)
+	0xFE (no notes)
+
+EXAMPLE OF "GAME OVER" COMMANDS AND ASSOCIATED NOTES
+
+0x69 (note 440h) 0x75 (note 440h) 0xD5 (note 440h)
+0x6D (note 55Bh) 0x79 (note 55Bh) 0xAD (note 55Bh) 0xB9 (note 55Bh) 0xD9 (note 55Bh) 0xF9 (note 55Bh)
+0x6E (note 2D6h) 0x9A (note 2D6h)
+0x70 (note 32Fh) 0x9C (note 32Fh) 0xD0 (note 32Fh)
+0x72 (note 393h) 0x92 (note 393h) 0xB2 (note 393h) 0xD2 (note 393h) 0xDE (note 393h) 0xE6 (note 393h)
+0x77 (note 4C6h) 0x97 (note 4C6h)
+0x8F (note 301h)
+0x91 (note 360h)
+0x93 (note 3C9h)
+0x96 (note 481h) 0xD6 (note 481h)
+0x97 (no notes)
+0x9A (no notes)
+0xA0 (no notes)
+0xF6 (no notes)
+0xF9 (no notes)
+0xFE (no notes)
 
 	static constexpr uint32_t OUTPUTS = 1;
 	static constexpr uint32_t CHANNELS = 3;
@@ -88,7 +169,6 @@ bool opn_registers_base<IsOpnA>::write(uint16_t index, uint8_t data, uint32_t &c
 }
 
 	LOG_FM_WRITES = true
-	
 	
 		operator_list(  0,  6,  3,  9 ),  // Channel 0 operators
 		operator_list(  1,  7,  4, 10 ),  // Channel 1 operators
@@ -320,10 +400,6 @@ uint8_t ym2203::read_data()
 	return result;
 }
 
-
-
-
-
                              SOUNDS_TABLE                                    XREF[1]:     Maybe_PlaySoundEffect:020e(*)
         ram:0dc1 00 ff           dw         FF00h                                            Sound 0: FF stops music playing
         ram:0dc3 49 0e           dw         PLAYER_LOSES_VITALITY_SOUND                      = 8Fh
@@ -394,10 +470,6 @@ uint8_t ym2203::read_data()
         ram:0e45 d0 1a           dw         BOSS_HIT_SOUND                                   = C8h
         ram:0e47 e6 1a           dw         DRAGON_SPEW_FIRE_SOUND                           43 might be the last sound
 
-
-
-
-
 PMD .M files
 ============
 
@@ -424,7 +496,6 @@ Understanding the PMD MML is very useful for this, but .M files specifically are
 that MML into a binary format, which doesn't have a direct equivalent for all convenience commands
 available in the MML. I have added [MML x.y] tags here as references to MML specification parts.
 
-
 File layout
 ===========
 
@@ -432,7 +503,6 @@ byte            File mode. If present, everything else is shifted forward +1 byt
                 possible word offsets found further on in the file.
 array of words  Track addresses, possibly needing to be shifted ahead by +1 byte.
 tracks          Musical tracks, plus metadata tracks.
-
 
 File modes
 ==========
@@ -458,7 +528,6 @@ chip a PMD song is intended for from the file contents only. Files with the .M2 
 for the more advanced chip, but the plain .M suffix could be either. I think originally a separate
 driver/player program was used on each platform, with the assumption that PMD files intended for
 other platforms would just fail to work well. A modern player may need a switch to select a mode.
-
 
 Tracks
 ======
@@ -513,7 +582,6 @@ Possible track types depending on mode [MML 1.1.3]:
     Tracks 10-11 = Ignored
     Tracks 12-13 = Metadata
 
-
 Metadata tracks
 ===============
 
@@ -542,10 +610,7 @@ If the 12th track's second to last byte is $46 or below, the PPZ PCM file name i
 Otherwise all 6 references should be present. If there are any further string references, those
 are general-purpose Memo strings.
 
-
-
 The 13th track contains instrument data.
-
 
 Instrument definitions
 ======================
@@ -701,7 +766,6 @@ Possible MIDI percussion assignments for OPL versions of 3sis/runaway/sakura:
 |                |   95 - 95  |       49+      | crash cymbal  A-4/57 |
 +----------------+------------+----------------+----------------------+
 
-
 Splitting the third FM channel
 ==============================
 [MML 2.20, MML 6.2]
@@ -748,7 +812,6 @@ not 3 would result in a classic 3 -> 4 two-operator FM output.
 Another example: Using algorithm 7 (no modulation, all operators are carriers), masking operators
 3 and 4 will result in operators 1 and 2 being summed as output. Operator 1 can still use feedback
 for a more interesting sound on this track.
-
 
 Notes
 =====
@@ -801,7 +864,6 @@ On the SSG rhythm track, byte values below $80 are actually rhythm pattern index
 notes, and don't have any additional data bytes. When a pattern index is encountered, paste the
 indicated pattern into the rhythm track replacing the index byte.
 [MML 6.7]
-
 
 Rhythm and wave samples
 =======================
@@ -868,7 +930,6 @@ Although OPL chips have built-in FM rhythm sounds, using those requires switchin
 mode, which prevents using all 9 melodic channels. PMD doesn't bother with this, and always runs
 in the full 9-channel mode, and as such doesn't support the built-in FM rhythm sounds. OPL music
 has to define and use its own rhythm instruments like any other FM instrument.
-
 
 Volume
 ======
@@ -1095,7 +1156,6 @@ Todo: Extract relative instrument balances and ADSR's from MS GS synth and Fluid
 soundfont. Play three notes on each instrument. Also one of each rhythm instrument. Try to include
 GS instruments.
 
-
 Track looping
 =============
 
@@ -1123,7 +1183,6 @@ other tracks. One reason for this is if the song uses a common echo effect, wher
 copied exactly to another track but with a short delay. The multi-channel notation in [MML 1.1.2]
 is meant precisely for this. This fattens the sound nicely, but it means the echo track's loop
 marker is also delayed.
-
 
 Tempo, timing, ticks
 ====================
@@ -1176,7 +1235,6 @@ and MIDI, without needing further translation.
 
 Tempo is set with the $FC commands. These can appear on different tracks in the same song, and
 must take effect globally.
-
 
 List of commands
 ================
@@ -1917,10 +1975,6 @@ command. The feedback parameter is only applied if operator 1 is not masked on t
 algorithm used by the instrument is set regardless of masking.
 [MML 6.2]
 
-
-
-
-
 Operating environment
 
 The program is designed to run in a Win32 environment with a sound card, DirectX7 or DirectX9, and IE6 (Microsoft's XML parser: MSXML3) installed.
@@ -1936,7 +1990,6 @@ When started with the -list option, drivers.xml is output to the current directo
 
 When invoked with the -ini option followed by the name of the ini file to be used, it will output drivers.xml in the current directory.
 When you start with the -ini option followed by the name of the ini file to be used, the ini file that exists in the specified location will be used.
-
 
 Operation (keyboard)
 
@@ -1994,7 +2047,6 @@ Wheel Scroll dump range
 Left click Mask ON/OFF
 Right-click to release all masks (equivalent to [9])
 
-
 About Incremental Search
 
 Use CTRL+[I] to switch between search and normal mode.
@@ -2008,14 +2060,12 @@ or scrolling the selector by any key other than up/down cursor.
 Left and right mouse clicks in the selector area are ignored during search.
 When the title is reloaded, the search mode is canceled.
 
-
 Setting
 
 Currently, it is almost impossible to configure the data directory, playback frequency, and each sound source by editing shoot.ini.
 By editing shoot.ini, you can change the data directory, playback frequency, mixing level of each sound source, LPF characteristics, etc.
 You can change the data directory, playback frequency, mixing level of each sound source, LPF characteristics, etc. by editing hoot.ini. Please 
 refer to the hoot.ini file in the distribution archive.
-
 
 Code used
 
@@ -2027,7 +2077,6 @@ audiocpu: C001 sound one? c800 sound 2?
 
 c500 - queue for YM1. C515 start ptr (big endian) C517 end ptr (big endian) c51b - Original control value (from A)
 C530 - queue for YM2. C545 start ptr (big endian) C547 end ptr (big endian) c54b - Original control value (from A)
-
 
 [Black Tiger] Black Tiger (ブラックドラゴン)
 capcom
@@ -2056,7 +2105,6 @@ Arcade
 	
 // set this to control the output sample rate for SSG-based chips
 #define SSG_FIDELITY (ymfm::OPN_FIDELITY_MED)
-
 
 DECLARE_DEVICE_TYPE(YM2203, ym2203_device);
 
@@ -2231,7 +2279,6 @@ protected:
 	devcb_write8 m_io_write[2];      // up to 2 output port handlers
 };
 
-
 // ======================> ymfm_device_base
 
 // this template provides most of the basics used by device objects in MAME
@@ -2358,7 +2405,6 @@ protected:
 	std::vector<uint8_t> m_save_blob; // state saving buffer
 };
 
-
 // ======================> ymfm_ssg_device_base
 
 // this template adds SSG support to the base template, using ymfm's internal
@@ -2393,7 +2439,6 @@ protected:
 
 #endif // MAME_SOUND_YMFM_H
 
-
     map(0x0000, 0x7fff).rom();
     map(0xc000, 0xc7ff).ram();
     map(0xc800, 0xc800).r("soundlatch", FUNC(generic_latch_8_device::read));
@@ -2410,12 +2455,10 @@ protected:
 * ymfm_opn.h:
 	* YM2203 (OPN) [1984: NEC PC-88, PC-98, NEC PC-6001mkII SR, PC-6601 SR]
 
-
 ymfm_opn
 
 * OPN (YM2203)
 	* OPNA/OPNB/OPN2 (YM2608, YM2610, YM2610B, YM2612, YM3438, YMF276, YMF288)
-
 
 //
 // OPN register map:
@@ -2644,7 +2687,6 @@ ym2203::ym2203(ymfm_interface &intf) :
 	update_prescale(m_fm.clock_prescale());
 }
 
-
 //-------------------------------------------------
 //  reset - reset the system
 //-------------------------------------------------
@@ -2655,7 +2697,6 @@ void ym2203::reset()
 	m_fm.reset();
 	m_ssg.reset();
 }
-
 
 //-------------------------------------------------
 //  save_restore - save or restore the data
@@ -2673,7 +2714,6 @@ void ym2203::save_restore(ymfm_saved_state &state)
 	update_prescale(m_fm.clock_prescale());
 }
 
-
 //-------------------------------------------------
 //  read_status - read the status register
 //-------------------------------------------------
@@ -2685,7 +2725,6 @@ uint8_t ym2203::read_status()
 		result |= fm_engine::STATUS_BUSY;
 	return result;
 }
-
 
 //-------------------------------------------------
 //  read_data - read the data register
@@ -2701,7 +2740,6 @@ uint8_t ym2203::read_data()
 	}
 	return result;
 }
-
 
 //-------------------------------------------------
 //  read - handle a read from the device
@@ -2722,7 +2760,6 @@ uint8_t ym2203::read(uint32_t offset)
 	}
 	return result;
 }
-
 
 //-------------------------------------------------
 //  write_address - handle a write to the address
@@ -2747,7 +2784,6 @@ void ym2203::write_address(uint8_t data)
 	}
 }
 
-
 //-------------------------------------------------
 //  write - handle a write to the register
 //  interface
@@ -2770,7 +2806,6 @@ void ym2203::write_data(uint8_t data)
 	m_fm.intf().ymfm_set_busy_end(32 * m_fm.clock_prescale());
 }
 
-
 //-------------------------------------------------
 //  write - handle a write to the register
 //  interface
@@ -2789,7 +2824,6 @@ void ym2203::write(uint32_t offset, uint8_t data)
 			break;
 	}
 }
-
 
 //-------------------------------------------------
 //  generate - generate one sample of sound
@@ -2827,7 +2861,6 @@ void ym2203::generate(output_data *output, uint32_t numsamples)
 	// resample the SSG as configured
 	m_ssg_resampler.resample(output - numsamples, numsamples);
 }
-
 
 //-------------------------------------------------
 //  update_prescale - update the prescale value,
@@ -2886,7 +2919,6 @@ void ym2203::update_prescale(uint8_t prescale)
 		m_ssg_resampler.configure(0, 0);
 }
 
-
 //-------------------------------------------------
 //  clock_fm - clock FM state
 //-------------------------------------------------
@@ -2917,7 +2949,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::resample_4_3(OutputType *ou
 	}
 }
 
-
 //-------------------------------------------------
 //  resample_nop - no-op resampler
 //-------------------------------------------------
@@ -2946,7 +2977,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::add_last(int32_t &sum0, int
 	sum2 += m_last.data[2] * scale;
 }
 
-
 //-------------------------------------------------
 //  clock_and_add - helper to clock a new value
 //  and then add it to the sums, applying the
@@ -2960,7 +2990,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::clock_and_add(int32_t &sum0
 	m_ssg.output(m_last);
 	add_last(sum0, sum1, sum2, scale);
 }
-
 
 //-------------------------------------------------
 //  write_to_output - helper to write the sums to
@@ -2988,7 +3017,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::write_to_output(OutputType 
 	m_sampindex++;
 }
 
-
 //-------------------------------------------------
 //  ssg_resampler - constructor
 //-------------------------------------------------
@@ -3002,7 +3030,6 @@ ssg_resampler<OutputType, FirstOutput, MixTo1>::ssg_resampler(ssg_engine &ssg) :
 	m_last.clear();
 }
 
-
 //-------------------------------------------------
 //  save_restore - save or restore the data
 //-------------------------------------------------
@@ -3013,7 +3040,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::save_restore(ymfm_saved_sta
 	state.save_restore(m_sampindex);
 	state.save_restore(m_last.data);
 }
-
 
 //-------------------------------------------------
 //  configure - configure a new ratio
@@ -3037,7 +3063,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::configure(uint8_t outsample
 	}
 }
 
-
 //-------------------------------------------------
 //  resample_n_1 - resample SSG output to the
 //  target at a rate of 1 SSG sample to every
@@ -3059,7 +3084,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::resample_n_1(OutputType *ou
 	}
 }
 
-
 //-------------------------------------------------
 //  resample_1_n - resample SSG output to the
 //  target at a rate of n SSG samples to every
@@ -3079,7 +3103,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::resample_1_n(OutputType *ou
 	}
 }
 
-
 //-------------------------------------------------
 //  resample_2_9 - resample SSG output to the
 //  target at a rate of 9 SSG samples to every
@@ -3095,15 +3118,11 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::resample_2_9(OutputType *ou
 		if (bitfield(m_sampindex, 0) != 0)
 			add_last(sum0, sum1, sum2, 1);
 		clock_and_add(sum0, sum1, sum2, 2);
-		clock_and_add(sum0, sum1, sum2, 2);
-		clock_and_add(sum0, sum1, sum2, 2);
-		clock_and_add(sum0, sum1, sum2, 2);
 		if (bitfield(m_sampindex, 0) == 0)
 			clock_and_add(sum0, sum1, sum2, 1);
 		write_to_output(output, sum0, sum1, sum2, 9);
 	}
 }
-
 
 //-------------------------------------------------
 //  resample_2_3 - resample SSG output to the
@@ -3130,7 +3149,6 @@ void ssg_resampler<OutputType, FirstOutput, MixTo1>::resample_2_3(OutputType *ou
 		write_to_output(output, sum0, sum1, sum2, 3);
 	}
 }
-
 
 //-------------------------------------------------
 //  resample_4_3 - resample SSG output to the
@@ -3159,7 +3177,6 @@ opn_registers_base<IsOpnA>::opn_registers_base() :
 		m_waveform[0][index] = abs_sin_attenuation(index) | (bitfield(index, 9) << 15);
 }
 
-
 //-------------------------------------------------
 //  reset - reset to initial state
 //-------------------------------------------------
@@ -3176,7 +3193,6 @@ void opn_registers_base<IsOpnA>::reset()
 	}
 }
 
-
 //-------------------------------------------------
 //  save_restore - save or restore the data
 //-------------------------------------------------
@@ -3191,7 +3207,6 @@ void opn_registers_base<IsOpnA>::save_restore(ymfm_saved_state &state)
 	}
 	state.save_restore(m_regdata);
 }
-
 
 //-------------------------------------------------
 //  operator_map - return an array of operator
@@ -3239,7 +3254,6 @@ void opn_registers_base<true>::operator_map(operator_mapping &dest) const
 	dest = s_fixed_map;
 }
 
-
 //-------------------------------------------------
 //  write - handle writes to the register array
 //-------------------------------------------------
@@ -3285,7 +3299,6 @@ bool opn_registers_base<IsOpnA>::write(uint16_t index, uint8_t data, uint32_t &c
 	}
 	return false;
 }
-
 
 //-------------------------------------------------
 //  clock_noise_and_lfo - clock the noise and LFO,
@@ -3339,7 +3352,6 @@ int32_t opn_registers_base<IsOpnA>::clock_noise_and_lfo()
 	return bitfield(m_lfo_counter, 10+4) ? -pm : pm;
 }
 
-
 //-------------------------------------------------
 //  lfo_am_offset - return the AM offset from LFO
 //  for the given channel
@@ -3361,7 +3373,6 @@ uint32_t opn_registers_base<IsOpnA>::lfo_am_offset(uint32_t choffs) const
 	// (giving 7 bits) before applying the final shift
 	return (m_lfo_am << 1) >> am_shift;
 }
-
 
 //-------------------------------------------------
 //  cache_operator_data - fill the operator cache
@@ -3437,7 +3448,6 @@ void opn_registers_base<IsOpnA>::cache_operator_data(uint32_t choffs, uint32_t o
 	cache.eg_rate[EG_RELEASE] = effective_rate(op_release_rate(opoffs) * 4 + 2, ksrval);
 }
 
-
 //-------------------------------------------------
 //  compute_phase_step - compute the phase step
 //-------------------------------------------------
@@ -3477,7 +3487,6 @@ uint32_t opn_registers_base<IsOpnA>::compute_phase_step(uint32_t choffs, uint32_
 	// apply frequency multiplier (which is cached as an x.1 value)
 	return (phase_step * cache.multiple) >> 1;
 }
-
 
 //-------------------------------------------------
 //  log_keyon - log a key-on event
@@ -3538,7 +3547,6 @@ std::string opn_registers_base<IsOpnA>::log_keyon(uint32_t choffs, uint32_t opof
 	return buffer;
 }
 
-
 //*********************************************************
 // SSG ENGINE
 //*********************************************************
@@ -3558,7 +3566,6 @@ ssg_engine::ssg_engine(ymfm_interface &intf) :
 	m_override(nullptr)
 {
 }
-
 
 //-------------------------------------------------
 //  reset - reset the engine state
@@ -3585,7 +3592,6 @@ void ssg_engine::reset()
 	m_noise_state = 1;
 }
 
-
 //-------------------------------------------------
 //  save_restore - save or restore the data
 //-------------------------------------------------
@@ -3603,7 +3609,6 @@ void ssg_engine::save_restore(ymfm_saved_state &state)
 	state.save_restore(m_noise_count);
 	state.save_restore(m_noise_state);
 }
-
 
 //-------------------------------------------------
 //  clock - master clocking function
@@ -3645,7 +3650,6 @@ void ssg_engine::clock()
 		m_envelope_count = 0;
 	}
 }
-
 
 //-------------------------------------------------
 //  output - output the current state
@@ -3710,7 +3714,6 @@ void ssg_engine::output(output_data &output)
 	}
 }
 
-
 //-------------------------------------------------
 //  read - handle reads from the SSG registers
 //-------------------------------------------------
@@ -3730,7 +3733,6 @@ uint8_t ssg_engine::read(uint32_t regnum)
 	// otherwise just return the register value
 	return m_regs.read(regnum);
 }
-
 
 //-------------------------------------------------
 //  write - handle writes to the SSG registers
@@ -3756,7 +3758,6 @@ void ssg_engine::write(uint32_t regnum, uint8_t data)
 	else if (regnum == 0x0f && m_regs.io_b_out())
 		m_intf.ymfm_external_write(ACCESS_IO, 1, data);
 }
-
 
 //*********************************************************
 //  REGISTER CLASS
@@ -3858,7 +3859,6 @@ private:
 	// internal state
 	uint8_t m_regdata[REGISTERS];         // register data
 };
-
 
 // ======================> ssg_engine
 
@@ -3963,7 +3963,6 @@ inline uint32_t abs_sin_attenuation(uint32_t input)
 	return s_sin_table[input & 0xff];
 }
 
-
 //-------------------------------------------------
 //  attenuation_to_volume - given a 5.8 fixed point
 //  logarithmic attenuation value, return a 13-bit
@@ -4020,7 +4019,6 @@ inline uint32_t attenuation_to_volume(uint32_t input)
 	return s_power_table[input & 0xff] >> (input >> 8);
 }
 
-
 //-------------------------------------------------
 //  attenuation_increment - given a 6-bit ADSR
 //  rate value and a 3-bit stepping index,
@@ -4053,7 +4051,6 @@ inline uint32_t attenuation_increment(uint32_t rate, uint32_t index)
 	return bitfield(s_increment_table[rate], 4*index, 4);
 }
 
-
 //-------------------------------------------------
 //  detune_adjustment - given a 5-bit key code
 //  value and a 3-bit detune parameter, return a
@@ -4079,7 +4076,6 @@ inline int32_t detune_adjustment(uint32_t detune, uint32_t keycode)
 	int32_t result = s_detune_adjustment[keycode][detune & 3];
 	return bitfield(detune, 2) ? -result : result;
 }
-
 
 //-------------------------------------------------
 //  opm_key_code_to_phase_step - converts an
@@ -4207,7 +4203,6 @@ inline uint32_t opm_key_code_to_phase_step(uint32_t block_freq, int32_t delta)
 	return s_phase_step[eff_freq] >> (block ^ 7);
 }
 
-
 //-------------------------------------------------
 //  opn_lfo_pm_phase_adjustment - given the 7 most
 //  significant frequency number bits, plus a 3-bit
@@ -4229,7 +4224,6 @@ inline int32_t opn_lfo_pm_phase_adjustment(uint32_t fnum_bits, uint32_t pm_sensi
 		{ 0x77, 0x77, 0x72, 0x72, 0x17, 0x17, 0x12, 0x12 },
 		{ 0x77, 0x77, 0x72, 0x17, 0x17, 0x17, 0x12, 0x07 },
 		{ 0x77, 0x77, 0x17, 0x12, 0x07, 0x07, 0x02, 0x01 },
-		{ 0x77, 0x77, 0x17, 0x12, 0x07, 0x07, 0x02, 0x01 },
 		{ 0x77, 0x77, 0x17, 0x12, 0x07, 0x07, 0x02, 0x01 }
 	};
 
@@ -4246,8 +4240,6 @@ inline int32_t opn_lfo_pm_phase_adjustment(uint32_t fnum_bits, uint32_t pm_sensi
 	// every 16 cycles it inverts sign
 	return (lfo_raw_pm < 0) ? -adjust : adjust;
 }
-
-
 
 //*********************************************************
 //  FM OPERATOR
@@ -4272,7 +4264,6 @@ fm_operator<RegisterType>::fm_operator(fm_engine_base<RegisterType> &owner, uint
 {
 }
 
-
 //-------------------------------------------------
 //  reset - reset the channel state
 //-------------------------------------------------
@@ -4289,7 +4280,6 @@ void fm_operator<RegisterType>::reset()
 	m_keyon_live = 0;
 }
 
-
 //-------------------------------------------------
 //  save_restore - save or restore the data
 //-------------------------------------------------
@@ -4304,7 +4294,6 @@ void fm_operator<RegisterType>::save_restore(ymfm_saved_state &state)
 	state.save_restore(m_key_state);
 	state.save_restore(m_keyon_live);
 }
-
 
 //-------------------------------------------------
 //  prepare - prepare for clocking
@@ -4324,7 +4313,6 @@ bool fm_operator<RegisterType>::prepare()
 	return (m_env_state != (RegisterType::EG_HAS_REVERB ? EG_REVERB : EG_RELEASE) || m_env_attenuation < EG_QUIET);
 }
 
-
 //-------------------------------------------------
 //  clock - master clocking function
 //-------------------------------------------------
@@ -4343,7 +4331,6 @@ void fm_operator<RegisterType>::clock(uint32_t env_counter, int32_t lfo_raw_pm)
 	// clock the phase
 	clock_phase(lfo_raw_pm);
 }
-
 
 //-------------------------------------------------
 //  compute_volume - compute the 14-bit signed
@@ -4383,7 +4370,6 @@ if (m_choffs == 0)
 	return bitfield(sin_attenuation, 15) ? -result : result;
 }
 
-
 //-------------------------------------------------
 //  compute_noise_volume - compute the 14-bit
 //  signed noise volume of this operator, given a
@@ -4404,7 +4390,6 @@ int32_t fm_operator<RegisterType>::compute_noise_volume(uint32_t am_offset) cons
 	return bitfield(m_regs.noise_state(), 0) ? -result : result;
 }
 
-
 //-------------------------------------------------
 //  keyonoff - signal a key on/off event
 //-------------------------------------------------
@@ -4414,7 +4399,6 @@ void fm_operator<RegisterType>::keyonoff(uint32_t on, keyon_type type)
 {
 	m_keyon_live = (m_keyon_live & ~(1 << int(type))) | (bitfield(on, 0) << int(type));
 }
-
 
 //-------------------------------------------------
 //  start_attack - start the attack phase; called
@@ -4447,7 +4431,6 @@ void fm_operator<RegisterType>::start_attack(bool is_restart)
 		m_env_attenuation = 0;
 }
 
-
 //-------------------------------------------------
 //  start_release - start the release phase;
 //  called when a keyoff happens
@@ -4469,7 +4452,6 @@ void fm_operator<RegisterType>::start_release()
 		m_ssg_inverted = false;
 	}
 }
-
 
 //-------------------------------------------------
 //  clock_keystate - clock the keystate to match
@@ -4502,7 +4484,6 @@ void fm_operator<RegisterType>::clock_keystate(uint32_t keystate)
 			start_release();
 	}
 }
-
 
 //-------------------------------------------------
 //  clock_ssg_eg_state - clock the SSG-EG state;
@@ -4558,7 +4539,6 @@ void fm_operator<RegisterType>::clock_ssg_eg_state()
 	if (m_env_state == EG_RELEASE)
 		m_env_attenuation = 0x3ff;
 }
-
 
 //-------------------------------------------------
 //  clock_envelope - clock the envelope state
@@ -4633,7 +4613,6 @@ void fm_operator<RegisterType>::clock_envelope(uint32_t env_counter)
 	}
 }
 
-
 //-------------------------------------------------
 //  clock_phase - clock the 10.10 phase value; the
 //  OPN version of the logic has been verified
@@ -4651,7 +4630,6 @@ void fm_operator<RegisterType>::clock_phase(int32_t lfo_raw_pm)
 	// finally apply the step to the current phase value
 	m_phase += phase_step;
 }
-
 
 //-------------------------------------------------
 //  envelope_attenuation - return the effective
@@ -4678,8 +4656,6 @@ uint32_t fm_operator<RegisterType>::envelope_attenuation(uint32_t am_offset) con
 	return std::min<uint32_t>(result, 0x3ff);
 }
 
-
-
 //*********************************************************
 //  FM CHANNEL
 //*********************************************************
@@ -4699,7 +4675,6 @@ fm_channel<RegisterType>::fm_channel(fm_engine_base<RegisterType> &owner, uint32
 {
 }
 
-
 //-------------------------------------------------
 //  reset - reset the channel state
 //-------------------------------------------------
@@ -4712,7 +4687,6 @@ void fm_channel<RegisterType>::reset()
 	m_feedback_in = 0;
 }
 
-
 //-------------------------------------------------
 //  save_restore - save or restore the data
 //-------------------------------------------------
@@ -4724,7 +4698,6 @@ void fm_channel<RegisterType>::save_restore(ymfm_saved_state &state)
 	state.save_restore(m_feedback[1]);
 	state.save_restore(m_feedback_in);
 }
-
 
 //-------------------------------------------------
 //  keyonoff - signal key on/off to our operators
@@ -4742,7 +4715,6 @@ void fm_channel<RegisterType>::keyonoff(uint32_t states, keyon_type type, uint32
 			if (m_op[opnum] != nullptr)
 				debug::log_keyon("%c%s\n", bitfield(states, opnum) ? '+' : '-', m_regs.log_keyon(m_choffs, m_op[opnum]->opoffs()).c_str());
 }
-
 
 //-------------------------------------------------
 //  prepare - prepare for clocking
@@ -4762,7 +4734,6 @@ bool fm_channel<RegisterType>::prepare()
 	return (active_mask != 0);
 }
 
-
 //-------------------------------------------------
 //  clock - master clock of all operators
 //-------------------------------------------------
@@ -4778,7 +4749,6 @@ void fm_channel<RegisterType>::clock(uint32_t env_counter, int32_t lfo_raw_pm)
 		if (m_op[opnum] != nullptr)
 			m_op[opnum]->clock(env_counter, lfo_raw_pm);
 }
-
 
 //-------------------------------------------------
 //  output_2op - combine 4 operators according to
@@ -4832,7 +4802,6 @@ void fm_channel<RegisterType>::output_2op(output_data &output, uint32_t rshift, 
 	// add to the output
 	add_to_output(m_choffs, output, result);
 }
-
 
 //-------------------------------------------------
 //  output_4op - combine 4 operators according to
@@ -4950,7 +4919,6 @@ void fm_channel<RegisterType>::output_4op(output_data &output, uint32_t rshift, 
 	add_to_output(m_choffs, output, result);
 }
 
-
 //-------------------------------------------------
 //  output_rhythm_ch6 - special case output
 //  computation for OPL channel 6 in rhythm mode,
@@ -4984,7 +4952,6 @@ void fm_channel<RegisterType>::output_rhythm_ch6(output_data &output, uint32_t r
 	add_to_output(m_choffs, output, result * 2);
 }
 
-
 //-------------------------------------------------
 //  output_rhythm_ch7 - special case output
 //  computation for OPL channel 7 in rhythm mode,
@@ -5016,7 +4983,6 @@ void fm_channel<RegisterType>::output_rhythm_ch7(uint32_t phase_select, output_d
 	add_to_output(m_choffs, output, result * 2);
 }
 
-
 //-------------------------------------------------
 //  output_rhythm_ch8 - special case output
 //  computation for OPL channel 8 in rhythm mode,
@@ -5041,8 +5007,6 @@ void fm_channel<RegisterType>::output_rhythm_ch8(uint32_t phase_select, output_d
 	// add to the output
 	add_to_output(m_choffs, output, result * 2);
 }
-
-
 
 //*********************************************************
 //  FM ENGINE BASE
@@ -5080,7 +5044,6 @@ fm_engine_base<RegisterType>::fm_engine_base(ymfm_interface &intf) :
 	assign_operators();
 }
 
-
 //-------------------------------------------------
 //  reset - reset the overall state
 //-------------------------------------------------
@@ -5106,7 +5069,6 @@ void fm_engine_base<RegisterType>::reset()
 	for (auto &op : m_operator)
 		op->reset();
 }
-
 
 //-------------------------------------------------
 //  save_restore - save or restore the data
@@ -5138,7 +5100,6 @@ void fm_engine_base<RegisterType>::save_restore(ymfm_saved_state &state)
 	// invalidate any caches
 	invalidate_caches();
 }
-
 
 //-------------------------------------------------
 //  clock - iterate over all channels, clocking
@@ -5204,7 +5165,6 @@ curtime += 1.0 / double(sample_rate(7670454));
 	return m_env_counter;
 }
 
-
 //-------------------------------------------------
 //  output - compute a sum over the relevant
 //  channels
@@ -5261,7 +5221,6 @@ void fm_engine_base<RegisterType>::output(output_data &output, uint32_t rshift, 
 	}
 }
 
-
 //-------------------------------------------------
 //  write - handle writes to the OPN registers
 //-------------------------------------------------
@@ -5303,7 +5262,6 @@ void fm_engine_base<RegisterType>::write(uint16_t regnum, uint8_t data)
 	}
 }
 
-
 //-------------------------------------------------
 //  status - return the current state of the
 //  status flags
@@ -5314,7 +5272,6 @@ uint8_t fm_engine_base<RegisterType>::status() const
 {
 	return m_status & ~STATUS_BUSY & ~m_regs.status_mask();
 }
-
 
 //-------------------------------------------------
 //  assign_operators - get the current mapping of
@@ -5334,7 +5291,6 @@ void fm_engine_base<RegisterType>::assign_operators()
 			m_channel[chnum]->assign(index, (opnum == 0xff) ? nullptr : m_operator[opnum].get());
 		}
 }
-
 
 //-------------------------------------------------
 //  update_timer - update the state of the given
@@ -5363,7 +5319,6 @@ void fm_engine_base<RegisterType>::update_timer(uint32_t tnum, uint32_t enable)
 	}
 }
 
-
 //-------------------------------------------------
 //  engine_timer_expired - timer has expired - signal
 //  status and possibly IRQs
@@ -5389,7 +5344,6 @@ void fm_engine_base<RegisterType>::engine_timer_expired(uint32_t tnum)
 	update_timer(tnum, 1);
 }
 
-
 //-------------------------------------------------
 //  check_interrupts - check the interrupt sources
 //  for interrupts
@@ -5412,7 +5366,6 @@ void fm_engine_base<RegisterType>::engine_check_interrupts()
 	if (old_state != m_irq_state)
 		m_intf.ymfm_update_irq(m_irq_state ? true : false);
 }
-
 
 //-------------------------------------------------
 //  engine_mode_write - handle a mode register write
@@ -5450,7 +5403,6 @@ void fm_engine_base<RegisterType>::engine_mode_write(uint8_t data)
 	}
 }
 
-
 ...
 // Many of the Yamaha FM chips emit a floating-point value, which is sent to
 // a DAC for processing. The exact format of this floating-point value is
@@ -5475,7 +5427,6 @@ void fm_engine_base<RegisterType>::engine_mode_write(uint8_t data)
 // 0 10xxxxxxxx-----  ->  1 10xxxxxxxx-----  ->  110   0  0xxxxxxx
 // 0 0xxxxxxxx------  ->  1 0xxxxxxxx------  ->  111   0  0xxxxxxx
 
-
 //*********************************************************
 //  GLOBAL HELPERS
 //*********************************************************
@@ -5491,7 +5442,6 @@ inline uint32_t bitfield(uint32_t value, int start, int length = 1)
 	return (value >> start) & ((1 << length) - 1);
 }
 
-
 //-------------------------------------------------
 //  clamp - clamp between the minimum and maximum
 //  values provided
@@ -5506,7 +5456,6 @@ inline int32_t clamp(int32_t value, int32_t minval, int32_t maxval)
 	return value;
 }
 
-
 //-------------------------------------------------
 //  array_size - return the size of an array
 //-------------------------------------------------
@@ -5516,7 +5465,6 @@ constexpr uint32_t array_size(ArrayType (&array)[ArraySize])
 {
 	return ArraySize;
 }
-
 
 //-------------------------------------------------
 //  count_leading_zeros - return the number of
@@ -5555,7 +5503,6 @@ inline uint8_t count_leading_zeros(uint32_t value)
 }
 
 #endif
-
 
 // Many of the Yamaha FM chips emit a floating-point value, which is sent to
 // a DAC for processing. The exact format of this floating-point value is
@@ -5611,7 +5558,6 @@ inline int16_t encode_fp(int32_t value)
 	return ((exponent << 10) | (mantissa & 0x3ff)) ^ 0x200;
 }
 
-
 //-------------------------------------------------
 //  decode_fp - given a 3.10 floating-point value,
 //  convert it to a signed 16-bit value
@@ -5625,7 +5571,6 @@ inline int16_t decode_fp(int16_t value)
 	// shift mantissa up to 16 bits then apply inverted exponent
 	return int16_t(value << 6) >> bitfield(value, 10, 3);
 }
-
 
 //-------------------------------------------------
 //  roundtrip_fp - compute the result of a round
@@ -5655,8 +5600,6 @@ inline int16_t roundtrip_fp(int32_t value)
 	return (value >> exponent) << exponent;
 }
 
-
-
 //*********************************************************
 //  HELPER CLASSES
 //*********************************************************
@@ -5682,8 +5625,6 @@ enum access_class : uint32_t
 	ACCESS_PCM,
 	ACCESS_CLASSES
 };
-
-
 
 //*********************************************************
 //  HELPER CLASSES
@@ -5722,7 +5663,6 @@ struct ymfm_output
 	// internal state
 	int32_t data[NumOutputs];
 };
-
 
 // ======================> ymfm_saved_state
 
@@ -5787,8 +5727,6 @@ public:
 	int32_t m_offset;
 };
 
-
-
 //*********************************************************
 //  INTERFACE CLASSES
 //*********************************************************
@@ -5810,7 +5748,6 @@ public:
 	// mode register write; called by the interface after synchronization
 	virtual void engine_mode_write(uint8_t data) = 0;
 };
-
 
 // ======================> ymfm_interface
 
@@ -6043,7 +5980,6 @@ ym2203_device::ym2203_device(const machine_config &mconfig, const char *tag, dev
 {
 }
 
-
 //-------------------------------------------------
 //  device_start - start of emulation
 //-------------------------------------------------
@@ -6057,11 +5993,9 @@ void ym2203_device::device_start()
     parent::device_start();
 }
 
-
 ymopn.h
     map(0xe000, 0xe001).rw("ym1", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
     map(0xe002, 0xe003).rw("ym2", FUNC(ym2203_device::read), FUNC(ym2203_device::write));
-
 
 *****************************************************************************************
 * PMD/MMF NOTES:                                                                        *
@@ -6109,11 +6043,9 @@ send_ay(0x08,0x0F);//Channel A Amplitude
 send_ay(0x09,0x0F);//Channel B Amplitude
 send_ay(0x0A,0x0F);//Channel C Amplitude
 
-
 *****************************************************************************************
 * LINKS:                                                                                *
 *****************************************************************************************
-
 
 https://delmunsoft.com/PMD%20Programming.html
 https://github.com/gzaffin/pmdmini
@@ -6127,9 +6059,6 @@ https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_adpcm.h
 https://github.com/mamedev/mame/blob/master/src/devices/sound/ymfm_mame.h
 https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.h
 https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.cpp
-
-
-
 
 ===============================================================================
 
@@ -6255,7 +6184,6 @@ https://github.com/mamedev/mame/blob/master/3rdparty/ymfm/src/ymfm_ssg.cpp
 	This is useful for CHECKing if there is a gap in the loop.
 
 	However, if there is a local infinite loop such as [ ... ] 0, the length will not be displayed.
-	However, if there is a local infinite loop such as [ ... ] 0, the length will not be displayed.
 
 -------------------------------------------------------------------------------
 
@@ -6373,7 +6301,6 @@ Result: The rest of the tones not defined in MML are not pronounced.
 
 	In a sense, this is special and hardly used, but the song data created in this way can be used for multiple voices of the same song data.
 The same song data can be played with multiple tone sets.
-The same song data can be played with multiple tone sets.
 	It is possible to do the following
 
 ex.1
@@ -6413,7 +6340,6 @@ Result: "test.ff" is created by adding the voices in sample8.mml to the voice da
 	In the case of #Composer, look for the environment variables "COMPOSER=" and "USER=".
 
 	In the case of #Arranger, search for the environment variables "ARRANGER=" and "USER=".
-	In the case of #Arranger, search for the environment variables "ARRANGER=" and "USER=".
 
 	and if found, use the string defined there.
 	In case of duplication, the environment variables "COMPOSER" and "ARRANGER" will take precedence.
@@ -6445,12 +6371,7 @@ Result: "test.ff" is created by adding the voices in sample8.mml to the voice da
 			----- End of MC.DOC -----
 ===============================================================================
 
-
-
-
-
 ...............
-
 
 ===============================================================================
 
@@ -6645,7 +6566,6 @@ PMDB2.COM / PMD86.COM / PMDVA.COM (SpeakBoard, OtoBei, 86, VA2)
 	Note that this is not a dedicated part for the YM2608 rhythm instrument. (->§1-2-2)
 
 	The R part defines the pattern, and the K part specifies the order in which the pattern is played.
-	The R part defines the pattern, and the K part specifies the order in which the pattern is played.
 
 	The R part is internally numbered from 0 to 255 in the order of definition.
 	To specify the order in which the patterns are played, use the R command (->§6-7) in the K part.
@@ -6756,7 +6676,6 @@ B ...
 [Example 3]
 ` MML Coded by M.
 MML Coded by M. Kajihara.
-Copyright(c)1994.
 Copyright(c)1994.
 
 	If you want to write a comment between MML lines, you can use the ` symbol.
@@ -7214,7 +7133,6 @@ If no value is specified in the [[Result]] command, the default value is 2 loops
 	This is the same as specifying the command "MXA1 MXB1".
 
 	If you want to change only one of the two LFOs, use the MX command.
-	If you want to change only one of the two LFOs, use the MX command.
 
 [Example] #LFOSpeed Extend
 [If you want to change only one of the two LFOs, use the MX command.
@@ -7468,7 +7386,6 @@ Example] #Include default.mml [Result] The default.mml is read and inserted in i
 [Related] _M command (->§4-16)
 
 ===============================================================================
-===============================================================================
 *******************************************************************************
 §3 [[[[ Definition commands ]]]]
 *******************************************************************************
@@ -7486,16 +7403,9 @@ Example] #Include default.mml [Result] The default.mml is read and inserted in i
 -------------------------------------------------------------------------------
 [Format 1] @ Tone number ALG FB
 	 AR DR SR RR SL TL KS ML DT AMS
-	 AR DR SR RR SL TL KS ML DT AMS
-	 AR DR SR RR SL TL KS ML DT AMS
-	 AR DR SR RR SL TL KS ML DT AMS
 [Format 2] @ Tone number ALG FB
 	 AR DR SR RR SL TL KS ML DT DT2 AMS
-	 AR DR SR RR SL TL KS ML DT DT2 AMS
-	 AR DR SR RR SL TL KS ML DT DT2 AMS
-	 AR DR SR RR SL TL KS ML DT DT2 AMS
 [Form 3] @ Tone number ALG FB
-	 AR DR RR SL TL KSL ML KSR EGT VIB AM
 	 AR DR RR SL TL KSL ML KSR EGT VIB AM
 -------------------------------------------------------------------------------
 [Note] The = tone name can be written in any position.
@@ -8215,7 +8125,6 @@ If you want to specify up to 64th notes, specify C192, etc. [Note 1] If you chan
 ===============================================================================
 [Related] Q command (->§4-12)
 	
-
 
 -------------------------------------------------------------------------------
 [Format 1] _ +numeric
@@ -8971,9 +8880,7 @@ H D1 v13 o5g1
 	(CDEFGHIJ + #FM3Extend).
 	However, if you set it to #Bendrange, it is valid for all parts.
 
-
 [Note: Once the bend width is set, the cautions described in the I command (->§7-5) become effective.
-	In addition, MML becomes very difficult to read, so it is best not to use it except when converting from MIDI data.
 	In addition, MML becomes very difficult to read, so it is best not to use it except when converting from MIDI data.
 
 [Example] B12
@@ -9294,7 +9201,6 @@ B to D (depth) : depthA × depthB (Parameter 3 × Parameter 4)
 5) Return to 3).
 
 [Image] D・・・・ ・・・・
-
 
 ±0 → ・・・・ ------------------------------ →
 　　　 A B C
@@ -9818,7 +9724,6 @@ If you want to turn off the LFO completely when using AMS, specify #0H0. [Exampl
 	This section describes commands to control global and local loops.
 
 	Local loops are useful for reducing the MML size and the size of the compiled data.
-	Local loops are useful for reducing the MML size and the size of the compiled data.
 
 	Local looping is useful for reducing the MML size and the size of the compiled data. Global looping is used for infinite looping of a song.
 
@@ -10243,7 +10148,6 @@ PCM (PPZ) Value 1 -128 to -4 left (constant regardless of value)
 ===============================================================================
 
 	This section describes the commands that control the rhythm instruments available in the YM2608.
-	This section describes the commands that control the rhythm instruments available in the YM2608.
 
 	This section describes the commands that control the rhythm sound source available in the YM2608. Although they can be specified for all parts, they have no direct effect on the performance of the specified parts.
 	This command can be specified for all parts, but it has no direct effect on the performance of the specified part.
@@ -10391,7 +10295,6 @@ I [\h q0 \cp r32 ]0
 ===============================================================================
 
 	This section describes commands to directly control FM sound source LSIs and drivers such as PMD and PDR.
-	This section describes commands to directly control FM sound source LSIs and drivers such as PMD and PDR.
 
 	It is rarely used, but if you do use it, you may need to know enough about the control target.
 	This section describes commands to directly control FM sound source LSIs and drivers such as PMD and PDR.
@@ -10501,7 +10404,6 @@ I [\h q0 \cp r32 ]0
 	If you add + or - to a value, it changes it relative to the current value.
 	Note that + decreases the volume.
 
-	However, if +0 or -0 is specified, it will be reinitialized to the value specified in the PMD options.
 	However, if +0 or -0 is specified, it will be reinitialized to the value specified in the PMD options.
 
 [Example]
@@ -10619,7 +10521,6 @@ The default value is 96. [Example] Z72 [Result] From there, the driver will know
 -------------------------------------------------------------------------------
 [Source] FM / SSG / PCM / R select / R define
 -------------------------------------------------------------------------------
-	Write a value to Status1 (which can be obtained by the programmer through the driver).
 	Write a value to Status1 (which can be obtained by the programmer through the driver).
 
 	＋When + or - is indicated (format 2), it adds/subtracts to the current Status1.
@@ -10896,7 +10797,6 @@ H cde ` fga b
 
 	In this case, the
 ` Comment
-` Comment
 	in this case, it should be written as
 
 ===============================================================================
@@ -10919,7 +10819,6 @@ H cde ` fga b
 			--- End of PMDMML.MAN --- (3 lines)
 ===============================================================================
 
-
 MCONV.EXE Ver.0.01
 　　　　　　　　FMvoice data includer for P.M.D.music data 
 　　　　　　　　　　　　　Copyright 1992 PasoRin/T.Hayashi All Rights Reserved
@@ -10927,7 +10826,6 @@ MCONV.EXE Ver.0.01
 1.1 Introduction
 　This program is to store FM voice data for PMD98/VA(C)Kajihara's performance OBJ file which "does not contain FM voice data".
 　The author is working on bringing 88 music discs to 98 (^_^;). The author is working on bringing the music disc of 88 to 98. The select and player "PPLAY" made by a junior colleague of mine is also called ".........", which did not think of storing tone data (laughs).
-
 
 2. How to use
 　When you are ready, enter the following command.
@@ -10946,11 +10844,9 @@ If there is an error, the rewriting process will be interrupted with a message. 
 
 As for the OBJ data in 4, the current version only supports OBJ codes up to PMD Ver. 3.9. In the future, when the number of codes increases along with PMD's functional expansion, an error will occur. At that time, if you want to fix ............, you can do so (oy).
 
-
 3. Bugs
 　I don't think there are any bugs in ............, but I made it in a rush, so there may be bugs. If you find a bug, please send me a bug report (^_^;)(^_^;)(^_^;)(^_^;)(^_^;)(^_^;)(^_^;)(^_^;)(^_^;)(^_^;)
 　(^_^;) And I don't need to bother to say it, but it's "no guarantee" (^_^;) I do check the performance data of PMD, but it's not perfect. Even if I wanted to make it perfect, there is no check code in PMD. .........
-
 
 4. About reprinting
 In order to get a wide range of bug reports, reprinting is allowed with some limitations. The conditions for permission are as follows
@@ -10961,15 +10857,11 @@ In order to get a wide range of bug reports, reprinting is allowed with some lim
 　　Please contact me with information on where to reprint. I'm hungry for bug reports! (laughs).
 　　　　(laughs) In that case, be sure to include the operating machine, data on other resident objects, and any abnormal conditions. 5.
 
-
 History (big laugh)
 　　Ver.0.00 92/05/11 Suddenly I wanted to make it (laugh)
 
-
 6. Future plan
 　Selection of the theme for my thesis: .........
-
-
 
 7. Contact
 　If you send e-mail to the following BBS, you should be able to contact me.
@@ -10992,11 +10884,9 @@ Thank you very much for the download. (Thank you very much.
 
 Please read to the end.
 
-
 ===============================================================================
 Introduction
 ===============================================================================
-
 
 I created a "P.M.D. Parameter Viewer" in the hope that I could see the PMD performance visually (it was really just a thought).
 
@@ -11010,10 +10900,8 @@ There is also a file select function, so you can select a different song to play
 
 We hope you will use it as a reference for debugging when composing with PMD.
 
-
 This is for PMD Ver. 4.8g or later.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 ===============================================================================
 Operating environment of this software
@@ -11025,26 +10913,19 @@ NEC PC-9801/9821 series or EPSON PC-286/386/486 series
 
 It does not work in high-resolution mode.
 
-
 ===============================================================================
 How to use
 ===============================================================================
-
 
 You can use this "P.M.D. Parameter Viewer" (hereinafter referred to as PMDPV) and
 
  (PMD music file) in a directory with a path.
 
-
 M (PMD music file) in the directory where the path goes.
 
 (Refer to the PMD documentation for details on how to reside PMD, options when residing PMD, etc.)
 
-
-
 M ([FILENAME] can be omitted if the song extension is .M)
-
-
 
 M ([FILENAME] can be omitted if the song extension is .M) Load the song data with
 
@@ -11052,12 +10933,9 @@ If a PCM (PPC, P86) or PPS file is defined in the song file
 
 The file is automatically loaded and defined.
 
-
 If the song data or PCM file cannot be found, search for the environment variable "PMD" and
 
 If the song data or PCM file is not found, it will search the environment variable "PMD" to find it. (For more information about the environment variable "PMD", please refer to the PMD document.
-
-
 
 (For details about the environment variable "PMD", please refer to the PMD document.
 
@@ -11097,7 +10975,6 @@ Key operations in Viewer mode
 [vf-4] Rewind
 [vf-5] Fast forward
 
-
 Key operation in filer mode
 
 [XFER][ESC] Filer mode off
@@ -11108,23 +10985,19 @@ Key operation in filer mode
 
 Other keys are the same as in Viewer mode, except for Channel Mask.
 
-
 If you are in Filer mode and the Kana key is locked.
 
 If the Kana key is locked in Filer mode, you will go to Viewer mode when you select a file and start playing.
 
 This key cannot be changed at the moment, but we will do something about it soon.
 
-
 This may seem like a lot, but it's not much (^^;
 
 If you use it for a while, you'll see what I mean.
 
-
 ===============================================================================
 Options at startup
 ===============================================================================
-
 
 By specifying options at startup, you can make some differences in the way the program starts and displays.
 
@@ -11132,16 +11005,12 @@ The options can be before or after the file name.
              They can be lowercase or uppercase.
              The demi-liter can be either / or -. ( e.g. PMDPV /P -L /K )
 
-
  /K ・・・ Start playing immediately without waiting for the Spacebar to be pressed.
  /P ・・・ The song data is not loaded, and the playback status remains the same, and the viewer screen appears.
  /+ ・・・ The key display will be changed to a sharp (+) display. (The default is to display the odd-note)
  /A ・・・ Do not set ADPCM, PCM, SSGPCM data.
 
-
-
 Note on the P option at startup!
-
 
 PMD allocates the performance data buffer when it is resident, so once the song data is loaded, the next song can be played.
 
@@ -11153,33 +11022,24 @@ PMD allocates the performance data buffer when it is resident, so once the song 
 
    (Same as the /P option of PMP.COM (PMD Player).) If no data is loaded immediately after PMD is resident, the performance will be strange.
 
-
 The /P option has higher priority than the song file option.
 
    A>PMDPV ???? .M /P ← ???? M is not loaded and PMDPV is started.
 
    M is not loaded and PMDPV is started. (Normally, it is impossible to specify both options.
 
-
 If you do not specify the song data, the /P option is automatically added.
    (Early on, the /P option can be omitted (^^; A>PMDPV alone is OK))
 
-
-
 For example, if you are using MCH.EXE (PMD MML compiler evaluation version) and you want to use
-
 
 A>MCH /V ???? .MML
 
-
 MML will start playing suddenly.
-
 
 A>PMDPV /P ( A>PMDPV alone is also acceptable)
 
-
 This will take you to the viewer screen without loading the song data.
-
 
 As an advanced version (laughs)
 
@@ -11189,18 +11049,13 @@ You may want to use pipe processing (^^).
 
 (This is to reduce the time lag, but it is not the original way of using pipes (^^;))
 
-
-
-
 ===============================================================================
 Explanation of each parameter displayed
 ===============================================================================
 
-
 The screen is arranged from the top in the order of FM1-6, PSG1-3, PCM, and Rhythm.
 
 The parameters are listed in order from left to right.
-
 
 　　　　Description : Display : Explanation
 -----------------------------------------------------------------------------
@@ -11222,14 +11077,11 @@ The scale displayed is the scale after modulation by the _ command.
 
 The panning of the rhythm part is not displayed. (There's no place for it... ^^;)
 
-
-
 In the rhythm part, there is no indication below the volume, and the name of the drum being played is displayed.
 
 The correspondence between the @ command and the ³ command in the R part and the drum name displayed is as follows
 
 The correspondence between the @ command and the ³ command and the drum name displayed in the R part is as follows. (The ³ command does not need to be in the K or R part.
-
 
 Display @ number Rhythm Instrument MML
 ------------------------
@@ -11247,7 +11099,6 @@ RiC @ 1024 \c
 ER1 @2048
 ER2 @4084
 ER3 @8192
-
 
 Various data will be displayed below it.
 
@@ -11269,7 +11120,6 @@ Tempo 48 ：TEMPO 48 ： Value specified by t command.
 PCM (PPC, P86) file name: PCM : PCM file name used by the loaded song.
 PPS (PPS) file name : PPS : PPS file name used by the loaded song.
 
-
 Note 4: The playing time is limited to 18 hours, 12 minutes and 15 seconds (65535 seconds). If it exceeds that time
 	(Don't listen to it for 18 hours. (Don't listen to it for 18 hours, lol.)
 	Looping does not return to 00:00:00.
@@ -11283,16 +11133,13 @@ Note 5: If you use a certain notation in MML (e.g. triplets), the measure number
 Note 6: In MML, the value is specified by the T command.
 	The value specified by the t command is converted to the value of the T command inside PMD and handled.
 
-
 ===============================================================================
 Part mask function
 ===============================================================================
 
-
 Pressing the numeric keypad or the full key allows you to mask (inaudible) a part.
 
 Once a part is masked, pressing the same key again will unmask it.
-
 
 The correspondence between keys and parts is as follows
 
@@ -11315,16 +11162,13 @@ Rhythm , -
 [HOME CLR] ・・・ Release all masks.
 [HELP] ・・・ Invert mask
 
-
 When each key is pressed, the leftmost LED of the part that is turned off goes out and the part line is displayed in black.
 
 When you press each key, the leftmost LED of the part you turned off will turn off, the part line will be displayed in black, and the part will be masked (inaudible).
 
-
 ===============================================================================
 Measure Jump
 ===============================================================================
-
 
 If you press the [TAB] key while playing, the area to the right of the "JUMP BAR" will be highlighted and you will be prompted to enter a value.
 
@@ -11342,16 +11186,13 @@ This means that you cannot jump to measure 0. Because measure 0 means you start 
 
 So, if you want to jump to measure 0, just play it again :-)
 
-
 Naturally, you cannot use the numeric keypad to mask parts or [HOME CLR] to unmask all parts while entering numerical values.
 
 Naturally (^^), you cannot use the numeric keypad to mask parts or [HOME CLR] to release all masks while entering numerical values. All other operations are OK.
 
-
 ===============================================================================
 File selector function
 ===============================================================================
-
 
 The channel mask function is not available in the file selector mode.
 
@@ -11359,18 +11200,15 @@ The channel mask function is not available in the file selector mode.
 
 The rest of the operations are all possible.
 
-
 Press the L key to display the list of drives. 
 
 Use the cursor keys to select a drive, and press the Return key or the
 
 Press the L key to display the list of drives.
 
-
 ===============================================================================
 Display of error and PCM definition information
 ===============================================================================
-
 
 If you use PMDB2.COM, PDR.COM, or PPSDRV.COM and hear the corresponding data
 
@@ -11379,7 +11217,6 @@ If you are using PMDB2.COM, PDR.COM, or PPSDRV.COM and hear the corresponding da
 A single letter of the alphabet appears in the lower left corner of the screen, just left of the function display.
 
 The letters in ( ) mean that the color is reversed.
-
 
 P(Yellow) ・・・ PCM (P86) being defined (^^.)
 P(Green) ・・・ PCM file is matched, so it is not read.
@@ -11393,9 +11230,7 @@ A (red) ・・・ ADPCM is not installed or PMDB2 is not resident.
 S (red) ・・・ PDR and PPSDRV are not resident.
 M (red) ・・・ The song data buffer has been overloaded.
 
-
 In other words, if something appears in red in the lower left corner, it means "no good" (^^;
-
 
 If you have any good display method, please let me know.
 
@@ -11405,11 +11240,9 @@ I don't like to say "I don't play because there was no PCM file. (^^;
 
 (^^;) I don't like to say "I don't play because there was no PCM file", so I just show the error message and force to play.
 
-
 ===============================================================================
 About external characters
 ===============================================================================
-
 
 I'm using external characters from 7621h to 7639h.
 
@@ -11421,11 +11254,9 @@ However, if the printer is turned off and rebooted while PMDPV is running, the e
 
 Well, I don't think there is any important data in Gaiji.
 
-
 ===============================================================================
 Copyright and so on
 ===============================================================================
-
 
 This software is freeware. There is no copyright waiver.
 
@@ -11439,11 +11270,9 @@ The author is not responsible for any damage caused by the use of this software.
 
 However, there are no restrictions on the use of PMD as a bonus for listening to music on music discs, games, etc. Please feel free to do so (^^)
 
-
 ===============================================================================
 About reprinting
 ===============================================================================
-
 
 It's not a big deal, but if I write something like this, people will think, "Damn! I'm not a big fan of this.
 
@@ -11462,11 +11291,9 @@ If you can contact me, please send me an e-mail. I think. I hope you can send me
 
 DOC to see if it's reprintable or not (lol)
 
-
 DOC to see if it can be reprinted. ===============================================================================
 DOC.
 ===============================================================================
-
 
 I've been using PMDPV since the beginning of the project.
 
@@ -11475,7 +11302,6 @@ I wanted PMDPV to be "natural", or "airy", or something that people could use ve
 It is unthinkable (unbearable) that I don't have FD (File & Directory) or LHA in my computer environment now.
 
 I can't imagine (or bear) not having FD (File & Directory) or LHA in my computer environment. However, I'm still far from being able to do that (;_;))
-
 
 I'll keep reviewing the screen structure, display parameters, and functions.
 
@@ -11491,11 +11317,9 @@ I'd be very happy to hear from you.
 
 I'd like to have more programming power~(;_;)
 
-
 In making this, I referred to KAJA's various source lists related to PMD.
 
 I used KAJA's various PMD-related source lists as a reference.
-
 
 I used PCMLOAD.INC as is for the PCM definition part (^^;
 
@@ -11503,16 +11327,13 @@ I also used the disk reading routine DISKPMD.INC to search for the environment v
 
 INC to search for the environment variable "PMD" (^^;)
 
-
 I would like to thank KAJA for all his help.
 
 I would like to take this opportunity to thank you. Thank you very much.
 
-
 I would like to thank the following people for their comments and advice on this program.
 
 Thank you very much. (__)Peck
-
 
 	 Special Thanks to GRRIFIN-san
 			     K.Saruyama-san
@@ -11531,11 +11352,9 @@ Thank you very much. (__)Peck
 				Other people who sent me e-mails with their impressions
 				It encourages me to develop this program.
 
-
 I'm very happy to have the support of so many people.
 
 "When I receive an email saying "I'm using it. I'm very happy when I get an email saying "I'm using it" (;_;)
-
 
 At first, I was hoping that this program would be useful to KAJA, even if only a little.
 
@@ -11543,14 +11362,11 @@ But while I was making it, I found that it was helping me in the opposite direct
 
 What a pity.
 
-
 One day, I met KAJA and I was so impressed by his music that I came to this point.
 
 I'm happy to be able to listen to cool songs on PMD...
 
 Wishing for the further development of PMD.
-
-
 
 				      1996. 4. planet Anthea (;_;)( ANT00318 )
 					        PMD-BBS ( LEIROS )
@@ -11564,50 +11380,35 @@ Wishing for the further development of PMD.
  	History of P.M.D. Parameter Viewer
 								   As of April, 1996
 
-
-
 Ver.0.0 It would be nice to be able to see the PMD performance. I thought it would be nice to be able to see the PMD performance, so I worked on the screen structure.
-
 
 Ver.0.1 At first, I made a screen and displayed all parameters in hexadecimal.
 
-
 ~~~~~~~~~~~~~~~~~~~~~ Not disclosed so far (^^;) ~~~~~~~~~~~~~~~~~~~~~~~~~
-
 
 Ver. 0.2 The basic display was completed, but the loading of the song data was not completed.
 	     It relied on PMP (PMD player) to read song data.
 
-
 Ver.0.21 LFO Switch and Portament Switch 0 and 1 were reversed.
 	     Ver.0.21 LFO Switch and Portament Switch 0 and 1 were reversed, and the spelling of "Driver" was wrong;
 
-
 Ver.0.3 It can read songs and check PMD resident.
-
 
 Ver.0.31 Fixed a bug that the display of "E" and "F" in FM part was wrong.
 
-
 Ver.0.4 Display the envelope of PSG part.
-
 
 Ver.0.41 Add channel off function.
 
-
 Ver. 0.42 Turned off by the channel off function, and can be turned back on again.
-
 
 Ver. 0.43 Display the panning of the FM sound source.
 	     Fixed a bug that the file name could not be read if it had more than 15 characters.
 
-
 Ver.0.5 Add some decoration to the screen. (^^;
-
 
 Ver.0.51 Add a level meter.
 	     Fixed a bug that the level meter was not displayed correctly in 20-line mode.
-
 
 Ver. 0.52 Added "red zone" to the level meter.
 	     Changed PCM part display to musical scale.
@@ -11616,50 +11417,39 @@ Ver. 0.52 Added "red zone" to the level meter.
 	     Change the PSG envelope parameters from -128 to +127 except for AL, DR, and RR.
 	     Ver.0.53 PSG Envelope
 
-
 Ver.0.53 PSG envelope parameters DL and DV are changed to display from -128 to +127.
 	     Level meter adjustment, color coding
 	     Display the name of the file currently being played.
 	     Add channel ALL ON function.
 
-
 Ver.0.6 Add /L option to hide the level meter.
 	     Abolished PSG envelope display.
 	     Displays the currently played measure, status, and various addresses.
-
 
 Ver.0.61 Use VSYNC interrupt (I didn't do it until now. (^^;)
 	     Improvement of PMD resident check.
 	    (Thanks to KAJA for the routine.)
 
-
 Ver. 0.62 Review of graphics default settings.
 	     Ver.0.62 Reviewed graphics default settings.
 
-
 Ver. 0.63 ESC can be used to quit while the game is stopped.
-
 
 Ver. 0.63b Display of playing time and loop time.
 	     Abolish the data storage address display.
 
-
 Ver.0.63c Bug fix of playing time display, stop playing by space key.
-
 
 Ver. 0.63d Fixed a bug in the playing time display.
 	     When you start playing, wait until the correct time is reached, and make the playing time display accurate.
 	     However, it didn't feel right to use, so it was put in storage (^_^;)
 
-
 Ver.0.7 for PMD Ver.3.9c
 	     Enables to display PCM pan and adjust tempo.
 	     Enhanced rhythm sound source related display.
 
-
 Ver.0.71 Bug fix of PCM scale display
 	     When SHIFT+ESC is pressed, the performance is terminated as it is.
-
 
 Ver. 0.72 "Q" will also end the performance.
 	     Bug Fix: Kanji file names could not be displayed.
@@ -11671,16 +11461,13 @@ Ver. 0.8 The key (black key) can be displayed as either sharp or odd.
 	     (The above two points are ideas of Mr. Kono's MXPV (^^))
 	     Make the drawing speed of the initial screen faster (^^.)
 
-
 Ver.0.8k Add keyboard display function.
 	     Initialized graphics and improved settings.
-
 
 Ver.0.81 for PMD Ver.4.0b
 	     Added pause function by adding PMD's pause function.
 	     SSG tone display is changed to Tone Noise Mix.
 	     Improved the keyboard display routine a little.
-
 
 Ver.0.82 Added /K option not to wait for space key
 	     Keep the inversion of the tone and the sharp tone /+ option added
@@ -11688,39 +11475,31 @@ Ver.0.82 Added /K option not to wait for space key
 	     Pause can also be done with the / key (numeric keypad).
 	     Change "CraC" to "RidC" and "LTom" to "MTom" in the drum display when using the \ command.
 
-
 Ver. 0.82b Changed the option to be either before or after the file name.
 	     Add "/P" option to display the viewer screen without loading the performance data.
-
 
 Ver.0.83 for PMD Ver.4.0i
 	     Add comment function of PMD to display comments.
 	     PLAY, STOP, and PAUSE are displayed according to the flag whether it is playing or not.
 	     Improved the operation at the time of starting by /P option.
 
-
 Ver. 0.83b Support ESC sequence character in comment field.
-
 
 Ver. 0.83c Make it possible to read PCM data.
 	     (Thanks to KAJA for the routine.)
 
-
 Ver.0.83d For PMD Ver.4.1
 	     Changed PCM reading routine because PCM reading relation has been enhanced.
-
 
 Ver. 0.83e PMD now has a part mask function.
 	     The PCM reading routine has been further enhanced.
 	     The PCM reading routine has been enhanced and incorporated (^^.)
-
 
 Ver. 0.83f PCM reading routine now reads PPS files.
 	     Also incorporated (^^;;
 	     When a data file is not found, the environment variable is checked and
 	     (This routine was also provided by KAJA.
 	     (This routine was also given by KAJA (^^;;;))
-
 
 Ver.0.83g Do not read PCM/PPS data /A option added
 	     The work of LFO switch and portamento switch has been changed.
@@ -11729,31 +11508,22 @@ Ver.0.83g Do not read PCM/PPS data /A option added
 	     Fixed a bug that the performance time is set to 00:00:00 when part masking.
 	     FM3b, c and d can be masked in PMDB2.COM.
 
-
 Ver.0.83h PCM reading routine is a little faster. Also embedded (^^;
-
 
 Ver.0.83i for PMD Ver.4.4
 	     PCM data reading is now super fast, so it is embedded again (^^.)
 	     Display the volume down values of FM, SSG, PCM and Rhythm.
 
-
-
 Ver.0.83j Fixed a bug in displaying the volume down value.
-
 
 Ver.0.83k Add /B? option to fast-forward to the specified measure at the start of playing.
 
-
 Ver.0.83l Extend the rhythm display for SSG PCM.
-
 
 Ver. 0.83m Added measure display and fast-forward option for PMD, since the measure function relation of PMD was extended to 2 bytes.
 	     The measure display and fast-forward options are adapted to it.
 
-
 Ver.0.83n Automatically detects PMDB2 and PMD86 and displays PCM scale.
-
 
 Ver. 0.90 Rewrote source code from scratch. (But I used the previous version.
 	     Save interrupt vector of stop key (^^.)
@@ -11762,26 +11532,20 @@ Ver. 0.90 Rewrote source code from scratch. (But I used the previous version.
 	     Add 1-bar skip function.
 	     Read mask status when starting with /P option(^^;
 
-
 Ver.0.90b Add measure jump function.
 	     Fixed a bug that RimShot was not displayed in Ver.0.90;
-
 
 Ver.0.90c PSG noise average frequency is displayed.
 	     Bug fix for /K option(;_;)
 
-
 Ver.0.90d Fix a bug that the measure jump before the start of the performance was not correct(^^;
 
-
 Ver.0.90e Adjust the start-up when no option is set.
-
 
 Ver.0.90f Added the gate time display.
 	     The display of the volume was made to correspond also to the W command and so on.
 	     added the processing when the song data exceeds the performance buffer.
 	     (I used the file "pmp.asm" as a reference.)
-
 
 Ver.0.91 for PMD Ver.4.7a
 	     Changed according to various changes in the performance work.
@@ -11790,27 +11554,21 @@ Ver.0.91 for PMD Ver.4.7a
 	     Added support for changing songs by PMK after starting PMDPV (slow)
 	     Various other details (rewind, save file name, display PCM file name, etc.)
 
-
 Ver.0.92 Add filer function.
 	     Fixed a bug that garbage appears on the screen when changing songs with PMK after starting PMDPV (^^.)
 	     Abolished /B option.
-
 
 Ver.0.92b Fixed bugs related to mask and pause when reading song data in filer mode.
 	     pause-related bugs when loading song data in filer mode;
 	     Fix the bug of level meter in filer mode;
 	     Supported Kanji characters for path names and PCM file names in filer mode;
 
-
 Ver.0.92c Fix a bug of PCM pan display when PMD86 is resident;
 	     Display of file name in filer mode.
 
-
 Ver.0.92d Not for public release (^^;), some functions are added only in this version.
 
-
 Ver.0.92e Added PCM load routine function for PMDPPZ for 94'Winter Comic PMD.
-
 
 Ver.0.92f Added processing when the number of files is maximum in filer mode.
 	     In filer mode, files with read-only attribute and hidden attribute are also searchable.
@@ -11822,7 +11580,6 @@ Ver. 0.92g Added display of LFO2 (LFO B) and LFO switch 2.
 	     Changed the time display to digital characters.
 	     Changed layout of time and status section.
 	     Fixed a bug that T → t conversion was not working well (^^.)
-
 
 					I often go to the net to play (^^)
 
@@ -11837,20 +11594,13 @@ EXE in PMDPV92G.LZH in the same directory, and then execute TXTPV92G.COM.
 
 TXTPV.EXE will be created.
 
-
-
-
 After I made PMDPV graphical, some people asked me to keep the text version.
 
 So, here is the text version.
 
-
 It's text-only, no graphics.
 
-
-
 The differences from the graphic version are
-
 
 The level meter has been removed.
 
@@ -11860,15 +11610,11 @@ The list of files in the filer screen has one more line.
 
 I can't tell the version number or who made it without looking at the "usage" page.
 
-
 It's like this.
-
 
 The empty space after the measure number display is where you type in the measure jump number.
 
 It's the kind of thing where you press TAB and enter a number.
-
-
 
 I think it's hard to see the title, etc. (^^;
 
@@ -11876,30 +11622,21 @@ If I mask it, it turns blue, but I don't know. If it's all black, it's a bit awk
 
 It's a little scary when there is no background like in the graphic version. I think it's better to use x as before.
 
-
 I'm not sure if it's better to use x as before.
 
 "I'm not sure if it's the same as the previous version;
 
 If you think something is wrong, don't hesitate to contact me. If you think something is wrong, please don't hesitate to let me know (^^ thank you very much).
 
-
-
 I used WSP (c) Wakichi to create the self-extracting file.
 
-
-
-
-
 LEIROS
-
 
 ================
 ==============================================================================
                      PMD for Windows "PMDWin" Ver.0.36
                         Copyright & Programmed by C60
 ==============================================================================
-
 
 ------------------------------------------------------------------------------
 Introduction
@@ -11909,7 +11646,6 @@ Introduction
     It supports all PMD98 song data (PMDB2, PPSDRV, P86DRV, PPZ8).
     It is not possible to make it play only by this dll.
     Please get a player separately.
-
 
 ------------------------------------------------------------------------------
 Installation and uninstallation
@@ -11928,11 +11664,9 @@ Installation and uninstallation
             2608_TOM.WAV ;Tom
             2608_RIM.WAV ;Rim Shot
         
-        
     (b) Uninstallation
         Delete this dll with Explorer, etc.
         Delete the player, wave files, etc. if they are not needed.
-
 
 ------------------------------------------------------------------------------
 Operation check environment
@@ -11944,7 +11678,6 @@ Operation check environment
     Lenovo Thinkpad X200 (Core2Duo P8600, built-in Conexant 20561 SmartAudio HD)
             + Windows7 composite frequency = 55kHz
 
-
 ------------------------------------------------------------------------------
 About embedded software
 
@@ -11953,7 +11686,6 @@ About embedded software
     
         FM Sound Generator with OPN/OPM interface
         Copyright (C) by cisc 1998, 2003.
-
 
 ------------------------------------------------------------------------------
 Terms of Use & Reprint
@@ -11985,7 +11717,6 @@ Terms of Use & Reprint
     FMPMDdefine.pas) that are related to music performance, or if you wish to modify them.
     If you wish to incorporate or modify any part of these files, please disclose the source code.
 
-
 ------------------------------------------------------------------------------
 Acknowledgments
 
@@ -12004,7 +11735,6 @@ Acknowledgments
     Mr. Maeda and Ms. fumika for releasing useful components.
     Thank you very much for bug reports, valuable comments, and requests.
     Thank you very much.
-
 
 ------------------------------------------------------------------------------
 ▼ History
@@ -12220,7 +11950,6 @@ ver 0.31 2003/08/03
     fixed a bug that setfmcalc55k was not working anymore
     Fixed a bug in getmemo3 / fgetmemo3 that could cause a memory leak when the acquisition string was 0 bytes.
     Fixed a bug in getmemo3 / fgetmemo3 that could cause a memory leak when the get string was 0 bytes.
-    Fixed a bug in getmemo3 / fgetmemo3 that could cause a memory leak when the get string was 0 bytes.
 
 ver 0.32 2003/08/13
     Fixed a bug that the return value of the getmemo API was wrong.
@@ -12257,8 +11986,6 @@ ver 0.39 2020/08/16
     Fixed the bug that wait was not applied when writing ADPCM register.
     Fixed the bug that the sound becomes abnormal when writing the ADPCM playback address.
 
-
-
 ------------------------------------------------------------------------------
 Contact information
 
@@ -12266,15 +11993,12 @@ Contact information
     Homepage http://c60.la.coocan.jp/
     Twitter c60fmp
 
-
-
                                                                 C60
 =======================
 ==============================================================================
                      FMP for Windows "WinFMP" Ver.0.18
                         Copyright & Programmed by C60
 ==============================================================================
-
 
 ------------------------------------------------------------------------------
 Introduction
@@ -12285,7 +12009,6 @@ Introduction
     
     From this version, PDZF/Z8X for Windows (created by TAN-Y) is officially supported.
     (PDZFZ8XWin requires Ver. 2.0.0 or later. Ver. 1.1.0 cannot be played.
-
 
 ------------------------------------------------------------------------------
 Installation and Uninstallation
@@ -12309,11 +12032,9 @@ Installation and Uninstallation
         From this version, please do not rename PDZFZ8XWin.dll and WinFMP.dll.
         Please leave them as they are.
         
-        
     (b) Uninstallation
         Delete this dll using Explorer or similar.
         Delete the player, wave files, etc. if they are not needed.
-
 
 ------------------------------------------------------------------------------
 Operation check environment
@@ -12325,7 +12046,6 @@ Operation check environment
     Lenovo Thinkpad X200 (Core2Duo P8600, built-in Conexant 20561 SmartAudio HD)
             + Windows7 SP1 composite frequency = 55kHz
 
-
 ------------------------------------------------------------------------------
 ▼ About embedded software
 
@@ -12334,7 +12054,6 @@ Operation check environment
     
         FM Sound Generator with OPN/OPM interface
         Copyright (C) by cisc 1998, 2003.
-
 
 ------------------------------------------------------------------------------
 Terms of Use & Reprint
@@ -12365,7 +12084,6 @@ Terms of Use & Reprint
     FMPMDdefine.pas) that are related to music performance, or if you wish to modify them.
     If you wish to incorporate or modify any part of these files, please disclose the source code.
 
-
 ------------------------------------------------------------------------------
 Acknowledgments
 
@@ -12385,7 +12103,6 @@ Acknowledgments
     Mr. Maeda and Ms. fumika for releasing useful components.
     Thank you very much for bug reports, valuable comments, and requests.
     Thank you very much.
-
 
 ------------------------------------------------------------------------------
 ▼ History
@@ -12491,15 +12208,11 @@ ver 0.18 2012/03/18
     Fixed a bug in setpos2 that caused an infinite loop.
     Fixed a bug that the count of the whole song and the count of the song loop was wrong.
 
-
-
 ------------------------------------------------------------------------------
 Contact information
 
     E-mail HQD00151@nifty.com
     Homepage http://c60.fmp.jp/
-
-
 
                                                                 C60
 
@@ -12597,11 +12310,6 @@ o5cedf>c<gabo6
 and the last note (=octave) will be preserved.
 v, @, l, etc. can be specified in the same way.
 
-
-
-
-
-
 The source of IRQ 0 is /IRQ from the YM2203 in the single processor L System games. Pin 25 (/IRQ) of the YM2203 is connected to pin 37 of the TC0090LVC. Pin 25 is pulled low when either timer-A or timer-B expires, and that triggers IRQ 0. I've looked through the code of all the single processor games and none of them actually start either of the timers (although all of them do actually initialise both timers). MAME currently fires IRQ 0 at scanline 120 for all L System games. I currently own Plotting, Puzznic (effectively the same base board as Plotting) and Play Girls single processor boards and have verified my findings on those boards. I'd imagine that all single processor boards have pin 25 of the YM2203 connected to pin 37 of the TC0090LVC.
 
 Steps to reproduce this, on hardware, are detailed below.
@@ -12617,8 +12325,6 @@ Fighting Hawk - pin 37 of the TC0090LVC is connected to pin 62 of the TC0170ABT 
 Raimais - pin 37 of the TC0090LVC is connected to pin 4 (/INT L) of the MB8421 dual port ram. The slave CPU /NMI (pin 17) is connected to pin 48 (INT /R) of the dual port ram. The IRQ 0 routine in the main program is simply a ret statement and IRQ 0 is never enabled. Pin 16 of the audio CPU is connected to pin 56 (/IRQ) of the YM2610. The audio program starts the timers and interrupts are generated on the audio CPU by the YM2610, as expected. The slave and audio CPU's run at 8MHz (measured by me, on my own board, pics attached). The L System driver incorrectly has them at 4MHz (12000000/3) and states that these are "not verified". I've also verified the TC0090LVC runs at 6.66528 MHz on this board, from pin 5 of the 74F74 (which is connected to pin 122 of CPU). This is shown as "needs verification from pin 122" in the driver.
 
 Champion Wrestler - I've not looked at the code for this game yet, although I do own a Champion Wrestler board and it's on my list of things to do next
-
-
 
 Control register
 ---------------------
@@ -12649,11 +12355,7 @@ Steps To Reproduce	The simplest way to demonstrate this functionality, on real h
 
 With these changes made the game will boot to service mode approx 1 frame after timer-A has been started (the period of timer-A is 16.39 milliseconds). This is because the timer expires, triggers IRQ0 and the code jumps to the new address. This simple demo can be seen in this video (you can just about see the service mode test grid appear when the logic probe goes low when timer-A expires) :-
 
-
-
-
 Changing the byte at $0bfe back to 30 will allow the game to boot as normal (when running on hardware) as timer-A will not be started. When running on MAME however the code will still jump to the service mode as IRQ0 always fires at scanline 120.
-
 
 A slightly more complex example involves resetting timer-B in the IRQ 0 routine, when it expires. This is done by making the following changes :-
 
@@ -12676,7 +12378,6 @@ c3 3b 00 jp $003b ; jump to ei/reti
 
 The results of the above code changes can be seen in this video. You can see pin 25 of the YM2203 (and hence pin 37 of the CPU) pulsing low when timer-B expires and is reset by the IRQ 0 routine.
 
-
 Additional Information	I realise that adding the correct IRQ 0 trigger mechanism will have very little effect on the single processor games (the only difference being that they'll no longer call IRQ 0 at scanline 120 but that routine is merely an ei/reti combo in all the single processor games so the timing difference, per frame, will be 18 T-states plus the overhead of servicing the interrupt). I'd still very much like to see the correct behaviour emulated, if purely for personal reasons, as I'm planning on writing an audio engine to run on the Plotting board which requires the sound chip timers to generate an interrupt and it would be beneficial to be able to test the audio engine in MAME before deploying to hardware.
 
 Thank you for all the hard work and dedication that the MAME dev team consistently put in to constantly improve MAME.
@@ -12694,7 +12395,6 @@ Raimais audio CPU speed
 jpg file icon Raimais pin 11 PAL.jpg (3,039,581 bytes) May 29, 2018, 00:11 Uploaded by cmonkey
 pdf file icon LQV-8M00-012.pdf (752,276 bytes) May 29, 2018, 00:11 Uploaded by cmonkey
 Changing the byte at $0bfe back to 30 will allow the game to boot as normal (when running on hardware) as timer-A will not be started. When running on MAME however the code will still jump to the service mode as IRQ0 always fires at scanline 120.
-
 
 A slightly more complex example involves resetting timer-B in the IRQ 0 routine, when it expires. This is done by making the following changes :-
 
@@ -12728,10 +12428,6 @@ The difference (when compared to normal Envelope Generator mode) is that the res
 this results in only 256 steps instead of normal 1024.
 
 But seems to resolution in SSG-EG mode 8 times lower, not 4. I checked that by changing adding value from 4 to 8 in strings 1147 and 1170 of fm.c, and it sounds more like true. But there still some differences with envelope stages, by now I can't figure it clearly (you can see this in samples with any audio editor).I also can provide test register array (in simply format, .GYM-like), which was used to record these samples.
-
-
-
-
 
 +#pragma once
 +
@@ -12909,7 +12605,6 @@ But seems to resolution in SSG-EG mode 8 times lower, not 4. I checked that by c
 +	UINT8 HadWrite;
 +};
 +
-+
 +#define MAX_VGM_FILES	0x10
 +#define MAX_VGM_CHIPS	0x80
 +static char vgm_namebase[0x80];
@@ -12926,7 +12621,6 @@ But seems to resolution in SSG-EG mode 8 times lower, not 4. I checked that by c
 +void vgm_close(UINT16 vgm_id);
 +static void vgm_write_delay(UINT16 vgm_id);
 +static UINT8 vgm_nes_ram_check(VGM_INF* VI, UINT32 datasize, UINT32* value1, UINT32* value2, const UINT8* data);
-+
 +
 +// ASCII to Wide-Char String Copy
 +INLINE int atwcpy(wchar_t* dststr, const char* srcstr)

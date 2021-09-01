@@ -1425,4 +1425,4 @@ YM2 (A5): 28 02		=> CH3 ALL OPS KEY OFF
 
 [ALL]   : 61 FF FF  => [WAIT] FF FF SAMPLES
 [ALL]   : 61 14 34  => [WAIT] 14 34 SAMPLES
-66
+[ALL]   : 66		=> end of sound data
