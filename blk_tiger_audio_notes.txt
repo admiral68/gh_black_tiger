@@ -28,18 +28,37 @@ wp fd4,2a,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; 
 
 you can now use BambooTracker to make YM2203 music
 
+
+BT CHANNEL STRUCTS (0x30)
+0x00-0x01 	=> PTR TO CURRENT BYTE IN CHANNEL DATA (MSB/LSB)
+IX+0x2      => SOME VALUE HI
+IX+0x3		=> SOME VALUE LO
+
+IX+0x8      => MAYBE LAST BT CMD THAT WASNT 30 OR
+
+IX+0xa		=> BYTE AFTER BT CMD 02
+IX+0xd      => BYTE AFTER BT CMD 03
+IX+0x17		=> BYTE AFTER BT CMD 07
+IX+0x18		=> some data ptr for channel
+
+IX+0x1a		=> maybe attack rate
+
+
 BLACK TIGER COMMANDS:
 =====================
+        ram:0219 cb 7f           BIT        0x7,A
+
 	(SOUND LEVEL (PC=0219))
 	0x06 		- (21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F,30,31,32,33,34,35,36,37,39)
 	0x4F		- (20)
+	
 	0x81		- (11,14)
 	0x88		- (05,06,07,0B,0E,10,12,1A,1B,1C,1D,1E,3A,40)
-	0x8F		- (01,02,03,0D,17)
+	0x8F		- (01,02,0D,17)
 	0x90		- (3F)
 	0xC1		- (3B,3C)
 	0xC8		- (08,09,0A,0C,0F,13,15,16,18,19,3D,3E,41,42,43)
-	0xCF		- (04)
+	0xCF		- (03,04)
  
 	(SUB-SOUND LEVEL (PC=08F7))
 	0x00		-
@@ -47,7 +66,8 @@ BLACK TIGER COMMANDS:
 		08		-
 		09		-
 	0x02
-		C8 03
+		C8 
+	0x03
 			2F
 			23
 			17
@@ -56,6 +76,7 @@ BLACK TIGER COMMANDS:
 	0x0F
 	0x21		-
 	0x22		-
+	0x3X		=> SET        0x7,(IX+0xb) & 
 
 	0x69 (note 440h)
 	0x6D (note 55Bh)
@@ -90,6 +111,9 @@ BLACK TIGER COMMANDS:
 	0xF9 (no notes)
 	0xF9 (note 55Bh)
 	0xFE (no notes)
+	
+	
+	(20) 0x4F: 
 
 EXAMPLE OF "GAME OVER" COMMANDS AND ASSOCIATED NOTES
 
