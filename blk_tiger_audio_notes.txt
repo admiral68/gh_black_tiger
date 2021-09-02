@@ -52,24 +52,48 @@ IX+0x18/19	=> PTR TO ROM SETTINGS for channel
 IX+0x1a		=> maybe attack rate
 
 
+
+SOUND 00: RESETS SOUND AND BUFFERED CHANNELS
+SOUND 1F: RESETS SOUND (SSG ONLY?)
+SOUND 38: STOPS SOUND AND LOADS ANY BUFFERED CHANNELS (SOUND)
+
+
 BLACK TIGER COMMANDS:
 =====================
         ram:0219 cb 7f           BIT        0x7,A
+		
+	FIRST BYTE: 	x.......			: HAS CHANNEL DATA (1=true; 0=false)
+	                .x......			; ?? (03,04,08,09,0A,0C,0F,13,15,16,18,19,3D,3E,41,42,43)
+	                ...x....			; ?? (3F)
+					....xxxx			; SOUND CANCEL MASK 
+											0: 3F; 
+											1: 11,14,3B,3C; 
+											6: 21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F,30,31,32,33,34,35,36,37,39
+											8: 05,06,07,08,09,0A,0B,0C,0E,0F,10,12,13,15,16,18,19,1A,1B,1C,1D,1E,3A,3D,3E,40,41,42,43
+											F: 01,02,03,04,0D,17,20
 
-	(SOUND LEVEL (PC=0219))
+	(BREAKPOINT (PC=0219))
 	0x06 		- (21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F,30,31,32,33,34,35,36,37,39)
-	
-	0x81		- (11,14)
-	0x88		- (05,06,07,0B,0E,10,12,1A,1B,1C,1D,1E,3A,40)
-	0x8F		- (01,02,0D,17)
-	0x90		- (3F)
-	
 	0x4F		- (20)
-	0xC1		- (3B,3C)
+	
+	0x90		- (3F) 		DRAGON_DIE_SOUND
+
+	0x81		- (11,14)	TIME_EXPIRING_SOUND/UNKNOWN_ALARM_SOUND_(LOOPS)
+	0xC1		- (3B,3C)	FALLING_SOUND/BOUNCING_SOUND_(LOOPS)
+
+	0x88		- (05,06,07,0B,0E,10,12,1A,1B,1C,1D,1E,3A,40)
+							ITEM_TAKEN/PLAYER_TAKES_ZENNY_COIN/FIRE_PILLAR_WARNING
+							WEAPON_CLASH_METALLIC_BATTLE/POT_BREAKS/BIG_BOSS_HIT/PLAYER_GETS_ITEM_FROM_OLD_MAN
+							PLAYER_CLIMB/FLAIL_EMPTY_HIT/PLAYER_LANDS_ON_PLATFORM/PLAYER_ASCENDS_DURING_CUTSCENE/PLAYER_GRABS_LADDER
+							
 	0xC8		- (08,09,0A,0C,0F,13,15,16,18,19,3D,3E,41,42,43)
-	0xCF		- (03,04)
+
+	0x8F		- (01,02,0D,17)		PLAYER_LOSES_VITALITY/PLAYER_DEATH/PLAYER_EARNS_EXTRA_LIFE/PLAYER_LOSES_ARMOR
+	0xCF		- (03,04)			ENEMY_INJURED_BLOOP_SOUND/ENEMY_DEFEATED_SOUND 
  
-	(SUB-SOUND LEVEL (PC=08F7))
+   =================================================================================================================================
+ 
+	(BREAKPOINT (SUB-SOUND LEVEL (PC=08F7)))
 	0x00		- SETS IX+0x04 (next byte)
 		07		-
 		08		-
@@ -80,13 +104,15 @@ BLACK TIGER COMMANDS:
 			2F
 			23
 			17
-	0x06		-
-	0x07		=> SETS IX+0x17 (next byte) & SetChannelOperatorsFromTable
-	0x0F
+	0x06		=> 
+	0x07		=>  07 xx	 	SetChannelOperatorsFromTable (SETS IX+0x17 (next byte)) -- Setup channel
+	0x0F		=>  0F			end of sound channel data 
 	0x21		-
 	0x22		-
-	0x3X		=> SET        0x7,(IX+0xb) & 
+	0x3_		=> 	3_ xx	    Send a note to HW(?) (SET 0x7,(IX+0xb) &  ...) -- (xx is translated into a note plus duration and then sent)
 
+   =================================================================================================================================
+ 
 	0x69 (note 440h)
 	0x6D (note 55Bh)
 	0x6E (note 2D6h)
@@ -433,40 +459,44 @@ uint8_t ym2203::read_data()
 	return result;
 }
 
+
+
+
+
                              SOUNDS_TABLE                                    XREF[1]:     Maybe_PlaySoundEffect:020e(*)
         ram:0dc1 00 ff           dw         FF00h                                            Sound 0: FF stops music playing
-        ram:0dc3 49 0e           dw         PLAYER_LOSES_VITALITY_SOUND                      = 8Fh
-        ram:0dc5 9e 0e           dw         PLAYER_DEATH_SOUND                               = 8Fh
-        ram:0dc7 7f 0f           dw         ENEMY_INJURED_BLOOP_SOUND                        = CFh
-        ram:0dc9 d4 0f           dw         ENEMY_DEFEATED_SOUND                             = CFh
-        ram:0dcb fe 0f           dw         ITEM_TAKEN_SOUND                                 = 88h
-        ram:0dcd 7b 10           dw         PLAYER_TAKES_ZENNY_COIN_SOUND                    = 88h
-        ram:0dcf f5 10           dw         FIRE_PILLAR_WARNING_SOUND                        = 88h
-        ram:0dd1 5e 11           dw         POT_BREAKS_REVEALS_COIN_SOUND                    = C8h
-        ram:0dd3 c7 11           dw         FIRE_PILLAR_SOUND                                = C8h
-        ram:0dd5 08 12           dw         GAS_JET_SOUND                                    = C8h
-        ram:0dd7 32 12           dw         WEAPON_CLASH_METALLIC_BATTLE_SOUND               = 88h
-        ram:0dd9 84 12           dw         KILL_BAT_SOUND                                   = C8h
-        ram:0ddb ae 12           dw         PLAYER_EARNS_EXTRA_LIFE_SOUND                    = 8Fh
-        ram:0ddd 64 13           dw         POT_BREAKS_SOUND                                 = 88h
-        ram:0ddf bc 13           dw         PLAYER_DISCOVERS_TREASURE_SOUND                  = C8h
-        ram:0de1 86 14           dw         BIG_BOSS_HIT_SOUND                               10
-        ram:0de3 b0 14           dw         TIME_EXPIRING_SOUND                              = 81h
-        ram:0de5 ee 14           dw         PLAYER_GETS_ITEM_FROM_OLD_MAN_SOUND              = 88h
-        ram:0de7 cc 15           dw         BOOM_EXPLOSION_SOUND                             = C8h
-        ram:0de9 0d 16           dw         UNKNOWN_ALARM_SOUND                              = 81h
-        ram:0deb 4e 16           dw         IMPACT_SOUND                                     = C8h
-        ram:0ded 78 16           dw         CLASH_SPINNING_COIN_SOUND                        = C8h
-        ram:0def a2 16           dw         PLAYER_LOSES_ARMOR_SOUND                         = 8Fh
-        ram:0df1 08 17           dw         MICHELIN_MAN_FIREBREATHING_SOUND                 = C8h
-        ram:0df3 35 17           dw         FIRETHROWER_TAUNT_SOUND                          = C8h
-        ram:0df5 b2 17           dw         PLAYER_CLIMB_SOUND                               = 88h
-        ram:0df7 c8 17           dw         FLAIL_EMPTY_HIT_SOUND                            = 88h
-        ram:0df9 de 17           dw         PLAYER_LANDS_ON_PLATFORM_SOUND                   = 88h
-        ram:0dfb 1c 18           dw         PLAYER_ASCENDS_DURING_CUTSCENE_SOUND             = 88h
-        ram:0dfd 32 18           dw         PLAYER_GRABS_LADDER_SOUND                        = 88h
+        ram:0dc3 49 0e           dw         PLAYER_LOSES_VITALITY                            = 8Fh
+        ram:0dc5 9e 0e           dw         PLAYER_DEATH                                     = 8Fh
+        ram:0dc7 7f 0f           dw         ENEMY_INJURED_BLOOP                              = CFh
+        ram:0dc9 d4 0f           dw         ENEMY_DEFEATED                                   = CFh
+        ram:0dcb fe 0f           dw         ITEM_TAKEN                                       = 88h
+        ram:0dcd 7b 10           dw         PLAYER_TAKES_ZENNY_COIN                          = 88h
+        ram:0dcf f5 10           dw         FIRE_PILLAR_WARNING                              = 88h
+        ram:0dd1 5e 11           dw         POT_BREAKS_REVEALS_COIN                          = C8h
+        ram:0dd3 c7 11           dw         FIRE_PILLAR                                      = C8h
+        ram:0dd5 08 12           dw         GAS_JET                                          = C8h
+        ram:0dd7 32 12           dw         WEAPON_CLASH_METALLIC_BATTLE                     = 88h
+        ram:0dd9 84 12           dw         KILL_BAT                                         = C8h
+        ram:0ddb ae 12           dw         PLAYER_EARNS_EXTRA_LIFE                          = 8Fh
+        ram:0ddd 64 13           dw         POT_BREAKS                                       = 88h
+        ram:0ddf bc 13           dw         PLAYER_DISCOVERS_TREASURE                        = C8h
+        ram:0de1 86 14           dw         BIG_BOSS_HIT                                     10
+        ram:0de3 b0 14           dw         TIME_EXPIRING                                    = 81h
+        ram:0de5 ee 14           dw         PLAYER_GETS_ITEM_FROM_OLD_MAN                    = 88h
+        ram:0de7 cc 15           dw         BOOM_EXPLOSION                                   = C8h
+        ram:0de9 0d 16           dw         UNKNOWN_ALARM                                    = 81h
+        ram:0deb 4e 16           dw         IMPACT                                           = C8h
+        ram:0ded 78 16           dw         CLASH_SPINNING_COIN                              = C8h
+        ram:0def a2 16           dw         PLAYER_LOSES_ARMOR                               = 8Fh
+        ram:0df1 08 17           dw         MICHELIN_MAN_FIREBREATHING                       = C8h
+        ram:0df3 35 17           dw         FIRETHROWER_TAUNT                                = C8h
+        ram:0df5 b2 17           dw         PLAYER_CLIMB                                     = 88h
+        ram:0df7 c8 17           dw         FLAIL_EMPTY_HIT                                  = 88h
+        ram:0df9 de 17           dw         PLAYER_LANDS_ON_PLATFORM                         = 88h
+        ram:0dfb 1c 18           dw         PLAYER_ASCENDS_DURING_CUTSCENE                   = 88h
+        ram:0dfd 32 18           dw         PLAYER_GRABS_LADDER                              = 88h
         ram:0dff 01 ff           dw         FF01h                                            1f: stops playing music
-        ram:0e01 10 1b           dw         COIN_OR_CREDIT_ADDED_SOUND                       = 4Fh    O
+        ram:0e01 10 1b           dw         COIN_OR_CREDIT_ADDED                             = 4Fh    O
         ram:0e03 8c 1b           dw         LEVEL_1_MUSIC                                    Level 1 music
         ram:0e05 de 1f           dw         LEVEL_2_MUSIC                                    = 06h
         ram:0e07 ef 23           dw         LEVEL_3_MUSIC                                    = 06h
@@ -492,16 +522,16 @@ uint8_t ym2203::read_data()
         ram:0e2f 6d 61           dw         UNKNOWN_FANFARE_MUSIC_02                         = 06h
         ram:0e31 04 ff           dw         FF04h                                            38 stops music playing
         ram:0e33 36 62           dw         UNKNOWN_FANFARE_MUSIC_03                         = 06h
-        ram:0e35 5c 18           dw         FLAIL_HIT_SOUND                                  = 88h
-        ram:0e37 86 18           dw         FALLING_SOUND                                    = C1h
-        ram:0e39 9c 18           dw         BOUNCING_SOUND_(LOOPS)                           = C1h
-        ram:0e3b c9 18           dw         OLD_MAN_TALKING_SOUND                            = C8h
-        ram:0e3d 57 19           dw         OLD_MAN_TALKING_SOUND_02                         = C8h
-        ram:0e3f a9 19           dw         DRAGON_DIE_SOUND                                 = 90h
-        ram:0e41 90 1a           dw         MAYBE_BLOCK_BOUNCE_UP_SOUND                      40
-        ram:0e43 ba 1a           dw         FALLING_SOUND_02                                 = C8h
-        ram:0e45 d0 1a           dw         BOSS_HIT_SOUND                                   = C8h
-        ram:0e47 e6 1a           dw         DRAGON_SPEW_FIRE_SOUND                           43 might be the last sound
+        ram:0e35 5c 18           dw         FLAIL_HIT                                        = 88h
+        ram:0e37 86 18           dw         FALLING                                          = C1h
+        ram:0e39 9c 18           dw         BOUNCING      _(LOOPS)                           = C1h
+        ram:0e3b c9 18           dw         OLD_MAN_TALKING                                  = C8h
+        ram:0e3d 57 19           dw         OLD_MAN_TALKING_02                               = C8h
+        ram:0e3f a9 19           dw         DRAGON_DIE                                       = 90h
+        ram:0e41 90 1a           dw         MAYBE_BLOCK_BOUNCE_UP                            40
+        ram:0e43 ba 1a           dw         FALLING_02                                       = C8h
+        ram:0e45 d0 1a           dw         BOSS_HIT                                         = C8h
+        ram:0e47 e6 1a           dw         DRAGON_SPEW_FIRE                                 43 might be the last sound
 
 PMD .M files
 ============
