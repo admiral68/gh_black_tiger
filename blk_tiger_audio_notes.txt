@@ -62,8 +62,8 @@ BLACK TIGER COMMANDS:
 =====================
         ram:0219 cb 7f           BIT        0x7,A
 		
-	FIRST BYTE: 	x.......			: HAS CHANNEL DATA (1=true; 0=false)
-	                .x......			; ?? (03,04,08,09,0A,0C,0F,13,15,16,18,19,3D,3E,41,42,43)
+	FIRST BYTE: 	x.......			: HAS CHANNEL DATA (0=true; 1=false) or IS SSG (0=false; 1=true)
+	                .x......			; WHICH SSG CHIP (0=YM1/1=YM2) (03,04,08,09,0A,0C,0F,13,15,16,18,19,3D,3E,41,42,43)
 	                ...x....			; ?? (3F)
 					....xxxx			; SOUND CANCEL MASK 
 											0: 3F; 
@@ -94,22 +94,35 @@ BLACK TIGER COMMANDS:
    =================================================================================================================================
  
 	(BREAKPOINT (SUB-SOUND LEVEL (PC=08F7)))
-	0x00		- SETS IX+0x04 (next byte)
+	0x00		=>	01 xx		(SETS IX+0x04 = xx)
 		07		-
 		08		-
 		09		-
-	0x02
+	0x01		=>	01 xx		(SETS IX+0x06 = xx and clears IX+0x7)
+	0x02		=>	02 xx		(SETS IX+0x0a = xx)
 		C8 
-	0x03
+	0x03		=>	03 xx		(SETS IX+0x0d = xx)
 			2F
 			23
 			17
-	0x06		=> 
-	0x07		=>  07 xx	 	SetChannelOperatorsFromTable (SETS IX+0x17 (next byte)) -- Setup channel
-	0x0F		=>  0F			end of sound channel data 
-	0x21		-
-	0x22		-
-	0x3_		=> 	3_ xx	    Send a note to HW(?) (SET 0x7,(IX+0xb) &  ...) -- (xx is translated into a note plus duration and then sent)
+	0x04		=>	04 xx		(SETS IX+0x12 = xx) 
+	0x05		=>	05 xx		(SETS BIT 0 of IX+0x0b = (xx > 0) ? 1 : 0)) 
+	0x06		=>	06 xx		
+	0x07		=>  07 xx	 	(SETS IX+0x17 = xx). If not buffering, SetChannelOperatorsFromTable 
+	0x08		=>  08 xx	 	(NO OPERATION)
+	0x0D		=>  0D xx	 	(NO OPERATION)
+	0x0E		=>  0E			(AFFECTS IX+0x2d) end of sound channel data 
+	0x0F		=>  0F			(AFFECTS IX+0x2e) end of sound channel data 
+	
+	0x2_		=>  2_ xx       Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
+	                            (IX+0xc = (2_ & 0x0F))
+	
+	0x3_		=> 	3_ xx	    (SET 0x7,(IX+0xb))
+	                            Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
+								
+								
+	0x10-1F		=>  xx			Untranslated note
+	0x40-FF
 
    =================================================================================================================================
  
