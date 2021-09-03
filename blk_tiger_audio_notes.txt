@@ -29,7 +29,18 @@ wp fd4,2a,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; 
 you can now use BambooTracker to make YM2203 music
 
 
-BT CHANNEL STRUCTS (0x30)
+LOCS TO REMEMBER:
+
+0x218			- GENERAL BP FOR SOUNDS
+0x433			- WORKHORSE METHOD FOR FM
+
+
+BT VARIABLES (C000-C0FF)
+------------------------
+
+
+BT FM CHANNEL STRUCTS (0x30) (C100-C220; C300-C420)
+---------------------------------------------------
 0x00-0x01 	=> PTR TO CURRENT BYTE IN CHANNEL SOUND DATA (MSB/LSB)
 IX+0x2      => MAYBE SHORT NOTE DURATION HI
 IX+0x3		=> MAYBE SHORT NOTE DURATION LO
@@ -39,11 +50,14 @@ IX+0x4		=> BYTE AFTER BT CMD 00 (USUALLY "05") (Note duration offset?)
 IX+0x8/9    => MAYBE LONG DURATION (WORD)
 
 IX+0xa		=> BYTE AFTER BT CMD 02
-IX+0xb		=> (MAYBE 80h = YM1, 00h = YM2)
-IX+0xc		=> CHANNEL # AFTER CMD 0x2X
+IX+0xb		=> x....... DOUBLE THE SHORT DURATION FLAG 		(CMD 0x3_)
+               .......x HOLD NOTE			 				(CMD 0x05)
+			   
+IX+0xc		=> SHORT NOTE DURATION. (AFTER CMD 0x2n)
 
 IX+0xd      => BYTE AFTER BT CMD 03 (CHANNEL NOTE OFFSET?)
 IX+0xe		=> MAYBE LOW 8 BITS OF CURRENT NOTE
+
 
 IX+0x17		=> BYTE AFTER BT CMD 07
 
@@ -51,6 +65,14 @@ IX+0x18/19	=> PTR TO ROM SETTINGS for channel
 
 IX+0x1a		=> maybe attack rate
 
+
+BT SSG CHANNEL STRUCTS (0x30) (C500 & C530)
+-------------------------------------------
+IX+0x0		=> FLAG(?)
+IX+0x1/2	=> PTR(?)
+IX+0xc		=>
+IX+0x13/14	=> PTR(?)
+IX+0x1f		=> 
 
 
 SOUND 00: RESETS SOUND AND BUFFERED CHANNELS
@@ -106,7 +128,8 @@ BLACK TIGER COMMANDS:
 			23
 			17
 	0x04		=>	04 xx		(SETS IX+0x12 = xx) 
-	0x05		=>	05 xx		(SETS BIT 0 of IX+0x0b = (xx > 0) ? 1 : 0)) 
+	0x05		=>	05 xx		SET NOTE HOLD. xx = 0 = off; xx > 0? on
+	                            (SETS BIT 0 of IX+0x0b = (xx > 0) ? 1 : 0)) 
 	0x06		=>	06 xx		
 	0x07		=>  07 xx	 	(SETS IX+0x17 = xx). If not buffering, SetChannelOperatorsFromTable 
 	0x08		=>  08 xx	 	(NO OPERATION)
@@ -114,15 +137,19 @@ BLACK TIGER COMMANDS:
 	0x0E		=>  0E			(AFFECTS IX+0x2d) end of sound channel data 
 	0x0F		=>  0F			(AFFECTS IX+0x2e) end of sound channel data 
 	
-	0x2_		=>  2_ xx       Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
+	0x2_		=>  2n xx       Set short note duration and send note
+	                            2n where n = short note duration
+	                            (IX+0xc = 0)
+	                            Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
 	                            (IX+0xc = (2_ & 0x0F))
 	
-	0x3_		=> 	3_ xx	    (SET 0x7,(IX+0xb))
+	0x3_		=> 	3_ xx	    Double xx's duration
+	                            (SET 0x7,(IX+0xb)) - doubles the following note duration
 	                            Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
 								
 								
 	0x10-1F		=>  xx			Untranslated note
-	0x40-FF
+	0x40-FF		=>  xx			Untranslated note
 
    =================================================================================================================================
  
@@ -165,21 +192,52 @@ BLACK TIGER COMMANDS:
 
 EXAMPLE OF "GAME OVER" COMMANDS AND ASSOCIATED NOTES
 
+0110 1001 / 0111 0101 / 1101 0101
 0x69 (note 440h) 0x75 (note 440h) 0xD5 (note 440h)
+
+0110 1101 / 0111 1001 / 1010 1101 / 1011 1001/ 1101 1001/ 1111 1001
 0x6D (note 55Bh) 0x79 (note 55Bh) 0xAD (note 55Bh) 0xB9 (note 55Bh) 0xD9 (note 55Bh) 0xF9 (note 55Bh)
+
+0110 1110 / 1001 1010
 0x6E (note 2D6h) 0x9A (note 2D6h)
+
+0111 0000 / 1001 1100 / 1101 0000
 0x70 (note 32Fh) 0x9C (note 32Fh) 0xD0 (note 32Fh)
+
+0111 0010 / 1001 0010 / 1011 0010 / 1101 0010 / 1101 1110 / 1110 0110
 0x72 (note 393h) 0x92 (note 393h) 0xB2 (note 393h) 0xD2 (note 393h) 0xDE (note 393h) 0xE6 (note 393h)
+
+0111 0111 / 1001 0111
 0x77 (note 4C6h) 0x97 (note 4C6h)
+
+1000 1111
 0x8F (note 301h)
+
+1001 0001
 0x91 (note 360h)
+
+1001 0011
 0x93 (note 3C9h)
+
+1001 0110 / 1101 0110
 0x96 (note 481h) 0xD6 (note 481h)
+
+1001 0111
 0x97 (no notes)
+
+1001 1010
 0x9A (no notes)
+
+1010 0000
 0xA0 (no notes)
+
+1111 0110
 0xF6 (no notes)
+
+1111 1001
 0xF9 (no notes)
+
+1111 1110
 0xFE (no notes)
 
 	static constexpr uint32_t OUTPUTS = 1;
