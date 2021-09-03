@@ -19,6 +19,9 @@ This is a good way to see if the game is running
 BM: Bank08::9c11
 
 
+source debugger.cmd
+
+
 
 *****************************************************************************************
 * GAME NOTES:                                                                           *
