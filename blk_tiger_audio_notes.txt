@@ -211,20 +211,20 @@ SSG FIRST COMMANDS:
 SSG SECOND COMMANDS:
 -------------------
 	0n-1n:		=> ........	
-	2n-3n:		=> ........	aa bb	SETS CHANNEL A TONE PERIOD (FINE) (00) = aa; SETS CHANNEL A TONE PERIOD (COARSE) (01) = (CMD &0f)
+	2n-3n:		=> ....xxxx	aa bb	SETS CHANNEL A TONE PERIOD (FINE) (00) = aa; SETS CHANNEL A TONE PERIOD (COARSE) (01) = (CMD &0f)
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x1=VAL.LO; SETS IX+0x2=VAL.HI; 0xC = bb
-	4n-5n:		=> ........	aa bb	SETS CHANNEL B TONE PERIOD (FINE) (02) = aa; SETS CHANNEL B TONE PERIOD (COARSE) (03) = (CMD &0f)
+	4n-5n:		=> ....xxxx	aa bb	SETS CHANNEL B TONE PERIOD (FINE) (02) = aa; SETS CHANNEL B TONE PERIOD (COARSE) (03) = (CMD &0f)
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x3=VAL.LO; SETS IX+0x4=VAL.HI; 0xD = bb
-	6n-7n:		=> ........	aa bb	SETS CHANNEL C TONE PERIOD (FINE) (04) = aa; SETS CHANNEL C TONE PERIOD (COARSE) (05) = (CMD &0f)
+	6n-7n:		=> ....xxxx	aa bb	SETS CHANNEL C TONE PERIOD (FINE) (04) = aa; SETS CHANNEL C TONE PERIOD (COARSE) (05) = (CMD &0f)
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x5=VAL.LO; SETS IX+0x6=VAL.HI; 0xE = bb
-	8n-9E:		=> ....xxxx	aa bb	SETS CHANNEL A AMPLITUDE = (CMD & 0xF)
-	                                SETS IX+0x9 = (CMD & 0xF) << 4; SETS IX+0xf = bb
+	8n-9E:		=> ....xxxx	aa  	SETS CHANNEL A AMPLITUDE = (CMD & 0xF)
+	                                SETS IX+0x9 = (CMD & 0xF) << 4; SETS IX+0xf = aa
 	   9F:		=> ....xxxx	aa   	SKIPS SETTING CH A AMPLITUDE; SETS IX+0xf = aa
-	An-Bn:		=> ....xxxx	aa bb	SETS CHANNEL B AMPLITUDE = (CMD & 0xF)
-	                                SETS IX+0xA = (CMD & 0xF) << 4; SETS IX+0x10 = bb
+	An-Bn:		=> ....xxxx	aa   	SETS CHANNEL B AMPLITUDE = (CMD & 0xF)
+	                                SETS IX+0xA = (CMD & 0xF) << 4; SETS IX+0x10 = aa
 	   BF:		=> ....xxxx	aa   	SKIPS SETTING CH B AMPLITUDE; SETS IX+0x10 = aa
-	Cn-Dn:		=> ....xxxx	aa bb	SETS CHANNEL C AMPLITUDE = (CMD & 0xF)
-	                                SETS IX+0xB = (CMD & 0xF) << 4; SETS IX+0x11 = bb
+	Cn-Dn:		=> ....xxxx	aa   	SETS CHANNEL C AMPLITUDE = (CMD & 0xF)
+	                                SETS IX+0xB = (CMD & 0xF) << 4; SETS IX+0x11 = aa
 	   DF:		=> ....xxxx	aa   	SKIPS SETTING CH C AMPLITUDE; SETS IX+0x11 = aa
 	En-Fn:		=> ...xxxxx	aa bb	SETS NOISE PERIOD (06) AND NOISE ENABLE/DISABLE (07) 
 	                                SENDS YM CMDS 06 & 07; (CAN RUN ONE COMMAND AFTER ANOTHER IN SAME FRAME)
