@@ -119,11 +119,12 @@ BLACK TIGER COMMANDS:
                                             8: 05,06,07,08,09,0A,0B,0C,0E,0F,10,12,13,15,16,18,19,1A,1B,1C,1D,1E,3A,3D,3E,40,41,42,43
                                             F: 01,02,03,04,0D,17,20
 
-    (BREAKPOINT (PC=0219))
+    (BREAKPOINT (PC=0219)/08F7)
 	FM SOUNDS
     0x06        - (21,22,23,24,25,26,27,28,29,2A,2B,2C,2D,2E,2F,30,31,32,33,34,35,36,37,39)
     0x4F        - (20)
 
+	(BREAKPOINT (PC=0219)/0B4D)
 	SSG SOUNDS
     0x90        - (3F)      DRAGON_DIE
 
@@ -140,6 +141,8 @@ BLACK TIGER COMMANDS:
     0x8F        - (01,02,0D,17)     PLAYER_LOSES_VITALITY/PLAYER_DEATH/PLAYER_EARNS_EXTRA_LIFE/PLAYER_LOSES_ARMOR
     0xCF        - (03,04)           ENEMY_INJURED_BLOOP/ENEMY_DEFEATED
 
+YM1 TESTED: 01,02,05,06,07,0B,0D,0E,10,11,12,14,17,1A,1B,1C,1D,1E,3A,3F,40
+YM2 TESTED: 03,04,08,09,0A,0C,0F,13,15,16,18,19,3B,3C,3D,3E,41,42,43
    =================================================================================================================================
     (BREAKPOINT (SUB-SOUND LEVEL (PC=08F7)))
 
@@ -193,30 +196,37 @@ FM COMMANDS:
                                     (SET 0x7,(IX+0xb)) - doubles the following note duration
                                     Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
 
-    0x10-1F     =>  xx              Untranslated note
-    0x40-FF     =>  xx              Untranslated note
+    0x10-1F     =>  xx              Untranslated FM note
+    0x40-FF     =>  xx              Untranslated FM note
 
 SSG FIRST COMMANDS:
 ------------------
-	CMD BYTE: 	=> ...xxxxx 		(MASK 0x1F)
-    00-03:		=> ...000..		    SET DURATION: (x13/14) = THIS BYTE + NEXT BYTE; If the subsequent byte & E0, RUN SECONDARY COMMAND
-    04-07:		=> ...001..			CLEARS 0x19; UPDATES BOOKMARKS 18/19 = 15/16; IMMEDIATELY LOAD NEXT CMD	
-    08-0B:		=> ...010..		
-    0C-0F:		=> ...011..		
-    10-13:		=> ...100..		
-    14-17:		=> ...101..		
-    18-1B:		=> ...110..		
-    1C-1F:		=> ...111..		
+	CMD BYTE: 	=> 1y.xxxxx 		(MASK 0x1F); y = WHICH YM CHIP (0 = YM1; 1 = YM2)
+    00-03:		=> ...000..	aa      SET DURATION: THIS BYTE (HI) PLUS aa
+	                                (x13) = THIS BYTE (x14)= aa
+									RUN SECONDARY COMMAND
+    04-07:		=> ...001..			RESET REPEATS AND UPDATE BOOKMARKS
+	                                CLEARS 0x19; UPDATES BOOKMARKS 18/19 = 15/16; IMMEDIATELY LOAD NEXT CMD	
+    08-0B:		=> ...010.. aa      REPEAT UNTIL aa == 0x19
+	                                if 0x19 != aa, loop back to previous bookmark and repeat								
+    0C-0F:		=> ...011..		    Maybe not used?
+    10-13:		=> ...100..		    Maybe not used?
+    14-17:		=> ...101..		    Maybe not used?
+    18-1B:		=> ...110..		    Maybe not used?
+    1C-1F:		=> ...111..		    END SSG CLIP
 
 SSG SECOND COMMANDS:
 -------------------
 	0n-1n:		=> ........	
 	2n-3n:		=> ....xxxx	aa bb	SETS CHANNEL A TONE PERIOD (FINE) (00) = aa; SETS CHANNEL A TONE PERIOD (COARSE) (01) = (CMD &0f)
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x1=VAL.LO; SETS IX+0x2=VAL.HI; 0xC = bb
+	2F/3F:	    =>					SKIPS SETTING TONE PERIOD; 0xC = bb
 	4n-5n:		=> ....xxxx	aa bb	SETS CHANNEL B TONE PERIOD (FINE) (02) = aa; SETS CHANNEL B TONE PERIOD (COARSE) (03) = (CMD &0f)
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x3=VAL.LO; SETS IX+0x4=VAL.HI; 0xD = bb
+	4F/5F:	    =>					SKIPS SETTING TONE PERIOD; 0xD = bb
 	6n-7n:		=> ....xxxx	aa bb	SETS CHANNEL C TONE PERIOD (FINE) (04) = aa; SETS CHANNEL C TONE PERIOD (COARSE) (05) = (CMD &0f)
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x5=VAL.LO; SETS IX+0x6=VAL.HI; 0xE = bb
+	6F/7F:	    =>					SKIPS SETTING TONE PERIOD; 0xE = bb
 	8n-9E:		=> ....xxxx	aa  	SETS CHANNEL A AMPLITUDE = (CMD & 0xF)
 	                                SETS IX+0x9 = (CMD & 0xF) << 4; SETS IX+0xf = aa
 	   9F:		=> ....xxxx	aa   	SKIPS SETTING CH A AMPLITUDE; SETS IX+0xf = aa
