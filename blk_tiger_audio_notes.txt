@@ -77,16 +77,26 @@ IX+0x3      => CH B TONE PERIOD (FINE)
 IX+0x4		=> CH B TONE PERIOD (COARSE)
 IX+0x5      => CH C TONE PERIOD (FINE)
 IX+0x6		=> CH C TONE PERIOD (COARSE)
-IX+0x7		=> En-Fn SECOND COMMAND SETS => IX+0x7 = (SECOND CMD BYTE & 1F) << 3
+IX+0x7		=> NOISE PERIOD
+IX+0x8		=> NOISE ENABLE
+IX+0x9		=> CH A AMPLITUDE << 4
+IX+0xa		=> CH B AMPLITUDE << 4
+IX+0xb		=> CH C AMPLITUDE << 4
 IX+0xc      => CH A TONE PERIOD DATA
 IX+0xd      => CH B TONE PERIOD DATA
 IX+0xe      => CH C TONE PERIOD DATA
+IX+0xf		=> CH A AMPLITUDE DATA
+IX+0x10		=> CH B AMPLITUDE DATA
+IX+0x11		=> CH C AMPLITUDE DATA
+IX+0x12		=> NOISE PERIOD DATA
 IX+0x13/14  => DURATION
 IX+0x15/16 	=> PTR TO NEXT SSG DATA BYTE
 IX+0x17/18 	=> PTR TO PREVIOUS SSG DATA BYTE
 IX+0x19     => (RESET BY CMD 01)
 IX+0x1a		=> CURRENT SSG BYTE
 IX+0x1b		=> NEXT SSG BYTE
+IX+0x1d		=>
+IX+0x1e		=>
 IX+0x1f     => MAIN CMD BYTE
 
 
@@ -189,7 +199,7 @@ FM COMMANDS:
 SSG FIRST COMMANDS:
 ------------------
 	CMD BYTE: 	=> ...xxxxx 		(MASK 0x1F)
-    00-03:		=> ...000..		    SET DURATION: (x13/14) = THIS BYTE + NEXT BYTE; If the subsequent byte & E0, RUN SECONDARY COMMAND #07
+    00-03:		=> ...000..		    SET DURATION: (x13/14) = THIS BYTE + NEXT BYTE; If the subsequent byte & E0, RUN SECONDARY COMMAND
     04-07:		=> ...001..			CLEARS 0x19; UPDATES BOOKMARKS 18/19 = 15/16; IMMEDIATELY LOAD NEXT CMD	
     08-0B:		=> ...010..		
     0C-0F:		=> ...011..		
@@ -205,10 +215,17 @@ SSG SECOND COMMANDS:
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x1=VAL.LO; SETS IX+0x2=VAL.HI; 0xC = bb
 	4n-5n:		=> ........	aa bb	SETS CHANNEL B TONE PERIOD (FINE) (02) = aa; SETS CHANNEL B TONE PERIOD (COARSE) (03) = (CMD &0f)
 	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x3=VAL.LO; SETS IX+0x4=VAL.HI; 0xD = bb
-	6n-7n:		=> ........	
-	8n-9n:		=> ........	
-	An-Bn:		=> ........	
-	Cn-Dn:		=> ........	
+	6n-7n:		=> ........	aa bb	SETS CHANNEL C TONE PERIOD (FINE) (04) = aa; SETS CHANNEL C TONE PERIOD (COARSE) (05) = (CMD &0f)
+	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x5=VAL.LO; SETS IX+0x6=VAL.HI; 0xE = bb
+	8n-9E:		=> ....xxxx	aa bb	SETS CHANNEL A AMPLITUDE = (CMD & 0xF)
+	                                SETS IX+0x9 = (CMD & 0xF) << 4; SETS IX+0xf = bb
+	   9F:		=> ....xxxx	aa   	SKIPS SETTING CH A AMPLITUDE; SETS IX+0xf = aa
+	An-Bn:		=> ....xxxx	aa bb	SETS CHANNEL B AMPLITUDE = (CMD & 0xF)
+	                                SETS IX+0xA = (CMD & 0xF) << 4; SETS IX+0x10 = bb
+	   BF:		=> ....xxxx	aa   	SKIPS SETTING CH B AMPLITUDE; SETS IX+0x10 = aa
+	Cn-Dn:		=> ....xxxx	aa bb	SETS CHANNEL C AMPLITUDE = (CMD & 0xF)
+	                                SETS IX+0xB = (CMD & 0xF) << 4; SETS IX+0x11 = bb
+	   DF:		=> ....xxxx	aa   	SKIPS SETTING CH C AMPLITUDE; SETS IX+0x11 = aa
 	En-Fn:		=> ...xxxxx	aa bb	SETS NOISE PERIOD (06) AND NOISE ENABLE/DISABLE (07) 
 	                                SENDS YM CMDS 06 & 07; (CAN RUN ONE COMMAND AFTER ANOTHER IN SAME FRAME)
 	                                SETS x7/8
