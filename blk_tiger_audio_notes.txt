@@ -52,7 +52,6 @@ IX+0x0/1    => PTR TO CHANNEL SOUND DATA (MSB/LSB)
 IX+0x2      => SHORT NOTE DURATION HI
 IX+0x3      => SHORT NOTE DURATION LO
 IX+0x4      => LONG NOTE DURATION OFFSET                    (CMD 0x00)
-IX+0x5      => UNUSED (?)
 IX+0x6/7    =>                                              (CMD 0x01)
 IX+0x8/9    => LONG NOTE DURATION (WORD)
 IX+0xa      => (?SOMETHING TO DO WITH DURATION COMPUTATION) (CMD 0x02)
@@ -64,18 +63,31 @@ IX+0xe      => MAYBE LOW 8 BITS OF CURRENT NOTE
 IX+0x17     => CHANNEL OP ROM SETTINGS OFFSET               (CMD 0x07)
 IX+0x18/19  => PTR TO ROM SETTINGS for channel
 IX+0x1a     => FEEDBACK LVL & OP CONNECT ALGORITHM
-IX+0x2d     => LOOP/REPEAT VARIABLE 01
-IX+0x2e     => LOOP/REPEAT VARIABLE 02
-IX+0x2f     => LOOP/REPEAT VARIABLE 03
+IX+0x2d     => INNER REPEAT COUNT
+IX+0x2e     => OUTER REPEAT COUNT
+IX+0x2f     => PROGRAM REPEAT COUNT
 
 
 BT SSG CHANNEL STRUCTS (0x30) (C500 & C530)
 -------------------------------------------
-IX+0x0      => FLAG(?)
-IX+0x1/2    => PTR(?)
-IX+0xc      =>
-IX+0x13/14  => PTR(?)
-IX+0x1f     =>
+IX+0x0      => FLAG(?) (FF = PLAYING?)
+IX+0x1      => CH A TONE PERIOD (FINE)
+IX+0x2		=> CH A TONE PERIOD (COARSE)
+IX+0x3      => CH B TONE PERIOD (FINE)
+IX+0x4		=> CH B TONE PERIOD (COARSE)
+IX+0x5      => CH C TONE PERIOD (FINE)
+IX+0x6		=> CH C TONE PERIOD (COARSE)
+IX+0x7		=> En-Fn SECOND COMMAND SETS => IX+0x7 = (SECOND CMD BYTE & 1F) << 3
+IX+0xc      => CH A TONE PERIOD DATA
+IX+0xd      => CH B TONE PERIOD DATA
+IX+0xe      => CH C TONE PERIOD DATA
+IX+0x13/14  => DURATION
+IX+0x15/16 	=> PTR TO NEXT SSG DATA BYTE
+IX+0x17/18 	=> PTR TO PREVIOUS SSG DATA BYTE
+IX+0x19     => (RESET BY CMD 01)
+IX+0x1a		=> CURRENT SSG BYTE
+IX+0x1b		=> NEXT SSG BYTE
+IX+0x1f     => MAIN CMD BYTE
 
 
 SOUND 00: RESETS SOUND AND BUFFERED CHANNELS
@@ -122,7 +134,7 @@ BLACK TIGER COMMANDS:
     (BREAKPOINT (SUB-SOUND LEVEL (PC=08F7)))
 
 FM COMMANDS:
-
+------------
     0x00        =>  00 xx           SET LARGE DURATION COMPUTATION OFFSET = xx
                                     (SETS IX+0x04 = xx)
         07      -
@@ -174,10 +186,38 @@ FM COMMANDS:
     0x10-1F     =>  xx              Untranslated note
     0x40-FF     =>  xx              Untranslated note
 
-SSG COMMANDS:
+SSG FIRST COMMANDS:
+------------------
+	CMD BYTE: 	=> ...xxxxx 		(MASK 0x1F)
+    00-03:		=> ...000..		    SET DURATION: (x13/14) = THIS BYTE + NEXT BYTE; If the subsequent byte & E0, RUN SECONDARY COMMAND #07
+    04-07:		=> ...001..			CLEARS 0x19; UPDATES BOOKMARKS 18/19 = 15/16; IMMEDIATELY LOAD NEXT CMD	
+    08-0B:		=> ...010..		
+    0C-0F:		=> ...011..		
+    10-13:		=> ...100..		
+    14-17:		=> ...101..		
+    18-1B:		=> ...110..		
+    1C-1F:		=> ...111..		
 
+SSG SECOND COMMANDS:
+-------------------
+	0n-1n:		=> ........	
+	2n-3n:		=> ........	aa bb	SETS CHANNEL A TONE PERIOD (FINE) (00) = aa; SETS CHANNEL A TONE PERIOD (COARSE) (01) = (CMD &0f)
+	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x1=VAL.LO; SETS IX+0x2=VAL.HI; 0xC = bb
+	4n-5n:		=> ........	aa bb	SETS CHANNEL B TONE PERIOD (FINE) (02) = aa; SETS CHANNEL B TONE PERIOD (COARSE) (03) = (CMD &0f)
+	                                DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x3=VAL.LO; SETS IX+0x4=VAL.HI; 0xD = bb
+	6n-7n:		=> ........	
+	8n-9n:		=> ........	
+	An-Bn:		=> ........	
+	Cn-Dn:		=> ........	
+	En-Fn:		=> ...xxxxx	aa bb	SETS NOISE PERIOD (06) AND NOISE ENABLE/DISABLE (07) 
+	                                SENDS YM CMDS 06 & 07; (CAN RUN ONE COMMAND AFTER ANOTHER IN SAME FRAME)
+	                                SETS x7/8
+	                                SET IX+0x7 = (...xxxxx & 1Fh) << 3; SET IX+0x8 = (aa & 38h) + (IX+0x8 & C7h)
+									SENDS YMn => 06 IX+0x7 / 07 IX+0x8
+									SETS x12 = bb
 
 OTHER COMMANDS:
+---------------
 
     0x10-1F     =>  xx              Untranslated note
     0x40-FF     =>  xx              Untranslated note
