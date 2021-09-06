@@ -49,6 +49,12 @@ bp 7b7, ix==c100, {printf "2ND TIME DONE HL = %04X;DE = %04X",hl,de; g}
 bp 7b8, ix==c100, {printf "LONG NOTE DURATION = HL = %04X",hl; g}
 
 
+
+
+bp 42c, ix==c100, {printf "NOTE OFF FOR CHANNEL = %02X; C013-15 (%02X, %02X, %02X); IX+0xa = %02X; IX+0xc = %02X",c,b@c013,b@c014,b@c015,b@c10a,b@c10c; g}
+bp 4cf, ix==c100, {printf "NOTE ON (%04X); C013-15 (%02X, %02X, %02X); IX+0xa = %02X; IX+0xc = %02X",de,b@c013,b@c014,b@c015,b@c10a,b@c10c; g}
+
+
 printf "NOTE OFF START C013-15 (%02X, %02X, %02X); IX+0xa = %02X\n",b@c013,b@c014,b@c015,b@c10a;
 
 you can now use BambooTracker to make YM2203 music
@@ -82,12 +88,12 @@ BT VARIABLES (C000-C0FF)
 BT FM CHANNEL STRUCTS (0x30) (C100-C220; C300-C420)
 ---------------------------------------------------
 IX+0x0/1    => PTR TO CHANNEL SOUND DATA (MSB/LSB)
-IX+0x2      => NOTE PERIOD HI
-IX+0x3      => NOTE PERIOD LO
-IX+0x4      => NOTE PERIOD FACTOR                           (CMD 0x00)
-IX+0x6/7    => (UNUSED)                                     (CMD 0x01)
-IX+0x8/9    => DURATION (WORD)
-IX+0xa      => (?SOMETHING TO DO WITH DURATION COMPUTATION) (CMD 0x02)
+IX+0x2      => FM CHANNEL NOTE PERIOD HI
+IX+0x3      => FM CHANNEL NOTE PERIOD LO
+IX+0x4      => FM CHANNEL NOTE PERIOD FACTOR                (CMD 0x00)
+IX+0x8      => FM CHANNEL TONE PERIOD HI
+IX+0x9      => FM CHANNEL TONE PERIOD LO
+IX+0xa      => FM CHANNEL TONE PERIOD FACTOR                (CMD 0x02)
 IX+0xb      => x....... DOUBLE THE SHORT DURATION FLAG      (CMD 0x3_)
                .......x HOLD NOTE                           (CMD 0x05)
 IX+0xc      => ....xxxx SHORT NOTE DURATION. n=....xxxx     (CMD 0x2n)
@@ -99,6 +105,9 @@ IX+0x1a     => FEEDBACK LVL & OP CONNECT ALGORITHM
 IX+0x2d     => INNER REPEAT COUNT
 IX+0x2e     => OUTER REPEAT COUNT
 IX+0x2f     => PROGRAM REPEAT COUNT
+
+
+IX+0x6/7    => (UNUSED)                                     (CMD 0x01)
 
 
 BT FM PATCH STRUCT (0x29)
