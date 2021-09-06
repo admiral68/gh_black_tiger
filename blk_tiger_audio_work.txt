@@ -133,9 +133,92 @@ dmpsoft@s17.xrea.com
 
     0x8F        - (01,02,0D,17)     PLAYER_LOSES_VITALITY/PLAYER_DEATH/PLAYER_EARNS_EXTRA_LIFE/PLAYER_LOSES_ARMOR
     0xCF        - (03,04)           ENEMY_INJURED_BLOOP/ENEMY_DEFEATED
-	
 
 
+
+
+BT COMMAND AT 638D (PC=08F7) 00 0A 07 0D          BT COMMAND AT 638D (PC=08F7) 00 0A 07 0D
+YM1 E000: B0 3A                                   YM1 E000: B0 3A
+YM1 E000: 30 01                                   YM1 E000: 30 01
+YM1 E000: 34 01                                   YM1 E000: 34 01
+YM1 E000: 38 01                                   YM1 E000: 38 01
+YM1 E000: 3C 01                                   YM1 E000: 3C 01
+YM1 E000: 50 0E                                   YM1 E000: 50 0E
+YM1 E000: 54 0C                                   YM1 E000: 54 0C
+YM1 E000: 58 0D                                   YM1 E000: 58 0D
+YM1 E000: 5C 0F                                   YM1 E000: 5C 0F
+YM1 E000: 60 07                                   YM1 E000: 60 07
+YM1 E000: 64 00                                   YM1 E000: 64 00
+YM1 E000: 68 07                                   YM1 E000: 68 07
+YM1 E000: 6C 02                                   YM1 E000: 6C 02
+YM1 E000: 70 00                                   YM1 E000: 70 00
+YM1 E000: 74 00                                   YM1 E000: 74 00
+YM1 E000: 78 01                                   YM1 E000: 78 01
+YM1 E000: 7C 00                                   YM1 E000: 7C 00
+YM1 E000: 80 05                                   YM1 E000: 80 05
+YM1 E000: 84 04                                   YM1 E000: 84 04
+YM1 E000: 88 05                                   YM1 E000: 88 05
+YM1 E000: 8C 08                                   YM1 E000: 8C 08
+BT COMMAND AT 6391 (PC=08F7) 02 C8 03 3C 30 81    BT COMMAND AT 6391 (PC=08F7) 02 F8 03 3C 30 81
+YM1 E000: 40 21                                   YM1 E000: 40 21
+YM1 E000: 44 1A                                   YM1 E000: 44 1A
+YM1 E000: 48 2E                                   YM1 E000: 48 2E
+YM1 E000: 4C 00                                   YM1 E000: 4C 00
+YM1 E000: A4 22                                   YM1 E000: A4 22
+YM1 E000: A0 D6                                   YM1 E000: A0 D6
+YM1 E000: 28 F0                                   YM1 E000: 28 F0
+BT COMMAND AT 6397 (PC=08F7) 30 88                BT COMMAND AT 6397 (PC=08F7) 30 88
+YM1 E000: 40 21                                   YM1 E000: 40 21
+YM1 E000: 44 1A                                   YM1 E000: 44 1A
+YM1 E000: 48 2E                                   YM1 E000: 48 2E
+YM1 E000: 4C 00                                   YM1 E000: 4C 00
+YM1 E000: A4 24                                   YM1 E000: A4 24
+YM1 E000: A0 40                                   YM1 E000: A0 40
+YM1 E000: 28 F0                                   YM1 E000: 28 F0
+BT COMMAND AT 6399 (PC=08F7) 30 87                BT COMMAND AT 6399 (PC=08F7) 30 87
+YM1 E000: 40 21                                   YM1 E000: 40 21
+YM1 E000: 44 1A                                   YM1 E000: 44 1A
+YM1 E000: 48 2E                                   YM1 E000: 48 2E
+YM1 E000: 4C 00                                   YM1 E000: 4C 00
+YM1 E000: A4 24                                   YM1 E000: A4 24
+YM1 E000: A0 03                                   YM1 E000: A0 03
+YM1 E000: 28 F0                                   YM1 E000: 28 F0
+
+BT COMMAND AT 639B (PC=08F7) 21 CD                BT COMMAND AT 639B (PC=08F7) 21 CD
+YM1 E000: 40 21                                   YM1 E000: 40 21
+YM1 E000: 44 1A                                   YM1 E000: 44 1A
+YM1 E000: 48 2E                                   YM1 E000: 48 2E
+YM1 E000: 4C 00                                   YM1 E000: 4C 00
+YM1 E000: A4 2A                                   YM1 E000: A4 2A
+YM1 E000: A0 D6                                   YM1 E000: A0 D6
+YM1 E000: 28 F0                                   YM1 E000: 28 F0
+
+BT COMMAND AT 639D (PC=08F7) CD                   BT COMMAND AT 639D (PC=08F7) CD
+YM1 E000: 40 21                                   YM1 E000: 40 21
+YM1 E000: 44 1A                                   YM1 E000: 44 1A
+YM1 E000: 48 2E                                   YM1 E000: 48 2E
+YM1 E000: 4C 00                                   YM1 E000: 4C 00
+YM1 E000: A4 2A                                   YM1 E000: A4 2A
+YM1 E000: A0 D6                                   YM1 E000: A0 D6
+YM1 E000: 28 F0                                   YM1 E000: 28 F0
+
+
+
+
+
+
+4F 8D 63 9F 63 B1 63 C3 63 D6 63 E9 63 00 0A 07 0D 02 C8 03 3C 30 79 30 88 30 87 21 CD CD 0F 00 0A 07 46 02 C8 03 30 30 81 30 88 30 87 2E CD AD 0F 00 0A 07 46 02 C8 03 24 30 81 30 88 30 87 2E CD AD 0F 00 0A 07 46 02 C8 03 30 A0 30 81 30 88 30 87 2E AD AD 0F 00 0A 07 46 02 C8 03 24 A0 30 81 30 88 30 87 2E AD AD 0F 00 0A 07 46 02 C8 03 18 A0 30 81 30 88 30 87 2E AD AD 0F
+
+
+4F 8D 63 D5 63 E7 63 F9 63 0C 64 1F 64 00 0A 07 0D 02 C8 03 3C 30 81 30 82 30 83 30 84 30 85 30 86 30 87 30 88 30 89 30 8A 30 8B 30 8C 30 8D 30 8E 30 8F 30 91 30 92 30 93 30 94 30 95 30 96 30 97 30 98 30 99 30 9A 30 9B 30 9C 30 9D 30 9E 30 9F 21 CF CF 0F 00 0A 07 46 02 C8 03 30 30 81 30 88 30 87 2E CD AD 0F 00 0A 07 46 02 C8 03 24 30 81 30 88 30 87 2E CD AD 0F 00 0A 07 46 02 C8 03 30 A0 30 81 30 88 30 87 2E AD AD 0F 00 0A 07 46 02 C8 03 24 A0 30 81 30 88 30 87 2E AD AD 0F 00 0A 07 46 02 C8 03 18 A0 30 81 30 88 30 87 2E AD AD 0F
+
+
+
+
+30 8D 30 8E 30 8F 30 91 30 92 30 93 30 94 30 95 30 96 30 97 30 98 30 99
+
+
+=================================================
 
 
 CF 04 00 05 E0 FF 00 22 5C 00 41 3C 00 62 D7 00
@@ -156,6 +239,603 @@ AF 00 CF 00 1C
 06 00 07 38 00 35 01 04 02 68 03 01 04 3B 05 02 08 0F 09 0F 0A 0F
 06 00 07 38 00 C5 01 01 02 1B 03 02 04 0E 05 01 08 0F 09 0F 0A 0F
 00 00 01 00 02 00 03 00 04 00 05 00 06 00 07 F8 08 00 09 00 0A 00
+
+
+
+     6380  4F 8D 63 D5 63 E7 63 F9 63 0C 64 1F 64 00 14 07   O.c.c.c.c.d.d...
+     6390  0D 02 C8 03 3C 8F 80 91 80 93 80 95 80 97 80 8B   ....<...........
+     63A0  8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B   ................
+     63B0  9C 9D 9E 9F 91 30 92 30 93 30 94 30 95 30 96 30   .....0.0.0.0.0.0
+     63C0  97 30 98 30 99 30 9A 30 9B 30 9C 30 9D 30 9E 30   .0.0.0.0.0.0.0.0
+     63D0  9F 21 CF CF 0F 00 14 07 46 02 C8 03 30 30 81 30   .!......F...00.0
+     63E0  88 30 87 2E CD AD 0F 00 14 07 46 02 C8 03 24 30   .0........F...$0
+     63F0  81 30 88 30 87 2E CD AD 0F 00 14 07 46 02 C8 03   .0.0........F...
+     6400  30 A0 30 81 30 88 30 87 2E AD AD 0F 00 14 07 46   0.0.0.0........F
+     6410  02 C8 03 24 A0 30 81 30 88 30 87 2E AD AD 0F 00   ...$.0.0.0......
+     6420  14 07 46 02 C8 03 18 A0 30 81 30 88 30 87 2E AD   ..F.....0.0.0...
+     6430  AD 0F 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     6440  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     6450  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     6460  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     6470  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     6480  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     6490  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     64A0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     64B0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     64C0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     64D0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+     64E0  00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00   ................
+
+
+8F 80 91 80 93 80 95 80 97 80 8B 8C 8D 8E 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F 91 30 92
+
+30 8F 30 80 30 91 30 80 30 93 30 80 30 95 30 80 30 97 30 80 30 8B
+
+30 C1 30 CD 30 D9 30 C1 30 DF 30 D9 30 CD 30 C1 30 CD 30 D9 30 C1 30 DF 30 D9 30 CD 30 C1 30 CD 30 D9
+
+
+C1 CD D9 C1 DF D9 CD C1 CD D9 C1 DF D9
+
+NOTE BEING PLAYED = C1; C013-15 (7C, 00, 30); IX+0xa = C8        NOTE BEING PLAYED = C1; C013-15 (DB, 00, 30); IX+0xa = F8       NOTE BEING PLAYED = C1; C013-15 (DB, 00, 30); IX+0xa = D8       NOTE BEING PLAYED = C1; C013-15 (A6, 00, 30); IX+0xa = C1       NOTE BEING PLAYED = C1; C013-15 (1C, 00, 30); IX+0xa = C7       NOTE BEING PLAYED = C1; C013-15 (89, 00, 30); IX+0xa = CF       NOTE BEING PLAYED = C1; C013-15 (36, 00, 30); IX+0xa = C3    NOTE BEING PLAYED = C1; C013-15 (30, 00, 30); IX+0xa = C0
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000                                  AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8                               BEFORE NEXT COMPUTATION DE = 00C1                               BEFORE NEXT COMPUTATION DE = 00C7                               BEFORE NEXT COMPUTATION DE = 00CF                               BEFORE NEXT COMPUTATION DE = 00C3                            BEFORE NEXT COMPUTATION DE = 00C0
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0                                         AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000                       COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0                            BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087                               2ND TIME DONE HL = 0000;DE = 0078                               2ND TIME DONE HL = 0000;DE = 007C                               2ND TIME DONE HL = 0000;DE = 0081                               2ND TIME DONE HL = 0000;DE = 0079                            2ND TIME DONE HL = 0000;DE = 0078
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087                                  LONG NOTE DURATION = HL = 0078                                  LONG NOTE DURATION = HL = 007C                                  LONG NOTE DURATION = HL = 0081                                  LONG NOTE DURATION = HL = 0079                               LONG NOTE DURATION = HL = 0078
+
+NOTE BEING PLAYED = CD; C013-15 (E7, 00, 18); IX+0xa = C8        NOTE BEING PLAYED = CD; C013-15 (46, 00, 18); IX+0xa = F8       NOTE BEING PLAYED = CD; C013-15 (46, 00, 18); IX+0xa = D8       NOTE BEING PLAYED = CD; C013-15 (11, 00, 18); IX+0xa = C1       NOTE BEING PLAYED = CD; C013-15 (87, 00, 18); IX+0xa = C7
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8                               BEFORE NEXT COMPUTATION DE = 00C1                               BEFORE NEXT COMPUTATION DE = 00C7
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087                               2ND TIME DONE HL = 0000;DE = 0078                               2ND TIME DONE HL = 0000;DE = 007C
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087                                  LONG NOTE DURATION = HL = 0078                                  LONG NOTE DURATION = HL = 007C
+
+NOTE BEING PLAYED = D9; C013-15 (51, 00, 1C); IX+0xa = C8        NOTE BEING PLAYED = D9; C013-15 (B1, 00, 1C); IX+0xa = F8       NOTE BEING PLAYED = D9; C013-15 (B1, 00, 1C); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = C1; C013-15 (BC, 00, 1C); IX+0xa = C8        NOTE BEING PLAYED = C1; C013-15 (1B, 00, 1C); IX+0xa = F8       NOTE BEING PLAYED = C1; C013-15 (1B, 00, 1C); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = DF; C013-15 (27, 00, 10); IX+0xa = C8        NOTE BEING PLAYED = DF; C013-15 (86, 00, 10); IX+0xa = F8       NOTE BEING PLAYED = DF; C013-15 (86, 00, 10); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = D9; C013-15 (91, 00, 14); IX+0xa = C8        NOTE BEING PLAYED = D9; C013-15 (F1, 00, 14); IX+0xa = F8       NOTE BEING PLAYED = D9; C013-15 (F1, 00, 14); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = CD; C013-15 (FC, 00, 14); IX+0xa = C8        NOTE BEING PLAYED = CD; C013-15 (5B, 00, 14); IX+0xa = F8       NOTE BEING PLAYED = CD; C013-15 (5B, 00, 14); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = C1; C013-15 (67, 00, 18); IX+0xa = C8        NOTE BEING PLAYED = C1; C013-15 (C6, 00, 18); IX+0xa = F8       NOTE BEING PLAYED = C1; C013-15 (C6, 00, 18); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = CD; C013-15 (D1, 00, 20); IX+0xa = C8        NOTE BEING PLAYED = CD; C013-15 (31, 00, 20); IX+0xa = F8       NOTE BEING PLAYED = CD; C013-15 (31, 00, 20); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = D9; C013-15 (3C, 00, 28); IX+0xa = C8        NOTE BEING PLAYED = D9; C013-15 (9B, 00, 28); IX+0xa = F8       NOTE BEING PLAYED = D9; C013-15 (9B, 00, 28); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = C1; C013-15 (A7, 00, 30); IX+0xa = C8        NOTE BEING PLAYED = C1; C013-15 (06, 00, 30); IX+0xa = F8       NOTE BEING PLAYED = C1; C013-15 (06, 00, 30); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = DF; C013-15 (11, 00, 20); IX+0xa = C8        NOTE BEING PLAYED = DF; C013-15 (71, 00, 20); IX+0xa = F8       NOTE BEING PLAYED = DF; C013-15 (71, 00, 20); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+NOTE BEING PLAYED = D9; C013-15 (7C, 00, 34); IX+0xa = C8        NOTE BEING PLAYED = D9; C013-15 (DB, 00, 34); IX+0xa = F8       NOTE BEING PLAYED = D9; C013-15 (DB, 00, 34); IX+0xa = D8
+AFTER COMPUTATION HL = 0000                                      AFTER COMPUTATION HL = 0000                                     AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C8                                BEFORE NEXT COMPUTATION DE = 00F8                               BEFORE NEXT COMPUTATION DE = 00D8
+AFTER: OFFSET A = A0                                             AFTER: OFFSET A = A0                                            AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000                           COMPUTING OFFSET 2ND TIME... HL = 0000                          COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0                                BEFORE NEXT COMPUTATION DE = 00A0                               BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 007D                                2ND TIME DONE HL = 0000;DE = 009B                               2ND TIME DONE HL = 0000;DE = 0087
+LONG NOTE DURATION = HL = 007D                                   LONG NOTE DURATION = HL = 009B                                  LONG NOTE DURATION = HL = 0087
+
+====================================
+
+SHORT DUR (0xA)
+---------
+00 => LONG NOTE DURATION = HL = 0000
+10 => LONG NOTE DURATION = HL = 000A
+20 => LONG NOTE DURATION = HL = 0014
+30 => LONG NOTE DURATION = HL = 001E
+3F => LONG NOTE DURATION = HL = 0027
+40 => LONG NOTE DURATION = HL = 0028
+50 => LONG NOTE DURATION = HL = 0032
+60 => LONG NOTE DURATION = HL = 003C
+70 => LONG NOTE DURATION = HL = 0046
+80 => LONG NOTE DURATION = HL = 0050
+90 => LONG NOTE DURATION = HL = 005A
+A0 => LONG NOTE DURATION = HL = 0064
+B0 => LONG NOTE DURATION = HL = 006E
+C0 => LONG NOTE DURATION = HL = 0078
+C1 => LONG NOTE DURATION = HL = 0078
+C3 => LONG NOTE DURATION = HL = 0079
+C7 => LONG NOTE DURATION = HL = 007C
+C8 => LONG NOTE DURATION = HL = 007D
+CF => LONG NOTE DURATION = HL = 0081
+D0 => LONG NOTE DURATION = HL = 0082
+D8 => LONG NOTE DURATION = HL = 0087
+E0 => LONG NOTE DURATION = HL = 008C
+F0 => LONG NOTE DURATION = HL = 0096
+F8 => LONG NOTE DURATION = HL = 009B
+F8 => LONG NOTE DURATION = HL = 009F
+
+LONGER DUR (0xF)
+----------
+00 => LONG NOTE DURATION = HL = 0000
+10 => LONG NOTE DURATION = HL = 000F
+20 => LONG NOTE DURATION = HL = 001E
+30 => LONG NOTE DURATION = HL = 002D
+40 => LONG NOTE DURATION = HL = 003C
+50 => LONG NOTE DURATION = HL = 004B
+60 => LONG NOTE DURATION = HL = 005A
+70 => LONG NOTE DURATION = HL = 0069
+80 => LONG NOTE DURATION = HL = 0078
+90 => LONG NOTE DURATION = HL = 0087
+A0 => LONG NOTE DURATION = HL = 0096
+B0 => LONG NOTE DURATION = HL = 00A5
+C0 => LONG NOTE DURATION = HL = 00B4
+D0 => LONG NOTE DURATION = HL = 00C3
+E0 => LONG NOTE DURATION = HL = 00D2
+F0 => LONG NOTE DURATION = HL = 00E1
+FF => LONG NOTE DURATION = HL = 00EF
+
+NOTE BEING PLAYED = C1; C013-15 (3F, 00, 34); IX+0xa = 40
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 0040
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0028
+LONG NOTE DURATION = HL = 0028
+
+
+
+
+                             SHORT_DURATION_TRANSLATE_TABLE                  XREF[1]:     ram:0466(*)  
+0  00     ram:091d 00              ??         00h
+2  00     ram:091e 00              ??         00h
+4  02     ram:091f 02              ??         02h
+6  04     ram:0920 04              ??         04h
+8  08     ram:0921 08              ??         08h
+A  10     ram:0922 10              ??         10h
+C  20     ram:0923 20              ??         20h     
+E  40     ram:0924 40              ??         40h    @
+                               LONG_DURATION_TRANSLATE_TABLE                   XREF[1]:     BlackTigerFMCommand_0x_6:0822(*)  
+0  00     ram:0925 00              ??         00h
+2  00     ram:0926 00              ??         00h
+4  03     ram:0927 03              ??         03h
+6  06     ram:0928 06              ??         06h
+8  0C     ram:0929 0c              ??         0Ch
+A  18     ram:092a 18              ??         18h
+C  30     ram:092b 30              ??         30h    0
+E  60     ram:092c 60              ??         60h    `
+
+
+
+
+
+
+
+
+
+NOTE BEING PLAYED = CD; C013-15 (AA, 00, 18); IX+0xa = 40
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 0040
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0028
+LONG NOTE DURATION = HL = 0028
+NOTE BEING PLAYED = D9; C013-15 (15, 00, 1C); IX+0xa = 40
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 0040
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0028
+LONG NOTE DURATION = HL = 0028
+NOTE BEING PLAYED = C1; C013-15 (7F, 00, 1C); IX+0xa = 40
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 0040
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0028
+LONG NOTE DURATION = HL = 0028
+
+
+
+
+NOTE BEING PLAYED = C1; C013-15 (29, 00, 30); IX+0xa = D0
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00D0
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0082
+LONG NOTE DURATION = HL = 0082
+NOTE BEING PLAYED = CD; C013-15 (94, 00, 18); IX+0xa = D0
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00D0
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0082
+LONG NOTE DURATION = HL = 0082
+NOTE BEING PLAYED = D9; C013-15 (FF, 00, 1C); IX+0xa = D0
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00D0
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0082
+LONG NOTE DURATION = HL = 0082
+NOTE BEING PLAYED = C1; C013-15 (69, 00, 1C); IX+0xa = D0
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00D0
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0082
+LONG NOTE DURATION = HL = 0082
+
+
+
+
+
+
+
+
+NOTE BEING PLAYED = CD; C013-15 (9B, 00, 18); IX+0xa = C0
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C0
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0078
+LONG NOTE DURATION = HL = 0078
+NOTE BEING PLAYED = D9; C013-15 (05, 00, 1C); IX+0xa = C0
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C0
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0078
+LONG NOTE DURATION = HL = 0078
+NOTE BEING PLAYED = C1; C013-15 (70, 00, 1C); IX+0xa = C0
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C0
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0078
+LONG NOTE DURATION = HL = 0078
+
+
+
+
+
+NOTE BEING PLAYED = CD; C013-15 (A1, 00, 18); IX+0xa = C3
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C3
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0079
+LONG NOTE DURATION = HL = 0079
+NOTE BEING PLAYED = D9; C013-15 (0B, 00, 1C); IX+0xa = C3
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C3
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0079
+LONG NOTE DURATION = HL = 0079
+NOTE BEING PLAYED = C1; C013-15 (76, 00, 1C); IX+0xa = C3
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00C3
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0079
+LONG NOTE DURATION = HL = 0079
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NOTE BEING PLAYED = CD; C013-15 (F4, 00, 18); IX+0xa = CF
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00CF
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0081
+LONG NOTE DURATION = HL = 0081
+NOTE BEING PLAYED = D9; C013-15 (5F, 00, 1C); IX+0xa = CF
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00CF
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0081
+LONG NOTE DURATION = HL = 0081
+NOTE BEING PLAYED = C1; C013-15 (C9, 00, 1C); IX+0xa = CF
+AFTER COMPUTATION HL = 0000
+BEFORE NEXT COMPUTATION DE = 00CF
+AFTER: OFFSET A = A0
+COMPUTING OFFSET 2ND TIME... HL = 0000
+BEFORE NEXT COMPUTATION DE = 00A0
+2ND TIME DONE HL = 0000;DE = 0081
+LONG NOTE DURATION = HL = 0081
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 SET SSG TONE PERIOD A (FINE): 00

@@ -26,6 +26,31 @@ wp 5448,CB,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata;
 wp f7f,55,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; g}
 wp fd4,2a,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; g}
 
+bp 44a, a==a, {tracelog "BT COMMAND C013-15 %02X, %02X, %02X\n",b@c013,b@c014,b@c015; g}
+bp 213, a==a, {tracelog "BT COMMAND START C013-15 %02X, %02X, %02X\n",b@c013,b@c014,b@c015; g}
+
+print b@c013
+
+wp 6380,7B,r,1,{tracelog "BT COMMAND AT %04X (PC=%04X) %02X\n",wpaddr,pc,wpdata; g}
+
+
+
+bp 448, a==a, {printf "NOTE OFF UPDATE A = %02X; C013-15 (%02X, %02X, %02X); IX+0xa = %02X\n",b@c013,b@c014,b@c015,b@c10a; g}
+bp 213, a==a, {printf "NOTE OFF START C013-15 (%02X, %02X, %02X); IX+0xa = %02X\n",b@c013,b@c014,b@c015,b@c10a; g}
+
+
+bp 790, ix==c100, {printf "NOTE BEING PLAYED = %02X; C013-15 (%02X, %02X, %02X); IX+0xa = %02X",c,b@c013,b@c014,b@c015,b@c10a; g}
+bp 799, ix==c100, {printf "AFTER COMPUTATION HL = %04X",hl; g}
+bp 7a1, ix==c100, {printf "BEFORE NEXT COMPUTATION DE = %04X",de; g}
+bp 7a4, ix==c100, {printf "AFTER: OFFSET A = %02X",a; g}
+bp 7a7, ix==c100, {printf "COMPUTING OFFSET 2ND TIME... HL = %04X",hl; g}
+bp 7b0, ix==c100, {printf "BEFORE NEXT COMPUTATION DE = %04X",de; g}
+bp 7b7, ix==c100, {printf "2ND TIME DONE HL = %04X;DE = %04X",hl,de; g}
+bp 7b8, ix==c100, {printf "LONG NOTE DURATION = HL = %04X",hl; g}
+
+
+printf "NOTE OFF START C013-15 (%02X, %02X, %02X); IX+0xa = %02X\n",b@c013,b@c014,b@c015,b@c10a;
+
 you can now use BambooTracker to make YM2203 music
 
 
@@ -57,23 +82,29 @@ BT VARIABLES (C000-C0FF)
 BT FM CHANNEL STRUCTS (0x30) (C100-C220; C300-C420)
 ---------------------------------------------------
 IX+0x0/1    => PTR TO CHANNEL SOUND DATA (MSB/LSB)
-IX+0x2      => SHORT NOTE DURATION HI
-IX+0x3      => SHORT NOTE DURATION LO
-IX+0x4      => LONG NOTE DURATION OFFSET                    (CMD 0x00)
-IX+0x6/7    =>                                              (CMD 0x01)
-IX+0x8/9    => LONG NOTE DURATION (WORD)
+IX+0x2      => NOTE PERIOD HI
+IX+0x3      => NOTE PERIOD LO
+IX+0x4      => NOTE PERIOD FACTOR                           (CMD 0x00)
+IX+0x6/7    => (UNUSED)                                     (CMD 0x01)
+IX+0x8/9    => DURATION (WORD)
 IX+0xa      => (?SOMETHING TO DO WITH DURATION COMPUTATION) (CMD 0x02)
 IX+0xb      => x....... DOUBLE THE SHORT DURATION FLAG      (CMD 0x3_)
                .......x HOLD NOTE                           (CMD 0x05)
 IX+0xc      => ....xxxx SHORT NOTE DURATION. n=....xxxx     (CMD 0x2n)
-IX+0xd      => MAYBE OCTAVE                                 (CMD 0x03)
+IX+0xd      => FM CHANNEL OCTAVE                            (CMD 0x03)
 IX+0xe      => NOTE OFFSET
-IX+0x17     => CHANNEL OP ROM SETTINGS OFFSET               (CMD 0x07)
-IX+0x18/19  => PTR TO ROM SETTINGS for channel
+IX+0x17     => FM CHANNEL PATCH                             (CMD 0x07)
+IX+0x18/19  => PTR TO FM CHANNEL PATCH DATA
 IX+0x1a     => FEEDBACK LVL & OP CONNECT ALGORITHM
 IX+0x2d     => INNER REPEAT COUNT
 IX+0x2e     => OUTER REPEAT COUNT
 IX+0x2f     => PROGRAM REPEAT COUNT
+
+
+BT FM PATCH STRUCT (0x29)
+-------------------------
+IX+0x0      => FM OCTAVE OFFSET
+
 
 
 BT SSG CHANNEL STRUCTS (0x30) (C500 & C530)
@@ -160,53 +191,52 @@ FM COMMANDS:
 ------------
     0x00        =>  00 xx           SET CHANNEL LARGE DURATION OFFSET = xx
                                     (SETS IX+0x04 = xx)
-        07      -
-        08      -
-        09      -
-    0x01        =>  01 xx           UNKNOWN FUNCTION
+    0x01        =>  01 xx           UNUSED
                                     (SETS IX+0x06 = xx and clears IX+0x7)
-    0x02        =>  02 xx           SET DURATION COMPUTATION OFFSET = xx
+    0x02        =>  02 xx           SET NOTE OFF COMPUTATION OFFSET = xx; also seems to affect note ATTACK/DECAY
                                     (SETS IX+0x0a = xx)
-        C8
-    0x03        =>  03 xx           MAYBE SET CHANNEL OCTAVE OFFSET
-            2F                      (SETS IX+0x0d = xx)
-            23
-            17
-    0x04        =>  04 xx           SEEMS TO BE UNUSED (SETS IX+0x12 = xx)
-    0x05        =>  05 xx           SET NOTE HOLD. xx = 0 = off; xx > 0? on
+    0x03        =>  03 xx           SETS CHANNEL OCTAVE OFFSET
+                                    (SETS IX+0x0d = xx)
+    0x04        =>  04 xx           UNUSED
+                                    (SETS IX+0x12 = xx)
+    0x05        =>  05 xx           UNUSED
+                                    SET NOTE HOLD. xx = 0 = off; xx > 0? on
                                     (SETS BIT 0 of IX+0x0b = (xx > 0) ? 1 : 0))
-    0x06        =>  06 xx
-    0x07        =>  07 xx           SET CHANNEL OP ROM SETTINGS OFFSET. If not buffering, SetChannelOperatorsFromTable.
+    0x06        =>  06 xx           LENGTHEN BASE NOTE DURATION
+                                    xx = some note value that increases length
+    0x07        =>  07 xx           SET CHANNEL PATCH
+                                    If not buffering, LoadFMChannelPatch.
                                     (SETS IX+0x17 = xx).
     0x08        =>  08              (NO OPERATION)
     0x0B        =>  0B              (NO OPERATION)
-    0x0C        =>  0C xx ll hh     xx = 0? set data pointer to ll hh. Repeat infinite loop
-                                    xx > 0? 
-                                       Repeats (IX+0x2d) done? End. 
-                                       Else set data pointer to ll hh.
-                                    (AFFECTS IX+0x2d)
-    0x0D        =>  0D xx ll hh     xx = 0? set data pointer to ll hh. Repeat infinite loop
-                                    xx > 0? 
-                                       Repeats (IX+0x2e) done? End. 
-                                       Else set data pointer to ll hh.
-                                    (AFFECTS IX+0x2e)
-    0x0E        =>  0E xx ll hh     xx = 0? set data pointer to ll hh. Repeat infinite loop
-                                    xx > 0? 
-                                       Repeats (IX+0x2f) done? End. 
-                                       Else set data pointer to ll hh.
-                                    (AFFECTS IX+0x2f)
+    0x0C        =>  0C xx ll hh     PROGRAM LOOP. xx = repeat value
+                                    (SETS IX+0x2d) => xx
+                                    xx = 0? Repeat infinite loop
+                                    xx > 0? Repeats (IX+0x2d)
+    0x0D        =>  0D xx ll hh     INNER LOOP. xx = repeat value
+                                    (SETS IX+0x2e) => xx
+                                    xx = 0? Repeat infinite loop
+                                    xx > 0? Repeats (IX+0x2e)
+    0x0E        =>  0E xx ll hh     OUTER LOOP. xx = repeat value
+                                    (SETS IX+0x2f) => xx
+                                    xx = 0? Repeat infinite loop
+                                    xx > 0? Repeats (IX+0x2f)
     0x0F        =>  0F              end of sound channel data
+
     0x2_        =>  2n xx           Set short note duration and send note
                                     2n where n = short note duration
                                     (IX+0xc = 0)
                                     Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
                                     (IX+0xc = (2_ & 0x0F))
+
     0x3_        =>  3_ xx           Double xx's duration
                                     (SET 0x7,(IX+0xb)) - doubles the following note duration
                                     Send a note to HW(?) -- (xx is translated into a note plus duration and then sent)
 
-    0x10-1F     =>  xx              Untranslated FM note
-    0x40-FF     =>  xx              Untranslated FM note
+    0x[468ACE]0 =>                  FM musical rest (40 60 80 A0 C0 E0). (First nybble affects duration; second nybble is zero)
+    0x41-FF     =>  xx              FM musical note. First nybble affects duration; second nybble is note of the current octave
+
+
 
 SSG FIRST COMMANDS:
 ------------------
@@ -215,9 +245,9 @@ SSG FIRST COMMANDS:
                                     (x13) = THIS BYTE (x14)= aa
                                     RUN SECONDARY COMMAND
     04-07:      => ...001..         RESET REPEATS AND UPDATE BOOKMARKS
-                                    CLEARS 0x19; UPDATES BOOKMARKS 18/19 = 15/16; IMMEDIATELY LOAD NEXT CMD 
+                                    CLEARS 0x19; UPDATES BOOKMARKS 18/19 = 15/16; IMMEDIATELY LOAD NEXT CMD
     08-0B:      => ...010.. aa      REPEAT UNTIL aa == 0x19
-                                    if 0x19 != aa, loop back to previous bookmark and repeat                                
+                                    if 0x19 != aa, loop back to previous bookmark and repeat
     0C-0F:      => ...011..         Maybe not used?
     10-13:      => ...100..         Maybe not used?
     14-17:      => ...101..         Maybe not used?
@@ -226,7 +256,7 @@ SSG FIRST COMMANDS:
 
 SSG SECOND COMMANDS:
 -------------------
-    0n-1n:      => ........ 
+    0n-1n:      => ........
     2n-3n:      => ....xxxx aa bb   SETS CHANNEL A TONE PERIOD (FINE) (00) = aa; SETS CHANNEL A TONE PERIOD (COARSE) (01) = (CMD &0f)
                                     DE = (CMD &0xf << 8) + aa; VAL=DE << 4; SETS IX+0x1=VAL.LO; SETS IX+0x2=VAL.HI; 0xC = bb
     2F/3F:      =>                  SKIPS SETTING TONE PERIOD; 0xC = bb
@@ -245,18 +275,12 @@ SSG SECOND COMMANDS:
     Cn-Dn:      => ....xxxx aa      SETS CHANNEL C AMPLITUDE = (CMD & 0xF)
                                     SETS IX+0xB = (CMD & 0xF) << 4; SETS IX+0x11 = aa
        DF:      => ....xxxx aa      SKIPS SETTING CH C AMPLITUDE; SETS IX+0x11 = aa
-    En-Fn:      => ...xxxxx aa bb   SETS NOISE PERIOD (06) AND NOISE ENABLE/DISABLE (07) 
+    En-Fn:      => ...xxxxx aa bb   SETS NOISE PERIOD (06) AND NOISE ENABLE/DISABLE (07)
                                     SENDS YM CMDS 06 & 07; (CAN RUN ONE COMMAND AFTER ANOTHER IN SAME FRAME)
                                     SETS x7/8
                                     SET IX+0x7 = (...xxxxx & 1Fh) << 3; SET IX+0x8 = (aa & 38h) + (IX+0x8 & C7h)
                                     SENDS YMn => 06 IX+0x7 / 07 IX+0x8
                                     SETS x12 = bb
-
-OTHER COMMANDS:
----------------
-
-    0x10-1F     =>  xx              Untranslated note
-    0x40-FF     =>  xx              Untranslated note
 
    =================================================================================================================================
 
