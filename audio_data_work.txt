@@ -16931,6 +16931,8 @@
         ram:637e 03 17           fm_set_oct
 
 
+ALL "30h" commands
+
 30h 40h    @
 30h 41h    A
 30h 43h    C
@@ -17022,6 +17024,8 @@
 30h BAh
 30h BCh
 
+
+All "2n" commands
 
 21h 30h
 21h 68h
