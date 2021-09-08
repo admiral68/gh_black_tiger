@@ -89,6 +89,14 @@ https://github.com/BambooTracker/BambooTracker/releases/tag/v0.5.0
 
 
 
+ALWAYS SET THESE BPS:
+
+176
+197
+212
+
+
+
 
 LOCS TO REMEMBER:
 
@@ -131,7 +139,7 @@ IX+0xc      => ....xxxx NOTE HOLD DURATION. n=....xxxx      (CMD 0x2n)
                1 <= xxxx <= 4 (21/22/23/24)
                (values above 24 are not used)
 IX+0xd      => FM CHANNEL OCTAVE                            (CMD 0x03)
-IX+0xe      => FM NOTE OFFSET
+IX+0xe      => BT FM NOTE INDEX (0-61h (97 dec) notes total)
 IX+0x17     => FM CHANNEL PATCH                             (CMD 0x07)
 IX+0x18/19  => PTR TO FM CHANNEL PATCH DATA
 IX+0x1a     => FM FEEDBACK LVL & OP CONNECT ALGORITHM
