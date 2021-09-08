@@ -83,7 +83,8 @@ bp fa,  ix==c130,{printf "(IX=%04X) NOTE OFF FOR CHANNEL = %02X; C013/15 (%02X, 
 printf "NOTE OFF START C013-15 (%02X, %02X, %02X); IX+0xa = %02X\n",b@c013,b@c014,b@c015,b@c10a;
 
 you can now use BambooTracker to make YM2203 music
-
+https://github.com/BambooTracker/BambooTracker.git
+https://github.com/BambooTracker/BambooTracker/releases/tag/v0.5.0
 
 
 
@@ -145,6 +146,21 @@ IX+0x6/7    => (UNUSED)                                     (CMD 0x01)
 BT FM PATCH STRUCT (0x29)
 -------------------------
 IX+0x0      => FM OCTAVE OFFSET
+IX+0x1		=>
+
+IX+0x8		=> CONTROLS NOTE ON/OFF FOR ENTIRE PATCH
+IX+0x9      => FM CH OP1 TOTAL LEVEL OFFSET
+IX+0xa      => FM CH OP1 LEVEL SETTING 01
+IX+0xb      => FM CH OP1 LEVEL SETTING 02
+IX+0xc      => FM CH OP2 TOTAL LEVEL OFFSET
+IX+0xd      => FM CH OP2 LEVEL SETTING 01
+IX+0xe      => FM CH OP2 LEVEL SETTING 02
+IX+0xf      => FM CH OP3 TOTAL LEVEL OFFSET
+IX+0x10     => FM CH OP3 LEVEL SETTING 01
+IX+0x11     => FM CH OP3 LEVEL SETTING 02
+IX+0x12     => FM CH OP4 TOTAL LEVEL OFFSET
+IX+0x13     => FM CH OP4 LEVEL SETTING 01
+IX+0x14     => FM CH OP4 LEVEL SETTING 02
 
 
 
@@ -260,9 +276,9 @@ FM COMMANDS:
                                     xx = note value
                                     30(t) = triplet type note (30 xx)
                                     Reg   = regular note      (xx)
-									
-									         Note length comparisons
-											 =======================
+                                    
+                                             Note length comparisons
+                                             =======================
 
                                                       cmd
                                             ================================
@@ -272,14 +288,14 @@ FM COMMANDS:
                                     ========================================
                                     | Reg   |  4x  | 4 2/3 | 5 1/3 |  6x   |
                                     ========================================
-									
+                                    
                                     Sends a note to HW; SETS (IX+0xc = n)
 
     0x30        =>  30 xx           SEND FM Triplet-type note where LENGTH(30 xx) = (2/3)(LENGTH(xx)).
                                     Basically 2/3 the note period and tone period of a regular, otherwise unmodified note
                                     3 * LENGTH(30 xx) = 2 * LENGTH(xx)
                                     
-									Sends a note to HW; SETS BIT 0x7 of(IX+0xb)
+                                    Sends a note to HW; SETS BIT 0x7 of(IX+0xb)
 
     0x[468ACE]0 =>                  FM musical rest (40 60 80 A0 C0 E0). (First nybble affects duration; second nybble is zero)
     0x41-FF     =>  xx              FM musical note. First nybble affects duration; second nybble is note of the current octave (01-0b). Octaves have 0xc notes (12)
