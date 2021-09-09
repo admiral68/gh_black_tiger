@@ -1,77 +1,9 @@
-CF 04                               : CF xx Set FM operators or "slots" to use on this track, top nibble of xx is a bitmask: 04 = op 3
-00 05
-E0 FF                               : E0 xy Set hardware LFO usage/depth. If the bottom nibble is 08-0F, the LFO is enabled, at depth y - 8.
-00 22
-5C 00
-41 3C
-00 62
-
-D7 00                               : D7 xx  Set hardware LFO frequency to xx.
-8F 00
-AF FF
-CF 00                               : CF xx Set FM operators or "slots" to use on this track, top nibble of xx is a bitmask: 00 = unset
-00 02
-E0 FF
-00 20 00
-00 40 00
-00 60 00
-00 80 00
-A0 00
-C0 00 00                            : C0 xx yy
-08
-E0 FF
-00 24 35
-00 41 68
-00 62 3B
-00 8F 00
-AF 00
-CF 00
-08 02
-00 0E
-E0 FF
-00 21 C5
-00 42 1B
-00 61 0E
-00 8F 00
-AF 00
-CF 00 1C
+01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F 0F 0F
 
 
 
-
-
-
-C8 xx yyzz
-
-
-C8 00 17
-E0 FF 00
-20 25 00
-40 3A 00
-60 3B 00
-8F 00
-AF 00
-CF
-00 00 2A
-E0 FF 00
-20 25 00
-40 3A 00
-60 3B 00
-8A
-FA AA
-FA CA
-FA 1C
-
-
-
-
-
-
-        ram:02dd dd 72 15        LD         (IX+0x15),D
-        ram:02e0 dd 73 16        LD         (IX+0x16),E
-        ram:02e3 dd 72 17        LD         (IX+0x17),D
-        ram:02e6 dd 73 18        LD         (IX+0x18),E
-        ram:02e9 dd 77 1f        LD         (IX+0x1f),A
+4F 8D 63 9F 63 B1 63 C3 63 D6 63 EA 63 00 0A 07 00 02 C8 03 3B 30 81 30 88 30 87 21 CD CD 0F 00 0A 07 00 02 C8 03 2F 30 81 30 88 30 87 21 CD AD 0F 00 0A 07 00 02 C8 03 23 30 81 30 88 30 87 21 CD AD 0F 00 0A 07 15 02 C8 03 2F A0 30 81 30 88 30 87 21 AD AD 0F 00 0A 07 15 02 C8 03 23 A0 30 81 30 88 30 87 21 AD AD 0F 00 0A 07 15 02 C8 03 17 A0 30 81 30 88 30 87 21 AD AD 0F
+4F 1D 1B 2F 1B 41 1B 53 1B 66 1B 79 1B 00 05 07 0D 02 C8 03 3B 30 81 30 88 30 87 21 CD CD 0F 00 05 07 0D 02 C8 03 2F 30 81 30 88 30 87 21 CD AD 0F 00 05 07 0D 02 C8 03 23 30 81 30 88 30 87 21 CD AD 0F 00 05 07 15 02 C8 03 2F A0 30 81 30 88 30 87 21 AD AD 0F 00 05 07 15 02 C8 03 23 A0 30 81 30 88 30 87 21 AD AD 0F 00 05 07 15 02 C8 03 17 A0 30 81 30 88 30 87 21 AD AD 0F
 
 
 bp = b47
@@ -1487,6 +1419,68 @@ IX+BT_FM_NOTE_INDEX =>  MAYBE_SOME_NOTE_VALUE_TABLE => (2x) => MAYBE_CURRENT_NOT
 
 
 
+00 14 07 0D 02 C8 03 3C 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9E 9E 9F 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F 8F 90 91 92 93 94 95 96 97 98 99 0F 
+00 14 07 0D 02 C8 03 30 06 8F 06 90 06 92 06 93 06 94 06 95 06 97 06 98 06 9A 06 9B 06 9D 06 9E 06 8F 06 90 06 92 06 93 06 94 06 95 06 97 06 98 06 9A 06 9B 06 9D 06 9E 06 8F 06 90 06 92 06 93 06 94 21 CA 0F 
+
+
+
+8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9E 9E 9F 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F 8F 90 91 92 93 94 95 96 97 98 99 9A 9B 9C 9D 9E 9F 8F 90 91 92 93 94 95 96 97 98 99
+
+
+4F 4F 4F 4F 50 50 50 50 51 51 51 51 52 52 52 52 53 53 53 53 54 54 54 54 55 55 55 55 56 56 56 56 57 57 57 57 58 58 58 58 59 59 59 59 5A 5A 5A 5A 5B 5B 5B 5B 5C 5C 5C 5C 5E 5E 5E 5E
+
+
+
+
+EXAMPLE OF "GAME OVER" COMMANDS AND ASSOCIATED NOTES
+
+0110 1001 / 0111 0101 / 1101 0101
+0x69 (note 440h) 0x75 (note 440h) 0xD5 (note 440h)
+
+0110 1101 / 0111 1001 / 1010 1101 / 1011 1001/ 1101 1001/ 1111 1001
+0x6D (note 55Bh) 0x79 (note 55Bh) 0xAD (note 55Bh) 0xB9 (note 55Bh) 0xD9 (note 55Bh) 0xF9 (note 55Bh)
+
+0110 1110 / 1001 1010
+0x6E (note 2D6h) 0x9A (note 2D6h)
+
+0111 0000 / 1001 1100 / 1101 0000
+0x70 (note 32Fh) 0x9C (note 32Fh) 0xD0 (note 32Fh)
+
+0111 0010 / 1001 0010 / 1011 0010 / 1101 0010 / 1101 1110 / 1110 0110
+0x72 (note 393h) 0x92 (note 393h) 0xB2 (note 393h) 0xD2 (note 393h) 0xDE (note 393h) 0xE6 (note 393h)
+
+0111 0111 / 1001 0111
+0x77 (note 4C6h) 0x97 (note 4C6h)
+
+1000 1111
+0x8F (note 301h)
+
+1001 0001
+0x91 (note 360h)
+
+1001 0011
+0x93 (note 3C9h)
+
+1001 0110 / 1101 0110
+0x96 (note 481h) 0xD6 (note 481h)
+
+1001 0111
+0x97 (no notes)
+
+1001 1010
+0x9A (no notes)
+
+1010 0000
+0xA0 (no notes)
+
+1111 0110
+0xF6 (no notes)
+
+1111 1001
+0xF9 (no notes)
+
+1111 1110
+0xFE (no notes)
 
 
 
