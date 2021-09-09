@@ -315,7 +315,7 @@ FM COMMANDS:
     0x[468ACE]0 =>                  FM musical rest (40 60 80 A0 C0 E0). (First nybble affects duration; second nybble is zero)
     0x41-FF     =>  xx              FM musical note. First nybble affects duration; second nybble is note of the current octave (01-0b). Octaves have 0xc notes (12)
 	
-	40-5F - THIRTYSECOND NOTE/REST				1/32
+	40-5F - THIRTYSECOND NOTE/REST				1/32       1/32_note
 	60-7F - SIXTEENTH NOTE/REST					1/16
 	80-9F - EIGHTH NOTE/REST					1/8
 	A0-BF - QUARTER NOTE/REST					1/4
