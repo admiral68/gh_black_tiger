@@ -1,4 +1,7 @@
                              FM_PATCHES_TABLE                                XREF[1]:     ram:083e(*)
+
+                    nasty_harpsichord_plus_organ	0x0
+					
         ram:6b00 00              ??         00h   FM OCTAVE OFFSET
         ram:6b01 00              ??         00h   ram:0583 (debug)
         ram:6b02 00              ??         00h
@@ -40,7 +43,11 @@
         ram:6b26 13              ??         13h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6b27 13              ??         13h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6b28 fa              ??         FAh   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 01
+							 
+                    rubber_galoshes_drums	0x1
+							 
         ram:6b29 b0              ??         B0h   FM OCTAVE OFFSET
         ram:6b2a 00              ??         00h   ram:0583 (debug)
         ram:6b2b 00              ??         00h
@@ -83,6 +90,9 @@
         ram:6b50 ff              ??         FFh   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6b51 ff              ??         FFh   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
                              07 02
+							 
+                    tone_+_snare	0x2
+							 
         ram:6b52 18              ??         18h   FM OCTAVE OFFSET
         ram:6b53 00              ??         00h   ram:0583 (debug)
         ram:6b54 00              ??         00h
@@ -124,7 +134,11 @@
         ram:6b78 f8              ??         F8h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6b79 ac              ??         ACh   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6b7a ab              ??         ABh   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 03
+							 
+                    mid_piano_less_attack	0x3
+							 
         ram:6b7b 00              ??         00h   FM OCTAVE OFFSET
         ram:6b7c 00              ??         00h   ram:0583 (debug)
         ram:6b7d 00              ??         00h
@@ -166,7 +180,11 @@
         ram:6ba1 26              ??         26h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE &
         ram:6ba2 58              ??         58h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE X
         ram:6ba3 06              ??         06h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 04
+							 
+                    triangle_+_sawtooth	0x4
+							 
         ram:6ba4 00              ??         00h   FM OCTAVE OFFSET
         ram:6ba5 00              ??         00h   ram:0583 (debug)
         ram:6ba6 00              ??         00h
@@ -208,7 +226,11 @@
         ram:6bca 03              ??         03h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6bcb 03              ??         03h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6bcc 08              ??         08h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 05
+							 
+                    harpsichord	0x5
+							 
         ram:6bcd 00              ??         00h   FM OCTAVE OFFSET
         ram:6bce 00              ??         00h   ram:0583 (debug)
         ram:6bcf 00              ??         00h
@@ -250,7 +272,11 @@
         ram:6bf3 17              ??         17h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6bf4 07              ??         07h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6bf5 ac              ??         ACh   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 06
+							 
+                    sawtoothy	0x6
+							 
         ram:6bf6 00              ??         00h   FM OCTAVE OFFSET
         ram:6bf7 00              ??         00h   ram:0583 (debug)
         ram:6bf8 00              ??         00h
@@ -292,7 +318,11 @@
         ram:6c1c 15              ??         15h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6c1d 55              ??         55h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE U
         ram:6c1e a7              ??         A7h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 07
+							 
+                    pretty_bell	0x7
+							 
         ram:6c1f 00              ??         00h   FM OCTAVE OFFSET
         ram:6c20 00              ??         00h   ram:0583 (debug)
         ram:6c21 00              ??         00h
@@ -334,7 +364,11 @@
         ram:6c45 f5              ??         F5h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6c46 f5              ??         F5h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6c47 f5              ??         F5h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 08
+							 
+                    brush_hit	0x8
+							 
         ram:6c48 00              ??         00h   FM OCTAVE OFFSET
         ram:6c49 00              ??         00h   ram:0583 (debug)
         ram:6c4a 00              ??         00h
@@ -376,7 +410,11 @@
         ram:6c6e ff              ??         FFh   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6c6f 87              ??         87h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6c70 fa              ??         FAh   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 09
+							 
+                    etheral_bells	0x9
+							 
         ram:6c71 31              ??         31h   FM OCTAVE OFFSET
         ram:6c72 00              ??         00h   ram:0583 (debug)
         ram:6c73 00              ??         00h
@@ -418,7 +456,11 @@
         ram:6c97 00              ??         00h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6c98 f5              ??         F5h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6c99 f4              ??         F4h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 0A
+							 
+                    harpsichord_2	0xa
+							 
         ram:6c9a 00              ??         00h   FM OCTAVE OFFSET
         ram:6c9b 00              ??         00h   ram:0583 (debug)
         ram:6c9c 00              ??         00h
@@ -460,7 +502,11 @@
         ram:6cc0 02              ??         02h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6cc1 01              ??         01h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6cc2 05              ??         05h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 0B
+							 
+                    dreamy_pluck	0xb
+							 
         ram:6cc3 00              ??         00h   FM OCTAVE OFFSET
         ram:6cc4 00              ??         00h   ram:0583 (debug)
         ram:6cc5 00              ??         00h
@@ -502,7 +548,11 @@
         ram:6ce9 f2              ??         F2h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6cea f3              ??         F3h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6ceb 08              ??         08h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+		
                              07 0C
+							 
+                    nasally	0xc
+							 
         ram:6cec 00              ??         00h   FM OCTAVE OFFSET
         ram:6ced 00              ??         00h   ram:0583 (debug)
         ram:6cee 00              ??         00h
@@ -544,7 +594,11 @@
         ram:6d12 03              ??         03h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6d13 03              ??         03h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6d14 38              ??         38h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE 8
+		
                              07 0D
+							 
+                    low_mystery	0xd
+							 
         ram:6d15 f4              ??         F4h   FM OCTAVE OFFSET
         ram:6d16 00              ??         00h   ram:0583 (debug)
         ram:6d17 00              ??         00h
@@ -586,6 +640,60 @@
         ram:6d3b 04              ??         04h   FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
         ram:6d3c 05              ??         05h   FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
         ram:6d3d 08              ??         08h   FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
+
+
+                    high_plunk_organ	0xe
+                    high_harpsichord_low_attack	0xf
+                    high_warm_drawbar	0x10
+                    high_piano_low_sustain	0x11
+                    high_sawtoothy	0x12
+                    nasally_mystery	0x13
+                    high_harpsichord_low_sustain	0x14
+                    warm_gob	0x15
+                    normal_organ	0x16
+                    plucky_mystery_bass	0x17
+                    quiet_rubber_galoshes_kick_drum	0x18
+                    tiptoe_plunk	0x19
+                    quiet_tiptoe	0x1a
+                    very_quiet_tiptoe	0x1b
+                    high_organ	0x1c
+                    muted_high_organ	0x1d
+                    very_muted_high_organ	0x1e
+                    nasty_harpsichord	0x1f
+                    muted_organ	0x20
+                    muted_low_organ	0x21
+                    warm_organ	0x22
+                    sharp_wahwah_reverse	0x23
+                    dusty_snare	0x24
+                    subdued_drawbar	0x25
+                    muted_subdued_drawbar	0x26
+                    very_muted_subdued_drawbar	0x27
+                    muted_high_piano	0x28
+                    pretty_bell_echoey	0x29
+                    twisted	0x2a
+                    warm_high_synth	0x2b
+                    bucket_synth	0x2c
+                    bucket_synth_fade	0x2d
+                    muted_bucket_synth	0x2e
+                    very_muted_bucket_synth	0x2f
+                    dry_muted_organ	0x30
+                    dry_yerpy_sawtooth	0x31
+                    low_mystery_organ	0x32
+                    muted_nasally_organ	0x33
+                    muted_nasty_harpsichord	0x34
+                    harpsichord_sustain	0x35
+                    fading_twisted	0x36
+                    stacatto_tones	0x37
+                    snare	0x38
+                    warm_drawbar	0x39
+                    low_warm_drawbar	0x3a
+                    muted_high_piano_low_sustain	0x3b
+                    warm_bass	0x3c
+                    muted_high_drawbar	0x3d
+                    muted_high_sawtoothy_synth	0x3e
+                    clear_bass	0x3f
+                    muted_buzzy_synth	0x40
+                    derp_piano	0x41
 
         ram:6d3e 0c              ??         0Ch   FM OCTAVE OFFSET
         ram:6d3f 00              ??         00h   ram:0583 (debug)

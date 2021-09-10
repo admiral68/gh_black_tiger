@@ -139,7 +139,7 @@ IX+0x2f     => FM PROGRAM REPEAT COUNT
 IX+0x6/7    => (UNUSED)                                     (CMD 0x01)
 
 
-BT FM PATCH STRUCT (0x29)
+BT FM PATCH STRUCT (0x29) -- TODO: DEFINE BITFIELDS IN AUDIO STRUCT
 -------------------------
 IX+0x0      => FM OCTAVE OFFSET
 IX+0x1		=> ram:0583 (debug)
