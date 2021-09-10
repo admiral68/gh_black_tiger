@@ -4737,6 +4737,7 @@
            ram:1ace 00              db        0h                      adjustment
         ram:1acf 1c              ssg_end
            ram:1acf 1c              bt_ssg_c  end                     cmd
+		   
                              BOSS_HIT                                        XREF[1]:     ram:0e45(*)  
         ram:1ad0 c8              clip_type
            ram:1ad0 c8              byte:4    8h                      cancel_mask                       XREF[1]:     ram:0e45(*)  
@@ -4774,6 +4775,7 @@
            ram:1ae4 fe              db        FEh                     adjustment
         ram:1ae5 1c              ssg_end
            ram:1ae5 1c              bt_ssg_c  end                     cmd
+		   
                              DRAGON_SPEW_FIRE                                XREF[1]:     ram:0e47(*)  
         ram:1ae6 c8              clip_type
            ram:1ae6 c8              byte:4    8h                      cancel_mask                       XREF[1]:     ram:0e47(*)  
@@ -4839,6 +4841,10 @@
            ram:1b0e f7              db        F7h                     adjustment
         ram:1b0f 1c              ssg_end
            ram:1b0f 1c              bt_ssg_c  end                     cmd
+		   
+		   
+		   
+		   
                              COIN_OR_CREDIT_ADDED                            XREF[1]:     ram:0e01(*)  
         ram:1b10 4f              clip_type
            ram:1b10 4f              byte:4    Fh                      cancel_mask                       XREF[1]:     ram:0e01(*)  
@@ -4846,12 +4852,13 @@
            ram:1b10 4f              byte:1    0h                      unknown                           XREF[1]:     ram:0e01(*)  
            ram:1b10 4f              byte:1    1h                      ym1_or_ym2                        XREF[1]:     ram:0e01(*)  
            ram:1b10 4f              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e01(*)  
-        ram:1b11 1d 1b           dw         COIN_OR_CREDIT_ADDED_YM1_CH1                     = 
-        ram:1b13 2f 1b           dw         COIN_OR_CREDIT_ADDED_YM1_CH2                     = 
-        ram:1b15 41 1b           dw         COIN_OR_CREDIT_ADDED_YM1_CH3                     = 
-        ram:1b17 53 1b           dw         COIN_OR_CREDIT_ADDED_YM2_CH1                     = 
-        ram:1b19 66 1b           dw         COIN_OR_CREDIT_ADDED_YM2_CH2                     = 
-        ram:1b1b 79 1b           dw         COIN_OR_CREDIT_ADDED_YM2_CH3                     = 
+        ram:1b11 1d 1b           dw         COIN_OR_CREDIT_ADDED_YM1_CH1
+        ram:1b13 2f 1b           dw         COIN_OR_CREDIT_ADDED_YM1_CH2
+        ram:1b15 41 1b           dw         COIN_OR_CREDIT_ADDED_YM1_CH3
+        ram:1b17 53 1b           dw         COIN_OR_CREDIT_ADDED_YM2_CH1
+        ram:1b19 66 1b           dw         COIN_OR_CREDIT_ADDED_YM2_CH2
+        ram:1b1b 79 1b           dw         COIN_OR_CREDIT_ADDED_YM2_CH3
+		
                              COIN_OR_CREDIT_ADDED_YM1_CH1                    XREF[1]:     ram:1b11(*)  
         ram:1b1d 00 05           noteperiod
            ram:1b1d 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:1b11(*)  
@@ -5083,6 +5090,7 @@
            ram:1b8a ad              byte:5    Dh                      offset
            ram:1b8a ad              byte:3    5h                      period_factor
         ram:1b8b 0f              bt_fm_co   end_of_audio
+		
                              LEVEL_1_MUSIC                                   XREF[1]:     ram:0e03(*)  
         ram:1b8c 06              clip_type
            ram:1b8c 06              byte:4    6h                      cancel_mask                       XREF[1]:     ram:0e03(*)  
@@ -5090,12 +5098,12 @@
            ram:1b8c 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e03(*)  
            ram:1b8c 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e03(*)  
            ram:1b8c 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e03(*)  
-        ram:1b8d 99 1b           dw         LEVEL_1_YM1_CH1                                  = 
-        ram:1b8f 7d 1c           dw         LEVEL_1_YM1_CH2                                  = 
-        ram:1b91 88 1c           dw         LEVEL_1_YM1_CH3                                  = 
-        ram:1b93 4e 1d           dw         LEVEL_1_YM2_CH1                                  = 
-        ram:1b95 ee 1d           dw         LEVEL_1_YM2_CH2                                  = 
-        ram:1b97 91 1e           dw         LEVEL_1_YM2_CH3                                  = 
+        ram:1b8d 99 1b           dw         LEVEL_1_YM1_CH1             
+        ram:1b8f 7d 1c           dw         LEVEL_1_YM1_CH2             
+        ram:1b91 88 1c           dw         LEVEL_1_YM1_CH3             
+        ram:1b93 4e 1d           dw         LEVEL_1_YM2_CH1             
+        ram:1b95 ee 1d           dw         LEVEL_1_YM2_CH2             
+        ram:1b97 91 1e           dw         LEVEL_1_YM2_CH3             
                              LEVEL_1_YM1_CH1                                 XREF[1]:     ram:1b8d(*)  
         ram:1b99 00 07           noteperiod
            ram:1b99 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:1b8d(*)  
@@ -7850,12 +7858,12 @@
            ram:1fde 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e05(*)  
            ram:1fde 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e05(*)  
            ram:1fde 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e05(*)  
-        ram:1fdf eb 1f           dw         LEVEL_2_YM1_CH1                                  = 
-        ram:1fe1 7d 20           dw         LEVEL_2_YM1_CH2                                  = 
-        ram:1fe3 12 21           dw         LEVEL_2_YM1_CH3                                  = 
-        ram:1fe5 a0 21           dw         LEVEL_2_YM2_CH1                                  = 
-        ram:1fe7 36 22           dw         LEVEL_2_YM2_CH2                                  = 
-        ram:1fe9 43 22           dw         LEVEL_2_YM2_CH3                                  = 
+        ram:1fdf eb 1f           dw         LEVEL_2_YM1_CH1             
+        ram:1fe1 7d 20           dw         LEVEL_2_YM1_CH2             
+        ram:1fe3 12 21           dw         LEVEL_2_YM1_CH3             
+        ram:1fe5 a0 21           dw         LEVEL_2_YM2_CH1             
+        ram:1fe7 36 22           dw         LEVEL_2_YM2_CH2             
+        ram:1fe9 43 22           dw         LEVEL_2_YM2_CH3             
                              LEVEL_2_YM1_CH1                                 XREF[1]:     ram:1fdf(*)  
         ram:1feb 00 07           noteperiod
            ram:1feb 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:1fdf(*)  
@@ -10275,11 +10283,11 @@
            ram:23ef 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e07(*)  
            ram:23ef 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e07(*)  
            ram:23ef 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e07(*)  
-        ram:23f0 fc 23           dw         LEVEL_3_YM1_CH1                                  = 
-        ram:23f2 ac 24           dw         LEVEL_3_YM1_CH2                                  = 
-        ram:23f4 7f 25           dw         LEVEL_3_YM1_CH3                                  = 
-        ram:23f6 27 26           dw         LEVEL_3_YM2_CH1                                  = 
-        ram:23f8 bf 26           dw         LEVEL_3_YM2_CH2                                  = 
+        ram:23f0 fc 23           dw         LEVEL_3_YM1_CH1             
+        ram:23f2 ac 24           dw         LEVEL_3_YM1_CH2             
+        ram:23f4 7f 25           dw         LEVEL_3_YM1_CH3             
+        ram:23f6 27 26           dw         LEVEL_3_YM2_CH1             
+        ram:23f8 bf 26           dw         LEVEL_3_YM2_CH2             
         ram:23fa 00              ??         00h
         ram:23fb 00              ??         00h
                              LEVEL_3_YM1_CH1                                 XREF[1]:     ram:23f0(*)  
@@ -12609,12 +12617,12 @@
            ram:27b7 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e09(*)  
            ram:27b7 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e09(*)  
            ram:27b7 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e09(*)  
-        ram:27b8 c4 27           dw         LEVEL_4_YM1_CH1                                  = 
-        ram:27ba 86 28           dw         LEVEL_4_YM1_CH2                                  = 
-        ram:27bc 35 29           dw         LEVEL_4_YM1_CH3                                  = 
-        ram:27be b9 29           dw         LEVEL_4_YM2_CH1                                  = 
-        ram:27c0 9d 2a           dw         LEVEL_4_YM2_CH2                                  = 
-        ram:27c2 e1 2b           dw         LEVEL_4_YM2_CH3                                  = 
+        ram:27b8 c4 27           dw         LEVEL_4_YM1_CH1             
+        ram:27ba 86 28           dw         LEVEL_4_YM1_CH2             
+        ram:27bc 35 29           dw         LEVEL_4_YM1_CH3             
+        ram:27be b9 29           dw         LEVEL_4_YM2_CH1             
+        ram:27c0 9d 2a           dw         LEVEL_4_YM2_CH2             
+        ram:27c2 e1 2b           dw         LEVEL_4_YM2_CH3             
                              LEVEL_4_YM1_CH1                                 XREF[1]:     ram:27b8(*)  
         ram:27c4 00 0a           noteperiod
            ram:27c4 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:27b8(*)  
@@ -16385,12 +16393,12 @@
            ram:2d27 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e0b(*)  
            ram:2d27 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e0b(*)  
            ram:2d27 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e0b(*)  
-        ram:2d28 34 2d           dw         LEVEL_5_YM1_CH1                                  = 
-        ram:2d2a 13 2e           dw         LEVEL_5_YM1_CH2                                  = 
-        ram:2d2c 0d 2f           dw         LEVEL_5_YM1_CH3                                  = 
-        ram:2d2e 03 30           dw         LEVEL_5_YM2_CH1                                  = 
-        ram:2d30 c2 30           dw         LEVEL_5_YM2_CH2                                  = 
-        ram:2d32 48 31           dw         LEVEL_5_YM2_CH3                                  = 
+        ram:2d28 34 2d           dw         LEVEL_5_YM1_CH1             
+        ram:2d2a 13 2e           dw         LEVEL_5_YM1_CH2             
+        ram:2d2c 0d 2f           dw         LEVEL_5_YM1_CH3             
+        ram:2d2e 03 30           dw         LEVEL_5_YM2_CH1             
+        ram:2d30 c2 30           dw         LEVEL_5_YM2_CH2             
+        ram:2d32 48 31           dw         LEVEL_5_YM2_CH3             
                              LEVEL_5_YM1_CH1                                 XREF[1]:     ram:2d28(*)  
         ram:2d34 00 06           noteperiod
            ram:2d34 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:2d28(*)  
@@ -19685,12 +19693,12 @@
            ram:3207 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e0d(*)  
            ram:3207 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e0d(*)  
            ram:3207 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e0d(*)  
-        ram:3208 14 32           dw         LEVEL_6_YM1_CH1                                  = 
-        ram:320a 8b 32           dw         LEVEL_6_YM1_CH2                                  = 
-        ram:320c 1b 33           dw         LEVEL_6_YM1_CH3                                  = 
-        ram:320e 95 33           dw         LEVEL_6_YM2_CH1                                  = 
-        ram:3210 50 34           dw         LEVEL_6_YM2_CH2                                  = 
-        ram:3212 71 35           dw         LEVEL_6_YM2_CH3                                  = 
+        ram:3208 14 32           dw         LEVEL_6_YM1_CH1             
+        ram:320a 8b 32           dw         LEVEL_6_YM1_CH2             
+        ram:320c 1b 33           dw         LEVEL_6_YM1_CH3             
+        ram:320e 95 33           dw         LEVEL_6_YM2_CH1             
+        ram:3210 50 34           dw         LEVEL_6_YM2_CH2             
+        ram:3212 71 35           dw         LEVEL_6_YM2_CH3             
                              LEVEL_6_YM1_CH1                                 XREF[1]:     ram:3208(*)  
         ram:3214 00 07           noteperiod
            ram:3214 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:3208(*)  
@@ -21997,12 +22005,12 @@
            ram:35c4 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e0f(*)  
            ram:35c4 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e0f(*)  
            ram:35c4 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e0f(*)  
-        ram:35c5 d1 35           dw         LEVEL_7_YM1_CH1                                  = 
-        ram:35c7 04 36           dw         LEVEL_7_YM1_CH2                                  = 
-        ram:35c9 0f 36           dw         LEVEL_7_YM1_CH3                                  = 
-        ram:35cb 3e 37           dw         LEVEL_7_YM2_CH1                                  = 
-        ram:35cd 91 38           dw         LEVEL_7_YM2_CH2                                  = 
-        ram:35cf a6 39           dw         LEVEL_7_YM2_CH3                                  = 
+        ram:35c5 d1 35           dw         LEVEL_7_YM1_CH1             
+        ram:35c7 04 36           dw         LEVEL_7_YM1_CH2             
+        ram:35c9 0f 36           dw         LEVEL_7_YM1_CH3             
+        ram:35cb 3e 37           dw         LEVEL_7_YM2_CH1             
+        ram:35cd 91 38           dw         LEVEL_7_YM2_CH2             
+        ram:35cf a6 39           dw         LEVEL_7_YM2_CH3             
                              LEVEL_7_YM1_CH1                                 XREF[1]:     ram:35c5(*)  
         ram:35d1 00 07           noteperiod
            ram:35d1 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:35c5(*)  
@@ -24999,11 +25007,11 @@
            ram:3a7c 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e11(*)  
            ram:3a7c 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e11(*)  
            ram:3a7c 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e11(*)  
-        ram:3a7d 89 3a           dw         LEVEL_8_YM1_CH1                                  = 
-        ram:3a7f b8 3b           dw         LEVEL_8_YM1_CH2                                  = 
-        ram:3a81 c8 3c           dw         LEVEL_8_YM1_CH3                                  = 
-        ram:3a83 e8 3d           dw         LEVEL_8_YM2_CH1                                  = 
-        ram:3a85 f5 3e           dw         LEVEL_8_YM2_CH2                                  = 
+        ram:3a7d 89 3a           dw         LEVEL_8_YM1_CH1             
+        ram:3a7f b8 3b           dw         LEVEL_8_YM1_CH2             
+        ram:3a81 c8 3c           dw         LEVEL_8_YM1_CH3             
+        ram:3a83 e8 3d           dw         LEVEL_8_YM2_CH1             
+        ram:3a85 f5 3e           dw         LEVEL_8_YM2_CH2             
         ram:3a87 00              ??         00h
         ram:3a88 00              ??         00h
                              LEVEL_8_YM1_CH1                                 XREF[1]:     ram:3a7d(*)  
@@ -28492,12 +28500,12 @@
            ram:3fcb 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e13(*)  
            ram:3fcb 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e13(*)  
            ram:3fcb 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e13(*)  
-        ram:3fcc d8 3f           dw         BOSS_MUSIC_YM1_CH1                               = 
-        ram:3fce 45 40           dw         BOSS_MUSIC_YM1_CH2                               = 
-        ram:3fd0 67 40           dw         BOSS_MUSIC_YM1_CH3                               = 
-        ram:3fd2 89 40           dw         BOSS_MUSIC_YM2_CH1                               = 
-        ram:3fd4 d9 40           dw         BOSS_MUSIC_YM2_CH2                               = 
-        ram:3fd6 66 41           dw         BOSS_MUSIC_YM2_CH3                               = 
+        ram:3fcc d8 3f           dw         BOSS_MUSIC_YM1_CH1          
+        ram:3fce 45 40           dw         BOSS_MUSIC_YM1_CH2          
+        ram:3fd0 67 40           dw         BOSS_MUSIC_YM1_CH3          
+        ram:3fd2 89 40           dw         BOSS_MUSIC_YM2_CH1          
+        ram:3fd4 d9 40           dw         BOSS_MUSIC_YM2_CH2          
+        ram:3fd6 66 41           dw         BOSS_MUSIC_YM2_CH3          
                              BOSS_MUSIC_YM1_CH1                              XREF[1]:     ram:3fcc(*)  
         ram:3fd8 00 07           noteperiod
            ram:3fd8 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:3fcc(*)  
@@ -29821,12 +29829,12 @@
            ram:41f5 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e15(*)  
            ram:41f5 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e15(*)  
            ram:41f5 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e15(*)  
-        ram:41f6 02 42           dw         FIGHT_DRAGON_01_YM1_CH1                          = 
-        ram:41f8 59 42           dw         FIGHT_DRAGON_01_YM1_CH2                          = 
-        ram:41fa b0 42           dw         FIGHT_DRAGON_01_YM1_CH3                          = 
-        ram:41fc 1c 43           dw         FIGHT_DRAGON_01_YM2_CH1                          = 
-        ram:41fe 8d 43           dw         FIGHT_DRAGON_01_YM2_CH2                          = 
-        ram:4200 26 44           dw         FIGHT_DRAGON_01_YM2_CH3                          = 
+        ram:41f6 02 42           dw         FIGHT_DRAGON_01_YM1_CH1     
+        ram:41f8 59 42           dw         FIGHT_DRAGON_01_YM1_CH2     
+        ram:41fa b0 42           dw         FIGHT_DRAGON_01_YM1_CH3     
+        ram:41fc 1c 43           dw         FIGHT_DRAGON_01_YM2_CH1     
+        ram:41fe 8d 43           dw         FIGHT_DRAGON_01_YM2_CH2     
+        ram:4200 26 44           dw         FIGHT_DRAGON_01_YM2_CH3     
                              FIGHT_DRAGON_01_YM1_CH1                         XREF[1]:     ram:41f6(*)  
         ram:4202 00 06           noteperiod
            ram:4202 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:41f6(*)  
@@ -31335,12 +31343,12 @@
            ram:448b 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e17(*)  
            ram:448b 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e17(*)  
            ram:448b 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e17(*)  
-        ram:448c 98 44           dw         FIGHT_DRAGON_02_YM1_CH1                          = 
-        ram:448e 1b 45           dw         FIGHT_DRAGON_02_YM1_CH2                          = 
-        ram:4490 a0 45           dw         FIGHT_DRAGON_02_YM1_CH3                          = 
-        ram:4492 2e 46           dw         FIGHT_DRAGON_02_YM2_CH1                          = 
-        ram:4494 bc 46           dw         FIGHT_DRAGON_02_YM2_CH2                          = 
-        ram:4496 49 47           dw         FIGHT_DRAGON_02_YM2_CH3                          = 
+        ram:448c 98 44           dw         FIGHT_DRAGON_02_YM1_CH1     
+        ram:448e 1b 45           dw         FIGHT_DRAGON_02_YM1_CH2     
+        ram:4490 a0 45           dw         FIGHT_DRAGON_02_YM1_CH3     
+        ram:4492 2e 46           dw         FIGHT_DRAGON_02_YM2_CH1     
+        ram:4494 bc 46           dw         FIGHT_DRAGON_02_YM2_CH2     
+        ram:4496 49 47           dw         FIGHT_DRAGON_02_YM2_CH3     
                              FIGHT_DRAGON_02_YM1_CH1                         XREF[1]:     ram:448c(*)  
         ram:4498 00 07           noteperiod
            ram:4498 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:448c(*)  
@@ -33013,12 +33021,12 @@
            ram:4770 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e19(*)  
            ram:4770 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e19(*)  
            ram:4770 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e19(*)  
-        ram:4771 7d 47           dw         OLD_MAN_SHOP_YM1_CH1                             = 
-        ram:4773 f8 47           dw         OLD_MAN_SHOP_YM1_CH2                             = 
-        ram:4775 52 48           dw         OLD_MAN_SHOP_YM1_CH3                             = 
-        ram:4777 ae 48           dw         OLD_MAN_SHOP_YM2_CH1                             = 
-        ram:4779 08 49           dw         OLD_MAN_SHOP_YM2_CH2                             = 
-        ram:477b 43 49           dw         OLD_MAN_SHOP_YM2_CH3                             = 
+        ram:4771 7d 47           dw         OLD_MAN_SHOP_YM1_CH1        
+        ram:4773 f8 47           dw         OLD_MAN_SHOP_YM1_CH2        
+        ram:4775 52 48           dw         OLD_MAN_SHOP_YM1_CH3        
+        ram:4777 ae 48           dw         OLD_MAN_SHOP_YM2_CH1        
+        ram:4779 08 49           dw         OLD_MAN_SHOP_YM2_CH2        
+        ram:477b 43 49           dw         OLD_MAN_SHOP_YM2_CH3        
                              OLD_MAN_SHOP_YM1_CH1                            XREF[1]:     ram:4771(*)  
         ram:477d 00 06           noteperiod
            ram:477d 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:4771(*)  
@@ -34174,12 +34182,12 @@
            ram:497e 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e1b(*)  
            ram:497e 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e1b(*)  
            ram:497e 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e1b(*)  
-        ram:497f 8b 49           dw         DUNGEON_YM1_CH1                                  = 
-        ram:4981 e8 49           dw         DUNGEON_YM1_CH2                                  = 
-        ram:4983 38 4a           dw         DUNGEON_YM1_CH3                                  = 
-        ram:4985 88 4a           dw         DUNGEON_YM2_CH1                                  = 
-        ram:4987 d8 4a           dw         DUNGEON_YM2_CH2                                  = 
-        ram:4989 35 4b           dw         DUNGEON_YM2_CH3                                  = 
+        ram:497f 8b 49           dw         DUNGEON_YM1_CH1             
+        ram:4981 e8 49           dw         DUNGEON_YM1_CH2             
+        ram:4983 38 4a           dw         DUNGEON_YM1_CH3             
+        ram:4985 88 4a           dw         DUNGEON_YM2_CH1             
+        ram:4987 d8 4a           dw         DUNGEON_YM2_CH2             
+        ram:4989 35 4b           dw         DUNGEON_YM2_CH3             
                              DUNGEON_YM1_CH1                                 XREF[1]:     ram:497f(*)  
         ram:498b 00 07           noteperiod
            ram:498b 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:497f(*)  
@@ -35496,12 +35504,12 @@
            ram:4b96 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e1d(*)  
            ram:4b96 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e1d(*)  
            ram:4b96 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e1d(*)  
-        ram:4b97 a3 4b           dw         ENTER_INITIALS_YM1_CH1                           = 
-        ram:4b99 d3 4c           dw         ENTER_INITIALS_YM1_CH2                           = 
-        ram:4b9b dd 4d           dw         ENTER_INITIALS_YM1_CH3                           = 
-        ram:4b9d fb 4e           dw         ENTER_INITIALS_YM2_CH1                           = 
-        ram:4b9f e2 4f           dw         ENTER_INITIALS_YM2_CH2                           = 
-        ram:4ba1 c3 50           dw         ENTER_INITIALS_YM2_CH3                           = 
+        ram:4b97 a3 4b           dw         ENTER_INITIALS_YM1_CH1      
+        ram:4b99 d3 4c           dw         ENTER_INITIALS_YM1_CH2      
+        ram:4b9b dd 4d           dw         ENTER_INITIALS_YM1_CH3      
+        ram:4b9d fb 4e           dw         ENTER_INITIALS_YM2_CH1      
+        ram:4b9f e2 4f           dw         ENTER_INITIALS_YM2_CH2      
+        ram:4ba1 c3 50           dw         ENTER_INITIALS_YM2_CH3      
                              ENTER_INITIALS_YM1_CH1                          XREF[1]:     ram:4b97(*)  
         ram:4ba3 00 06           noteperiod
            ram:4ba3 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:4b97(*)  
@@ -39370,12 +39378,12 @@
            ram:519d 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e1f(*)  
            ram:519d 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e1f(*)  
            ram:519d 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e1f(*)  
-        ram:519e aa 51           dw         AFTER_ENTER_INITIALS_YM1_CH1                     = 
-        ram:51a0 c7 51           dw         AFTER_ENTER_INITIALS_YM1_CH2                     = 
-        ram:51a2 ea 51           dw         AFTER_ENTER_INITIALS_YM1_CH3                     = 
-        ram:51a4 0d 52           dw         AFTER_ENTER_INITIALS_YM2_CH1                     = 
-        ram:51a6 2f 52           dw         AFTER_ENTER_INITIALS_YM2_CH2                     = 
-        ram:51a8 65 52           dw         AFTER_ENTER_INITIALS_YM2_CH3                     = 
+        ram:519e aa 51           dw         AFTER_ENTER_INITIALS_YM1_CH1
+        ram:51a0 c7 51           dw         AFTER_ENTER_INITIALS_YM1_CH2
+        ram:51a2 ea 51           dw         AFTER_ENTER_INITIALS_YM1_CH3
+        ram:51a4 0d 52           dw         AFTER_ENTER_INITIALS_YM2_CH1
+        ram:51a6 2f 52           dw         AFTER_ENTER_INITIALS_YM2_CH2
+        ram:51a8 65 52           dw         AFTER_ENTER_INITIALS_YM2_CH3
                              AFTER_ENTER_INITIALS_YM1_CH1                    XREF[1]:     ram:519e(*)  
         ram:51aa 00 06           noteperiod
            ram:51aa 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:519e(*)  
@@ -39900,12 +39908,12 @@
            ram:5282 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e21(*)  
            ram:5282 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e21(*)  
            ram:5282 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e21(*)  
-        ram:5283 8f 52           dw         INTRO_YM1_CH1                                    = 
-        ram:5285 bc 52           dw         INTRO_YM1_CH2                                    = 
-        ram:5287 e9 52           dw         INTRO_YM1_CH3                                    = 
-        ram:5289 72 53           dw         INTRO_YM2_CH1                                    = 
-        ram:528b fe 53           dw         INTRO_YM2_CH2                                    = 
-        ram:528d 23 54           dw         INTRO_YM2_CH3                                    = 
+        ram:5283 8f 52           dw         INTRO_YM1_CH1               
+        ram:5285 bc 52           dw         INTRO_YM1_CH2               
+        ram:5287 e9 52           dw         INTRO_YM1_CH3               
+        ram:5289 72 53           dw         INTRO_YM2_CH1               
+        ram:528b fe 53           dw         INTRO_YM2_CH2               
+        ram:528d 23 54           dw         INTRO_YM2_CH3               
                              INTRO_YM1_CH1                                   XREF[1]:     ram:5283(*)  
         ram:528f 00 07           noteperiod
            ram:528f 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:5283(*)  
@@ -40986,12 +40994,12 @@
            ram:5448 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e23(*)  
            ram:5448 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e23(*)  
            ram:5448 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e23(*)  
-        ram:5449 55 54           dw         GAME_OVER_YM1_CH1                                = 
-        ram:544b 74 54           dw         GAME_OVER_YM1_CH2                                = 
-        ram:544d 93 54           dw         GAME_OVER_YM1_CH3                                = 
-        ram:544f af 54           dw         GAME_OVER_YM2_CH1                                = 
-        ram:5451 d0 54           dw         GAME_OVER_YM2_CH2                                = 
-        ram:5453 f0 54           dw         GAME_OVER_YM2_CH3                                = 
+        ram:5449 55 54           dw         GAME_OVER_YM1_CH1           
+        ram:544b 74 54           dw         GAME_OVER_YM1_CH2           
+        ram:544d 93 54           dw         GAME_OVER_YM1_CH3           
+        ram:544f af 54           dw         GAME_OVER_YM2_CH1           
+        ram:5451 d0 54           dw         GAME_OVER_YM2_CH2           
+        ram:5453 f0 54           dw         GAME_OVER_YM2_CH3           
                              GAME_OVER_YM1_CH1                               XREF[1]:     ram:5449(*)  
         ram:5455 00 07           noteperiod
            ram:5455 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:5449(*)  
@@ -41908,12 +41916,12 @@
            ram:55fa 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e27(*)  
            ram:55fa 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e27(*)  
            ram:55fa 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e27(*)  
-        ram:55fb 07 56           dw         FINISH_LEVEL_8_YM1_CH1                           = 
-        ram:55fd 54 57           dw         FINISH_LEVEL_8_YM1_CH2                           = 
-        ram:55ff ba 58           dw         FINISH_LEVEL_8_YM1_CH3                           = 
-        ram:5601 66 5a           dw         FINISH_LEVEL_8_YM2_CH1                           = 
-        ram:5603 dc 5b           dw         FINISH_LEVEL_8_YM2_CH2                           = 
-        ram:5605 2e 5d           dw         FINISH_LEVEL_8_YM2_CH3                           = 
+        ram:55fb 07 56           dw         FINISH_LEVEL_8_YM1_CH1      
+        ram:55fd 54 57           dw         FINISH_LEVEL_8_YM1_CH2      
+        ram:55ff ba 58           dw         FINISH_LEVEL_8_YM1_CH3      
+        ram:5601 66 5a           dw         FINISH_LEVEL_8_YM2_CH1      
+        ram:5603 dc 5b           dw         FINISH_LEVEL_8_YM2_CH2      
+        ram:5605 2e 5d           dw         FINISH_LEVEL_8_YM2_CH3      
                              FINISH_LEVEL_8_YM1_CH1                          XREF[1]:     ram:55fb(*)  
         ram:5607 00 07           noteperiod
            ram:5607 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:55fb(*)  
@@ -47580,12 +47588,12 @@
            ram:5ea4 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e29(*)  
            ram:5ea4 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e29(*)  
            ram:5ea4 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e29(*)  
-        ram:5ea5 b1 5e           dw         CONTINUE_YM1_CH1                                 = 
-        ram:5ea7 d6 5e           dw         CONTINUE_YM1_CH2                                 = 
-        ram:5ea9 f5 5e           dw         CONTINUE_YM1_CH3                                 = 
-        ram:5eab 13 5f           dw         CONTINUE_YM2_CH1                                 = 
-        ram:5ead 3b 5f           dw         CONTINUE_YM2_CH2                                 = 
-        ram:5eaf c6 5f           dw         CONTINUE_YM2_CH3                                 = 
+        ram:5ea5 b1 5e           dw         CONTINUE_YM1_CH1            
+        ram:5ea7 d6 5e           dw         CONTINUE_YM1_CH2            
+        ram:5ea9 f5 5e           dw         CONTINUE_YM1_CH3            
+        ram:5eab 13 5f           dw         CONTINUE_YM2_CH1            
+        ram:5ead 3b 5f           dw         CONTINUE_YM2_CH2            
+        ram:5eaf c6 5f           dw         CONTINUE_YM2_CH3            
                              CONTINUE_YM1_CH1                                XREF[1]:     ram:5ea5(*)  
         ram:5eb1 00 05           noteperiod
            ram:5eb1 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:5ea5(*)  
@@ -48548,12 +48556,12 @@
            ram:6051 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e2b(*)  
            ram:6051 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e2b(*)  
            ram:6051 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e2b(*)  
-        ram:6052 5e 60           dw         PERFECT_BONUS_YM1_CH1                            = 
-        ram:6054 72 60           dw         PERFECT_BONUS_YM1_CH2                            = 
-        ram:6056 86 60           dw         PERFECT_BONUS_YM1_CH3                            = 
-        ram:6058 9a 60           dw         PERFECT_BONUS_YM2_CH1                            = 
-        ram:605a b0 60           dw         PERFECT_BONUS_YM2_CH2                            = 
-        ram:605c c1 60           dw         PERFECT_BONUS_YM2_CH3                            = 
+        ram:6052 5e 60           dw         PERFECT_BONUS_YM1_CH1       
+        ram:6054 72 60           dw         PERFECT_BONUS_YM1_CH2       
+        ram:6056 86 60           dw         PERFECT_BONUS_YM1_CH3       
+        ram:6058 9a 60           dw         PERFECT_BONUS_YM2_CH1       
+        ram:605a b0 60           dw         PERFECT_BONUS_YM2_CH2       
+        ram:605c c1 60           dw         PERFECT_BONUS_YM2_CH3       
                              PERFECT_BONUS_YM1_CH1                           XREF[1]:     ram:6052(*)  
         ram:605e 00 06           noteperiod
            ram:605e 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:6052(*)  
@@ -48820,12 +48828,12 @@
            ram:60d2 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e2d(*)  
            ram:60d2 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e2d(*)  
            ram:60d2 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e2d(*)  
-        ram:60d3 df 60           dw         UNKNOWN_FANFARE_YM1_CH1                          = 
-        ram:60d5 f6 60           dw         UNKNOWN_FANFARE_YM1_CH2                          = 
-        ram:60d7 0d 61           dw         UNKNOWN_FANFARE_YM1_CH3                          = 
-        ram:60d9 23 61           dw         UNKNOWN_FANFARE_YM2_CH1                          = 
-        ram:60db 3c 61           dw         UNKNOWN_FANFARE_YM2_CH2                          = 
-        ram:60dd 55 61           dw         UNKNOWN_FANFARE_YM2_CH3                          = 
+        ram:60d3 df 60           dw         UNKNOWN_FANFARE_YM1_CH1     
+        ram:60d5 f6 60           dw         UNKNOWN_FANFARE_YM1_CH2     
+        ram:60d7 0d 61           dw         UNKNOWN_FANFARE_YM1_CH3     
+        ram:60d9 23 61           dw         UNKNOWN_FANFARE_YM2_CH1     
+        ram:60db 3c 61           dw         UNKNOWN_FANFARE_YM2_CH2     
+        ram:60dd 55 61           dw         UNKNOWN_FANFARE_YM2_CH3     
                              UNKNOWN_FANFARE_YM1_CH1                         XREF[1]:     ram:60d3(*)  
         ram:60df 00 06           noteperiod
            ram:60df 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:60d3(*)  
@@ -49160,12 +49168,12 @@
            ram:616d 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e2f(*)  
            ram:616d 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e2f(*)  
            ram:616d 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e2f(*)  
-        ram:616e 7a 61           dw         UNKNOWN_FANFARE_02_YM1_CH1                       = 
-        ram:6170 99 61           dw         UNKNOWN_FANFARE_02_YM1_CH2                       = 
-        ram:6172 b8 61           dw         UNKNOWN_FANFARE_02_YM1_CH3                       = 
-        ram:6174 d7 61           dw         UNKNOWN_FANFARE_02_YM2_CH1                       = 
-        ram:6176 f8 61           dw         UNKNOWN_FANFARE_02_YM2_CH2                       = 
-        ram:6178 17 62           dw         UNKNOWN_FANFARE_02_YM2_CH3                       = 
+        ram:616e 7a 61           dw         UNKNOWN_FANFARE_02_YM1_CH1  
+        ram:6170 99 61           dw         UNKNOWN_FANFARE_02_YM1_CH2  
+        ram:6172 b8 61           dw         UNKNOWN_FANFARE_02_YM1_CH3  
+        ram:6174 d7 61           dw         UNKNOWN_FANFARE_02_YM2_CH1  
+        ram:6176 f8 61           dw         UNKNOWN_FANFARE_02_YM2_CH2  
+        ram:6178 17 62           dw         UNKNOWN_FANFARE_02_YM2_CH3  
                              UNKNOWN_FANFARE_02_YM1_CH1                      XREF[1]:     ram:616e(*)  
         ram:617a 00 06           noteperiod
            ram:617a 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:616e(*)  
@@ -49598,12 +49606,12 @@
            ram:6236 06              byte:1    0h                      unknown                           XREF[1]:     ram:0e33(*)  
            ram:6236 06              byte:1    0h                      ym1_or_ym2                        XREF[1]:     ram:0e33(*)  
            ram:6236 06              byte:1    0h                      is_ssg                            XREF[1]:     ram:0e33(*)  
-        ram:6237 43 62           dw         UNKNOWN_FANFARE_03_YM1_CH1                       = 
-        ram:6239 64 62           dw         UNKNOWN_FANFARE_03_YM1_CH2                       = 
-        ram:623b 87 62           dw         UNKNOWN_FANFARE_03_YM1_CH3                       = 
-        ram:623d a8 62           dw         UNKNOWN_FANFARE_03_YM2_CH1                       = 
-        ram:623f c8 62           dw         UNKNOWN_FANFARE_03_YM2_CH2                       = 
-        ram:6241 e8 62           dw         UNKNOWN_FANFARE_03_YM2_CH3                       = 
+        ram:6237 43 62           dw         UNKNOWN_FANFARE_03_YM1_CH1  
+        ram:6239 64 62           dw         UNKNOWN_FANFARE_03_YM1_CH2  
+        ram:623b 87 62           dw         UNKNOWN_FANFARE_03_YM1_CH3  
+        ram:623d a8 62           dw         UNKNOWN_FANFARE_03_YM2_CH1  
+        ram:623f c8 62           dw         UNKNOWN_FANFARE_03_YM2_CH2  
+        ram:6241 e8 62           dw         UNKNOWN_FANFARE_03_YM2_CH3  
                              UNKNOWN_FANFARE_03_YM1_CH1                      XREF[1]:     ram:6237(*)  
         ram:6243 00 07           noteperiod
            ram:6243 00              bt_fm_co  set_note_period         cmd                               XREF[1]:     ram:6237(*)  
