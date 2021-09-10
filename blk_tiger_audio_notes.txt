@@ -142,8 +142,8 @@ IX+0x6/7    => (UNUSED)                                     (CMD 0x01)
 BT FM PATCH STRUCT (0x29)
 -------------------------
 IX+0x0      => FM OCTAVE OFFSET
-IX+0x1		=>
-
+IX+0x1		=> ram:0583 (debug)
+IX+0x6		=> FEEDBACK LVL OP CONNECT ALGORITHM
 IX+0x8		=> CONTROLS NOTE ON/OFF FOR ENTIRE PATCH
 IX+0x9      => FM CH OP1 TOTAL LEVEL OFFSET
 IX+0xa      => FM CH OP1 LEVEL SETTING 01
@@ -157,7 +157,26 @@ IX+0x11     => FM CH OP3 LEVEL SETTING 02
 IX+0x12     => FM CH OP4 TOTAL LEVEL OFFSET
 IX+0x13     => FM CH OP4 LEVEL SETTING 01
 IX+0x14     => FM CH OP4 LEVEL SETTING 02
-
+IX+0x15		=> FM CH OP1 DETUNE AND MULTIPLE
+IX+0x16		=> FM CH OP2 DETUNE AND MULTIPLE
+IX+0x17		=> FM CH OP3 DETUNE AND MULTIPLE
+IX+0x18		=> FM CH OP4 DETUNE AND MULTIPLE
+IX+0x19		=> FM CH OP1 KEY SCALE RATE/ATTACK RATE
+IX+0x1A		=> FM CH OP2 KEY SCALE RATE/ATTACK RATE
+IX+0x1B		=> FM CH OP3 KEY SCALE RATE/ATTACK RATE
+IX+0x1C		=> FM CH OP4 KEY SCALE RATE/ATTACK RATE
+IX+0x1D		=> FM CH OP1 DECAY RATE
+IX+0x1E		=> FM CH OP2 DECAY RATE
+IX+0x1F		=> FM CH OP3 DECAY RATE
+IX+0x20		=> FM CH OP4 DECAY RATE
+IX+0x21		=> FM CH OP1 SUSTAIN RATE
+IX+0x22		=> FM CH OP2 SUSTAIN RATE
+IX+0x23		=> FM CH OP3 SUSTAIN RATE
+IX+0x24		=> FM CH OP4 SUSTAIN RATE
+IX+0x25		=> FM CH OP1 SUSTAIN LEVEL/RELEASE RATE
+IX+0x26		=> FM CH OP2 SUSTAIN LEVEL/RELEASE RATE
+IX+0x27		=> FM CH OP3 SUSTAIN LEVEL/RELEASE RATE
+IX+0x28		=> FM CH OP4 SUSTAIN LEVEL/RELEASE RATE
 
 
 BT SSG CHANNEL STRUCTS (0x30) (C500 & C530)
@@ -187,8 +206,6 @@ IX+0x17/18  => PTR TO PREVIOUS SSG DATA BYTE
 IX+0x19     => (RESET BY CMD 01)
 IX+0x1a     => CURRENT SSG BYTE
 IX+0x1b     => NEXT SSG BYTE
-IX+0x1d     =>
-IX+0x1e     =>
 IX+0x1f     => MAIN CMD BYTE
 
 
@@ -341,10 +358,10 @@ SSG FIRST COMMANDS:
                                     CLEARS 0x19; UPDATES BOOKMARKS 18/19 = 15/16; IMMEDIATELY LOAD NEXT CMD
     08-0B:      => ...010.. aa      REPEAT UNTIL aa == 0x19
                                     if 0x19 != aa, loop back to previous bookmark and repeat
-    0C-0F:      => ...011..         Maybe not used?
-    10-13:      => ...100..         Maybe not used?
-    14-17:      => ...101..         Maybe not used?
-    18-1B:      => ...110..         Maybe not used?
+    0C-0F:      => ...011..         not used
+    10-13:      => ...100..         not used
+    14-17:      => ...101..         not used
+    18-1B:      => ...110..         not used
     1C-1F:      => ...111..         END SSG CLIP
 
 SSG SECOND COMMANDS:
@@ -551,6 +568,9 @@ INVESTIGATE
   2FE           - sound data done(?)
   8C0           - COMMAND 0xF (loop?)
   8CE           - SEE HOW CHANNEL DATA ENDS
+
+
+
 
 traceover blktiger.tr,1
 traceover off
