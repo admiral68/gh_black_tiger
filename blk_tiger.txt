@@ -22,6 +22,384 @@ BM: Bank08::9c11
 source debugger.cmd
 
 
+*****************************************************************************************
+* GAME ASPECTS TO CONVERT:                                                              *
+*****************************************************************************************
+
+--------
+  MAPS
+--------
+  TILES
+  LOCATIONS
+
+---------
+  INPUT
+---------
+
+----------
+  PLAYER
+----------
+  SPRITE
+    STANDING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    WALKING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    CROUCHING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    JUMPING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    FALLING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    FIGHTING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    CROUCHING AND FIGHTING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    JUMPING AND FIGHTING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    CLIMBING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    CLIMBING AND FIGHTING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+    DYING
+      WITH ARMOR
+        (FRAMES)
+      WITHOUT ARMOR/POISONED
+        (FRAMES)
+  STATS/VARS
+    LIVES REMAINING
+    X/Y MAP POSITION
+    ARMOR INDEX
+    WEAPON INDEX
+    FLAG: POISONED
+    FLAG: CLIMBING
+    FLAG: LOSE DIRECTION
+    FLAG: WEAPON ACTIVE
+
+-----------------
+  PLAYER WEAPON
+-----------------
+  SPRITE
+    FRAMES
+
+-----------
+  ENEMIES
+-----------
+  ORANGE_SKELETON_0x1
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+      HEALTH POINTS
+      VITALITY BARS
+      ENTITY CLASS
+      POINTER: NEXT ANIMATION FRAME
+      ANIMATION DURATION (CURRENT FRAME)
+      OFFSET: PLAYER SCORE FOR DEFEATING
+      FLAG: HAS WEAPON
+      FLAG: CAN ATTACK
+      FLAG: SCROLLING UPDATES ENEMY's X/Y
+      FLAG: IS BOSS
+      FLAG: FACING L/R
+
+  ORANGE_SKELETON_0x2
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  PURPLE_SKELETON_0x3
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  ORC_0x4
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  ORC_0x5
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  ORC_0x6
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  ORC_0x7
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  ORC_0x8
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  ORANGE_MICHELIN_MAN_0x9
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  YELLOW_MICHELIN_MAN_0xa
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  PURPLE_MICHELIN_MAN_0xb
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  MAN-EATING_YELLOW_PLANT_0xc
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  MAN-EATING_PURPLE_PLANT_0xd
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  FIRETHROWER_0xe
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  BLUE_GOOP_0xf
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  BLUE_GOOP_0x10
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  RED_GOOP_0x11
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  BLUE_GOOP_0x12
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  PURPLE_WITCH_0x13
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  RED_WITCH_0x14
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  NINJA_0x15
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  SPINNING_SCULL_0x16
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  BAT_0x17
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  SNAKE_0x18
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  PURPLE_BLOCK_0x19
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  ORANGE_BLOCK_0x1a
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  DEMON_0x1b
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  LEVEL_03_DRAGON_0x1c
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  LEVEL_06_DRAGON_0x1d
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  LEVEL_08_DRAGON_0x1e
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  LEVEL_05_WARTHOG_BOSS_0x1f
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  LEVEL_07_WARTHOG_BOSS_0x20
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_GIVES_ZENNY_0x21
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_HAS_SHOP_0x22
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_GIVES_VITALITY_0x23
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_GIVES_MORE_TIME_0x24
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_GIVES_ADVICE/SCULL_0x25
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_GIVES_GRATITUDE_0x26
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_GIVES_ADVICE/SEEK_0x27
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  OLD_MAN_THAT_HAS_SHOP_0x28
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+  FALLING_ROCK_0x29
+    SPRITE
+      FRAMES
+        CALLBACK DECISIONS (AI)
+    STATS/VARS
+
+-----------------------
+  OBJECTS (NON-ENEMY
+-----------------------
+  SPRITE
+    FRAMES
+      CALLBACK DECISIONS (AI)
+  STATS/VARS
+
+----------
+  SCORES
+----------
+  LOCATIONS
+
+--------
+  TEXT
+--------
+  GLYPHS
+  LOCATIONS
+  STRINGS
+
+----------
+  SOUNDS
+----------
+
+-------------
+  DEMO PLAY
+-------------
+
+
 
 *****************************************************************************************
 * GAME NOTES:                                                                           *
@@ -80,12 +458,12 @@ bp 2547
 *****************************************************************************************
 
 
-                             Maybe_UpdateDemonVulnerability                  XREF[2]:     Bank02::a3f0(*), Bank02::aa7f(*)  
+                             Maybe_UpdateDemonVulnerability                  XREF[2]:     Bank02::a3f0(*), Bank02::aa7f(*)
     Bank02::a00d dd 7e 0c        LD         A,(IX+0xc)
     Bank02::a010 f6 0b           OR         0xb
     Bank02::a012 ee 03           XOR        0x3
     Bank02::a014 dd 77 0c        LD         (IX+0xc),A
-                              Maybe_UpdateDemonVulnerability02                XREF[1]:     Bank02::aa77(*)  
+                              Maybe_UpdateDemonVulnerability02                XREF[1]:     Bank02::aa77(*)
     Bank02::a019 dd 7e 0c        LD         A,(IX+0xc)
     Bank02::a01c f6 0b           OR         0xb
     Bank02::a01e dd 77 0c        LD         (IX+0xc),A
@@ -93,30 +471,30 @@ bp 2547
     Bank02::a125 dd 7e 0c        LD         A,(IX+0xc)
     Bank02::a128 e6 18           AND        0x18;  (injured only; still boss)
     Bank02::a12a dd 77 0c        LD         (IX+0xc),A
-                             DemonThrowSpear                                 XREF[6]:     Bank02::a931(*), Bank02::a95f(*), 
-                                                                                          Bank02::a98d(*), Bank02::a9b6(*), 
-                                                                                          Bank02::a9da(*), Bank02::a9fe(*)  
+                             DemonThrowSpear                                 XREF[6]:     Bank02::a931(*), Bank02::a95f(*),
+                                                                                          Bank02::a98d(*), Bank02::a9b6(*),
+                                                                                          Bank02::a9da(*), Bank02::a9fe(*)
     Bank02::a189 dd 7e 0c        LD         A,(IX+0xc)
-                             dragon_injured                                  XREF[2]:     Bank04::9728(j), Bank04::972e(j)  
+                             dragon_injured                                  XREF[2]:     Bank04::9728(j), Bank04::972e(j)
     Bank04::9739 dd 7e 0c        LD         A,(IX+0xc)
     Bank04::973c f6 00           OR         0x0
     Bank04::973e dd 77 0c        LD         (IX+0xc),A
-                             CheckBlockAdjustYPos::adjust_y_pos                                    XREF[1]:     Bank05::9a97(j)  
+                             CheckBlockAdjustYPos::adjust_y_pos                                    XREF[1]:     Bank05::9a97(j)
     Bank05::9aa5 dd 7e 0c        LD         A,(IX+0xc)
     Bank05::9aa8 e6 18           AND        0x18
     Bank05::9aaa dd 77 0c        LD         (IX+0xc),A
-                             InjureOrKillPurpleBlock15Points                 XREF[1]:     Bank05::9e67(*)  
+                             InjureOrKillPurpleBlock15Points                 XREF[1]:     Bank05::9e67(*)
     Bank05::9ba2 dd 7e 0c        LD         A,(IX+0xc)
     Bank05::9ba5 e6 18           AND        0x18 ;injure
     Bank05::9ba7 dd 77 0c        LD         (IX+0xc),A
-                             InjureOrKillPurpleBlock15Points::defeated                             XREF[1]:     Bank05::9b9a(j)  
+                             InjureOrKillPurpleBlock15Points::defeated                             XREF[1]:     Bank05::9b9a(j)
     Bank05::9bbe dd 7e 0c        LD         A,(IX+0xc)
     Bank05::9bc1 e6 10           AND        0x10                                             not a boss; only give a coin
                                                                                              if this block was not a boss
     Bank05::9bc3 cc e9 54        CALL       Z,AddZennyCoinForKillingEnemy                    undefined AddZennyCoinForKilling
 Maybe_HandleInanimateSprites
-                             continue_animation                              XREF[3]:     ram:2ff9(j), ram:303c(j), 
-                                                                                          ram:3045(j)  
+                             continue_animation                              XREF[3]:     ram:2ff9(j), ram:303c(j),
+                                                                                          ram:3045(j)
         ram:304a dd 7e 0c        LD         A,(IX+0xc)
         ram:304d e6 08           AND        0x8                                              bit 4 set?
         ram:304f c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
@@ -130,16 +508,16 @@ Maybe_HandleInanimateSprites
         ram:3102 cc 74 31        CALL       Z,FUN_ram_3174                                   undefined FUN_ram_3174()
                              Maybe_KillCurrentLoadedEnemy                    XREF[3]:     DrawQuickExplosionOrHitPoint:322
                                                                                           DrawQuickExplosionOrHitPoint:322
-                                                                                          Maybe_PlayerTouchesPOW:b5d2(c)  
+                                                                                          Maybe_PlayerTouchesPOW:b5d2(c)
         ram:3232 dd 7e 0c        LD         A,(IX+0xc)
         ram:3235 f6 03           OR         0x3
         ram:3237 dd 77 0c        LD         (IX+0xc),A                                       set lower 3 bits
-                             defeated                                        XREF[2]:     ram:3270(j), ram:3272(j)  
+                             defeated                                        XREF[2]:     ram:3270(j), ram:3272(j)
         ram:3280 dd 7e 0c        LD         A,(IX+0xc)
         ram:3283 f6 03           OR         0x3
         ram:3285 dd 77 0c        LD         (IX+0xc),A
-                             UpdateCharacterAnimation::skip_special_80_flag               XREF[3]:     UpdateCharacterAnimation:32d9(j), 
-                                                                                          ram:3343(j), ram:334c(j)  
+                             UpdateCharacterAnimation::skip_special_80_flag               XREF[3]:     UpdateCharacterAnimation:32d9(j),
+                                                                                          ram:3343(j), ram:334c(j)
         ram:3351 dd 7e 0c        LD         A,(IX+0xc)
         ram:3354 e6 08           AND        0x8
         ram:3356 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
@@ -151,19 +529,19 @@ Maybe_HandleInanimateSprites
         ram:3455 dd 7e 0c        LD         A,(IX+0xc)
         ram:3458 e6 02           AND        0x2
         ram:345a cc d9 34        CALL       Z,Maybe_CheckEnemyTouchesPlayer                  undefined Maybe_CheckEnemyTouche
-                             Maybe_KillCurrentEnemy02                        XREF[3]:     Maybe_DrawPlayersLegs02:358c(j), 
-                                                                                          Maybe_DrawPlayersLegs02:358e(j), 
-                                                                                          Maybe_PlayerTouchesPOW:b61a(c)  
+                             Maybe_KillCurrentEnemy02                        XREF[3]:     Maybe_DrawPlayersLegs02:358c(j),
+                                                                                          Maybe_DrawPlayersLegs02:358e(j),
+                                                                                          Maybe_PlayerTouchesPOW:b61a(c)
         ram:359c dd 7e 0c        LD         A,(IX+0xc)
         ram:359f f6 03           OR         0x3
         ram:35a1 dd 77 0c        LD         (IX+0xc),A
-                             Maybe_KillCurrentEnemy02::defeated              XREF[2]:     ram:35e8(j), ram:35ea(j)  
+                             Maybe_KillCurrentEnemy02::defeated              XREF[2]:     ram:35e8(j), ram:35ea(j)
         ram:35f8 dd 7e 0c        LD         A,(IX+0xc)
         ram:35fb f6 03           OR         0x3
         ram:35fd dd 77 0c        LD         (IX+0xc),A
-Maybe_DoOneFrame4x4BossCharacter                         
-                             LAB_ram_373c                                    XREF[3]:     ram:365e(j), ram:372e(j), 
-                                                                                          ram:3737(j)  
+Maybe_DoOneFrame4x4BossCharacter
+                             LAB_ram_373c                                    XREF[3]:     ram:365e(j), ram:372e(j),
+                                                                                          ram:3737(j)
         ram:373c dd 7e 0c        LD         A,(IX+0xc)
         ram:373f e6 08           AND        0x8
         ram:3741 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
@@ -175,15 +553,15 @@ Maybe_DoOneFrame4x4BossCharacter
         ram:39b1 dd 7e 0c        LD         A,(IX+0xc)
         ram:39b4 e6 02           AND        0x2 -- can be touched??
         ram:39b6 c0              RET        NZ
-                             InjureOrDefeatWarhogBoss::defeated                                        XREF[2]:     ram:3ccf(j), ram:3cd1(j)  
+                             InjureOrDefeatWarhogBoss::defeated                                        XREF[2]:     ram:3ccf(j), ram:3cd1(j)
         ram:3cdf dd 7e 0c        LD         A,(IX+0xc)
         ram:3ce2 f6 03           OR         0x3
         ram:3ce4 dd 77 0c        LD         (IX+0xc),A
-                             InjureOrDefeatWarhogBoss::defeated_2                                      XREF[2]:     ram:3d1d(j), ram:3d1f(j)  
+                             InjureOrDefeatWarhogBoss::defeated_2                                      XREF[2]:     ram:3d1d(j), ram:3d1f(j)
         ram:3d2d dd 7e 0c        LD         A,(IX+0xc)
         ram:3d30 f6 03           OR         0x3
         ram:3d32 dd 77 0c        LD         (IX+0xc),A
-                             DrawOneDragonFrame::LAB_ram_3f24                                    XREF[2]:     ram:3efa(j), ram:3f13(j)  
+                             DrawOneDragonFrame::LAB_ram_3f24                                    XREF[2]:     ram:3efa(j), ram:3f13(j)
         ram:3f24 dd 7e 0c        LD         A,(IX+0xc)
         ram:3f27 e6 08           AND        0x8
         ram:3f29 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
@@ -196,7 +574,7 @@ Maybe_DoOneFrame4x4BossCharacter
         ram:4350 e6 02           AND        0x2
         ram:4352 c0              RET        NZ
                              Maybe_DefeatSomethingForPoints                  XREF[1]:     Maybe_AnotherPlayerFlailAttack:4
-                             defeated                                        XREF[2]:     ram:4687(j), ram:4689(j)  
+                             defeated                                        XREF[2]:     ram:4687(j), ram:4689(j)
         ram:4697 dd 7e 0c        LD         A,(IX+0xc)
         ram:469a f6 03           OR         0x3
         ram:469c dd 77 0c        LD         (IX+0xc),A
@@ -1215,7 +1593,7 @@ load[{d|i}] <filename>,<address>[,<length>,<cpu>]
 
 The load/loadd/loadi commands load raw memory from the binary file specified in the <filename> parameter.
 'load' will load program space memory, while 'loadd' will load data space memory and 'loadi' will load I/O space memory.
-<address> indicates the address of the start of saving, and <length> indicates how much memory to load. The range <address> 
+<address> indicates the address of the start of saving, and <length> indicates how much memory to load. The range <address>
 through <address>+<length>-1 inclusive will be read in from the file.
 
 If you specify <length> = 0 or a length greater than the total length of the file it will load the entire contents of the file and no more.
@@ -1255,7 +1633,7 @@ As such, dw@300 refers to data memory word at address 300 and id@400 refers to a
 
  void gfx_element::transpen(bitmap_ind16 &dest, const rectangle &cliprect,
         u32 code, u32 color, int flipx, int flipy, s32 destx, s32 desty,
-        u32 trans_pen)                                       
+        u32 trans_pen)
 
 
 
@@ -1408,8 +1786,8 @@ void blktiger_state::blktiger_io_map(address_map &map)
     PORT_CONFNAME( 0x01, 0x01, "Coin Lockout Hardware Present" )
     PORT_CONFSETTING( 0x01, DEF_STR( Yes ) )
     PORT_CONFSETTING( 0x00, DEF_STR( No ) )
-    
-    
+
+
 ROM_REGION( 0x40000, "gfx3", 0 )
     ROM_LOAD( "bd-08.5a",   0x00000, 0x10000, CRC(e2f17438) SHA1(3e5fdae07d40febedc59c7c7c4d9c6f0d72b58b5) )    /* sprites */
     ROM_LOAD( "bd-07.4a",   0x10000, 0x10000, CRC(5fccbd27) SHA1(33c55aa9c12b3121ca5c3b4c39a9b152b6946461) )
@@ -1447,12 +1825,12 @@ GFXDECODE_END
     /* devices */
     optional_device<i8751_device> m_mcu;
     required_device<cpu_device> m_audiocpu;
-    
+
     required_device<cpu_device> m_maincpu;
     required_device<gfxdecode_device> m_gfxdecode;
-    required_device<palette_device> m_palette;  
-    
-    
+    required_device<palette_device> m_palette;
+
+
 TILEMAP_MAPPER_MEMBER(blktiger_state::bg8x4_scan)
 {
     /* logical (col,row) -> memory offset */
@@ -1493,8 +1871,8 @@ TILE_GET_INFO_MEMBER(blktiger_state::get_tx_tile_info)
             attr & 0x1f,
             0);
 }
-    
-    
+
+
 void blktiger_state::video_start()
 {
     m_chon = 1;
@@ -1528,7 +1906,7 @@ void blktiger_state::video_start()
 
     save_pointer(NAME(m_scroll_ram), BGRAM_BANK_SIZE * BGRAM_BANKS);
 }
-    
+
 oid blktiger_state::blktiger_video_control_w(uint8_t data)
 {
     /* bits 0 and 1 are coin counters */
@@ -1560,7 +1938,7 @@ void blktiger_state::blktiger_screen_layout_w(uint8_t data)
     m_screen_layout = data;
     m_bg_tilemap8x4->enable(m_screen_layout);
     m_bg_tilemap4x8->enable(!m_screen_layout);
-}   
+}
 
 void blktiger_state::draw_sprites( bitmap_ind16 &bitmap, const rectangle &cliprect )
 {
