@@ -451,147 +451,29 @@ bp 61d
 bp 2547
 
 
+ID   En  CPU                   Address\      Condition         Action
+4A   X   :maincpu              01B4
+51   O   :maincpu              03AF
+4C   O   :maincpu              03B2
+5A   X   :maincpu              0614
+55   X   :maincpu              061D
+5F   X   :maincpu              093A
+60   X   :maincpu              0947
+5C   O   :maincpu              0A1A
+58   X   :maincpu              1E22
+4D   X   :maincpu              210B
+4E   X   :maincpu              2112
+57   X   :maincpu              2547
+5B   X   :maincpu              29DA
+59   X   :maincpu              8F3C
+                                                                                  
 
 
 *****************************************************************************************
 * END WORK AREA                                                                         *
 *****************************************************************************************
 
-
-                             Maybe_UpdateDemonVulnerability                  XREF[2]:     Bank02::a3f0(*), Bank02::aa7f(*)
-    Bank02::a00d dd 7e 0c        LD         A,(IX+0xc)
-    Bank02::a010 f6 0b           OR         0xb
-    Bank02::a012 ee 03           XOR        0x3
-    Bank02::a014 dd 77 0c        LD         (IX+0xc),A
-                              Maybe_UpdateDemonVulnerability02                XREF[1]:     Bank02::aa77(*)
-    Bank02::a019 dd 7e 0c        LD         A,(IX+0xc)
-    Bank02::a01c f6 0b           OR         0xb
-    Bank02::a01e dd 77 0c        LD         (IX+0xc),A
-                             InjureOrKillBossDemon500Points                  XREF[1]:     Bank02::aa3f(*)
-    Bank02::a125 dd 7e 0c        LD         A,(IX+0xc)
-    Bank02::a128 e6 18           AND        0x18;  (injured only; still boss)
-    Bank02::a12a dd 77 0c        LD         (IX+0xc),A
-                             DemonThrowSpear                                 XREF[6]:     Bank02::a931(*), Bank02::a95f(*),
-                                                                                          Bank02::a98d(*), Bank02::a9b6(*),
-                                                                                          Bank02::a9da(*), Bank02::a9fe(*)
-    Bank02::a189 dd 7e 0c        LD         A,(IX+0xc)
-                             dragon_injured                                  XREF[2]:     Bank04::9728(j), Bank04::972e(j)
-    Bank04::9739 dd 7e 0c        LD         A,(IX+0xc)
-    Bank04::973c f6 00           OR         0x0
-    Bank04::973e dd 77 0c        LD         (IX+0xc),A
-                             CheckBlockAdjustYPos::adjust_y_pos                                    XREF[1]:     Bank05::9a97(j)
-    Bank05::9aa5 dd 7e 0c        LD         A,(IX+0xc)
-    Bank05::9aa8 e6 18           AND        0x18
-    Bank05::9aaa dd 77 0c        LD         (IX+0xc),A
-                             InjureOrKillPurpleBlock15Points                 XREF[1]:     Bank05::9e67(*)
-    Bank05::9ba2 dd 7e 0c        LD         A,(IX+0xc)
-    Bank05::9ba5 e6 18           AND        0x18 ;injure
-    Bank05::9ba7 dd 77 0c        LD         (IX+0xc),A
-                             InjureOrKillPurpleBlock15Points::defeated                             XREF[1]:     Bank05::9b9a(j)
-    Bank05::9bbe dd 7e 0c        LD         A,(IX+0xc)
-    Bank05::9bc1 e6 10           AND        0x10                                             not a boss; only give a coin
-                                                                                             if this block was not a boss
-    Bank05::9bc3 cc e9 54        CALL       Z,AddZennyCoinForKillingEnemy                    undefined AddZennyCoinForKilling
-Maybe_HandleInanimateSprites
-                             continue_animation                              XREF[3]:     ram:2ff9(j), ram:303c(j),
-                                                                                          ram:3045(j)
-        ram:304a dd 7e 0c        LD         A,(IX+0xc)
-        ram:304d e6 08           AND        0x8                                              bit 4 set?
-        ram:304f c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
----
-        ram:30b4 dd 7e 0c        LD         A,(IX+0xc)
-        ram:30b7 e6 01           AND        0x1                                              bit 1?
-        ram:30b9 20 3d           JR         NZ,skip_damage
----
-        ram:30fd dd 7e 0c        LD         A,(IX+0xc)
-        ram:3100 e6 02           AND        0x2                                              check bit 2
-        ram:3102 cc 74 31        CALL       Z,FUN_ram_3174                                   undefined FUN_ram_3174()
-                             Maybe_KillCurrentLoadedEnemy                    XREF[3]:     DrawQuickExplosionOrHitPoint:322
-                                                                                          DrawQuickExplosionOrHitPoint:322
-                                                                                          Maybe_PlayerTouchesPOW:b5d2(c)
-        ram:3232 dd 7e 0c        LD         A,(IX+0xc)
-        ram:3235 f6 03           OR         0x3
-        ram:3237 dd 77 0c        LD         (IX+0xc),A                                       set lower 3 bits
-                             defeated                                        XREF[2]:     ram:3270(j), ram:3272(j)
-        ram:3280 dd 7e 0c        LD         A,(IX+0xc)
-        ram:3283 f6 03           OR         0x3
-        ram:3285 dd 77 0c        LD         (IX+0xc),A
-                             UpdateCharacterAnimation::skip_special_80_flag               XREF[3]:     UpdateCharacterAnimation:32d9(j),
-                                                                                          ram:3343(j), ram:334c(j)
-        ram:3351 dd 7e 0c        LD         A,(IX+0xc)
-        ram:3354 e6 08           AND        0x8
-        ram:3356 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
----
-        ram:340c dd 7e 0c        LD         A,(IX+0xc)                                       still enemy sprite
-        ram:340f e6 01           AND        0x1
-        ram:3411 20 3d           JR         NZ,LAB_ram_3450
----
-        ram:3455 dd 7e 0c        LD         A,(IX+0xc)
-        ram:3458 e6 02           AND        0x2
-        ram:345a cc d9 34        CALL       Z,Maybe_CheckEnemyTouchesPlayer                  undefined Maybe_CheckEnemyTouche
-                             Maybe_KillCurrentEnemy02                        XREF[3]:     Maybe_DrawPlayersLegs02:358c(j),
-                                                                                          Maybe_DrawPlayersLegs02:358e(j),
-                                                                                          Maybe_PlayerTouchesPOW:b61a(c)
-        ram:359c dd 7e 0c        LD         A,(IX+0xc)
-        ram:359f f6 03           OR         0x3
-        ram:35a1 dd 77 0c        LD         (IX+0xc),A
-                             Maybe_KillCurrentEnemy02::defeated              XREF[2]:     ram:35e8(j), ram:35ea(j)
-        ram:35f8 dd 7e 0c        LD         A,(IX+0xc)
-        ram:35fb f6 03           OR         0x3
-        ram:35fd dd 77 0c        LD         (IX+0xc),A
-Maybe_DoOneFrame4x4BossCharacter
-                             LAB_ram_373c                                    XREF[3]:     ram:365e(j), ram:372e(j),
-                                                                                          ram:3737(j)
-        ram:373c dd 7e 0c        LD         A,(IX+0xc)
-        ram:373f e6 08           AND        0x8
-        ram:3741 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
----
-        ram:396d dd 7e 0c        LD         A,(IX+0xc)
-        ram:3970 e6 01           AND        0x1
-        ram:3972 20 38           JR         NZ,LAB_ram_39ac
----
-        ram:39b1 dd 7e 0c        LD         A,(IX+0xc)
-        ram:39b4 e6 02           AND        0x2 -- can be touched??
-        ram:39b6 c0              RET        NZ
-                             InjureOrDefeatWarhogBoss::defeated                                        XREF[2]:     ram:3ccf(j), ram:3cd1(j)
-        ram:3cdf dd 7e 0c        LD         A,(IX+0xc)
-        ram:3ce2 f6 03           OR         0x3
-        ram:3ce4 dd 77 0c        LD         (IX+0xc),A
-                             InjureOrDefeatWarhogBoss::defeated_2                                      XREF[2]:     ram:3d1d(j), ram:3d1f(j)
-        ram:3d2d dd 7e 0c        LD         A,(IX+0xc)
-        ram:3d30 f6 03           OR         0x3
-        ram:3d32 dd 77 0c        LD         (IX+0xc),A
-                             DrawOneDragonFrame::LAB_ram_3f24                                    XREF[2]:     ram:3efa(j), ram:3f13(j)
-        ram:3f24 dd 7e 0c        LD         A,(IX+0xc)
-        ram:3f27 e6 08           AND        0x8
-        ram:3f29 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
---
-        ram:4309 dd 7e 0c        LD         A,(IX+0xc)
-        ram:430c e6 01           AND        0x1
-        ram:430e 20 38           JR         NZ,LAB_ram_4348
---
-        ram:434d dd 7e 0c        LD         A,(IX+0xc)
-        ram:4350 e6 02           AND        0x2
-        ram:4352 c0              RET        NZ
-                             Maybe_DefeatSomethingForPoints                  XREF[1]:     Maybe_AnotherPlayerFlailAttack:4
-                             defeated                                        XREF[2]:     ram:4687(j), ram:4689(j)
-        ram:4697 dd 7e 0c        LD         A,(IX+0xc)
-        ram:469a f6 03           OR         0x3
-        ram:469c dd 77 0c        LD         (IX+0xc),A
-
-
-(IX+0x0) = alive flag? ($80 or not)
-(IX+0x1) = x pos
-(IX+0x3) = y pos
-(IX+0x5) = sprite attr of tile
-(IX+0x6) = animation x offset ($80 special case)
-(IX+0x7) = animation y offset ($80 special case)
-(IX+0x8) = X/Y (collision checking)
-(IX+0x9) = X/Y (collision checking)
-
-
 MAYBE_NEW_SPRITE_HAS_BEEN_DONE_PTR_LOC: for random enemies (4) popping out of pots, this seems to be address EAA0
-
 
 TODO: MAYBE_NEW_SPRITE_HAS_BEEN_DONE_PTR_LOC
 TODO: MAYBE_LEVEL_DATA_TBL_003
@@ -599,45 +481,47 @@ TODO: MAYBE_DEMO_LEVEL_TBL
 TODO: MAYBE_LEVEL_TBL_006
 
 
-(IX+0xa) = animation duration!
-(IX+0xb) = entity class
-(IX+0xc) = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
-(0xc):
+(IX+0x0)    = alive flag? ($80 or not)
+(IX+0x1)    = x pos
+(IX+0x3)    = y pos
+(IX+0x5)    = sprite attr of tile
+(IX+0x6)    = animation x offset ($80 special case)
+(IX+0x7)    = animation y offset ($80 special case)
+(IX+0x8)    = X/Y (collision checking)
+(IX+0x9)    = X/Y (collision checking)
+(IX+0xa)    = animation duration!
+(IX+0xb)    = entity class
+(IX+0xc)    = bitflags (?) x8=UpdateSpriteXAndYLocationsAfterScroll, x1=has weapon(?), x2=can attack(?);0x10 = not dead, just hidden
 0x1  = can be damaged(?)
 0x2  = can be touched/collided(?)
 0x8  = update X/Y
 0x10 = boss
-(IX+0xd) = sprite touched by player function offset
-(IX+0xe) = HEALTH POINTS (VITALITY LO) (enemy only)
-
-(IX+0xf) = maybe weapon damage inflicted on player
-
-(IX+0x10) = owner entity class (for weapons/etc)--seems like only for bosses
-
-(IX+0x11) = sprite anim table offset
-(IX+0x12) = Sprite anim y offset hi(?)
-(IX+0x13) = ROM Bank
-(IX+0x14) = sprite facing flag(?) 0 = r, 1 = l
-(IX+0x15) = VITALITY HI/VITALITY BARS
-(IX+0x16) =
-(IX+0x17) = Score offset!
-(IX+0x18) = Sprite Entity Count LOC LO
-(IX+0x19) = Sprite Entity Count LOC HI
-(IX+0x1a) = sprite struct location
-(IX+0x1c) = *ending animation bookmark
-(IX+0x1d) =
-(IX+0x1e) = current animation bookmark
-
-(IX+0x20) = weapon animation bookmark
-(IX+0x20) = witch has cast spell (WITCH ONLY)
-(IX+0x20) = num times rock has bounced
-(IX+0x20) = SKELETON TTL(?)
-(IX+0x21) = (FIRE PILLAR COUNT (FIRE PILLARS ONLY))
-(IX+0x21) = PURPLE BLOCK CRACKED
-(IX+0x21) = SKELETON IS HEADLESS
-
-(IX+0x25) = extra Y offset (for big sprites only?)
-(IX+0x25) = enemy poison ability (?)
+(IX+0xd)    = sprite touched by player function offset
+(IX+0xe)    = HEALTH POINTS (VITALITY LO) (enemy only)
+(IX+0xf)    = maybe weapon damage inflicted on player
+(IX+0x10)   = owner entity class (for weapons/etc)--seems like only for bosses
+(IX+0x11)   = sprite anim table offset
+(IX+0x12)   = Sprite anim y offset hi(?)
+(IX+0x13)   = ROM Bank
+(IX+0x14)   = sprite facing flag(?) 0 = r, 1 = l
+(IX+0x15)   = VITALITY HI/VITALITY BARS
+(IX+0x16)   =
+(IX+0x17)   = Score offset!
+(IX+0x18)   = Sprite Entity Count LOC LO
+(IX+0x19)   = Sprite Entity Count LOC HI
+(IX+0x1a)   = sprite struct location
+(IX+0x1c/f) = *ending animation bookmark
+(IX+0x1e/f) = current animation bookmark
+(IX+0x20)   = weapon animation bookmark
+-------[ PER ENEMY CLASS FLAGS & ETC ]-------
+(IX+0x20)   = witch has cast spell (WITCH ONLY)
+(IX+0x20)   = num times rock has bounced
+(IX+0x20)   = SKELETON TTL(?)
+(IX+0x21)   = (FIRE PILLAR COUNT (FIRE PILLARS ONLY))
+(IX+0x21)   = PURPLE BLOCK CRACKED
+(IX+0x21)   = SKELETON IS HEADLESS
+(IX+0x25)   = extra Y offset (for big sprites only?)
+(IX+0x25)   = enemy poison ability (?)
 
 
 ORANGE SKELETON                         0x1
@@ -770,77 +654,6 @@ FALLING ROCK                            0x29
 0x34    Maybe_UpdateBat
 
 
-                             SOUNDS_TABLE                                    XREF[1]:     Maybe_PlaySoundEffect:020e(*)
-        ram:0dc1 00 ff           dw         FF00h                                            Sound 0: FF stops music playing
-        ram:0dc3 49 0e           dw         PLAYER_LOSES_VITALITY_SOUND                      = 8Fh
-        ram:0dc5 9e 0e           dw         PLAYER_DEATH_SOUND                               = 8Fh
-        ram:0dc7 7f 0f           dw         ENEMY_INJURED_BLOOP_SOUND                        = CFh
-        ram:0dc9 d4 0f           dw         ENEMY_DEFEATED_SOUND                             = CFh
-        ram:0dcb fe 0f           dw         ITEM_TAKEN_SOUND                                 = 88h
-        ram:0dcd 7b 10           dw         PLAYER_TAKES_ZENNY_COIN_SOUND                    = 88h
-        ram:0dcf f5 10           dw         FIRE_PILLAR_WARNING_SOUND                        = 88h
-        ram:0dd1 5e 11           dw         POT_BREAKS_REVEALS_COIN_SOUND                    = C8h
-        ram:0dd3 c7 11           dw         FIRE_PILLAR_SOUND                                = C8h
-        ram:0dd5 08 12           dw         GAS_JET_SOUND                                    = C8h
-        ram:0dd7 32 12           dw         WEAPON_CLASH_METALLIC_BATTLE_SOUND               = 88h
-        ram:0dd9 84 12           dw         KILL_BAT_SOUND                                   = C8h
-        ram:0ddb ae 12           dw         PLAYER_EARNS_EXTRA_LIFE_SOUND                    = 8Fh
-        ram:0ddd 64 13           dw         POT_BREAKS_SOUND                                 = 88h
-        ram:0ddf bc 13           dw         PLAYER_DISCOVERS_TREASURE_SOUND                  = C8h
-        ram:0de1 86 14           dw         BIG_BOSS_HIT_SOUND                               10
-        ram:0de3 b0 14           dw         TIME_EXPIRING_SOUND                              = 81h
-        ram:0de5 ee 14           dw         PLAYER_GETS_ITEM_FROM_OLD_MAN_SOUND              = 88h
-        ram:0de7 cc 15           dw         BOOM_EXPLOSION_SOUND                             = C8h
-        ram:0de9 0d 16           dw         UNKNOWN_ALARM_SOUND                              = 81h
-        ram:0deb 4e 16           dw         IMPACT_SOUND                                     = C8h
-        ram:0ded 78 16           dw         CLASH_SPINNING_COIN_SOUND                        = C8h
-        ram:0def a2 16           dw         PLAYER_LOSES_ARMOR_SOUND                         = 8Fh
-        ram:0df1 08 17           dw         MICHELIN_MAN_FIREBREATHING_SOUND                 = C8h
-        ram:0df3 35 17           dw         FIRETHROWER_TAUNT_SOUND                          = C8h
-        ram:0df5 b2 17           dw         PLAYER_CLIMB_SOUND                               = 88h
-        ram:0df7 c8 17           dw         FLAIL_EMPTY_HIT_SOUND                            = 88h
-        ram:0df9 de 17           dw         PLAYER_LANDS_ON_PLATFORM_SOUND                   = 88h
-        ram:0dfb 1c 18           dw         PLAYER_ASCENDS_DURING_CUTSCENE_SOUND             = 88h
-        ram:0dfd 32 18           dw         PLAYER_GRABS_LADDER_SOUND                        = 88h
-        ram:0dff 01 ff           dw         FF01h                                            1f: stops playing music
-        ram:0e01 10 1b           dw         COIN_OR_CREDIT_ADDED_SOUND                       = 4Fh    O
-        ram:0e03 8c 1b           dw         LEVEL_1_MUSIC                                    Level 1 music
-        ram:0e05 de 1f           dw         LEVEL_2_MUSIC                                    = 06h
-        ram:0e07 ef 23           dw         LEVEL_3_MUSIC                                    = 06h
-        ram:0e09 b7 27           dw         LEVEL_4_MUSIC                                    = 06h
-        ram:0e0b 27 2d           dw         LEVEL_5_MUSIC                                    = 06h
-        ram:0e0d 07 32           dw         LEVEL_6_MUSIC                                    = 06h
-        ram:0e0f c4 35           dw         LEVEL_7_MUSIC                                    = 06h
-        ram:0e11 7c 3a           dw         LEVEL_8_MUSIC                                    Level 8 music
-        ram:0e13 cb 3f           dw         BOSS_MUSIC_01                                    = 06h
-        ram:0e15 f5 41           dw         FIGHT_DRAGON_MUSIC_01                            = 06h
-        ram:0e17 8b 44           dw         FIGHT_DRAGON_MUSIC_02                            = 06h
-        ram:0e19 70 47           dw         OLD_MAN_SHOP_MUSIC                               = 06h
-        ram:0e1b 7e 49           dw         DUNGEON_MUSIC_01                                 = 06h
-        ram:0e1d 96 4b           dw         ENTER_INITIALS_MUSIC                             = 06h
-        ram:0e1f 9d 51           dw         AFTER_ENTER_INITIALS_MUSIC                       = 06h
-        ram:0e21 82 52           dw         INTRO_MUSIC                                      30
-        ram:0e23 48 54           dw         GAME_OVER_MUSIC                                  = 06h
-        ram:0e25 13 55           dw         SUCCESSFULLY_FINISH_LEVEL_MUSIC                  = 06h
-        ram:0e27 fa 55           dw         FINISH_LEVEL_8_MUSIC                             = 06h
-        ram:0e29 a4 5e           dw         CONTINUE_MUSIC                                   = 06h
-        ram:0e2b 51 60           dw         MAYBE_PERFECT_BONUS_MUSIC                        = 06h
-        ram:0e2d d2 60           dw         UNKNOWN_FANFARE_MUSIC                            = 06h
-        ram:0e2f 6d 61           dw         UNKNOWN_FANFARE_MUSIC_02                         = 06h
-        ram:0e31 04 ff           dw         FF04h                                            38 stops music playing
-        ram:0e33 36 62           dw         UNKNOWN_FANFARE_MUSIC_03                         = 06h
-        ram:0e35 5c 18           dw         FLAIL_HIT_SOUND                                  = 88h
-        ram:0e37 86 18           dw         FALLING_SOUND                                    = C1h
-        ram:0e39 9c 18           dw         BOUNCING_SOUND_(LOOPS)                           = C1h
-        ram:0e3b c9 18           dw         OLD_MAN_TALKING_SOUND                            = C8h
-        ram:0e3d 57 19           dw         OLD_MAN_TALKING_SOUND_02                         = C8h
-        ram:0e3f a9 19           dw         DRAGON_DIE_SOUND                                 = 90h
-        ram:0e41 90 1a           dw         MAYBE_BLOCK_BOUNCE_UP_SOUND                      40
-        ram:0e43 ba 1a           dw         FALLING_SOUND_02                                 = C8h
-        ram:0e45 d0 1a           dw         BOSS_HIT_SOUND                                   = C8h
-        ram:0e47 e6 1a           dw         DRAGON_SPEW_FIRE_SOUND                           43 might be the last sound
-
-
 
 *****************************************************************************************
 * VIDEO RAM/MAP NOTES:                                                                  *
@@ -852,10 +665,10 @@ WORD -- LOCATION (X = MSB) (Y = LSB) -- 10 00 = top left of screen;    10 F0 = t
                                         E0 00 = bottom left of screen; E0 F0 = bottom right of screen
 
 c000 -- BG VIDEO RAM... 16x8 tiles (16 w 8 h)
-LW+(BITS0-3 of HW) = TILE SELECTION
-(BITS4-6 of HW) = PALETTE
-BIT 7 of HW: FLIP HORIZONTALLY
 
+LW+(BITS0-3 of HW) 		= TILE SELECTION
+(BITS4-6 of HW) 		= PALETTE
+BIT 7 of HW: 			= FLIP HORIZONTALLY
 
 SHOWS VIDEO
 
@@ -871,6 +684,9 @@ STRUCT:
 *****************************************************************************************
 * STACK NOTES:                                                                          *
 *****************************************************************************************
+
+BLACK TIGER USES SEVERAL "STACKS" WHICH ACT SORT OF LIKE THREADS. THEY ARE UPDATED DURING
+THE NON-MASKABLE INTERRUPT ONE FRAME AT A TIME
 
 FIRST BYTE = 0 : FREE
 FIRST BYTE = 1 : ACTIVE
@@ -1988,3 +1804,125 @@ uint32_t blktiger_state::screen_update_blktiger(screen_device &screen, bitmap_in
 
     return 0;
 }
+
+
+                             Maybe_UpdateDemonVulnerability                  XREF[2]:     Bank02::a3f0(*), Bank02::aa7f(*)
+    Bank02::a00d dd 7e 0c        LD         A,(IX+0xc)
+    Bank02::a010 f6 0b           OR         0xb
+    Bank02::a012 ee 03           XOR        0x3
+    Bank02::a014 dd 77 0c        LD         (IX+0xc),A
+                              Maybe_UpdateDemonVulnerability02                XREF[1]:     Bank02::aa77(*)
+    Bank02::a019 dd 7e 0c        LD         A,(IX+0xc)
+    Bank02::a01c f6 0b           OR         0xb
+    Bank02::a01e dd 77 0c        LD         (IX+0xc),A
+                             InjureOrKillBossDemon500Points                  XREF[1]:     Bank02::aa3f(*)
+    Bank02::a125 dd 7e 0c        LD         A,(IX+0xc)
+    Bank02::a128 e6 18           AND        0x18;  (injured only; still boss)
+    Bank02::a12a dd 77 0c        LD         (IX+0xc),A
+                             DemonThrowSpear                                 XREF[6]:     Bank02::a931(*), Bank02::a95f(*),
+                                                                                          Bank02::a98d(*), Bank02::a9b6(*),
+                                                                                          Bank02::a9da(*), Bank02::a9fe(*)
+    Bank02::a189 dd 7e 0c        LD         A,(IX+0xc)
+                             dragon_injured                                  XREF[2]:     Bank04::9728(j), Bank04::972e(j)
+    Bank04::9739 dd 7e 0c        LD         A,(IX+0xc)
+    Bank04::973c f6 00           OR         0x0
+    Bank04::973e dd 77 0c        LD         (IX+0xc),A
+                             CheckBlockAdjustYPos::adjust_y_pos                                    XREF[1]:     Bank05::9a97(j)
+    Bank05::9aa5 dd 7e 0c        LD         A,(IX+0xc)
+    Bank05::9aa8 e6 18           AND        0x18
+    Bank05::9aaa dd 77 0c        LD         (IX+0xc),A
+                             InjureOrKillPurpleBlock15Points                 XREF[1]:     Bank05::9e67(*)
+    Bank05::9ba2 dd 7e 0c        LD         A,(IX+0xc)
+    Bank05::9ba5 e6 18           AND        0x18 ;injure
+    Bank05::9ba7 dd 77 0c        LD         (IX+0xc),A
+                             InjureOrKillPurpleBlock15Points::defeated                             XREF[1]:     Bank05::9b9a(j)
+    Bank05::9bbe dd 7e 0c        LD         A,(IX+0xc)
+    Bank05::9bc1 e6 10           AND        0x10                                             not a boss; only give a coin
+                                                                                             if this block was not a boss
+    Bank05::9bc3 cc e9 54        CALL       Z,AddZennyCoinForKillingEnemy                    undefined AddZennyCoinForKilling
+Maybe_HandleInanimateSprites
+                             continue_animation                              XREF[3]:     ram:2ff9(j), ram:303c(j),
+                                                                                          ram:3045(j)
+        ram:304a dd 7e 0c        LD         A,(IX+0xc)
+        ram:304d e6 08           AND        0x8                                              bit 4 set?
+        ram:304f c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+---
+        ram:30b4 dd 7e 0c        LD         A,(IX+0xc)
+        ram:30b7 e6 01           AND        0x1                                              bit 1?
+        ram:30b9 20 3d           JR         NZ,skip_damage
+---
+        ram:30fd dd 7e 0c        LD         A,(IX+0xc)
+        ram:3100 e6 02           AND        0x2                                              check bit 2
+        ram:3102 cc 74 31        CALL       Z,FUN_ram_3174                                   undefined FUN_ram_3174()
+                             Maybe_KillCurrentLoadedEnemy                    XREF[3]:     DrawQuickExplosionOrHitPoint:322
+                                                                                          DrawQuickExplosionOrHitPoint:322
+                                                                                          Maybe_PlayerTouchesPOW:b5d2(c)
+        ram:3232 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3235 f6 03           OR         0x3
+        ram:3237 dd 77 0c        LD         (IX+0xc),A                                       set lower 3 bits
+                             defeated                                        XREF[2]:     ram:3270(j), ram:3272(j)
+        ram:3280 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3283 f6 03           OR         0x3
+        ram:3285 dd 77 0c        LD         (IX+0xc),A
+                             UpdateCharacterAnimation::skip_special_80_flag               XREF[3]:     UpdateCharacterAnimation:32d9(j),
+                                                                                          ram:3343(j), ram:334c(j)
+        ram:3351 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3354 e6 08           AND        0x8
+        ram:3356 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+---
+        ram:340c dd 7e 0c        LD         A,(IX+0xc)                                       still enemy sprite
+        ram:340f e6 01           AND        0x1
+        ram:3411 20 3d           JR         NZ,LAB_ram_3450
+---
+        ram:3455 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3458 e6 02           AND        0x2
+        ram:345a cc d9 34        CALL       Z,Maybe_CheckEnemyTouchesPlayer                  undefined Maybe_CheckEnemyTouche
+                             Maybe_KillCurrentEnemy02                        XREF[3]:     Maybe_DrawPlayersLegs02:358c(j),
+                                                                                          Maybe_DrawPlayersLegs02:358e(j),
+                                                                                          Maybe_PlayerTouchesPOW:b61a(c)
+        ram:359c dd 7e 0c        LD         A,(IX+0xc)
+        ram:359f f6 03           OR         0x3
+        ram:35a1 dd 77 0c        LD         (IX+0xc),A
+                             Maybe_KillCurrentEnemy02::defeated              XREF[2]:     ram:35e8(j), ram:35ea(j)
+        ram:35f8 dd 7e 0c        LD         A,(IX+0xc)
+        ram:35fb f6 03           OR         0x3
+        ram:35fd dd 77 0c        LD         (IX+0xc),A
+Maybe_DoOneFrame4x4BossCharacter
+                             LAB_ram_373c                                    XREF[3]:     ram:365e(j), ram:372e(j),
+                                                                                          ram:3737(j)
+        ram:373c dd 7e 0c        LD         A,(IX+0xc)
+        ram:373f e6 08           AND        0x8
+        ram:3741 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+---
+        ram:396d dd 7e 0c        LD         A,(IX+0xc)
+        ram:3970 e6 01           AND        0x1
+        ram:3972 20 38           JR         NZ,LAB_ram_39ac
+---
+        ram:39b1 dd 7e 0c        LD         A,(IX+0xc)
+        ram:39b4 e6 02           AND        0x2 -- can be touched??
+        ram:39b6 c0              RET        NZ
+                             InjureOrDefeatWarhogBoss::defeated                                        XREF[2]:     ram:3ccf(j), ram:3cd1(j)
+        ram:3cdf dd 7e 0c        LD         A,(IX+0xc)
+        ram:3ce2 f6 03           OR         0x3
+        ram:3ce4 dd 77 0c        LD         (IX+0xc),A
+                             InjureOrDefeatWarhogBoss::defeated_2                                      XREF[2]:     ram:3d1d(j), ram:3d1f(j)
+        ram:3d2d dd 7e 0c        LD         A,(IX+0xc)
+        ram:3d30 f6 03           OR         0x3
+        ram:3d32 dd 77 0c        LD         (IX+0xc),A
+                             DrawOneDragonFrame::LAB_ram_3f24                                    XREF[2]:     ram:3efa(j), ram:3f13(j)
+        ram:3f24 dd 7e 0c        LD         A,(IX+0xc)
+        ram:3f27 e6 08           AND        0x8
+        ram:3f29 c4 0a 08        CALL       NZ,UpdateSpriteXAndYOffsetsAfterScroll           undefined UpdateSpriteXAndYOffse
+--
+        ram:4309 dd 7e 0c        LD         A,(IX+0xc)
+        ram:430c e6 01           AND        0x1
+        ram:430e 20 38           JR         NZ,LAB_ram_4348
+--
+        ram:434d dd 7e 0c        LD         A,(IX+0xc)
+        ram:4350 e6 02           AND        0x2
+        ram:4352 c0              RET        NZ
+                             Maybe_DefeatSomethingForPoints                  XREF[1]:     Maybe_AnotherPlayerFlailAttack:4
+                             defeated                                        XREF[2]:     ram:4687(j), ram:4689(j)
+        ram:4697 dd 7e 0c        LD         A,(IX+0xc)
+        ram:469a f6 03           OR         0x3
+        ram:469c dd 77 0c        LD         (IX+0xc),A
