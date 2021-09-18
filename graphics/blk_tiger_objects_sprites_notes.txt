@@ -1,0 +1,323 @@
+*****************************************************************************************
+* GENERAL NOTES:                                                                        *
+*****************************************************************************************
+
+128 pieces of sprites can be used simultaneously
+
+DEBUG SPRITE TILE STRUCTS: (FE00--FFFF)
+1) BP ac3c
+2) BP ac45
+3) CTRL+M. Set to FE20. Values will be from Fe28 to Fe28+1c0
+4) hit first bp
+5) change values
+6) F5. Changes should show.
+
+*****************************************************************************************
+* DATA STRUCTURES:                                                                      *
+*****************************************************************************************
+
+
+SPRITE STRUCTURE (in Z80 src code): (FE00 - FFFF)
+
+Byte 0  |  Byte 1  |  Byte 2  |  Byte 3
+-----------------------------------------
+(tile/sp)   attrib       y pos      x pos
+index
+
+attrib
+   bits 0-2: palette (0-7)
+   bit 3: flip tile/sprite piece horizontally
+   bit 4: if set, subtract 256 from x pos
+   bits 5-7: index |= ((attrib & E0) << 3) --- Indexes up to 7FF
+
+For flipped tiles, put first index on right, second on left.
+
+
+PLAYER ANIMATION STRUCT: 
+
+BYTE 1: FIRST INDEX (add 1 for tile 2, 8 for tile 3, 9 for tile 4 index)
+BYTE 2: ATTR (INCLUDING ALL BITS)
+BYTE 3: WEAPON INDEX
+BYTE 4: WEAPON ATTR (ALL BITS)
+BYTE 5: WEAPON X OFFSET (FROM FIRST SPRITE TILE)
+BYTE 6: WEAPON Y OFFSET (FROM FIRST SPRITE TILE)
+
+
+NEW_SPRITE_HAS_BEEN_DONE_PTR_LOC
+
+sprite_creation_struct
+0   1   db  byte    x_offset_lo 
+1   1   db  byte    x_offset_hi 
+2   1   db  byte    y_offset_lo 
+3   1   db  byte    y_offset_hi 
+4   2   addr    pointer16   add_sprite_function 
+6   1   db  byte    rom_bank_of_function    
+7   1   db  byte    IX_plus_0x8 
+
+
+if the first byte of the EAA0 struct is 0x2, the sprite is skipped
+
+
+                             sprite_creation_struct_Bank06__80ea             XREF[1]:     Bank06::8018(*)  
+    Bank06::80ea 70 03 e0        sprite_c
+                 01 b3 aa 
+                 03 00
+       Bank06::80ea 70              db        70h                     x_offset_lo                       XREF[1]:     Bank06::8018(*)  
+       Bank06::80eb 03              db        3h                      x_offset_hi
+       Bank06::80ec e0              db        E0h                     y_offset_lo
+       Bank06::80ed 01              db        1h                      y_offset_hi
+       Bank06::80ee b3 aa           addr      AddBlueGoopToCurrentMap add_sprite_f
+       Bank06::80f0 03              db        3h                      rom_bank_of_
+       Bank06::80f1 00              db        0h                      IX_plus_0x8
+    Bank06::80f2 52              ??         52h    R
+    Bank06::80f3 00              ??         00h
+    Bank06::80f4 ff ff           create_n
+
+*****************************************************************************************
+* COLLISIONS:                                                                           *
+*****************************************************************************************
+
+SKELETON (ALL)
+    START:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+    FLOOR:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+    RIGHT:
+    COLLIDE X: 0x20
+    COLLIDE Y: 0x10
+    LEFT:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0x10
+
+ORC_1
+    FLOOR:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+    RIGHT:
+    COLLIDE X: 0x20
+    COLLIDE Y: 0x10
+    LEFT:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0x10
+
+ORC_2 THROUGH ORC_5
+    FLOOR:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+    RIGHT:
+    COLLIDE X: 0x20
+    COLLIDE Y: 0x10
+    RIGHT AND UP:
+    COLLIDE X: 0x20
+    COLLIDE Y: 0xF0
+    LEFT:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0x10
+    LEFT AND UP:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0xF0
+
+FIREBALL
+	STOP:
+	COLLIDE X: 0XD
+	LANDS:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x8
+	
+LIGHTNING BALL (DRAGON)
+	LANDS:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x10
+	
+LIGHTNING BALL (WARTHOG)
+	LANDS:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x8
+	
+DEMON SPEAR:
+	LANDS:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x8
+
+MICHELIN_MAN (ALL)
+    FLOOR:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+    RIGHT:
+    COLLIDE X: 0x20
+    COLLIDE Y: 0x10
+    RIGHT AND UP:
+    COLLIDE X: 0x20
+    COLLIDE Y: 0xF0
+    LEFT:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0x10
+    LEFT AND UP:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0xF0
+
+BATS
+	STOP:
+	COLLIDE X: 0X10
+	
+WALL PRIZES: (VARY) (subtract 29h to get offset) (MULT BY 7)
+	IN SPRITE CREATE STRUCT (X ONLY)
+	
+FIRE PILLARS:
+	STOP ADDING NEW:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x10
+
+GOOP:
+	FLOOR:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x10
+	RIGHT:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x8
+	LEFT:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0x8
+	UNKNOWN (CENTER?): (Bank04::b948)
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x8
+	UP:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x0
+	
+BLOCK:
+	FLOOR:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+	RIGHT:
+    COLLIDE X: 0x20
+    COLLIDE Y: 0x10
+	LEFT:
+    COLLIDE X: 0x0
+    COLLIDE Y: 0x10
+	UP:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x0	
+	
+NINJA:
+	(TO SPAWN):
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+	FLOOR:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+	
+NINJA STAR:
+	LANDED:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x8
+	
+FALLING ROCK:
+	LANDED:
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+	
+
+PLAYER STUFF
+	(Bank08::85c2)
+    COLLIDE X: 0x18
+    COLLIDE Y: 0x10
+	Bank08::85cd
+    COLLIDE X: 0x14
+    COLLIDE Y: 0x20
+	Bank08::85d8
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x20
+	Bank08::85e3
+    COLLIDE X: 0x0
+    COLLIDE Y: 0x20
+	Bank08::85ee
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x10
+	Bank08::85f9
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x8
+	Bank08::8604
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x8
+	Bank08::860f
+    COLLIDE X: 0x18
+    COLLIDE Y: 0x8
+	Bank08::861a
+    COLLIDE X: 0x10
+    COLLIDE Y: 0x10
+	LADDER_OFF_LEFT(?) (Bank08::891a;Bank08::8e1e)
+    COLLIDE X: 0xc
+    COLLIDE Y: 0x8
+	LADDER_OFF_RIGHT(?) (Bank08::8928;Bank08::8e2c)
+    COLLIDE X: 0x16
+    COLLIDE Y: 0x8
+	
+KNIFE:
+	LANDED:
+    COLLIDE X: 0x8
+    COLLIDE Y: 0x8
+	
+*****************************************************************************************
+* MAME NOTES:                                                                           *
+*****************************************************************************************
+
+    ROM_LOAD( "bd-08.5a",   0x00000, 0x10000, CRC(e2f17438) SHA1(3e5fdae07d40febedc59c7c7c4d9c6f0d72b58b5) )    /* sprites */
+
+        int attr = buffered_spriteram[offs+1];
+        int sx = buffered_spriteram[offs + 3] - ((attr & 0x10) << 4);
+        int sy = buffered_spriteram[offs + 2];
+        int code = buffered_spriteram[offs] | ((attr & 0xe0) << 3);
+        int color = attr & 0x07;
+        int flipx = attr & 0x08;
+
+        m_gfxdecode->gfx(2)->transpen(bitmap,cliprect,
+                code,
+                color,
+                flipx,flip_screen(),
+                sx+128,sy+6,15);
+
+void blktiger_state::blktiger_video_enable_w(uint8_t data)
+{
+    /* not sure which is which, but I think that bit 1 and 2 enable background and sprites */
+    /* bit 1 enables bg ? */
+    m_bgon = ~data & 0x02;
+
+    /* bit 2 enables sprites ? */
+    m_objon = ~data & 0x04;
+}
+                
+    Type *copy(uint32_t srcoffset = 0, uint32_t srclength = 0x7fffffff)
+    {
+        assert(m_spriteram != nullptr);
+        if (m_spriteram != nullptr)
+            memcpy(&m_buffered[0], m_spriteram + srcoffset, (std::min<size_t>)(srclength, m_spriteram.bytes() / sizeof(Type) - srcoffset) * sizeof(Type));
+        return &m_buffered[0];
+    }
+    
+    
+*****************************************************************************************
+* MISC NOTES:                                                                           *
+*****************************************************************************************
+
+(from the internet)
+It looks to me as though this is going to be an issue with the sprite multiplexing. This is when the sprites are "stamped" on top of the background image to produce the final image which is then rasterised. At some points it looks as though the mask data (data used to indicate which parts of the sprites are visible and which are transparent and should let the background show through) is actually being rasterised.
+
+I'd be suspecting things like '245s (buffers which gate the ROMs on and off the cpu bus), '166 (shift registers, sometimes used to mux the sprites into the data stream that makes up the display) and '139s (multiplexers which control whether the data should be read from the background image RAM or sprite RAM) around the sprite data. You should be able to tell from MAWS what ROMS hold the sprites. In fact, I've just gone and looked and found this:
+
+The key data is that in red - those should match up with ROM labels.
+(I got this data by googling MAWS, then entering the game name, following the link at the top for the game, clicking the link for the game driver which will be a filename ending in .c and then clicking the source: link on the final page. Scroll down and you can see the memory map and which ROMs are loaded into what memory addresses. Happily, most of the MAME drivers indicate what type of data is concerned.) All of that led me to
+http://maws.mameworld.info/maws/mamesrc/src/mame/drivers/blktiger.c
+So, I'd be looking at any chips of those type which are nearby the above ROMs. You might have to use a continuity tester (or visual trace) to trace the data lines from the sprite roms to the logic as they could be on separate boards.
+Best bet is to google the datasheets for those 3 logic chips and have a read, then with the datasheets in hand use your logic probe to test each pin. It'll start becoming obvious where you should expect data (pulses on the probe) and give you clues when you don't see it, either a static high or low. In the datasheets the symbol / means active low. For example, /RESET is active low, so in normal use the game will dip it low at startup, then hold the line high unless it needs to reset the game.
+Just one caveat to mention - I'm on a conf call whilst writing this and I occasionally have to speak so I may have got the specific 74 series IC numbers wrong as I wrote them off the top of my head, plus various manufacturers accomplished this in different ways using different logic. Regardless, you know which ROMs hold the sprite data so locate them, locate the logic which is attached to them, get the datasheets and get probing to see what activity you can find. Sadly, this is probably not going to be a good starter board as having schematics (and a single PCB) would make things a lot simpler for people to help. But let's give it a bash first :)
+tim
+PS Obviously, follow the other suggestions about checking that everything is seated cleanly and that you've not got oxide coatings on the ribbon cables or IC legs first before you start in-depth work like this. I've fixed a surprising number of faulty boards just by reinserting interboard connectors a few times to scrub the oxide coating.
+PPS I'm currently writing some docs on how to start fixing things and have written some of the section that deals with sprites e.g. what they are, why they're used and so on. If I get time to polish it up I'll post that as knowing what a sprite is and why they're used is useful background. In very short summary, a sprite is data that is added to the bit stream that makes up the video just before it's converted into RGB signals. This means that if you disabled the sprites, you'd just see the background elements of the gfx.
+The reason sprites are useful is because the sprite data is merged with the background and then sent to the raster (the display producing hardware) so having a sprite on the screen means it's not overwriting any of the RAM which holds the background image. This is beneficial because when you move a sprite, you don't have to replace the bits of background that were obscured by the sprite in its previous position as the sprite data was never "stamped" into the RAM holding the background image.
+Imagine a game without sprites - when you moved your character you'd leave a trail of images behind. That would be unacceptable, so the game hardware would need to look where the character had been, rebuild the background image and then stamp the character into RAM at the new location. As soon as you move, it has to recheck the background image and rebuild it. This takes lots of CPU cycles which is bad.
+Whereas using sprites all you need to do is enable the rasteriser (the bit which reads the video RAM and generates the image for the screen) to know when a sprite should be drawn. When it knows a sprite is to be drawn, the rasteriser flicks from reading the background image RAM to reading the sprite RAM, so the sprite appears in the video stream.
+On the next frame, if you've moved the sprite you don't have to touch-up the background image RAM, you just tell the rasteriser that the sprite is now to be drawn at new coordinates. Blammo! Loads of CPU cycles saved and a lot less juggling of image data.
+Finally, this is a terribly condensed explanation of what sprites are and how they work, but hopefully it's good enough to explain the concept.

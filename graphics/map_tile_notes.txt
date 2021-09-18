@@ -1,0 +1,417 @@
+*****************************************************************************************
+* GENERAL NOTES:                                                                        *
+*****************************************************************************************
+
+*****************************************************************************************
+* VIDEO RAM/MAP NOTES:                                                                  *
+*****************************************************************************************
+
+VIDEO RAM:
+
+WORD -- LOCATION (X = MSB) (Y = LSB) -- 10 00 = top left of screen;    10 F0 = top right of screen
+                                        E0 00 = bottom left of screen; E0 F0 = bottom right of screen
+
+c000 -- BG VIDEO RAM... 16x8 tiles (16 w 8 h)
+
+LW+(BITS0-3 of HW) 		= TILE SELECTION
+(BITS4-6 of HW) 		= PALETTE
+BIT 7 of HW: 			= FLIP HORIZONTALLY
+
+SHOWS VIDEO
+
+        ram:236c 3e 80           LD         A,0x80                                           Finally enable screen?? (Shut of
+        ram:236e cd 86 03        CALL       ClearVideoControlValue                           Yes! Pops all elements onto screen
+
+STRUCT:
+0:
+1:attr (color=AND7;FLIPX=AND8)
+2:y-6
+3:x-128
+
+*****************************************************************************************
+* MAME NOTES:                                                                           *
+*****************************************************************************************
+
+
+    map(0xd800, 0xdbff).ram().w(m_palette, FUNC(palette_device::write8)).share("palette");
+    map(0xdc00, 0xdfff).ram().w(m_palette, FUNC(palette_device::write8_ext)).share("palette_ext");
+
+    ROM_REGION( 0x40000, "gfx2", 0 )
+    ROM_LOAD( "bd-12.5b",  0x00000, 0x10000, CRC(c4524993) SHA1(9aa6c58004ca1117e5ac44ba8fc51e9128b921b8) ) /* tiles */
+    ROM_LOAD( "bd-11.4b",  0x10000, 0x10000, CRC(7932c86f) SHA1(b3b1bc1e2b0db5c2eb8772f8a2c35129cc80d511) )
+    ROM_LOAD( "bd-14.9b",  0x20000, 0x10000, CRC(dc49593a) SHA1(e4ef42ba9f238fd43c8217657c92896f31d3912c) )
+    ROM_LOAD( "bd-13.8b",  0x30000, 0x10000, CRC(7ed7a122) SHA1(3acc6d4c9731db0609c2e26e3bd255847149ca33) )
+
+static GFXDECODE_START( gfx_blktiger )
+    GFXDECODE_ENTRY( "gfx1", 0, &charlayout,   0x300, 32 ),   /* colors 0x300-0x37f */
+    GFXDECODE_ENTRY( "gfx2", 0, &spritelayout, 0x000, 16 ),   /* colors 0x000-0x0ff */
+    GFXDECODE_ENTRY( "gfx3", 0, &spritelayout, 0x200,  8 ),   /* colors 0x200-0x27f */
+GFXDECODE_END
+
+
+const gfx_decode_entry gfx_blktiger[] = { 
+{ "gfx1", 0, &charlayout,   0x300, 32, 0 },
+{ "gfx2", 0, &spritelayout, 0x000, 16, 0 },
+{ "gfx3", 0, &spritelayout, 0x200, 8, 0 },
+{ 0 } };
+
+
+DECLARE_DEVICE_TYPE(GFXDECODE, gfxdecode_device)
+
+
+	GFXDECODE(config, m_gfxdecode, m_palette, gfx_blktiger);
+
+
+(machine_config &mconfig, device_finder<Exposed, Required> &finder, Params &&... args) const
+{
+	std::pair<device_t &, char const *> const target(finder.finder_target());
+	assert(&mconfig.current_device() == &target.first);
+	DeviceClass &result(dynamic_cast<DeviceClass &>(*mconfig.device_add(target.second, *this, std::forward<Params>(args)...)));
+	return finder = result;
+}
+
+
+#define DECLARE_DEVICE_TYPE(Type, Class) \
+		class Class; \
+		extern emu::detail::device_type_impl<Class> const &Type; \
+		extern template class device_finder<Class, false>; \
+		extern template class device_finder<Class, true>;
+
+
+		class gfxdecode_device;
+		extern emu::detail::device_type_impl<gfxdecode_device> const &GFXDECODE; \
+		extern template class device_finder<gfxdecode_device, false>; \
+		extern template class device_finder<gfxdecode_device, true>;		
+		
+	
+	map(0x08, 0x09).w(FUNC(blktiger_state::blktiger_scrollx_w));
+	map(0x0a, 0x0b).w(FUNC(blktiger_state::blktiger_scrolly_w));
+	
+struct gfx_layout
+{
+	u32 xoffs(int x) const { return (extxoffs != nullptr) ? extxoffs[x] : xoffset[x]; }
+	u32 yoffs(int y) const { return (extyoffs != nullptr) ? extyoffs[y] : yoffset[y]; }
+
+	u16             width;              // pixel width of each element
+	u16             height;             // pixel height of each element
+	u32             total;              // total number of elements, or RGN_FRAC()
+	u16             planes;             // number of bitplanes
+	u32             planeoffset[8]; 	// bit offset of each bitplane
+	u32             xoffset[32]; 		// bit offset of each horizontal pixel
+	u32             yoffset[32]; 		// bit offset of each vertical pixel
+	u32             charincrement;      // distance between two consecutive elements (in bits)
+	const u32 *     extxoffs;           // extended X offset array for really big layouts
+	const u32 *     extyoffs;           // extended Y offset array for really big layouts
+};
+
+	u32 xoffs(int x) const { return xoffset[x]; }
+	u32 yoffs(int y) const { return yoffset[y]; }
+
+	u16             width=16;              								// pixel width of each element
+	u16             height=16;             								// pixel height of each element
+	u32             total=0x89000000;      								// total number of elements, or RGN_FRAC()
+	u16             planes=4;              								// number of bitplanes
+	u32             planeoffset[8] = {0x8900004,0x8900000,4,0}; 	   	// bit offset of each bitplane
+	u32             xoffset[32] = { 0, 1, 2, 3, 8+0, 8+1, 8+2, 8+3, 16*16+0, 16*16+1, 16*16+2, 16*16+3, 16*16+8+0, 16*16+8+1, 16*16+8+2, 16*16+8+3 }; 		// bit offset of each horizontal pixel
+	u32             yoffset[32] = { 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16, 8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16 }; 					// bit offset of each vertical pixel
+	u32             charincrement = 32*16;      						// distance between two consecutive elements (in bits)
+
+
+
+(0x80000000 | (0x08000000) | (0x01000000))= 0x89000000
+	
+static const gfx_layout spritelayout =
+{
+	16,16,
+	(0x80000000 | (((1) & 0x0f) << 27) | (((2) & 0x0f) << 23)),
+	4,
+	{ (0x80000000 | (((1) & 0x0f) << 27) | (((2) & 0x0f) << 23))+4, (0x80000000 | (((1) & 0x0f) << 27) | (((2) & 0x0f) << 23))+0, 4, 0 },
+	{ 0, 1, 2, 3, 8+0, 8+1, 8+2, 8+3, 16*16+0, 16*16+1, 16*16+2, 16*16+3, 16*16+8+0, 16*16+8+1, 16*16+8+2, 16*16+8+3 },
+	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16, 8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16 },
+	32*16
+};
+	
+class gfxdecode_device : public device_t, public device_gfx_interface
+{
+public:
+	// construction/destruction
+	template <typename T>
+	gfxdecode_device(const machine_config &mconfig, const char *tag, device_t *owner, T &&palette_tag, const gfx_decode_entry *gfxinfo)
+		: gfxdecode_device(mconfig, tag, owner, 0)
+	{
+		set_palette(std::forward<T>(palette_tag));
+		set_info(gfxinfo);
+	}
+	gfxdecode_device(const machine_config &mconfig, const char *tag, device_t *owner, u32 clock = 0);
+
+protected:
+	virtual void device_start() override {}
+};
+
+uint8_t blktiger_state::blktiger_bgvideoram_r(offs_t offset)
+{
+	return m_scroll_ram[offset + m_scroll_bank];
+}
+
+
+    map(0xc000, 0xcfff).rw(FUNC(blktiger_state::blktiger_bgvideoram_r), FUNC(blktiger_state::blktiger_bgvideoram_w));
+    map(0xd800, 0xdbff).ram().w(m_palette, FUNC(palette_device::write8)).share("palette");
+    map(0xdc00, 0xdfff).ram().w(m_palette, FUNC(palette_device::write8_ext)).share("palette_ext");
+
+
+
+void blktiger_state::blktiger_bgvideoram_w(offs_t offset, uint8_t data)
+{
+	offset += m_scroll_bank;
+
+	m_scroll_ram[offset] = data;
+	m_bg_tilemap8x4->mark_tile_dirty(offset / 2);
+	m_bg_tilemap4x8->mark_tile_dirty(offset / 2);
+}
+
+void blktiger_state::blktiger_bgvideoram_bank_w(uint8_t data)
+{
+	m_scroll_bank = (data % BGRAM_BANKS) * BGRAM_BANK_SIZE;
+}
+
+
+void blktiger_state::blktiger_scrolly_w(offs_t offset, uint8_t data)
+{
+	m_scroll_y[offset] = data;
+	int scrolly = m_scroll_y[0] | (m_scroll_y[1] << 8);
+	m_bg_tilemap8x4->set_scrolly(0, scrolly);
+	m_bg_tilemap4x8->set_scrolly(0, scrolly);
+}
+
+void blktiger_state::blktiger_scrollx_w(offs_t offset, uint8_t data)
+{
+	m_scroll_x[offset] = data;
+	int scrollx = m_scroll_x[0] | (m_scroll_x[1] << 8);
+	m_bg_tilemap8x4->set_scrollx(0, scrollx);
+	m_bg_tilemap4x8->set_scrollx(0, scrollx);
+}
+
+
+#define BGRAM_BANK_SIZE 0x1000
+#define BGRAM_BANKS 4
+
+const gfx_decode_entry gfx_blktiger[] = {
+{ region, offset, &layout, start, colors, 0 }
+{ 0 } };
+
+
+
+	GFXDECODE(config, m_gfxdecode, m_palette, gfx_blktiger);
+
+
+    tilemap_t *m_tx_tilemap;
+    tilemap_t *m_bg_tilemap8x4;
+    tilemap_t *m_bg_tilemap4x8;
+    uint32_t  m_scroll_bank;
+    uint8_t   m_scroll_x[2];
+    uint8_t   m_scroll_y[2];
+    std::unique_ptr<uint8_t[]>   m_scroll_ram;
+    uint8_t   m_screen_layout;
+    uint8_t   m_chon;
+    uint8_t   m_objon;
+    uint8_t   m_bgon;
+
+
+typedef u32 tilemap_memory_index;
+
+tilemap_memory_index blktiger_state::bg8x4_scan(u32 col, u32 row, u32 num_cols, u32 num_rows)
+{
+    /* logical (col,row) -> memory offset */
+    return (col & 0x0f) + ((row & 0x0f) << 4) + ((col & 0x70) << 4) + ((row & 0x30) << 7);
+}
+
+tilemap_memory_index blktiger_state::bg4x8_scan(u32 col, u32 row, u32 num_cols, u32 num_rows)
+{
+    /* logical (col,row) -> memory offset */
+    return (col & 0x0f) + ((row & 0x0f) << 4) + ((col & 0x30) << 4) + ((row & 0x70) << 6);
+}
+
+void blktiger_state::get_bg_tile_info(tilemap_t &tilemap, tile_data &tileinfo, tilemap_memory_index tile_index)
+{
+    /* the tile priority table */
+    static const uint8_t split_table[16] =
+    {
+        3,3,2,2,
+        1,1,0,0,
+        0,0,0,0,
+        0,0,0,0
+    };
+    uint8_t attr = m_scroll_ram[2 * tile_index + 1];
+    int color = (attr & 0x78) >> 3;
+    tileinfo.set(1, 														// use gfxdecode->gfx(1) for tile graphics
+	             m_scroll_ram[2 * tile_index] + ((attr & 0x07) << 8), 		// the index of the graphics for this tile
+				 color, 													// the color to use for this tile
+				 (attr & 0x80) ? TILE_FLIPX : 0)							// flags for this tile
+				 ;
+    tileinfo.group = split_table[color];
+}
+
+void _blktiger_state::get_tx_tile_info(tilemap_t &tilemap, tile_data &tileinfo, tilemap_memory_index tile_index)
+{
+    uint8_t attr = m_txvideoram[tile_index + 0x400];
+    tileinfo.set(0, m_txvideoram[tile_index] + ((attr & 0xe0) << 3), attr & 0x1f, 0);
+}
+
+	tilemap_t &create(device_gfx_interface &decoder, tilemap_get_info_delegate tile_get_info, tilemap_mapper_delegate mapper, u16 tilewidth, u16 tileheight, u32 cols, u32 rows, tilemap_t *allocated);
+tilemap_t &tilemap_t::init(
+		tilemap_manager &manager,
+		device_gfx_interface &decoder,
+		tilemap_get_info_delegate tile_get_info,
+		tilemap_mapper_delegate mapper,
+		u16 tilewidth,
+		u16 tileheight,
+		u32 cols,
+		u32 rows)
+{
+	// populate logical <-> memory mappings
+	m_mapper = mapper;
+
+	init_common(manager, decoder, tile_get_info, tilewidth, tileheight, cols, rows);
+
+	return *this;
+}
+
+void tilemap_t::init_common(
+		tilemap_manager &manager,
+		device_gfx_interface &decoder,
+		tilemap_get_info_delegate tile_get_info,
+		u16 tilewidth,
+		u16 tileheight,
+		u32 cols,
+		u32 rows)
+{
+	// populate managers and devices
+	m_manager = &manager;
+	m_device = dynamic_cast<device_t *>(this);
+	m_palette = &decoder.palette();
+	m_next = nullptr;
+	m_user_data = nullptr;
+
+	// populate tilemap metrics
+	m_rows = rows;
+	m_cols = cols;
+	m_tilewidth = tilewidth;
+	m_tileheight = tileheight;
+	m_width = cols * tilewidth;
+	m_height = rows * tileheight;
+
+	// initialize tile information geters
+	m_tile_get_info = tile_get_info;
+
+	// reset global states
+	m_enable = true;
+	m_attributes = 0;
+	m_all_tiles_dirty = true;
+	m_all_tiles_clean = false;
+	m_palette_offset = 0;
+	m_gfx_used = 0;
+	memset(m_gfx_dirtyseq, 0, sizeof(m_gfx_dirtyseq));
+
+	// reset scroll information
+	m_scrollrows = 1;
+	m_scrollcols = 1;
+	m_rowscroll.resize(m_height);
+	memset(&m_rowscroll[0], 0, m_height*sizeof(m_rowscroll[0]));
+	m_colscroll.resize(m_width);
+	memset(&m_colscroll[0], 0, m_width*sizeof(m_colscroll[0]));
+	m_dx = 0;
+	m_dx_flipped = 0;
+	m_dy = 0;
+	m_dy_flipped = 0;
+
+	// allocate pixmap
+	m_pixmap.allocate(m_width, m_height);
+
+	// allocate transparency mapping
+	m_flagsmap.allocate(m_width, m_height);
+	memset(m_pen_to_flags, 0, sizeof(m_pen_to_flags));
+
+	// create the initial mappings
+	mappings_create();
+
+	// set up the default tile data
+	memset(&m_tileinfo, 0, sizeof(m_tileinfo));
+	m_tileinfo.decoder = &decoder;
+	m_tileinfo.pen_mask = 0xff;
+	m_tileinfo.gfxnum = 0xff;
+
+	// allocate transparency mapping data
+	for (int group = 0; group < TILEMAP_NUM_GROUPS; group++)
+		map_pens_to_layer(group, 0, 0, TILEMAP_PIXEL_LAYER0);
+
+	// save relevant state
+	int instance = manager.alloc_instance();
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_enable));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_attributes));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_palette_offset));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_scrollrows));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_scrollcols));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_rowscroll));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_colscroll));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_dx));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_dx_flipped));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_dy));
+	machine().save().save_item(m_device, "tilemap", nullptr, instance, NAME(m_dy_flipped));
+
+	// reset everything after a load
+	machine().save().register_postload(save_prepost_delegate(FUNC(tilemap_t::postload), this));
+}
+
+    m_tx_tilemap =    &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(*this, FUNC(blktiger_state::get_tx_tile_info)), TILEMAP_SCAN_ROWS, 8, 8, 32, 32);
+    m_bg_tilemap8x4 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(*this, FUNC(blktiger_state::get_bg_tile_info)), 
+	                                              tilemap_mapper_delegate(*this, FUNC(blktiger_state::bg8x4_scan)), 16, 16, // 16x16 tiles
+	                                              128, 64);
+    m_bg_tilemap4x8 = &machine().tilemap().create(*m_gfxdecode, tilemap_get_info_delegate(*this, FUNC(blktiger_state::get_bg_tile_info)), 
+	                                              tilemap_mapper_delegate(*this, FUNC(blktiger_state::bg4x8_scan)), 16, 16, // 16x16 tiles
+	                                              64, 128);
+
+    m_bg_tilemap8x4->set_transmask(0, 0xffff, 0x8000);  /* split type 0 is totally transparent in front half */
+    m_bg_tilemap8x4->set_transmask(1, 0xfff0, 0x800f);  /* split type 1 has pens 4-15 transparent in front half */
+    m_bg_tilemap8x4->set_transmask(2, 0xff00, 0x80ff);  /* split type 1 has pens 8-15 transparent in front half */
+    m_bg_tilemap8x4->set_transmask(3, 0xf000, 0x8fff);  /* split type 1 has pens 12-15 transparent in front half */
+    m_bg_tilemap4x8->set_transmask(0, 0xffff, 0x8000);
+    m_bg_tilemap4x8->set_transmask(1, 0xfff0, 0x800f);
+    m_bg_tilemap4x8->set_transmask(2, 0xff00, 0x80ff);
+    m_bg_tilemap4x8->set_transmask(3, 0xf000, 0x8fff);
+
+    m_tx_tilemap->set_scrolldx(128, 128);
+    m_tx_tilemap->set_scrolldy(  6,   6);
+    m_bg_tilemap8x4->set_scrolldx(128, 128);
+    m_bg_tilemap8x4->set_scrolldy(  6,   6);
+    m_bg_tilemap4x8->set_scrolldx(128, 128);
+    m_bg_tilemap4x8->set_scrolldy(  6,   6);
+
+    map(0x0c, 0x0c).w(FUNC(blktiger_state::blktiger_video_enable_w));
+    map(0x0d, 0x0d).w(FUNC(blktiger_state::blktiger_bgvideoram_bank_w));
+    map(0x0e, 0x0e).w(FUNC(blktiger_state::blktiger_screen_layout_w));
+
+void blktiger_state::blktiger_screen_layout_w(uint8_t data)
+{
+    m_screen_layout = data;
+    m_bg_tilemap8x4->enable(m_screen_layout);
+    m_bg_tilemap4x8->enable(!m_screen_layout);
+}
+
+uint32_t blktiger_state::screen_update_blktiger(screen_device &screen, bitmap_ind16 &bitmap, const rectangle &cliprect)
+{
+    bitmap.fill(1023, cliprect);
+
+    if (m_bgon)
+        (m_screen_layout ? m_bg_tilemap8x4 : m_bg_tilemap4x8)->draw(screen, bitmap, cliprect, TILEMAP_DRAW_LAYER1, 0);
+
+    if (m_objon)
+        draw_sprites(bitmap, cliprect);
+
+    if (m_bgon)
+        (m_screen_layout ? m_bg_tilemap8x4 : m_bg_tilemap4x8)->draw(screen, bitmap, cliprect, TILEMAP_DRAW_LAYER0, 0);
+
+    if (m_chon)
+        m_tx_tilemap->draw(screen, bitmap, cliprect, 0, 0);
+
+    return 0;
+}

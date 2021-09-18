@@ -655,31 +655,6 @@ FALLING ROCK                            0x29
 
 
 
-*****************************************************************************************
-* VIDEO RAM/MAP NOTES:                                                                  *
-*****************************************************************************************
-
-VIDEO RAM:
-
-WORD -- LOCATION (X = MSB) (Y = LSB) -- 10 00 = top left of screen;    10 F0 = top right of screen
-                                        E0 00 = bottom left of screen; E0 F0 = bottom right of screen
-
-c000 -- BG VIDEO RAM... 16x8 tiles (16 w 8 h)
-
-LW+(BITS0-3 of HW) 		= TILE SELECTION
-(BITS4-6 of HW) 		= PALETTE
-BIT 7 of HW: 			= FLIP HORIZONTALLY
-
-SHOWS VIDEO
-
-        ram:236c 3e 80           LD         A,0x80                                           Finally enable screen?? (Shut of
-        ram:236e cd 86 03        CALL       ClearVideoControlValue                           Yes! Pops all elements onto screen
-
-STRUCT:
-0:
-1:attr (color=AND7;FLIPX=AND8)
-2:y-6
-3:x-128
 
 *****************************************************************************************
 * STACK NOTES:                                                                          *
