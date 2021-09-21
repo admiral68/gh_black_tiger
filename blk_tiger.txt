@@ -710,6 +710,56 @@ STACKS:
 * MAME DEBUGGING NOTES:                                                                 *
 *****************************************************************************************
 
+Building the building:
+
+To use MAKE, put a command prompt in the same folder as the "makefile" and use the "make" command.
+Very simple.
+
+     --------------------------------
+     * RUNNING MAME IN VS DEBUGGER: *
+     --------------------------------
+
+Visual Studio using the LLVM/Clang compiler is the best way to both compile MAME and use the VS debugger. 
+"make msllvm" I think is the magic.
+
+make vsllvm
+
+Do i need LLVM-7.1.0-win64.exe, the newer 8.x (only available as source) - or the one supplied by the Microsoft installer ("Clang C2 experimental") ?
+Is it still Visual Studio 2017...?
+
+SOURCES=src/mame/drivers/pacman.cpp REGENIE=1
+
+Speeding up the compilation can be done by using more cores from your CPU. This is done with the -j parameter. Note: a good number to start with is the total number of CPU cores in your system plus one. An excessive number of concurrent jobs may increase compilation time. The optimal number depends on many factors, including number of CPU cores, available RAM, disk and filesystem performance, and memory bandwidth. For instance, make -j5 is a good starting point on a system with a quad-core CPU.
+
+Debugging information can be added to a compile using SYMBOLS=1 though most users will not want or need to use this. This increases compile time and disk space used.
+
+
+make SOURCES=src/mame/drivers/pacman.cpp TOOLS=1 REGENIE=1 -j5
+
+Rebuilding MAME on a dual-core (e.g. i3 or laptop i5) machine:
+
+make -j3
+
+To link using the LLVM linker (generally much faster than the GNU linker), you’ll need mingw-w64-x86_64-lld and mingw-w64-x86_64-libc++ for 64-bit builds, or mingw-w64-i686-lld and mingw-w64-i686-libc++ for 32-bit builds.
+
+For example you could use these commands to ensure you have the packages you need to compile MAME, omitting the ones for configurations you don’t plan to build for or combining multiple pacman commands to install more packages at once:
+
+pacman -Syu
+pacman -S curl git make
+pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-libc++ mingw-w64-x86_64-lld mingw-w64-x86_64-python
+pacman -S mingw-w64-x86_64-SDL2 mingw-w64-x86_64-SDL2_ttf
+pacman -S mingw-w64-x86_64-qt5
+pacman -S mingw-w64-i686-gcc mingw-w64-i686-libc++ mingw-w64-i686-lld mingw-w64-i686-python
+pacman -S mingw-w64-i686-SDL2 mingw-w64-i686-SDL2_ttf
+pacman -S mingw-w64-i686-qt5
+You could use these commands to install the current version of the mame-essentials package and add the MAME package repository to your pacman configuration:
+
+curl -O "https://repo.mamedev.org/x86_64/mame-essentials-1.0.6-1-x86_64.pkg.tar.xz"
+pacman -U mame-essentials-1.0.6-1-x86_64.pkg.tar.xz
+echo -e '\n[mame]\nInclude = /etc/pacman.d/mirrorlist.mame' >> /etc/pacman.conf
+
+
+                              
      --------------------
      * HOW TOS:         *
      --------------------
