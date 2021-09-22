@@ -26,43 +26,219 @@ TILE MAP FOR LEVEL 3 is 1024 x 2048 pixels (4x8 tilemap)
 TODO: DEBUG src\emu\drawgfx.cpp (line 295) in MAME to discover decoding scheme
 
 
-FF B8 FF 43 EE B7 30 4C 
-E1 B0 94 10 0B 3B 5A 83 
-38 02 4C 55 7F FA 0F A5 
-70 6D 10 7E 00 26 00 03 
-C0 70 E0 21 8E 22 CC 11 
-04 11 88 00 08 00 08 22 
-08 11 0C 22 84 11 C6 FF 
-82 77 03 1E 75 D1 6A 91
+EXAMPLE TILE: Index 0x011 (of 0x000-0x7ff)
 
-12 D3 E0 DB E0 53 F0 53 
-78 97 0F 1F FF FF FF FF 
-9F 7F 1E 53 96 D3 07 D3 
-87 1F 87 3F 97 EE 4B 2E 
-89 E1 EF 69 47 69 47 C3 
-67 69 47 4B 67 0F EF 0F 
-77 FF 47 1F 16 C3 24 21 
-15 4D BC 45 34 81 BC C1
+BITPLANES 02/3 (RAW DATA FROM gfx2 chip)
+
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+FA FE 2D F4 AD F4 AD 7C BD 7C BD FC DF FC FF FE
+FF FB FF 3D FF 3D FF BD FF BD FF BD FF FF FF FF
+
+=>
+
+converted to rows:
+                  BITPLANE 2      BITPLANE 3
+FF FF FA FE =>    F  F  F  F      F  F  A  E
+FF FF 2D F4 =>    F  F  2  F      F  F  D  4
+FF FF AD F4 =>    F  F  A  F      F  F  D  4
+FF FF AD 7C =>    F  F  A  7      F  F  D  C
+FF FF BD 7C =>    F  F  B  7      F  F  D  C
+FF FF BD FC =>    F  F  B  F      F  F  D  C
+FF FF DF FC =>    F  F  D  F      F  F  F  C
+FF FF FF FE =>    F  F  F  F      F  F  F  E
+FF FF FF FB =>    F  F  F  F      F  F  F  B
+FF FF FF 3D =>    F  F  F  3      F  F  F  D
+FF FF FF 3D =>    F  F  F  3      F  F  F  D
+FF FF FF BD =>    F  F  F  B      F  F  F  D
+FF FF FF BD =>    F  F  F  B      F  F  F  D
+FF FF FF BD =>    F  F  F  B      F  F  F  D
+FF FF FF FF =>    F  F  F  F      F  F  F  F
+FF FF FF FF =>    F  F  F  F      F  F  F  F
+
+converted to columns
+
+BITPLANE 2        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  2  F   =>   x    x    x    x    x    x    x    x         x              x    x    x    x
+F  F  A  F   =>   x    x    x    x    x    x    x    x         x         x    x    x    x    x
+F  F  A  7   =>   x    x    x    x    x    x    x    x         x         x    x    x    x
+F  F  B  7   =>   x    x    x    x    x    x    x    x    x    x         x    x    x    x
+F  F  B  F   =>   x    x    x    x    x    x    x    x    x    x         x    x    x    x    x
+F  F  D  F   =>   x    x    x    x    x    x    x    x    x         x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  3   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  3   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  B   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x         x
+F  F  F  B   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x         x
+F  F  F  B   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x         x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+
+
+BITPLANE 3        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
+F  F  A  E   =>   x    x    x    x    x    x    x    x         x         x         x    x    x
+F  F  D  4   =>   x    x    x    x    x    x    x    x    x         x    x              x
+F  F  D  4   =>   x    x    x    x    x    x    x    x    x         x    x              x
+F  F  D  C   =>   x    x    x    x    x    x    x    x    x         x    x              x    x
+F  F  D  C   =>   x    x    x    x    x    x    x    x    x         x    x              x    x
+F  F  D  C   =>   x    x    x    x    x    x    x    x    x         x    x              x    x
+F  F  F  C   =>   x    x    x    x    x    x    x    x    x    x    x    x              x    x
+F  F  F  E   =>   x    x    x    x    x    x    x    x    x    x    x    x         x    x    x
+F  F  F  B   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x         x
+F  F  F  D   =>   x    x    x    x    x    x    x    x    x    x    x    x    x         x    x
+F  F  F  D   =>   x    x    x    x    x    x    x    x    x    x    x    x    x         x    x
+F  F  F  D   =>   x    x    x    x    x    x    x    x    x    x    x    x    x         x    x
+F  F  F  D   =>   x    x    x    x    x    x    x    x    x    x    x    x    x         x    x
+F  F  F  D   =>   x    x    x    x    x    x    x    x    x    x    x    x    x         x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
 
 
 
-FF 8B FF 11 EE 1B 11 C1 
-1E 1B 19 11 B1 B1 A1 18 
-81 11 C1 11 F1 AF F1 1A 
-11 D1 11 E1 11 11 11 11 
-1C 11 1E 11 E8 11 CC 11 
-11 11 88 11 80 11 80 11 
-80 11 C1 11 18 11 1C FF 
-18 11 11 E1 11 1D A1 19
+BITPLANES 00/1 (RAW DATA FROM gfx2 chip)
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF FF
+FA FE F0 F4 F8 F4 F8 F4 F9 F4 F9 FC FD FC FF FE
+FF FB FF F1 FF F1 FF F9 FF F9 FF F9 FF FF FF FF
 
-11 1D 1E BD 1E 11 1F 11 
-81 19 F1 F1 FF FF FF FF 
-F9 F1 E1 11 19 1D 11 1D 
-18 F1 18 F1 19 EE B1 E1 
-98 1E FE 91 11 91 11 1C 
-11 91 11 B1 11 F1 FE F1 
-11 FF 11 F1 11 1C 11 11 
-11 D1 CB 11 11 18 CB 1C
+=>
+
+converted to rows:
+                  BITPLANE 0      BITPLANE 1
+FF FF FA FE =>    F  F  F  F      F  F  A  E
+FF FF F0 F4 =>    F  F  F  F      F  F  0  4
+FF FF F8 F4 =>    F  F  F  F      F  F  8  4
+FF FF F8 F4 =>    F  F  F  F      F  F  8  4
+FF FF F9 F4 =>    F  F  F  F      F  F  9  4
+FF FF F9 FC =>    F  F  F  F      F  F  9  C
+FF FF FD FC =>    F  F  F  F      F  F  D  C
+FF FF FF FE =>    F  F  F  F      F  F  F  E
+FF FF FF FB =>    F  F  F  F      F  F  F  B
+FF FF FF F1 =>    F  F  F  F      F  F  F  1
+FF FF FF F1 =>    F  F  F  F      F  F  F  1
+FF FF FF F9 =>    F  F  F  F      F  F  F  9
+FF FF FF F9 =>    F  F  F  F      F  F  F  9
+FF FF FF F9 =>    F  F  F  F      F  F  F  9
+FF FF FF FF =>    F  F  F  F      F  F  F  F
+FF FF FF FF =>    F  F  F  F      F  F  F  F
+
+converted to columns
+
+BITPLANE 0        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+
+
+BITPLANE 1        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
+F  F  A  E   =>   x    x    x    x    x    x    x    x         x         x         x    x    x
+F  F  0  4   =>   x    x    x    x    x    x    x    x                                  x
+F  F  8  4   =>   x    x    x    x    x    x    x    x                   x              x
+F  F  8  4   =>   x    x    x    x    x    x    x    x                   x              x
+F  F  9  4   =>   x    x    x    x    x    x    x    x    x              x              x
+F  F  9  C   =>   x    x    x    x    x    x    x    x    x              x              x    x
+F  F  D  C   =>   x    x    x    x    x    x    x    x    x         x    x              x    x
+F  F  F  E   =>   x    x    x    x    x    x    x    x    x    x    x    x         x    x    x
+F  F  F  B   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x         x 
+F  F  F  1   =>   x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  1   =>   x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  9   =>   x    x    x    x    x    x    x    x    x    x    x    x    x              x
+F  F  F  9   =>   x    x    x    x    x    x    x    x    x    x    x    x    x              x
+F  F  F  9   =>   x    x    x    x    x    x    x    x    x    x    x    x    x              x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
+
+FINAL RESULTS:
+
+BITPLANE 0   0 1 2 3 4 5 6 7 8 9 A B C D E F
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+
+BITPLANE 1   0 1 2 3 4 5 6 7 8 9 A B C D E F
+             x x x x x x x x   x   x   x x x
+             x x x x x x x x             x
+             x x x x x x x x       x     x
+             x x x x x x x x       x     x
+             x x x x x x x x x     x     x
+             x x x x x x x x x     x     x x
+             x x x x x x x x x   x x     x x
+             x x x x x x x x x x x x   x x x
+             x x x x x x x x x x x x x x   x
+             x x x x x x x x x x x x x
+             x x x x x x x x x x x x x
+             x x x x x x x x x x x x x     x
+             x x x x x x x x x x x x x     x
+             x x x x x x x x x x x x x     x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+
+BITPLANE 2   0 1 2 3 4 5 6 7 8 9 A B C D E F
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x   x     x x x x
+             x x x x x x x x   x   x x x x x
+             x x x x x x x x   x   x x x x
+             x x x x x x x x x x   x x x x
+             x x x x x x x x x x   x x x x x
+             x x x x x x x x x   x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x   x
+             x x x x x x x x x x x x x x   x
+             x x x x x x x x x x x x x x   x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+
+BITPLANE 3   0 1 2 3 4 5 6 7 8 9 A B C D E F
+             x x x x x x x x   x   x   x x x
+             x x x x x x x x x   x x     x
+             x x x x x x x x x   x x     x
+             x x x x x x x x x   x x     x x
+             x x x x x x x x x   x x     x x
+             x x x x x x x x x   x x     x x
+             x x x x x x x x x x x x     x x
+             x x x x x x x x x x x x   x x x
+             x x x x x x x x x x x x x x   x
+             x x x x x x x x x x x x x   x x
+             x x x x x x x x x x x x x   x x
+             x x x x x x x x x x x x x   x x
+             x x x x x x x x x x x x x   x x
+             x x x x x x x x x x x x x   x x
+             x x x x x x x x x x x x x x x x
+             x x x x x x x x x x x x x x x x
+
+
+
      ---------------------------------------
      * PALETTE:                            *
      ---------------------------------------
@@ -83,33 +259,33 @@ EXAMPLE: D800  B8   (R = B8h & 0xF0) (G = B8h & 0xF)
 FINAL COLOR: 0xBRG = (DC00 & 0xF)<<8 + (D800) = 0x7B8
 
 
-	enum xbrg_444_t     { xBRG_444, xxxxBBBBRRRRGGGG };
+    enum xbrg_444_t     { xBRG_444, xxxxBBBBRRRRGGGG };
 
      ---------------------------------------
      * TILE "DATA" (NOT RAW BITMAP DATA):  *
      ---------------------------------------
-	 
-	 40000h bytes in TILE ROM
-	 800h tiles in TILE ROM
-	 80h bytes/tile
-	 400h bits/tile
-	 10h x 10h = 100h pixels (16d x 16d)
-	 4 bpp (index)---the "column" in the palette. (The ATTR value selects the palette ROW)
 
-EX: 	
+     40000h bytes in TILE ROM
+     800h tiles in TILE ROM
+     80h bytes/tile
+     400h bits/tile
+     10h x 10h = 100h pixels (16d x 16d)
+     4 bpp (index)---the "column" in the palette. (The ATTR value selects the palette ROW)
+
+EX:
 
 (PALETTE ROW F) (BRG)
 
 Palette "F" colors (selected) (BRG FORMAT!)
         BRG
- 0x0: 0x111 
- 0x1: 0x9FF 
- 0x2: 0x7EC 
- 0x3: 0x6DA 
- 0x4: 0x5C8 
- 0x5: 0x4A7 
- 0x6: 0x486 
- 0x7: 0x375 
+ 0x0: 0x111
+ 0x1: 0x9FF
+ 0x2: 0x7EC
+ 0x3: 0x6DA
+ 0x4: 0x5C8
+ 0x5: 0x4A7
+ 0x6: 0x486
+ 0x7: 0x375
  0x8: 0x164
  0x9: 0x353
  0xA: 0x143
@@ -162,28 +338,28 @@ STRUCT:
      ---------------------------------------
      * RAW TILE DATA (PER LEVEL):          *
      ---------------------------------------
-	 
-	 EF CC FF 7F FF 0F FF F8
+
+     EF CC FF 7F FF 0F FF F8
 
 => RAW TILE DATA FOR TILE "0x210:F" =>
- 
-F0 E0 50 80 C0 00 F0 80 D0 E0 80 00 00 30 00 00 
-00 B0 70 60 00 00 00 00 00 00 30 E0 90 F0 F0 F0 
-00 70 F0 D0 00 F0 00 00 30 F0 00 F0 20 10 00 00 
-30 A0 00 40 60 70 00 00 70 80 10 F0 F0 C0 F0 40 
-40 00 F0 80 80 60 00 00 D0 00 C0 00 F0 80 00 00 
-00 00 00 00 F0 00 70 E0 00 00 F0 00 00 00 00 00 
-00 90 60 00 00 00 70 60 00 F0 00 10 00 00 00 00 
+
+F0 E0 50 80 C0 00 F0 80 D0 E0 80 00 00 30 00 00
+00 B0 70 60 00 00 00 00 00 00 30 E0 90 F0 F0 F0
+00 70 F0 D0 00 F0 00 00 30 F0 00 F0 20 10 00 00
+30 A0 00 40 60 70 00 00 70 80 10 F0 F0 C0 F0 40
+40 00 F0 80 80 60 00 00 D0 00 C0 00 F0 80 00 00
+00 00 00 00 F0 00 70 E0 00 00 F0 00 00 00 00 00
+00 90 60 00 00 00 70 60 00 F0 00 10 00 00 00 00
 00 00 00 00 00 00 00 00 00 00 00 00 70 A0 30 F0
 
-=> 0x011 0x111 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 
+=> 0x011 0x111 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011
    0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011
 
 4A7
 => 0x111 0x111 0x111 0x111 0x375 0x111 0x111 0x111 0x111 0x111 0x5C8 0x111 0x111 0x111 0x111 0x111
 
-	unsigned_short &pixt(int32_t y, int32_t x = 0) { return *(reinterpret_cast<unsigned_short *>(m_base) + y * m_rowpixels + x); }
-	unsigned_short const &pixt(int32_t y, int32_t x = 0) const { return *(reinterpret_cast<unsigned_short *>(m_base) + y * m_rowpixels + x); }
+    unsigned_short &pixt(int32_t y, int32_t x = 0) { return *(reinterpret_cast<unsigned_short *>(m_base) + y * m_rowpixels + x); }
+    unsigned_short const &pixt(int32_t y, int32_t x = 0) const { return *(reinterpret_cast<unsigned_short *>(m_base) + y * m_rowpixels + x); }
 
 FF FF 99 99 99 98 88 88
 
@@ -3851,6 +4027,9 @@ const gfx_decode_entry gfx_blktiger[] = {
 { 0 } };
 
 
+
+
+
 DECLARE_DEVICE_TYPE(GFXDECODE, gfxdecode_device)
 
 
@@ -3885,15 +4064,15 @@ DECLARE_DEVICE_TYPE(GFXDECODE, gfxdecode_device)
 
 static const gfx_layout spritelayout =
 {
-	16,16,
-	RGN_FRAC(1,2),
-	4,
-	{ RGN_FRAC(1,2)+4, RGN_FRAC(1,2)+0, 4, 0 },
-	{ 0, 1, 2, 3, 8+0, 8+1, 8+2, 8+3,
-			16*16+0, 16*16+1, 16*16+2, 16*16+3, 16*16+8+0, 16*16+8+1, 16*16+8+2, 16*16+8+3 },
-	{ 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
-			8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16 },
-	32*16
+    16,16,
+    RGN_FRAC(1,2),
+    4,
+    { RGN_FRAC(1,2)+4, RGN_FRAC(1,2)+0, 4, 0 },
+    { 0, 1, 2, 3, 8+0, 8+1, 8+2, 8+3,
+            16*16+0, 16*16+1, 16*16+2, 16*16+3, 16*16+8+0, 16*16+8+1, 16*16+8+2, 16*16+8+3 },
+    { 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16,
+            8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16 },
+    32*16
 };
 
 
@@ -3904,122 +4083,149 @@ struct gfx_layout
     u32 xoffs(int x) const { return xoffset[x]; }
     u32 yoffs(int y) const { return yoffset[y]; }
 
-    u16             width=16;                                           // pixel width of each element
-    u16             height=16;                                          // pixel height of each element
-    u32             total=0x89000000;                                   // total number of elements, or RGN_FRAC()
-    u32             total=0x800;                                        // total number of elements, or RGN_FRAC()
-    u16             planes=4;                                           // number of bitplanes
-    u32             planeoffset[8] = {0x8900004,0x8900000,4,0};         // bit offset of each bitplane
-    u32             planeoffset[8] = {0x804,0x800,4,0};                 // bit offset of each bitplane
-    u32             xoffset[32] = { 0, 1, 2, 3, 8+0, 8+1, 8+2, 8+3, 16*16+0, 16*16+1, 16*16+2, 16*16+3, 16*16+8+0, 16*16+8+1, 16*16+8+2, 16*16+8+3 };           // bit offset of each horizontal pixel
-    u32             yoffset[32] = { 0*16, 1*16, 2*16, 3*16, 4*16, 5*16, 6*16, 7*16, 8*16, 9*16, 10*16, 11*16, 12*16, 13*16, 14*16, 15*16 };                     // bit offset of each vertical pixel
-    u32             charincrement = 40h;                                // distance between two consecutive elements (in bits)
-
-	u16             width;              // pixel width of each element
-	u16             height;             // pixel height of each element
-	u32             total;              // total number of elements, or RGN_FRAC()
-	u16             planes;             // number of bitplanes
-	u32             planeoffset[MAX_GFX_PLANES]; // bit offset of each bitplane
-	u32             xoffset[MAX_GFX_SIZE]; // bit offset of each horizontal pixel
-	u32             yoffset[MAX_GFX_SIZE]; // bit offset of each vertical pixel
-	u32             charincrement;      // distance between two consecutive elements (in bits)
+    u16             width=16;                                                       // pixel width of each element
+    u16             height=16;                                                      // pixel height of each element
+    u32             total=0x800;                                                    // total number of elements, or RGN_FRAC()
+    u16             planes=4;                                                       // number of bitplanes
+    u32             planeoffset[8] = {0x001000004, 0x00100000, 0x4, 0x0};           // bit offset of each bitplane
+    u32             xoffset[32] = { 0, 1, 2, 3, 8, 9, a, b, 100h, 101h, 102h, 103h, 108h, 109h, 10ah, 10bh };           // bit offset of each horizontal pixel
+    u32             yoffset[32] = { 0, 10h, 20h, 30h, 40h, 50h, 60h, 70h, 80h, 90h, a0h, b0h, c0h, d0h, e0h, f0h };                     // bit offset of each vertical pixel
+    u32             charincrement = 200h;                                           // distance between two consecutive elements (in bits)
 
 
-     region_length = 200000h
-	 
+m_srcdata = ptr to raw data (blk tiger)
+region_base = ptr to raw data (blk tiger)
+region_width = 1h
+region_length = 200000h
+region_bytes = 40000h
+m_origwidth      = 10h
+m_origheight     = 10h
+m_total_elements = 800h
+m_color_depth    = 10h
+m_color_granularity = 10h
+m_pen_usage = (size: 800h)
 
-0E 03 CF 77 EF 77 EF 77 
-EE 77 CE FF EE FF CC FF 
-DD FF 11 FF 33 FF B3 FF 
-B3 FF B3 FF 91 FF 00 EE 
-0C 34 8E 0F CE 0F CE 0F 
-CE 0F EF 07 EF 07 FF 07 
-FF 07 EE 00 CD F0 8B 1E 
+m_line_modulo = 10h
+m_char_modulo = 100h
+m_gfxdata_allocated = 800h x 100h = 80000h
+
+0 => planebit = 100004 => 0x8        (src: lower nybble)
+1 => planebit = 100000 => 0x4        (src: upper nybble)
+2 => planebit = 4      => 0x2        (src: lower nybble)
+3 => planebit = 0      => 0x1        (src: upper nybble)
+
+8x4: m_bitwidth = 8h; m_bytewidth = 1h; m_width = 800h; m_height = 400h; m_rows = 40h; m_cols = 80h; m_rowscroll = 400h; m_colscroll = 800h
+mappings:
+ 0x000-0x00f        =>    0x000-0x00f
+ 0x010-0x01f        =>    0x100-0x10f
+ 0x020-0x02f        =>    0x200-0x20f
+ 0x030-0x03f        =>    0x300-0x30f
+ 0x040-0x04f        =>    0x010-0x01f
+ 0x050-0x05f        =>    0x110-0x11f
+ 0x060-0x06f        =>    0x210-0x21f
+ 0x070-0x07f        =>    0x310-0x31f
+ 0x080-0x08f        =>    0x020-0x02f
+ 0x090-0x09f        =>    0x120-0x12f
+ 0x0a0-0x0af        =>    0x220-0x22f
+ 0x0b0-0x0bf        =>    0x320-0x32f
+ 0x0c0-0x0cf        =>    0x030-0x03f
+ 0x0d0-0x0df        =>    0x130-0x13f
+ 0x0e0-0x0ef        =>    0x230-0x23f
+ 0x0f0-0x0ff        =>    0x330-0x33f
+
+
+0E 03 CF 77 EF 77 EF 77
+EE 77 CE FF EE FF CC FF
+DD FF 11 FF 33 FF B3 FF
+B3 FF B3 FF 91 FF 00 EE
+0C 34 8E 0F CE 0F CE 0F
+CE 0F EF 07 EF 07 FF 07
+FF 07 EE 00 CD F0 8B 1E
 8B 0F 03 0F 03 0F 01 0F
 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
 FF FF FF FF FF FF FF FF
 
 
 
 TILE #0: FIRST 40h: 0x00000; SECOND 40h: 0x20000
 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
 FF FF FF FF FF FF FF FF
 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
-FF FF FF FF FF FF FF FF 
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
+FF FF FF FF FF FF FF FF
 FF FF FF FF FF FF FF FF
 
 
-FA FE 2D F4 2D F4 2D F4 
-2D F4 2D FC 3F FC BF FE 
-FF FB FB 3D BF 3D BD 3D 
-BD 3D BD 3D BF 3F FF FF 
-07 21 92 C1 92 C0 92 E0 
-92 E0 92 E0 83 E1 87 0E 
-49 3C E0 34 F0 34 F0 12 
+FA FE 2D F4 2D F4 2D F4
+2D F4 2D FC 3F FC BF FE
+FF FB FB 3D BF 3D BD 3D
+BD 3D BD 3D BF 3F FF FF
+07 21 92 C1 92 C0 92 E0
+92 E0 92 E0 83 E1 87 0E
+49 3C E0 34 F0 34 F0 12
 F0 92 F0 92 F0 96 78 0F
 
-FA FE F0 F4 F0 F4 F0 F4 
-F0 F4 F0 FC F3 FC FB FE 
-FF FB FB F1 FB F1 F9 F1 
-F9 F1 F9 F1 FB F3 FF FF 
-F0 F0 F0 F0 F0 F0 F0 F0 
-F0 F0 F0 F0 F0 F0 F0 F0 
-F0 F0 F0 F0 F0 F0 F0 F0 
+FA FE F0 F4 F0 F4 F0 F4
+F0 F4 F0 FC F3 FC FB FE
+FF FB FB F1 FB F1 F9 F1
+F9 F1 F9 F1 FB F3 FF FF
+F0 F0 F0 F0 F0 F0 F0 F0
+F0 F0 F0 F0 F0 F0 F0 F0
+F0 F0 F0 F0 F0 F0 F0 F0
 F0 F0 F0 F0 F0 F0 F0 F0
 
-		// loop over rows
-		for (y = 0; y < ycells; y++)
-		{
-			rectangle cellbounds;
+        // loop over rows
+        for (y = 0; y < ycells; y++)
+        {
+            rectangle cellbounds;
 
-			// make a rect that covers this row
-			cellbounds.set(0, state.bitmap.width() - 1, y * cellypix, (y + 1) * cellypix - 1);
+            // make a rect that covers this row
+            cellbounds.set(0, state.bitmap.width() - 1, y * cellypix, (y + 1) * cellypix - 1);
 
-			// only display if there is data to show
-			if (info.offset[set] + y * xcells < gfx.elements())
-			{
-				// draw the individual cells
-				for (x = 0; x < xcells; x++)
-				{
-					int index = info.offset[set] + y * xcells + x;
+            // only display if there is data to show
+            if (info.offset[set] + y * xcells < gfx.elements())
+            {
+                // draw the individual cells
+                for (x = 0; x < xcells; x++)
+                {
+                    int index = info.offset[set] + y * xcells + x;
 
-					// update the bounds for this cell
-					cellbounds.min_x = x * cellxpix;
-					cellbounds.max_x = (x + 1) * cellxpix - 1;
+                    // update the bounds for this cell
+                    cellbounds.min_x = x * cellxpix;
+                    cellbounds.max_x = (x + 1) * cellxpix - 1;
 
-					// only render if there is data
-					if (index < gfx.elements())
-						gfxset_draw_item(machine, gfx, index, state.bitmap, cellbounds.min_x, cellbounds.min_y, info.color[set], info.rotate[set], info.palette[set]);
+                    // only render if there is data
+                    if (index < gfx.elements())
+                        gfxset_draw_item(machine, gfx, index, state.bitmap, cellbounds.min_x, cellbounds.min_y, info.color[set], info.rotate[set], info.palette[set]);
 
-					// otherwise, fill with transparency
-					else
-						state.bitmap.fill(0, cellbounds);
-				}
-			}
+                    // otherwise, fill with transparency
+                    else
+                        state.bitmap.fill(0, cellbounds);
+                }
+            }
 
-			// otherwise, fill with transparency
-			else
-				state.bitmap.fill(0, cellbounds);
+            // otherwise, fill with transparency
+            else
+                state.bitmap.fill(0, cellbounds);
 
 
 
@@ -4176,122 +4382,122 @@ void blktiger_state::get_bg_tile_info(tilemap_t &tilemap, tile_data &tileinfo, t
 
 
 
-	void tileinfo.set(1, u32 rawcode, u32 rawcolor, u8 _flags)
-	{
-		gfx_element *gfx = decoder->gfx(_gfxnum);
-		code = rawcode % gfx->elements();
-		pen_data = gfx->get_data(code);
-		palette_base = gfx->colorbase() + gfx->granularity() * (rawcolor % gfx->colors());
-		flags = _flags;
-		gfxnum = _gfxnum;
-	}
+    void tileinfo.set(1, u32 rawcode, u32 rawcolor, u8 _flags)
+    {
+        gfx_element *gfx = decoder->gfx(_gfxnum);
+        code = rawcode % gfx->elements();
+        pen_data = gfx->get_data(code);
+        palette_base = gfx->colorbase() + gfx->granularity() * (rawcolor % gfx->colors());
+        flags = _flags;
+        gfxnum = _gfxnum;
+    }
 
-	const u8 *get_data(u32 code)
-	{
-		assert(code < elements());
-		if (code < m_dirty.size() && m_dirty[code]) decode(code);
-		return m_gfxdata + code * m_char_modulo + m_starty * m_line_modulo + m_startx;
-	}
+    const u8 *get_data(u32 code)
+    {
+        assert(code < elements());
+        if (code < m_dirty.size() && m_dirty[code]) decode(code);
+        return m_gfxdata + code * m_char_modulo + m_starty * m_line_modulo + m_startx;
+    }
 
 void gfx_element::decode(u32 code)
 {
-		// zap the data to 0
-		u8 *decode_base = m_gfxdata + code * m_char_modulo;
-		memset(decode_base, 0, m_char_modulo);
+        // zap the data to 0
+        u8 *decode_base = m_gfxdata + code * m_char_modulo;
+        memset(decode_base, 0, m_char_modulo);
 
-		// iterate over planes
-		int plane, planebit;
-		for (plane = 0, planebit = 1 << (m_layout_planes - 1);
-				plane < m_layout_planes;
-				plane++, planebit >>= 1)
-		{
-			int planeoffs = code * m_layout_charincrement + m_layout_planeoffset[plane];
+        // iterate over planes
+        int plane, planebit;
+        for (plane = 0, planebit = 1 << (m_layout_planes - 1);
+                plane < m_layout_planes;
+                plane++, planebit >>= 1)
+        {
+            int planeoffs = code * m_layout_charincrement + m_layout_planeoffset[plane];
 
-			// iterate over rows
-			for (int y = 0; y < m_origheight; y++)
-			{
-				int yoffs = planeoffs + m_layout_yoffset[y];
-				u8 *dp = decode_base + y * m_line_modulo; // 128
+            // iterate over rows
+            for (int y = 0; y < m_origheight; y++)
+            {
+                int yoffs = planeoffs + m_layout_yoffset[y];
+                u8 *dp = decode_base + y * m_line_modulo; // 128
 
-				// iterate over columns
-				for (int x = 0; x < m_origwidth; x++) //128
-					if (readbit(m_srcdata, (yoffs + m_layout_xoffset[x]) ^ m_layout_xormask))
-						dp[x] |= planebit;
-			}
-		}
+                // iterate over columns
+                for (int x = 0; x < m_origwidth; x++) //128
+                    if (readbit(m_srcdata, (yoffs + m_layout_xoffset[x]) ^ m_layout_xormask))
+                        dp[x] |= planebit;
+            }
+        }
 
-	// (re)compute pen usage
-	if (code < m_pen_usage.size())
-	{
-		// iterate over data, creating a bitmask of live pens
-		const u8 *dp = m_gfxdata + code * m_char_modulo;
-		u32 usage = 0;
-		for (int y = 0; y < m_origheight; y++)
-		{
-			for (int x = 0; x < m_origwidth; x++)
-				usage |= 1 << dp[x];
-			dp += m_line_modulo;
-		}
+    // (re)compute pen usage
+    if (code < m_pen_usage.size())
+    {
+        // iterate over data, creating a bitmask of live pens
+        const u8 *dp = m_gfxdata + code * m_char_modulo;
+        u32 usage = 0;
+        for (int y = 0; y < m_origheight; y++)
+        {
+            for (int x = 0; x < m_origwidth; x++)
+                usage |= 1 << dp[x];
+            dp += m_line_modulo;
+        }
 
-		// store the final result
-		m_pen_usage[code] = usage;
-	}
+        // store the final result
+        m_pen_usage[code] = usage;
+    }
 
-	// no longer dirty
-	m_dirty[code] = 0;
+    // no longer dirty
+    m_dirty[code] = 0;
 }
 
-	
+
 void gfx_element::set_layout(const gfx_layout &gl, const u8 *srcdata)
 {
-	m_srcdata = srcdata;
+    m_srcdata = srcdata;
 
-	// configure ourselves
-	m_width = m_origwidth = gl.width;
-	m_height = m_origheight = gl.height;
-	m_startx = m_starty = 0;
-	m_total_elements = gl.total;
-	m_color_depth = m_color_granularity = 1 << gl.planes;
+    // configure ourselves
+    m_width = m_origwidth = gl.width;
+    m_height = m_origheight = gl.height;
+    m_startx = m_starty = 0;
+    m_total_elements = gl.total;
+    m_color_depth = m_color_granularity = 1 << gl.planes;
 
-	// copy data from the layout
-	m_layout_is_raw = (gl.planeoffset[0] == GFX_RAW);
-	m_layout_planes = gl.planes;
-	m_layout_charincrement = gl.charincrement;
+    // copy data from the layout
+    m_layout_is_raw = (gl.planeoffset[0] == GFX_RAW);
+    m_layout_planes = gl.planes;
+    m_layout_charincrement = gl.charincrement;
 
-	// decoded graphics case
-	else
-	{
-		// copy offsets
-		m_layout_planeoffset.resize(m_layout_planes);
-		m_layout_xoffset.resize(m_width);
-		m_layout_yoffset.resize(m_height);
+    // decoded graphics case
+    else
+    {
+        // copy offsets
+        m_layout_planeoffset.resize(m_layout_planes);
+        m_layout_xoffset.resize(m_width);
+        m_layout_yoffset.resize(m_height);
 
-		for (int p = 0; p < m_layout_planes; p++)
-			m_layout_planeoffset[p] = gl.planeoffset[p];
-		for (int y = 0; y < m_height; y++)
-			m_layout_yoffset[y] = gl.yoffs(y);
-		for (int x = 0; x < m_width; x++)
-			m_layout_xoffset[x] = gl.xoffs(x);
+        for (int p = 0; p < m_layout_planes; p++)
+            m_layout_planeoffset[p] = gl.planeoffset[p];
+        for (int y = 0; y < m_height; y++)
+            m_layout_yoffset[y] = gl.yoffs(y);
+        for (int x = 0; x < m_width; x++)
+            m_layout_xoffset[x] = gl.xoffs(x);
 
-		// we get to pick our own modulos
-		m_line_modulo = m_origwidth;
-		m_char_modulo = m_line_modulo * m_origheight;
+        // we get to pick our own modulos
+        m_line_modulo = m_origwidth;
+        m_char_modulo = m_line_modulo * m_origheight;
 
-		// allocate memory for the data
-		m_gfxdata_allocated.resize(m_total_elements * m_char_modulo);
-		m_gfxdata = &m_gfxdata_allocated[0];
-	}
+        // allocate memory for the data
+        m_gfxdata_allocated.resize(m_total_elements * m_char_modulo);
+        m_gfxdata = &m_gfxdata_allocated[0];
+    }
 
-	// mark everything dirty
-	m_dirty.resize(m_total_elements);
-	memset(&m_dirty[0], 1, m_total_elements);
+    // mark everything dirty
+    m_dirty.resize(m_total_elements);
+    memset(&m_dirty[0], 1, m_total_elements);
 
-	// allocate a pen usage array for entries with 32 pens or less
-	if (m_color_depth <= 32)
-		m_pen_usage.resize(m_total_elements);
-	else
-		m_pen_usage.clear();
-}	
+    // allocate a pen usage array for entries with 32 pens or less
+    if (m_color_depth <= 32)
+        m_pen_usage.resize(m_total_elements);
+    else
+        m_pen_usage.clear();
+}
 void _blktiger_state::get_tx_tile_info(tilemap_t &tilemap, tile_data &tileinfo, tilemap_memory_index tile_index)
 {
     uint8_t attr = m_txvideoram[tile_index + 0x400];
@@ -4471,3 +4677,26 @@ uint32_t blktiger_state::screen_update_blktiger(screen_device &screen, bitmap_in
 
 
 void tilemap_t::mappings_create()
+
+
+void tilemap_t::tile_update(logical_index logindex, u32 col, u32 row)
+
+
+    void set(u8 _gfxnum, u32 rawcode, u32 rawcolor, u8 _flags)
+    {
+        gfx_element *gfx = decoder->gfx(_gfxnum);
+        code = rawcode % gfx->elements();
+        pen_data = gfx->get_data(code);
+        palette_base = gfx->colorbase() + gfx->granularity() * (rawcolor % gfx->colors());
+        flags = _flags;
+        gfxnum = _gfxnum;
+    }
+
+
+constexpr int readbit(const u8 *src, unsigned int bitnum)
+{
+    return src[bitnum / 8] & (0x80 >> (bitnum % 8));
+}
+
+
+"m_pen_to_flags"
