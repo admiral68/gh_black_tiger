@@ -21,6 +21,14 @@ BM: Bank08::9c11
 
 source debugger.cmd
 
+*****************************************************************************************
+* AMIGA NOTES:                                                                          *
+*****************************************************************************************
+
+
+SETUP TOOLCHAIN (thanks mcgeezer)
+ https://www.youtube.com/watch?v=-SQEORSphBs
+
 
 *****************************************************************************************
 * GAME ASPECTS TO CONVERT:                                                              *
@@ -466,7 +474,7 @@ ID   En  CPU                   Address\      Condition         Action
 57   X   :maincpu              2547
 5B   X   :maincpu              29DA
 59   X   :maincpu              8F3C
-                                                                                  
+
 
 
 *****************************************************************************************
@@ -719,7 +727,7 @@ Very simple.
      * RUNNING MAME IN VS DEBUGGER: *
      --------------------------------
 
-Visual Studio using the LLVM/Clang compiler is the best way to both compile MAME and use the VS debugger. 
+Visual Studio using the LLVM/Clang compiler is the best way to both compile MAME and use the VS debugger.
 "make msllvm" I think is the magic.
 
 make vsllvm
@@ -759,7 +767,7 @@ pacman -U mame-essentials-1.0.6-1-x86_64.pkg.tar.xz
 echo -e '\n[mame]\nInclude = /etc/pacman.d/mirrorlist.mame' >> /etc/pacman.conf
 
 
-                              
+
      --------------------
      * HOW TOS:         *
      --------------------
