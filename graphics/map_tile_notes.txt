@@ -27,11 +27,11 @@ TILE MAP FOR LEVEL 3 is 1024 x 2048 pixels (4x8 tilemap)
      800h tiles in TILE ROM
      80h bytes/tile
      400h bits/tile
-	 Bitplanes 2&3 for all tiles are in 0x00000-0x1FFFF
-	 Bitplanes 0&1 for all tiles are in 0x20000-0x3FFFF
+     Bitplanes 2&3 for all tiles are in 0x00000-0x1FFFF
+     Bitplanes 0&1 for all tiles are in 0x20000-0x3FFFF
      10h x 10h = 100h pixels (16d x 16d)
-     16 bpp (combine into palette index)---the "column" in the palette. 
-	 (The ATTR value selects the palette ROW)
+     16 bpp (combine into palette index)---the "column" in the palette.
+     (The ATTR value selects the palette ROW)
 
 From EAB: "turaco_CL (turaco command line) is an old DOS/linux based arcade gfx format convertor from arcade gfx to PCX" - redblade
 
@@ -43,7 +43,7 @@ Verify that bitmap scheme for tiles is correct (scripted)
    Write utility (Win64) that will decode the entire bitmap into a DIB (for verification)
    Ability to swap palettes to check the palette scheme
    Might be able to use this for sprites/text as well
-   
+
 Engineer a way to bring tile bitmap into the Amiga (it's a full 256K uncompressed right now)
    Identify tiles used in each level and try to reduce this into partial source bitmaps so that
      they load only when needed
@@ -255,7 +255,7 @@ FF FF FF FF =>    F  F  F  F      F  F  F  F
 
 converted to columns
 
-				  [------------------]                    [------------------]
+                  [------------------]                    [------------------]
 BITPLANE 2        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
 F  F  2  F   =>   x    x    x    x    x    x    x    x              x         x    x    x    x
@@ -275,7 +275,7 @@ F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x 
 F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
 
 
-				  [------------------]                    [------------------]
+                  [------------------]                    [------------------]
 BITPLANE 3        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 F  F  A  E   =>   x    x    x    x    x    x    x    x    x         x         x    x    x
 F  F  D  4   =>   x    x    x    x    x    x    x    x    x    x         x         x
@@ -325,7 +325,7 @@ FF FF FF FF =>    F  F  F  F      F  F  F  F
 
 converted to columns
 
-				  [------------------]                    [------------------]
+                  [------------------]                    [------------------]
 BITPLANE 0        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
 F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
@@ -345,7 +345,7 @@ F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x 
 F  F  F  F   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
 
 
-				  [------------------]                    [------------------]
+                  [------------------]                    [------------------]
 BITPLANE 1        0    1    2    3    4    5    6    7    8    9    A    B    C    D    E    F
 F  F  A  E   =>   x    x    x    x    x    x    x    x    x         x         x    x    x
 F  F  0  4   =>   x    x    x    x    x    x    x    x                             x
@@ -355,7 +355,7 @@ F  F  9  4   =>   x    x    x    x    x    x    x    x    x              x      
 F  F  9  C   =>   x    x    x    x    x    x    x    x    x              x    x    x
 F  F  D  C   =>   x    x    x    x    x    x    x    x    x    x         x    x    x
 F  F  F  E   =>   x    x    x    x    x    x    x    x    x    x    x    x    x    x    x
-F  F  F  B   =>   x    x    x    x    x    x    x    x    x    x    x    x    x         x    x 
+F  F  F  B   =>   x    x    x    x    x    x    x    x    x    x    x    x    x         x    x
 F  F  F  1   =>   x    x    x    x    x    x    x    x    x    x    x    x                   x
 F  F  F  1   =>   x    x    x    x    x    x    x    x    x    x    x    x                   x
 F  F  F  9   =>   x    x    x    x    x    x    x    x    x    x    x    x    x              x
@@ -516,11 +516,11 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
 
                     sheet.Add(tile);
                     sourceRowOffset += 0x40;
-                }         
+                }
             }
-			
-			
-			
+
+
+
         public void AddNybble(int rowIndex, int pxOffset, byte val, byte startMask, uint contribution)
         {
             var index = (rowIndex % 16) * 16;
@@ -537,7 +537,7 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
                     else Values[index + pxOffset + pxchange] |= contribution;
                 }
             }
-        }			
+        }
 
      ------------------------------
      * RAW DUMP OF DECODED TILES: *
@@ -37483,7 +37483,9 @@ Palette "F" colors (selected) (BRG FORMAT!)
      ---------------------------------------
      * TILE "DATA" (NOT RAW BITMAP DATA):  *
      ---------------------------------------
-	 
+
+     MAME calls this "SCROLL DATA"
+
 Bank 09 = LEVEL 01 SCREEN TILE DATA (bd-04.9e 0x0000-0x3FFF)
 Bank 10 = LEVEL 02 SCREEN TILE DATA (bd-04.9e 0x4000-0x7FFF)
 Bank 11 = LEVEL 03 SCREEN TILE DATA (bd-04.9e 0x8000-0xBFFF)
@@ -37520,32 +37522,15 @@ STRUCT:
 3:x-128
 
      ---------------------------------------
-     * RAW TILE DATA (PER LEVEL):          *
+     * TILE INDICIES (PER LEVEL):          *
      ---------------------------------------
 
-     EF CC FF 7F FF 0F FF F8
+     These are arranged like they are in the level map.
 
-=> RAW TILE DATA FOR TILE "0x210:F" =>
-
-F0 E0 50 80 C0 00 F0 80 D0 E0 80 00 00 30 00 00
-00 B0 70 60 00 00 00 00 00 00 30 E0 90 F0 F0 F0
-00 70 F0 D0 00 F0 00 00 30 F0 00 F0 20 10 00 00
-30 A0 00 40 60 70 00 00 70 80 10 F0 F0 C0 F0 40
-40 00 F0 80 80 60 00 00 D0 00 C0 00 F0 80 00 00
-00 00 00 00 F0 00 70 E0 00 00 F0 00 00 00 00 00
-00 90 60 00 00 00 70 60 00 F0 00 10 00 00 00 00
-00 00 00 00 00 00 00 00 00 00 00 00 70 A0 30 F0
-
-=> 0x011 0x111 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011
-   0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011 0x011
-
-4A7
-=> 0x111 0x111 0x111 0x111 0x375 0x111 0x111 0x111 0x111 0x111 0x5C8 0x111 0x111 0x111 0x111 0x111
-
-    unsigned_short &pixt(int32_t y, int32_t x = 0) { return *(reinterpret_cast<unsigned_short *>(m_base) + y * m_rowpixels + x); }
-    unsigned_short const &pixt(int32_t y, int32_t x = 0) const { return *(reinterpret_cast<unsigned_short *>(m_base) + y * m_rowpixels + x); }
-
-FF FF 99 99 99 98 88 88
+    EX: 0x210:F
+        0x210    -  tile index    (0x000 - 0x7FF)
+        :F       -  palette index (0x0 - 0xF)
+        (FL)     -  tile is flipped horizontally
 
 
 Level 1; Bank 9 (128 cols, 64 rows)
