@@ -467,7 +467,7 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
             var output = new List<string>();
             var sheet = new List<SixteenBySixteenTile>();
             var bytes = new List<byte>();
-            var sheetRows = 0x80;
+            var sheetRows = 0x80;                 // There are 0x80 rows (128) in the source tile bitmap
             var sheetColumns = 16;
 
             var lowerBitplanesOffset = 0x20000;
@@ -485,13 +485,14 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
                     var tile = new SixteenBySixteenTile();
 
                     // Now, we need to iterate over the rows and columns of BITS
-                    for(int sourceRowIndex = 0; sourceRowIndex < 0x40; sourceRowIndex += 2)
+                    for(int sourceRowIndex = 0; sourceRowIndex < 0x40; sourceRowIndex += 2) // 0x40: raw tile data offset; 2 =  rows of pixels advance two bytes at a time in the source data
                     {
-                        var pxOffset = sourceRowIndex < 0x20 ? 0 : 0x8;
-                        var zeroAndOneByte1 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex];
-                        var zeroAndOneByte2 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex + 1];
-                        var twoAndThreeByte1 = bytes[sourceRowIndex + sourceRowOffset];
-                        var twoAndThreeByte2 = bytes[sourceRowIndex + sourceRowOffset + 1];
+                        var pxOffset = sourceRowIndex < 0x20 ? 0 : 0x8; // pixel columns 0-7 are not offset; pixel columns 8-F are offset by 0x20
+						
+                        var zeroAndOneByte1 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex];      // lower bitplanes source byte #1
+                        var zeroAndOneByte2 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex + 1];  // lower bitplanes source byte #2
+                        var twoAndThreeByte1 = bytes[sourceRowIndex + sourceRowOffset];                            // upper bitplanes source byte #1
+                        var twoAndThreeByte2 = bytes[sourceRowIndex + sourceRowOffset + 1];                        // upper bitplanes source byte #2
 
                         //Bitplane 01 - lower nybble
                         uint contribution = 8;
@@ -515,7 +516,7 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
                     }
 
                     sheet.Add(tile);
-                    sourceRowOffset += 0x40;
+                    sourceRowOffset += 0x40; // Advance to next raw source bytes for next tile (tiles in raw source are 0x40 (64 bytes) apart)
                 }
             }
 
@@ -524,17 +525,17 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
         public void AddNybble(int rowIndex, int pxOffset, byte val, byte startMask, uint contribution)
         {
             var index = (rowIndex % 16) * 16;
-            var pxchange = 0x3;
-            for (uint i = startMask; i < startMask*0x10; i*=2, pxchange--)
+            var pxchange = 0x3;                                               // causes the bits in the nybble to be flipped horizontally
+            for (uint i = startMask; i < startMask*0x10; i*=2, pxchange--)    // lower nybbles start at 0x1, upper start at 0x10
             {
-                if ((val & i) > 0)
+                if ((val & i) > 0)                                            // is the bit set? If so, combine "contribution" into the palette index value for the pixel
                 {
                     if (Values.Count <= index + pxOffset + pxchange)
                     {
-                        Values[index + pxOffset + pxchange] = contribution;
+                        Values[index + pxOffset + pxchange] = contribution;   // contribution is the base palette index value for the bitplane
                     }
 
-                    else Values[index + pxOffset + pxchange] |= contribution;
+                    else Values[index + pxOffset + pxchange] |= contribution;  // or'ing the palette index value with the previous value
                 }
             }
         }
