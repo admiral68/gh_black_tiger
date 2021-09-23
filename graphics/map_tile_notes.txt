@@ -439,7 +439,7 @@ BITPLANE 3   0 1 2 3 4 5 6 7 8 9 A B C D E F
              x x x x x x x x x x x x x x x x
 
 
-ALL TILES DUMP:
+ALL BITPLANES FOR TILE 0x11 DUMP:
 
 0 1 2 3 4 5 6 7 8 9 A B C D E F    0 1 2 3 4 5 6 7 8 9 A B C D E F    0 1 2 3 4 5 6 7 8 9 A B C D E F    0 1 2 3 4 5 6 7 8 9 A B C D E F
 x x x x x x x x x x x x x x x x    x x x x x x x x   x   x   x x x    x x x x x x x x x x x x x x x x    x x x x x x x x   x   x   x x x
@@ -460,74 +460,90 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
 x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x
 
 
+     --------------------
+     * DECODE LOGIC:    *
+     --------------------
 
+            var output = new List<string>();
+            var sheet = new List<SixteenBySixteenTile>();
+            var bytes = new List<byte>();
+            var sheetRows = 0x80;
+            var sheetColumns = 16;
 
+            var lowerBitplanesOffset = 0x20000;
 
-20000, 20001, 00, 01
-20002, 20003, 02, 03
-20004, 20005, 04, 05
-20006, 20007, 06, 07
-20008, 20009, 08, 09
-2000A, 2000B, 0A, 0B
-2000C, 2000D, 0C, 0D
-2000E, 2000F, 0E, 0F
-20010, 20011, 10, 11
-20012, 20013, 12, 13
-20014, 20015, 14, 15
-20016, 20017, 16, 17
-20018, 20019, 18, 19
-2001A, 2001B, 1A, 1B
-2001C, 2001D, 1C, 1D
-2001E, 2001F, 1E, 1F
-20020, 20021, 20, 21
-20022, 20023, 22, 23
-20024, 20025, 24, 25
-20026, 20027, 26, 27
-20028, 20029, 28, 29
-2002A, 2002B, 2A, 2B
-2002C, 2002D, 2C, 2D
-2002E, 2002F, 2E, 2F
-20030, 20031, 30, 31
-20032, 20033, 32, 33
-20034, 20035, 34, 35
-20036, 20037, 36, 37
-20038, 20039, 38, 39
-2003A, 2003B, 3A, 3B
-2003C, 2003D, 3C, 3D
-2003E, 2003F, 3E, 3F
+            foreach (var file in list)
+            {
+                bytes = File.ReadAllBytes(file).ToList();
+            }
 
-20040, 20041, 40, 41
-20042, 20043, 42, 43
-20044, 20045, 44, 45
-20046, 20047, 46, 47
-20048, 20049, 48, 49
-2004A, 2004B, 4A, 4B
-2004C, 2004D, 4C, 4D
-2004E, 2004F, 4E, 4F
-20050, 20051, 50, 51
-20052, 20053, 52, 53
-20054, 20055, 54, 55
-20056, 20057, 56, 57
-20058, 20059, 58, 59
-2005A, 2005B, 5A, 5B
-2005C, 2005D, 5C, 5D
-2005E, 2005F, 5E, 5F
-20060, 20061, 60, 61
-20062, 20063, 62, 63
-20064, 20065, 64, 65
-20066, 20067, 66, 67
-20068, 20069, 68, 69
-2006A, 2006B, 6A, 6B
-2006C, 2006D, 6C, 6D
-2006E, 2006F, 6E, 6F
-20070, 20071, 70, 71
-20072, 20073, 72, 73
-20074, 20075, 74, 75
-20076, 20077, 76, 77
-20078, 20079, 78, 79
-2007A, 2007B, 7A, 7B
-2007C, 2007D, 7C, 7D
-2007E, 2007F, 7E, 7F
+            int sourceRowOffset = 0;
+            for(int sheetRow = 0; sheetRow < sheetRows; sheetRow++)
+            {
+                for (int sheetCol = 0; sheetCol < sheetColumns; sheetCol++)
+                {
+                    var tile = new SixteenBySixteenTile();
+
+                    // Now, we need to iterate over the rows and columns of BITS
+                    for(int sourceRowIndex = 0; sourceRowIndex < 0x40; sourceRowIndex += 2)
+                    {
+                        var pxOffset = sourceRowIndex < 0x20 ? 0 : 0x8;
+                        var zeroAndOneByte1 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex];
+                        var zeroAndOneByte2 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex + 1];
+                        var twoAndThreeByte1 = bytes[sourceRowIndex + sourceRowOffset];
+                        var twoAndThreeByte2 = bytes[sourceRowIndex + sourceRowOffset + 1];
+
+                        //Bitplane 01 - lower nybble
+                        uint contribution = 8;
+                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, zeroAndOneByte1, 0x1, contribution);
+                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, zeroAndOneByte2, 0x1, contribution);
+
+                        //Bitplane 00 - upper nybble
+                        contribution /= 2;
+                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, zeroAndOneByte1, 0x10, contribution);
+                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, zeroAndOneByte2, 0x10, contribution);
+
+                        //Bitplane 03 - lower nybble
+                        contribution /= 2;
+                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, twoAndThreeByte1, 0x1, contribution);
+                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, twoAndThreeByte2, 0x1, contribution);
+
+                        //Bitplane 02 - upper nybble
+                        contribution /= 2;
+                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, twoAndThreeByte1, 0x10, contribution);
+                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, twoAndThreeByte2, 0x10, contribution);
+                    }
+
+                    sheet.Add(tile);
+                    sourceRowOffset += 0x40;
+                }         
+            }
+			
+			
+			
+        public void AddNybble(int rowIndex, int pxOffset, byte val, byte startMask, uint contribution)
+        {
+            var index = (rowIndex % 16) * 16;
+            var pxchange = 0x3;
+            for (uint i = startMask; i < startMask*0x10; i*=2, pxchange--)
+            {
+                if ((val & i) > 0)
+                {
+                    if (Values.Count <= index + pxOffset + pxchange)
+                    {
+                        Values[index + pxOffset + pxchange] = contribution;
+                    }
+
+                    else Values[index + pxOffset + pxchange] |= contribution;
+                }
+            }
+        }			
+
+     ------------------------------
+     * RAW DUMP OF DECODED TILES: *
+     ------------------------------
+
+Each value 0-F represents a pixel; the value itself represents the palette index.
 
 
 TILE 0x000
@@ -37446,23 +37462,23 @@ EX:
 (PALETTE ROW F) (BRG)
 
 Palette "F" colors (selected) (BRG FORMAT!)
-        BRG
- 0x0: 0x111
- 0x1: 0x9FF
- 0x2: 0x7EC
- 0x3: 0x6DA
- 0x4: 0x5C8
- 0x5: 0x4A7
- 0x6: 0x486
- 0x7: 0x375
- 0x8: 0x164
- 0x9: 0x353
- 0xA: 0x143
- 0xB: 0x111
- 0xC: 0x111
- 0xD: 0x111
- 0xE: 0x111
- 0xF: 0x011
+        BRG      RGB32
+ 0x0: 0x111      17,17,17
+ 0x1: 0x9FF      255,255,153
+ 0x2: 0x7EC      238,204,119
+ 0x3: 0x6DA      221,170,102
+ 0x4: 0x5C8      204,136,85
+ 0x5: 0x4A7      170,119,68
+ 0x6: 0x486      136,102,68
+ 0x7: 0x375      119,85,51
+ 0x8: 0x164      102,68,17
+ 0x9: 0x353      85,51,51
+ 0xA: 0x143      68,51,17
+ 0xB: 0x111      17,17,17
+ 0xC: 0x111      17,17,17
+ 0xD: 0x111      17,17,17
+ 0xE: 0x111      17,17,17
+ 0xF: 0x011      17,17,0
 
      ---------------------------------------
      * TILE "DATA" (NOT RAW BITMAP DATA):  *
