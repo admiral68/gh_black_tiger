@@ -2,6 +2,15 @@
 * GENERAL NOTES:                                                                        *
 *****************************************************************************************
 
+phx (on SolidGold): Yes, the 8-way scrolling engine in Solid Gold worked fine. It can 
+scroll a maximum of 4 px/frame and draws a new row/column in two phases. Horizontally 
+9+9 tiles and vertically 12+11 tiles (refer to scroll.i in the source). Two phases, 
+because of double buffering: 16 / 2 / 2 = 4 px/frame.
+
+The source is available on Aminet and on the NOD home page. Although, being 7 years old, 
+it is certainly no longer state-of-the-art and has room for improvements (later I noticed 
+that I'm blitting more rows/columns than I have to). I'm working on a new 8-way scrolling 
+engine. 
 *****************************************************************************************
 * VIDEO RAM/MAP NOTES:                                                                  *
 *****************************************************************************************
@@ -38,11 +47,6 @@ From EAB: "turaco_CL (turaco command line) is an old DOS/linux based arcade gfx 
 *****************************************************************************************
 * TODOS:                                                                                *
 *****************************************************************************************
-
-Verify that bitmap scheme for tiles is correct (scripted)
-   Write utility (Win64) that will decode the entire bitmap into a DIB (for verification)
-   Ability to swap palettes to check the palette scheme
-   Might be able to use this for sprites/text as well
 
 Engineer a way to bring tile bitmap into the Amiga (it's a full 256K uncompressed right now)
    Identify tiles used in each level and try to reduce this into partial source bitmaps so that

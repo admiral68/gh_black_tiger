@@ -16,18 +16,55 @@ Bank Switch: Write to IO $01
 This is a good way to see if the game is running
 
 
-BM: Bank08::9c11
+*****************************************************************************************
+* TODOS:                                                                                *
+*****************************************************************************************
+Publish YouTube video (re-used)
+   Script
+   Record a video of doing the work
+   Edit
+   Upload
+   Announce
 
+Amiga Project
+   Initial setup
+       Publish YouTube video
+   Implement Level Map(s)
+      Research
+	     Study other Amiga source code for:
+     		Scrolling tile maps
+			   Try "Solid Gold" approach--delete everything except scrolling parts of ASM
+			   Try plotting "one bob" approach
+			Displaying tiles
+		    Find source code on EAB
+		 Study blitter code
+      Load
+         Include/Add binary with raw tile data directly from arcade source
+		    Create file(s) for inclusion
+            Potentially RLE encode to save space
+         Publish YouTube video
+      Display
+         Implement tile decoding logic
+            Implement quickly and worry about optimization later
+         Implement Map Palettes from arcade game
+            Photon of Scoopex seems to love palettes; I should watch all his videos on them
+         Show Tiles on screen
+            Research existing Amiga projects on how to blit/display tile maps
+            Show one tile on screen (by row and column and palette)
+            Implement a tile map system
+         Publish YouTube video
+      Scroll (8 way)
+         Discover scroll "extents" in Black Tiger Arcade source (imaginary box player can move around in before scrolling starts)
+		 Work out input (with joystick/keys)
+		 Work out timing (with vblank)
+         Publish YouTube video
 
-source debugger.cmd
 
 *****************************************************************************************
 * AMIGA NOTES:                                                                          *
 *****************************************************************************************
 
-
-SETUP TOOLCHAIN (thanks mcgeezer)
- https://www.youtube.com/watch?v=-SQEORSphBs
+SETUP TOOLCHAIN (thanks mcgeezer) https://www.youtube.com/watch?v=-SQEORSphBs
 
 
 *****************************************************************************************
