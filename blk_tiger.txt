@@ -34,23 +34,14 @@ Amiga Project
 	     Study other Amiga source code for:
      		Scrolling tile maps
 			   Try "Solid Gold" approach--delete everything except scrolling parts of ASM
-			   Try plotting "one bob" approach
-			Displaying tiles
-		    Find source code on EAB
-		 Study blitter code
+			Blitter code (with & without Copper)
       Load
-         Include/Add binary with raw tile data directly from arcade source
-		    Create file(s) for inclusion
-            Potentially RLE encode to save space
+         Potentially RLE encode raw tile data to save space
          Publish YouTube video
       Display
-         Implement tile decoding logic
-            Implement quickly and worry about optimization later
+         Optimize tile decoding logic
          Implement Map Palettes from arcade game
-            Photon of Scoopex seems to love palettes; I should watch all his videos on them
          Show Tiles on screen
-            Research existing Amiga projects on how to blit/display tile maps
-            Show one tile on screen (by row and column and palette)
             Implement a tile map system
          Publish YouTube video
       Scroll (8 way)

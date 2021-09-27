@@ -56,6 +56,14 @@ Engineer a way to bring tile bitmap into the Amiga (it's a full 256K uncompresse
 * TILE DECODING:                                                                        *
 *****************************************************************************************
 
+ON THE AMIGA:
+
+  EXAMPLE:
+     SCREEN LO-RES
+	 W: 320
+	 8 pixels/byte
+	 40 bytes per line/20 words per line
+	 
 
 EXAMPLE: RAW BYTES START AT LOCATION 0x1000
 16x16 tile decode from bitmap--4 bitplanes
@@ -498,6 +506,8 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
                         var twoAndThreeByte1 = bytes[sourceRowIndex + sourceRowOffset];                            // upper bitplanes source byte #1
                         var twoAndThreeByte2 = bytes[sourceRowIndex + sourceRowOffset + 1];                        // upper bitplanes source byte #2
 
+
+
                         //Bitplane 01 - lower nybble
                         uint contribution = 8;
                         tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, zeroAndOneByte1, 0x1, contribution);
@@ -507,6 +517,8 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
                         contribution /= 2;
                         tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, zeroAndOneByte1, 0x10, contribution);
                         tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, zeroAndOneByte2, 0x10, contribution);
+
+
 
                         //Bitplane 03 - lower nybble
                         contribution /= 2;
