@@ -318,7 +318,7 @@ FF FB FF F1 FF F1 FF F9 FF F9 FF F9 FF FF FF FF
 
 converted to rows:
                   BITPLANE 0      BITPLANE 1
-FF FF FA FE =>    F  F  F  F      F  F  A  E
+FF FF FA FE =>    F  F  F  F      F  F  A  E  
 FF FF F0 F4 =>    F  F  F  F      F  F  0  4
 FF FF F8 F4 =>    F  F  F  F      F  F  8  4
 FF FF F8 F4 =>    F  F  F  F      F  F  8  4
@@ -476,85 +476,6 @@ x x x x x x x x x x x x x x x x    x x x x x x x x x x x x x x x x    x x x x x 
      * DECODE LOGIC:    *
      --------------------
 
-            var output = new List<string>();
-            var sheet = new List<SixteenBySixteenTile>();
-            var bytes = new List<byte>();
-            var sheetRows = 0x80;                 // There are 0x80 rows (128) in the source tile bitmap
-            var sheetColumns = 16;
-
-            var lowerBitplanesOffset = 0x20000;
-
-            foreach (var file in list)
-            {
-                bytes = File.ReadAllBytes(file).ToList();
-            }
-
-            int sourceRowOffset = 0;
-            for(int sheetRow = 0; sheetRow < sheetRows; sheetRow++)
-            {
-                for (int sheetCol = 0; sheetCol < sheetColumns; sheetCol++)
-                {
-                    var tile = new SixteenBySixteenTile();
-
-                    // Now, we need to iterate over the rows and columns of BITS
-                    for(int sourceRowIndex = 0; sourceRowIndex < 0x40; sourceRowIndex += 2) // 0x40: raw tile data offset; 2 =  rows of pixels advance two bytes at a time in the source data
-                    {
-                        var pxOffset = sourceRowIndex < 0x20 ? 0 : 0x8; // pixel columns 0-7 are not offset; pixel columns 8-F are offset by 0x20
-						
-                        var zeroAndOneByte1 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex];      // lower bitplanes source byte #1
-                        var zeroAndOneByte2 = bytes[lowerBitplanesOffset + sourceRowOffset + sourceRowIndex + 1];  // lower bitplanes source byte #2
-                        var twoAndThreeByte1 = bytes[sourceRowIndex + sourceRowOffset];                            // upper bitplanes source byte #1
-                        var twoAndThreeByte2 = bytes[sourceRowIndex + sourceRowOffset + 1];                        // upper bitplanes source byte #2
-
-
-
-                        //Bitplane 01 - lower nybble
-                        uint contribution = 8;
-                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, zeroAndOneByte1, 0x1, contribution);
-                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, zeroAndOneByte2, 0x1, contribution);
-
-                        //Bitplane 00 - upper nybble
-                        contribution /= 2;
-                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, zeroAndOneByte1, 0x10, contribution);
-                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, zeroAndOneByte2, 0x10, contribution);
-
-
-
-                        //Bitplane 03 - lower nybble
-                        contribution /= 2;
-                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, twoAndThreeByte1, 0x1, contribution);
-                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, twoAndThreeByte2, 0x1, contribution);
-
-                        //Bitplane 02 - upper nybble
-                        contribution /= 2;
-                        tile.AddNybble(sourceRowIndex / 2, 0 + pxOffset, twoAndThreeByte1, 0x10, contribution);
-                        tile.AddNybble(sourceRowIndex / 2, 4 + pxOffset, twoAndThreeByte2, 0x10, contribution);
-                    }
-
-                    sheet.Add(tile);
-                    sourceRowOffset += 0x40; // Advance to next raw source bytes for next tile (tiles in raw source are 0x40 (64 bytes) apart)
-                }
-            }
-
-
-
-        public void AddNybble(int rowIndex, int pxOffset, byte val, byte startMask, uint contribution)
-        {
-            var index = (rowIndex % 16) * 16;
-            var pxchange = 0x3;                                               // causes the bits in the nybble to be flipped horizontally
-            for (uint i = startMask; i < startMask*0x10; i*=2, pxchange--)    // lower nybbles start at 0x1, upper start at 0x10
-            {
-                if ((val & i) > 0)                                            // is the bit set? If so, combine "contribution" into the palette index value for the pixel
-                {
-                    if (Values.Count <= index + pxOffset + pxchange)
-                    {
-                        Values[index + pxOffset + pxchange] = contribution;   // contribution is the base palette index value for the bitplane
-                    }
-
-                    else Values[index + pxOffset + pxchange] |= contribution;  // or'ing the palette index value with the previous value
-                }
-            }
-        }
 
      ------------------------------
      * RAW DUMP OF DECODED TILES: *
@@ -37549,6 +37470,7 @@ STRUCT:
         :F       -  palette index (0x0 - 0xF)
         (FL)     -  tile is flipped horizontally
 
+These are stored in 16 cols x 16 rows of tiles; the stride is $200 for the next block of 16x16 tiles.
 
 Level 1; Bank 9 (128 cols, 64 rows)
 0x210:F     ;0x211:F     ;0x212:F     ;0x213:F     ;0x228:F     ;0x229:F     ;0x22A:F     ;0x22B:F     ;0x228:F     ;0x229:F     ;0x22A:F     ;0x22B:F     ;0x228:F     ;0x229:F     ;0x22A:F     ;0x22B:F     ;0x218:F     ;0x219:F     ;0x21A:F     ;0x21B:F     ;0x21C:F     ;0x21D:F     ;0x21E:F     ;0x21F:F     ;0x21C:F     ;0x21D:F     ;0x21E:F     ;0x21F:F     ;0x21C:F     ;0x21D:F     ;0x21E:F     ;0x21F:F     ;0x208:F     ;0x209:F     ;0x20A:F     ;0x20B:F     ;0x220:F     ;0x221:F     ;0x222:F     ;0x223:F     ;0x220:F     ;0x221:F     ;0x222:F     ;0x223:F     ;0x220:F     ;0x221:F     ;0x222:F     ;0x223:F     ;0x210:F     ;0x211:F     ;0x212:F     ;0x213:F     ;0x228:F     ;0x229:F     ;0x22A:F     ;0x22B:F     ;0x228:F     ;0x229:F     ;0x22A:F     ;0x22B:F     ;0x228:F     ;0x229:F     ;0x22A:F     ;0x22B:F     ;0x218:F     ;0x219:F     ;0x21A:F     ;0x21B:F     ;0x21C:F     ;0x231:F     ;0x232:F     ;0x233:F     ;0x230:F     ;0x231:F     ;0x232:F     ;0x233:F     ;0x230:F     ;0x231:F     ;0x232:F     ;0x233:F     ;0x208:F     ;0x209:F     ;0x20A:F     ;0x20B:F     ;0x220:F     ;0x20B:F (FL);0x20A:F (FL);0x2E0:F (FL);0x2E0:F (FL);0x239:F     ;0x23A:F     ;0x23B:F     ;0x238:F     ;0x239:F     ;0x23A:F     ;0x23B:F     ;0x210:F     ;0x211:F     ;0x212:F     ;0x213:F     ;0x228:F     ;0x213:F (FL);0x212:F (FL);0x2E8:F (FL);0x257:F (FL);0x2E4:E (FL);0x2E3:E (FL);0x2E3:E     ;0x2E4:E     ;0x22C:E     ;0x2E4:E (FL);0x2E4:E     ;0x218:F     ;0x219:F     ;0x21A:F     ;0x21B:F     ;0x21C:F     ;0x21B:F (FL);0x21A:F (FL);0x2BE:F (FL);0x27A:F (FL);0x2F6:E (FL);0x2F5:E (FL);0x2F5:E     ;0x2F6:E     ;0x22C:E     ;0x2F6:E (FL);0x2F6:E
@@ -41875,3 +41797,56 @@ constexpr int readbit(const u8 *src, unsigned int bitnum)
 
 
 "m_pen_to_flags"
+
+FAILED CODE: DON'T REVERSE THE BITS! REVERSE THE NYBBLES FOR TILE FLIPPING
+
+   swap d1
+   move.l #0,d6
+
+   move.b (a3),d1
+   move.b 1(a3),d6
+   REPT 8
+   roxr.b #1,d6
+   addx.b d1,d1
+   ENDR
+   roxr.b #1,d6
+   move.b d1,(a3)
+   move.b d6,1(a3)
+
+   move.l #0,d6
+   move.b bitpl_bytes_per_raster_line*1(a3),d1
+   move.b bitpl_bytes_per_raster_line*1+1(a3),d6
+   REPT 8
+   roxr.b #1,d6
+   addx.b d1,d1
+   ENDR
+   roxr.b #1,d6
+   move.b d1,bitpl_bytes_per_raster_line*1(a3)
+   move.b d6,bitpl_bytes_per_raster_line*1+1(a3)
+
+   move.l #0,d6
+   move.b bitpl_bytes_per_raster_line*2(a3),d1
+   move.b bitpl_bytes_per_raster_line*2+1(a3),d6
+   REPT 8
+   roxr.b #1,d6
+   addx.b d1,d1
+   ENDR
+   roxr.b #1,d6
+   move.b d1,bitpl_bytes_per_raster_line*2(a3)
+   move.b d6,bitpl_bytes_per_raster_line*2+1(a3)
+
+   move.l #0,d6
+   move.b bitpl_bytes_per_raster_line*3(a3),d1
+   move.b bitpl_bytes_per_raster_line*3+1(a3),d1
+   REPT 8
+   roxr.b #1,d6
+   addx.b d1,d1
+   ENDR
+   roxr.b #1,d6
+   move.b d1,bitpl_bytes_per_raster_line*3(a3)
+   move.b d6,bitpl_bytes_per_raster_line*3+1(a3)
+
+   move.b #0,d6
+   move.b #0,d1
+
+   swap d1

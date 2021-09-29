@@ -16,6 +16,10 @@ Bank Switch: Write to IO $01
 This is a good way to see if the game is running
 
 
+Shrinkler: Smallest, ~2K/s decrunch speed
+Propack: Medium-good compression, ~18K/s speed
+Cranker: Medium compression, ~60K/s speed
+
 *****************************************************************************************
 * TODOS:                                                                                *
 *****************************************************************************************
@@ -41,8 +45,7 @@ Amiga Project
       Display
          Optimize tile decoding logic
          Implement Map Palettes from arcade game
-         Show Tiles on screen
-            Implement a tile map system
+         Implement a tile map system
          Publish YouTube video
       Scroll (8 way)
          Discover scroll "extents" in Black Tiger Arcade source (imaginary box player can move around in before scrolling starts)
