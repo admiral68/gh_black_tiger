@@ -44,6 +44,141 @@ TILE MAP FOR LEVEL 3 is 1024 x 2048 pixels (4x8 tilemap)
 
 From EAB: "turaco_CL (turaco command line) is an old DOS/linux based arcade gfx format convertor from arcade gfx to PCX" - redblade
 
+Do you mean for every increment/decrement of BPLCON1 I would blit 1 new tile into both the columns, 
+instead of blitting the two entire column in one go when the pointers are updated?
+
+That's exactly what I mean.
+
+Yep - big performance boost because you are doing much less blits.
+
+If your map is not endless you can just add mapwidth - displaywidth words to the size of your bitmap. 
+So you can continue scrolling without having to blit a second column or reset the pointers. Halves 
+your total number of blits again.
+
+Do you mean just make the size of the total area width the same size as the map (minus the visible part?) and just 
+scroll through it?
+
+Just add the total number of words you would have to move the BPLxPT when scrolling to the rightmost 
+position on the map.
+
+At the moment, my total screen width is 704 and the visible part is 320.
+
+Then you can save a lot of Chip RAM. Three extra columns are needed (368). And the extra words for 
+scrolling through the map.
+
+My map's width is 1280 (80 words)
+
+Which means you have to allocate a bitmap for 368x256(?) pixels plus 60 (80-20) words. For four planes 
+this would be: 23*2*256*4+60*2 = 47104 bytes.
+The 60 additional words allow you to continue scrolling to the right border.
+
+Ok, I think I get the jist of what you mean (sorry, I'm still quite a noob at this). So it's basically 
+just one screen with two edges for the blits and one extra for the scroll?
+
+Exactly! And a few extra words on the bottom to be able to scroll the whole map width.
+
+Are there any examples anywhere I could maybe have a look at for a reference?
+
+There is always Georg Steger's legendary Scrolling Trick on Aminet, which everybody who wants to implement proper scrolling should have read by now. 
+Don't remember the exact path, as Aminet is down again, but it is definitely ScrollingTrick.lha.
+
+In case it's not available at the moment, ScrollingTrick.lha is in the zone for you...
+
+
+This algorithm and the one of Scroller_XYUnlimited are identical. The only difference is that the demo program was compiled with:
+#define EXTRAWIDTH 64
+That way the bitmap width is a multiple of 64 and becomes suitable for 4x FETCH Mode.
+
+
+
+
+
+So when you are scrolling right you are increasing BPLCON1 by $11. if BPLCON1= $11 then you 
+plot a tile to the right border by multiplying the value you have by 16.
+
+So if this is frame n+1, BPLCON1=$11 and you are scrolling right then you would have
+
+Code:
+TILE_ADDRESS=(SCREEN_ORIGIN+38)+(1*16)*SCANLINE_LENGTH.
+If you are scrolling left and you decrease BPLCON1 and say it's value is 8 then...
+
+Code:
+TILE_ADDRESS=(SCREEN_ORIGIN)+81*16)*SCANLINE_LENGTH.
+Don't forget to increase and decrease your bitplane pointers as you go from $f>0 and 0<$f 
+when moving.
+
+
+You can only scroll right with bplcon1 . If you are at bplcon1 as $0000 and you want to scroll 
+left by 1 pixel you reduce your bitplane pointers by 1 word and then scroll right by 15 in bplcon1.
+
+
+
+
+Here's some example routines of how I might do it.
+
+This routine just takes a simple x coordinate and divides it by 16 with the remainder being used for BPLCON1.
+
+Code:
+; Updates a screen structure with an x/y value.
+; d0 = screen structure
+; d1 = xpos
+; d2 = ypos
+agdUpdateScreenPosition:
+	movem.l	d0-d3/a0-a1,-(a7)
+	move.l	d0,a0
+	moveq	#0,d3
+	move.w	d1,d3
+	not.w	d1
+	and.w	#$f,d1
+	lsr.w	#3,d3
+	move.w	d3,hScreenOffset(a0)
+	move.w	d1,hScreenHScroll(a0)
+	movem.l	(a7)+,d0-d3/a0-a1	
+	rts
+	
+And this routine takes in the values from the previous routine and updates the bitplane pointers and BPLCON1.
+
+Code:
+; Update the selected screen parameters with a copper.
+; d0 = screen structure
+agdUpdateCopperParameters:
+	movem.l	d0/d1/d3/d5/d7-a0,-(a7)
+	move.l	d0,a0
+	moveq	#0,d0
+	move.w	hScreenHScroll(a0),d0
+	move.w	d0,d1
+	lsl.w	#4,d1
+	or.w	d1,d0
+	move.l	COPPTR_BPLCON1,a1
+	move.w	d0,(a1)
+	
+	moveq	#0,d5
+	move.w	hScreenOffset(a0),d5
+	
+	moveq	#0,d7
+	move.w	hScreenPlanes(a0),d7			; d7 = Number of planes
+	subq.w	#1,d7	
+	lea	hScreenPointers(a0),a0
+	
+	move.l	COPPTR_BPL0PTH,a1
+	move.l	#BPL0PTH<<16,d3
+.bp:	move.l	(a0)+,d1
+	add.l	d5,d1
+	swap	d1
+	move.w	d1,d3
+	move.l	d3,(a1)+
+	add.l	#$2<<16,d3
+	swap	d1
+	move.w	d1,d3
+	move.l	d3,(a1)+
+	add.l	#$2<<16,d3	
+	dbf	d7,.bp
+	
+	movem.l	(a7)+,d0/d1/d3/d5/d7-a0
+	rts
+As said above, you need to adjust the bitplane pointers by 1 word, BPLCON1 can only have the smooth scroll values of 0-15.
+
+Graeme	
 *****************************************************************************************
 * TODOS:                                                                                *
 *****************************************************************************************
