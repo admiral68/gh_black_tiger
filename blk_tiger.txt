@@ -44,11 +44,6 @@ Amiga Project
          Publish YouTube video
       Scroll (8 way)
 	     TODO: Make scroll area smaller
-		 TODO: Implement scroll algorithm for 8-way (below)
-	     TODO: When changing scroll direction in the middle of a block, finish unblitted blocks
-		 Scroll level map up and down and right/left simultaneously
-         Discover scroll "extents" in Black Tiger Arcade source (imaginary box player can move around in before scrolling starts)
-		 Work out input (with joystick/keys)
 		 Work out timing (with vblank)
          Publish YouTube video
 
@@ -63,67 +58,6 @@ SETUP TOOLCHAIN (thanks mcgeezer) https://www.youtube.com/watch?v=-SQEORSphBs
 * RESOURCES:                                                                            *
 *****************************************************************************************
 
-Source files from phx's "Solid Gold" to check
-
-DISPW		equ	320
-DISPH		equ	240
-PLANES		equ	5
-NCOLORS		equ	1<<PLANES
-
-; display window in raster coordinates (HSTART must be odd)
-HSTART		equ	129
-VSTART		equ	44
-VEND		equ	VSTART+DISPH
-
-; normal display data fetch start/stop (without scrolling)
-DFETCHSTART	equ	HSTART/2-8
-DFETCHSTOP	equ	DFETCHSTART+8*((DISPW/16)-1)
-
-; scroll bitmap dimensions (16x16 blocks)
-EXTRACOLS	equ	4
-EXTRAROWS	equ	3
-XBLOCKS		equ	(DISPW/16)+EXTRACOLS
-YBLOCKS		equ	(DISPH/16)+EXTRAROWS
-BMAPW		equ	XBLOCKS*16
-BMAPH		equ	YBLOCKS*16
-BPR		equ	BMAPW/8
-
-; maximum object dimensions in the game
-MAXOBJWIDTH	equ	16
-MAXOBJHEIGHT	equ	22		; hero height
-
-display.asm
-	make_scrollviews
-	init_scrollview_clist
-	write_clist_planeptrs
-
-init.asm
-	readController
-	getkey
-	
-game.asm
-	do_frame
-	redraw_start
-	reset_view
-	
-main.asm
-
-scroll.asm
-	set_scroll_pos
-	scroll
-	copper_scroll
-	blitter_scroll
-	load_copperback
-	
-tiles.asm
-	init_tiles
-	makeSwitchTileTab
-	load_tiles
-	draw_tiles
-	drawlist_backgd
-	initTileAnims
-	updateTileAnims	
-
 
 *****************************************************************************************
 * SCROLLING (8-WAY):                                                                    *
@@ -136,7 +70,7 @@ tiles.asm
     CORNER BLOCKS
   -----------------
 
-  These blocks are from the source bitmap and have not yet been blitted; they come from 
+  These blocks are blocks that have not yet been blitted; they come from 
   the source bitmap relative to what's already on screen
   
   [A] -- TOP LEFT
@@ -148,19 +82,19 @@ tiles.asm
     ALGORITHM
   -------------
 
-  BLIT ORDER: R->D->U->L (BLIT IN ASCENDING ORDER)
+  BLIT ORDER: R->D->U->L (BLIT IN ASCENDING MODE)
   
-  R:   All blocks fill column (left source)
-  L:   All blocks fill column (right source)
-  U:   All blocks fill row (bottom source)
-  D:   All blocks fill row (top source)
-  R+D: All blocks fill row (top source);      all blocks fill column (left source) (overlap is [A]--first blit)
-  R+U: All blocks fill column (left source);  all blocks fill row (bottom source)  (overlap is [C]--last blit)
-  D+L: All blocks fill row (top source);      all blocks fill column (right source)(overlap is [B]--last blit)
-  U+L: All blocks fill column (right source); all blocks fill row (bottom source)  (overlap is [D]--first blit)
+  R:   All blocks fill column (left column)
+  L:   All blocks fill column (right column)
+  U:   All blocks fill row (bottom row)
+  D:   All blocks fill row (top row)
+  R+D: All blocks fill row (top row);         all blocks fill column (left column) except [A]
+  R+U: All blocks fill column (left column);  all blocks fill row (bottom row) except [C]
+  D+L: All blocks fill row (top row);         all blocks fill column (right column)(overlap is [B]--last blit)
+  U+L: All blocks fill column (right column); all blocks fill row (bottom row)  (overlap is [D]--first blit)
   
-  D: Check R (for [A] overlap)--If R, skip [A]
-  U: Check R (for [C] overlap)--If R, skip [C]
+  D: Skip [A] always
+  U: Skip [C] always
   L: Check D (for [B] overlap); Check U (for [D] overlap)--If D, skip [B]. If U, skip [D].
 
 *****************************************************************************************
