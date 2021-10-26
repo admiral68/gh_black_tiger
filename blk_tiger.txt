@@ -20,6 +20,90 @@ Shrinkler: Smallest, ~2K/s decrunch speed
 Propack: Medium-good compression, ~18K/s speed
 Cranker: Medium compression, ~60K/s speed
 
+So when I read the HRM and I want to detect collisions between sprite 0 and bitplanes 1 & 2 
+(4 colours) then I would set CLXCON to $10c3.
+
+I haven't tried it but this would match:
+Bit 12 for Enable Sprite 0 & 1.
+Bits 6 & 7 for enable bitplanes 1 & 2
+Bits 0 & 1 for match required on bitplanes 1 & 2
+
+flipping code
+
+
+    move.l  d0,d1
+    move.l  #$55555555,d2
+    lsr.l   #1,d0
+    add.l   d1,d1
+    and.l   d2,d0
+    add.l   d2,d2
+    and.l   d2,d1
+    or.l    d1,d0
+    
+    move.l  d0,d1
+    move.l  #$33333333,d2
+    lsr.l   #2,d0
+    lsl.l   #2,d1
+    and.l   d2,d0
+    lsl.l   #2,d2
+    and.l   d2,d1
+    or.l    d1,d0
+
+    move.l  d0,d1
+    move.l  #$0f0f0f0f,d2
+    lsr.l   #4,d0
+    lsl.l   #4,d1
+    and.l   d2,d0
+    lsl.l   #4,d2
+    and.l   d2,d1
+    or.l    d1,d0
+    
+    rol.w   #8,d0
+    swap    d0
+    rol.w   #8,d0
+	
+	
+	
+	
+   move.l   #$55555555,d1
+   and.l    d0,d1
+   eor.l    d1,d0
+   add.l    d1,d1
+   lsr.l    #1,d0
+   or.l     d1,d0
+
+   move.l   #$33333333,d1
+   and.l    d0,d1
+   eor.l    d1,d0
+   lsl.l    #2,d1
+   lsr.l    #2,d0
+   or.l     d1,d0
+
+   move.l   #$0f0f0f0f,d1
+   and.l    d0,d1
+   eor.l    d1,d0
+   lsl.l    #4,d1
+   lsr.l    #4,d0
+   or.l     d1,d0
+
+   rol.w    #8,d0
+   swap     d0
+   rol.w    #8,d0
+   
+Well, this is based in a magnitude progressive group swapping (first bits, then pairs, then nibbles, then bytes, then words).
+Basically is like a SIMD approach because there is not carry between operations.
+Input D0 contains the 32 bits from a bitplane, output d0 the same bits flipped.
+
+
+
+
+
+ - d7 would contain $55555555 rather than just 5 (a table lookup can perform the conversion)
+ D6=%1100100000 (value with bits 9,8,5 set to 1).
+
+    btst d7,d6
+
+
 *****************************************************************************************
 * TODOS:                                                                                *
 *****************************************************************************************
@@ -38,16 +122,136 @@ Amiga Project
          Potentially RLE encode raw tile data to save space
          Publish YouTube video
       Display
+	     For each tile, get: TIMES USED, LEVEL(S) USING; USED IN LEVEL (BY LEVEL); PALETTE USED EACH TIME
          Optimize tile decoding logic
          Implement Map Palettes from arcade game
          Implement a tile map system
          Publish YouTube video
       Scroll (8 way)
-	     TODO: Make scroll area smaller
+	     TODO: Vert split bug (Y <= $10)
 		 Work out timing (with vblank)
          Publish YouTube video
 
+Alt+Arrow Left/Right moves 8 lines up/down
+Alt+Arrow Up/Down moves 1 line up/down
 
+GUI Debugger improvements:
+	Persist starting address of memory watch views
+	Persist selected tab
+    Clicking on a tab switches to the tab.
+	Scrolling disassembly (with up/down arrows and pgdn/pgup)
+
+
+
+
+
+As blitting/drawing text can get expensive in terms of Blitter/CPU cycles it may be worth to think a bit about 
+potential optimisations.
+
+An obvious performance optimisation for text you need to blit repeatedly (for instance text that changes only 
+infrequently, like scores or game over messages) is to create a text buffer area in which you draw the text ahead 
+of time. Then you blit this buffer to the screen instead of individual characters. This is much faster than 
+drawing each character from scratch every time and can also allow you to spread the work of setting up the 
+text to blit over as many frames as you feel is acceptable.
+
+Equally, for texts that never change you could simply use a pre-generated bitmap.
+
+
+
+
+
+
+
+
+
+
+
+
+
+ add.w d1,d0
+ bvc.s .done
+ spl d0
+ ext.w d0
+ eori.w #$7fff,d0
+.done
+
+
+
+
+
+     ext.l   d0
+     ext.l   d1
+     add.l  d1,d0
+     cmp.l #32767,d0
+     ble.s   .NotMax
+     move.l #32767,d0
+     bra.s  .NotMin
+.NotMax
+     cmp.l #-32768,d0
+     bge.s   .NotMin
+     move.l #32768,d0
+.NotMin
+HELP for UAE Debugger
+         -----------------------
+
+  g [<address>]         Start execution at the current address or <address>.
+  c                     Dump state of the CIA, disk drives and custom registers.
+  r                     Dump state of the CPU.
+  r <reg> <value>       Modify CPU registers (Dx,Ax,USP,ISP,VBR,...).
+  m <address> [<lines>] Memory dump starting at <address>.
+  d <address> [<lines>] Disassembly starting at <address>.
+  t [instructions]      Step one or more instructions.
+  z                     Step through one instruction - useful for JSR, DBRA etc.
+  f                     Step forward until PC in RAM ("boot block finder").
+  f <address>           Add/remove breakpoint.
+  fa <address> [<start>] [<end>]
+                        Find effective address <address>.
+  fi                    Step forward until PC points to RTS, RTD or RTE.
+  fi <opcode>           Step forward until PC points to <opcode>.
+  fp "<name>"/<addr>    Step forward until process <name> or <addr> is active.
+  fl                    List breakpoints.
+  fd                    Remove all breakpoints.
+  fs <val> <mask>       Break when (SR & mask) = val.
+  f <addr1> <addr2>     Step forward until <addr1> <= PC <= <addr2>.
+  e                     Dump contents of all custom registers, ea = AGA colors.
+  i [<addr>]            Dump contents of interrupt and trap vectors.
+  il [<mask>]           Exception breakpoint.
+  o <0-2|addr> [<lines>]View memory as Copper instructions.
+  od                    Enable/disable Copper vpos/hpos tracing.
+  ot                    Copper single step trace.
+  ob <addr>             Copper breakpoint.
+  H[H] <cnt>            Show PC history (HH=full CPU info) <cnt> instructions.
+  C <value>             Search for values like energy or lifes in games.
+  Cl                    List currently found trainer addresses.
+  D[idxzs <[max diff]>] Deep trainer. i=new value must be larger, d=smaller,
+                        x = must be same, z = must be different, s = restart.
+  W <address> <values[.x] separated by space> Write into Amiga memory.
+  W <address> 'string' Write into Amiga memory.
+  w <num> <address> <length> <R/W/I/F/C> [<value>[.x]] (read/write/opcode/freeze/mustchange).
+                        Add/remove memory watchpoints.
+  wd [<0-1>]            Enable illegal access logger. 1 = enable break.
+  S <file> <addr> <n>   Save a block of Amiga memory.
+  s "<string>"/<values> [<addr>] [<length>]
+                        Search for string/bytes.
+  T or Tt               Show exec tasks and their PCs.
+  Td,Tl,Tr,Ts,Ti,TO     Show devices, libraries, resources, residents, interrupts, doslist.
+  b                     Step to previous state capture position.
+  M<a/b/s> <val>        Enable or disable audio channels, bitplanes or sprites.
+  sp <addr> [<addr2][<size>] Dump sprite information.
+  di <mode> [<track>]   Break on disk access. R=DMA read,W=write,RW=both,P=PIO.
+                        Also enables level 1 disk logging.
+  did <log level>       Enable disk logging.
+  dj [<level bitmask>]  Enable joystick/mouse input debugging.
+  smc [<0-1>]           Enable self-modifying code detector. 1 = enable break.
+  dm                    Dump current address space map.
+  v <vpos> [<hpos>]     Show DMA data (accurate only in cycle-exact mode).
+                        v [-1 to -4] = enable visual DMA debugger.
+  ?<value>              Hex ($ and 0x)/Bin (%)/Dec (!) converter.
+  x                     Close debugger.
+  xx                    Switch between console and GUI debugger.
+  mg <address>          Memory dump starting at <address> in GUI.
+  dg <address>          Disassembly starting at <address> in GUI.
+  q                     Quit the emulator. You don't want to use this command.
 *****************************************************************************************
 * AMIGA NOTES:                                                                          *
 *****************************************************************************************
