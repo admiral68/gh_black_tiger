@@ -22,13 +22,19 @@ Cranker: Medium compression, ~60K/s speed
 
 
 Perfect palette (except poison plants/dungeon/wise man) L1:
-0000  0086  0040  0046  00C9  0986  0776  0743  0567  089C  0600  0FB8  0064  0345  0FFA  0C86
-0A64  0789  07EC  0531  0678  0AFD  0421  00A7  0540  0B75  0753  0A97  0456  0D97  0900  0954
+0000  0FFA  0AFD  07EC  00C9  00A7  0086  0064  0040  0540  0531  0421  0600  0900  0743  0954
+0A64  0B75  0C86  0D97  0FB8  0A97  0986  0776  0678  0789  089C  0567  0456  0345  0046  0753
+
+
 
 Which tiles use which colors?
 How many pixels use that color (per level?)
 How many times is a tile used in a level?
 We can eliminate several palettes from each level.
+
+
+$000,$FFA,$AFD,$7EC,$0C9,$0A7,$086,$064,$040,$540,$531,$421,$600,$900,$743,$954
+$A64,$B75,$C86,$D97,$FB8,$A97,$986,$776,$678,$789,$89C,$567,$456,$345,$046,$753
 
 
 
@@ -136,14 +142,25 @@ Amiga Project
          Potentially RLE encode raw tile data to save space
       Display
          Bring new tile graphics in and make them work
-             Update to use 5 bitplanes
-             Co-ordinate map palette with enemy palette(s)
-                 Discover items/enemies locations in Level 1 for palette coordination
+             Co-ordinate map palette with player sprite and enemy palette(s)
+			 Try to split map source bitmap buffer into pieces to save memory
          Make copper list dynamic (for levels/dungeons/wise man's shop)
       Scroll (8 way)
+		 TODO: Black sprite (left fill column)
          TODO: Vert split bug (Y <= $10)
          Work out timing (with vblank)
          Publish YouTube video
+
+
+v_scrollx_dest_offset_table
+  screen_rows
+  v_screen_end
+
+pseudo code for starting a level:
+
+
+
+
 
 
 
@@ -162,7 +179,10 @@ text to blit over as many frames as you feel is acceptable.
 
 Equally, for texts that never change you could simply use a pre-generated bitmap.
 
+S I:\amiga\code\dev_data\map_check 2d888 f0000
 
+
+TODO: v_scrollx_dest_offset_table
 
 
  add.w d1,d0
@@ -199,7 +219,7 @@ GUI Debugger improvements:
     Scrolling disassembly (with up/down arrows and pgdn/pgup)
 
          -----------------------
-
+0045
   g [<address>]         Start execution at the current address or <address>.
   c                     Dump state of the CIA, disk drives and custom registers.
   r                     Dump state of the CPU.
@@ -751,6 +771,7 @@ ID   En  CPU                   Address\      Condition         Action
 57   X   :maincpu              2547
 5B   X   :maincpu              29DA
 59   X   :maincpu              8F3C
+
 
 
 *****************************************************************************************
