@@ -37,6 +37,65 @@ $000,$FFA,$AFD,$7EC,$0C9,$0A7,$086,$064,$040,$540,$531,$421,$600,$900,$743,$954
 $A64,$B75,$C86,$D97,$FB8,$A97,$986,$776,$678,$789,$89C,$567,$456,$345,$046,$753
 
 
+CHANGES FOR BPP4 => BPP5:
+  Problems to solve:
+    1. FIXED! Vertical split bug in original code: it pauses when scrolling down past y position E0,
+       which was the y scroll limit previously
+    2. Need 5 bitplanes
+
+HIGH LEVEL:
+    1. DONE! change from "O" shaped buffer to "U" shaped buffer (two fill rows at bottom)
+    2. change to 5 bitplanes & graphic to new graphic
+
+
+TASKS:
+
+  change
+     common.s:
+        (2) copper list (from c_bitplane_pointers_01 down)
+        (2) number of bitplanes
+        (2) map bytes
+
+     main.asm:
+        (1) stop skipping first row for screen buffer
+        (1) set c_bitplane_pointers_02 to top of screen buffer
+        (1)(2) v_scrollx_dest_offset_table (will need an intermediate table)
+        (2) Map (alloc size)
+        (2) c_palette_01
+        (2) c_bitplane_pointers_01
+        (2) c_sprites01_cols
+        (2) c_sprites23_cols
+        (2) c_sprites45_cols
+        (2) c_sprites67_cols
+        (2) c_display_enable_01
+        (2) c_bitplane_pointers_02
+
+     scroll.asm
+        (1) stop adding screen_bytes_per_row*tile_height to top of vertical split
+        (1) put vertical split at bottom of screen memory instead of 32 lines higher
+
+  enable
+     map.asm:
+        (2) LoadLevelMap
+        (2) AssembleSourceTilesIntoMapSourceBitmap
+        (2) CopyScreenFromMapSourceBitmap
+    tile.asm:
+        (2) TileExtractFromSourceIntoMapBitmap
+
+  remove:
+     main.asm:
+        (2) some test code section
+        (2) DecodeAndAssembleSourceTilesIntoMapSourceBitmap
+        (2) TESTEncodedTilesSource
+        (2) TESTMapSource
+
+
+
+
+
+
+
+
 
 COLLISION DETECTION:
 
@@ -143,10 +202,10 @@ Amiga Project
       Display
          Bring new tile graphics in and make them work
              Co-ordinate map palette with player sprite and enemy palette(s)
-			 Try to split map source bitmap buffer into pieces to save memory
+             Try to split map source bitmap buffer into pieces to save memory
          Make copper list dynamic (for levels/dungeons/wise man's shop)
       Scroll (8 way)
-		 TODO: Black sprite (left fill column)
+         TODO: Black sprite (left fill column)
          TODO: Vert split bug (Y <= $10)
          Work out timing (with vblank)
          Publish YouTube video
@@ -325,7 +384,27 @@ SETUP TOOLCHAIN (thanks mcgeezer) https://www.youtube.com/watch?v=-SQEORSphBs
 
   D: Skip [A] always
   U: Skip [C] always
-  L: Check D (for [B] overlap); Check U (for [D] overlap)--If D, skip [B]. If U, skip [D].
+  L: If D, skip [B]. If U, skip [D].
+
+  ---------------------
+    UPDATED ALGORITHM
+  ---------------------
+
+  HORIZ ONLY (NO D/U): FIRST SOURCE BLOCK (BLIT 0) IS ONE ROW HIGHER
+                       BLIT FIRST SOURCE BLOCK TO BOTTOM FILL ROW (UP SCROLL SRC)
+                       (I THINK IT'S DOING THIS ALREADY)
+
+  HORIZ + D/U:         BLIT 0 STARTS AT $0000 offset, not $A8C0 (TEMPORARILY ADD 1 TO STEP (?))
+                       SKIP F (SKIP BLIT TO D/U FILL ROW (LAST STEP))
+
+  HORIZ +   D:         FIRST SOURCE BLOCK (BLIT 0) IS ONE ROW LOWER THAN NORMAL (DON'T SUBTRACT SRC ROW)
+                       (HORIZONTALLY PARALLEL TO TOP (VISIBLE) ROW)
+
+  VERT ONLY (NO R/L):  NO CHANGES
+
+  VERT + R:            START ONE SRC COL LATER
+  VERT + L:            START ONE SRC COL EARLIER
+
 
 *****************************************************************************************
 * GAME ASPECTS TO CONVERT:                                                              *
